@@ -1,13 +1,13 @@
 {
   "name": "Echo Kirche",
-  "representative": "[BITTE AUSFÜLLEN: Vertreten durch (z.B. Vorstand/Pastor)]",
+  "representative": "",
   "address": {
     "street": "Schützenplatz 1",
     "city": "38518 Gifhorn",
     "country": "Deutschland"
   },
   "contact": {
-    "email": "hello@kirche-echo.de",
+    "email": "info@kirche-im-brauhaus.de",
     "phone": "[BITTE AUSFÜLLEN: Telefonnummer (optional)]"
   },
   "urls": {

@@ -12,7 +12,7 @@
     },
     {
       "platform": "whatsapp",
-      "url": "https://wa.me/4915123456789",
+      "url": "https://whatsapp.com/channel/0029Vb6fOzl11ulLp4jHlI0V",
       "label": "WhatsApp"
     },
     {
@@ -27,7 +27,7 @@
     },
     {
       "platform": "email",
-      "url": "mailto:hello@kirche-echo.de",
+      "url": "mailto:info@kirche-im-brauhaus.de",
       "label": "E-Mail"
     },
     {
@@ -43,7 +43,9 @@
       "label": "Gifhorn",
       "url": "https://kirche-echo.de/gifhorn",
       "displayInDefault": false,
-      "showOn": ["gifhorn"],
+      "showOn": [
+        "gifhorn"
+      ],
       "icon": "location"
     },
     {
@@ -52,7 +54,9 @@
       "label": "Wolfsburg",
       "url": "https://kirche-echo.de/wolfsburg",
       "displayInDefault": false,
-      "showOn": ["wolfsburg"],
+      "showOn": [
+        "wolfsburg"
+      ],
       "icon": "location"
     },
     {
@@ -61,7 +65,9 @@
       "label": "Helmstedt",
       "url": "https://kirche-echo.de/helmstedt",
       "displayInDefault": false,
-      "showOn": ["helmstedt"],
+      "showOn": [
+        "helmstedt"
+      ],
       "icon": "location"
     },
     {
@@ -70,7 +76,9 @@
       "label": "Instagram",
       "url": "https://www.instagram.com/kircheimbrauhaus",
       "displayInDefault": false,
-      "showOn": ["instagram"],
+      "showOn": [
+        "instagram"
+      ],
       "icon": "instagram"
     },
     {
@@ -81,7 +89,11 @@
       "layout": "columns",
       "displayInDefault": true,
       "description": "Feiere mit uns vor Ort in Gifhorn, Wolfsburg und Helmstedt oder online im Livestream:",
-      "locations": ["gifhorn", "wolfsburg", "helmstedt"],
+      "locations": [
+        "gifhorn",
+        "wolfsburg",
+        "helmstedt"
+      ],
       "times": [
         {
           "title": "Gifhorn (10:00)",
@@ -93,7 +105,10 @@
           "kidsLabel": "Echo Kids verfügbar",
           "url": "https://kirche-echo.de/gifhorn",
           "actionLabel": "Standort Gifhorn →",
-          "showOn": ["default", "gifhorn"]
+          "showOn": [
+            "default",
+            "gifhorn"
+          ]
         },
         {
           "title": "Gifhorn (12:00)",
@@ -105,7 +120,10 @@
           "kidsLabel": "Echo Kids verfügbar",
           "url": "https://kirche-echo.de/gifhorn",
           "actionLabel": "Standort Gifhorn →",
-          "showOn": ["default", "gifhorn"]
+          "showOn": [
+            "default",
+            "gifhorn"
+          ]
         },
         {
           "title": "Wolfsburg",
@@ -117,7 +135,10 @@
           "kidsLabel": "Echo Kids verfügbar",
           "url": "https://kirche-echo.de/wolfsburg",
           "actionLabel": "Standort Wolfsburg →",
-          "showOn": ["default", "wolfsburg"]
+          "showOn": [
+            "default",
+            "wolfsburg"
+          ]
         },
         {
           "title": "Helmstedt",
@@ -129,7 +150,10 @@
           "kidsLabel": "Echo Kids verfügbar",
           "url": "https://kirche-echo.de/helmstedt",
           "actionLabel": "Standort Helmstedt →",
-          "showOn": ["default", "helmstedt"]
+          "showOn": [
+            "default",
+            "helmstedt"
+          ]
         }
       ],
       "url": "https://kirche-echo.de",
@@ -195,7 +219,10 @@
       "label": "Eindrücke aus dem Gemeindeleben",
       "url": "https://kirche-echo.de",
       "displayInDefault": true,
-      "showOn": ["default", "instagram"],
+      "showOn": [
+        "default",
+        "instagram"
+      ],
       "image": {
         "src": "/assets/images/es26-hero-1-1536x864.webp",
         "alt": "Eindrücke aus dem Gemeindeleben",
@@ -209,7 +236,9 @@
       "label": "Eindrücke aus dem Gemeindeleben",
       "url": "https://kirche-echo.de/gifhorn",
       "displayInDefault": false,
-      "showOn": ["gifhorn"],
+      "showOn": [
+        "gifhorn"
+      ],
       "image": {
         "src": "/assets/images/echo-home-gifhorn-1024x682.webp",
         "alt": "Eindrücke aus dem Gemeindeleben Gifhorn",
@@ -223,7 +252,9 @@
       "label": "Eindrücke aus dem Gemeindeleben",
       "url": "https://kirche-echo.de/wolfsburg",
       "displayInDefault": false,
-      "showOn": ["wolfsburg"],
+      "showOn": [
+        "wolfsburg"
+      ],
       "image": {
         "src": "/assets/images/echo-home-wolfsburg-1024x666.webp",
         "alt": "Eindrücke aus dem Gemeindeleben Wolfsburg",
@@ -237,7 +268,9 @@
       "label": "Eindrücke aus dem Gemeindeleben",
       "url": "https://kirche-echo.de/helmstedt",
       "displayInDefault": false,
-      "showOn": ["helmstedt"],
+      "showOn": [
+        "helmstedt"
+      ],
       "image": {
         "src": "/assets/images/echo-home-helmstedt-803x1024.webp",
         "alt": "Eindrücke aus dem Gemeindeleben Helmstedt",

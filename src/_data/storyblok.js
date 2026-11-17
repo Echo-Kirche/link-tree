@@ -16,7 +16,7 @@ function youtubeVideoId(value = '') {
       const liveIndex = parts.indexOf('live');
       if (liveIndex >= 0 && parts[liveIndex + 1]) return parts[liveIndex + 1];
     }
-  } catch {}
+  } catch { }
   return '';
 }
 
@@ -207,9 +207,9 @@ export default async function () {
           bio: site.profile?.bio || '',
           avatar: site.profile?.avatar
             ? {
-                filename: site.profile.avatar,
-                alt: site.profile.name || 'Logo',
-              }
+              filename: site.profile.avatar,
+              alt: site.profile.name || 'Logo',
+            }
             : null,
         },
       ],
@@ -221,7 +221,7 @@ export default async function () {
           organization_name: operator.name || 'Echo Kirche',
           street: operator.address?.street || 'Schützenplatz 1',
           city: operator.address?.city || '38518 Gifhorn',
-          email: operator.contact?.email || 'hello@kirche-echo.de',
+          email: operator.contact?.email || 'info@kirche-im-brauhaus.de',
           impressum_url: operator.urls?.impressum || 'https://kirche-echo.de/impressum/',
           datenschutz_url: operator.urls?.datenschutz || 'https://kirche-echo.de/datenschutz/',
           copyright_year: '2026',

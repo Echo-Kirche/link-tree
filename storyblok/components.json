@@ -751,7 +751,7 @@
         "email": {
           "type": "text",
           "pos": 3,
-          "default_value": "hello@kirche-echo.de"
+          "default_value": "info@kirche-im-brauhaus.de"
         },
         "impressum_url": {
           "type": "text",
