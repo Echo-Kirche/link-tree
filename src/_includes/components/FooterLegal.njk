@@ -1,14 +1,15 @@
 {% set fb = footerBlok %}
 {% set orgName = fb.organization_name if (fb and fb.organization_name) else (operator.name if (operator and operator.name) else (site.profile.name if (site and site.profile) else "Echo Kirche")) %}
-{% set streetVal = fb.street if (fb and fb.street) else (operator.address.street if (operator and operator.address) else "Schützenplatz 1") %}
+{% set streetVal = fb.street if (fb and fb.street !== undefined) else (operator.address.street if (operator and operator.address) else "Schützenplatz 1") %}
 {% set cityVal = fb.city if (fb and fb.city) else (operator.address.city if (operator and operator.address) else "38518 Gifhorn") %}
 {% set emailVal = fb.email if (fb and fb.email) else (operator.contact.email if (operator and operator.contact) else "info@kirche-im-brauhaus.de") %}
+{% set mailtoVal = fb.mailto if (fb and fb.mailto) else ("mailto:" + emailVal) %}
 {% set impUrl = fb.impressum_url if (fb and fb.impressum_url) else (operator.urls.impressum if (operator and operator.urls) else "https://kirche-echo.de/impressum/") %}
 {% set dsUrl = fb.datenschutz_url if (fb and fb.datenschutz_url) else (operator.urls.datenschutz if (operator and operator.urls) else "https://kirche-echo.de/datenschutz/") %}
 {% set copyYear = fb.copyright_year if (fb and fb.copyright_year) else (copyrightYear or "2026") %}
 {% set socialsList = fb.socials if (fb and fb.socials) else site.socials %}
 
-<footer class="footer-legal"{% if fb and fb._editable %} {{ fb | storyblokEditable | safe }}{% endif %}>
+<footer class="footer-legal"{% if fb.showOn or fb.show_on %} data-show-on="{{ (fb.showOn or fb.show_on) | join(',') }}"{% endif %}{% if fb.hideOn or fb.hide_on %} data-hide-on="{{ (fb.hideOn or fb.hide_on) | join(',') }}"{% endif %}{% if fb.displayInDefault !== undefined %} data-display-in-default="{{ fb.displayInDefault }}"{% elif fb.display_in_default !== undefined %} data-display-in-default="{{ fb.display_in_default }}"{% endif %}{% if fb and fb._editable %} {{ fb | storyblokEditable | safe }}{% endif %}>
   {% if socialsList and socialsList.length %}
   <nav class="footer-legal__socials" aria-label="Social Media Kanäle">
     {% for social in socialsList %}
@@ -66,9 +67,9 @@
   <div class="footer-legal__address">
     <p>
       {{ orgName }}<br>
-      {{ streetVal }}<br>
-      {{ cityVal }}<br>
-      <a href="mailto:{{ emailVal }}" target="_blank" rel="noopener">{{ emailVal }}</a>
+      {% if streetVal and streetVal != "" %}{{ streetVal | safe }}<br>{% endif %}
+      {% if cityVal and cityVal != "" %}{{ cityVal }}<br>{% endif %}
+      <a href="{{ mailtoVal }}" target="_blank" rel="noopener">{{ emailVal }}</a>
     </p>
   </div>
 

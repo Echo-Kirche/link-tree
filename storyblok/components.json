@@ -753,28 +753,64 @@
           "pos": 3,
           "default_value": "info@kirche-im-brauhaus.de"
         },
-        "impressum_url": {
+        "mailto": {
           "type": "text",
           "pos": 4,
+          "default_value": ""
+        },
+        "impressum_url": {
+          "type": "text",
+          "pos": 5,
           "default_value": "https://kirche-echo.de/impressum/"
         },
         "datenschutz_url": {
           "type": "text",
-          "pos": 5,
+          "pos": 6,
           "default_value": "https://kirche-echo.de/datenschutz/"
         },
         "copyright_year": {
           "type": "text",
-          "pos": 6,
+          "pos": 7,
           "default_value": "2026"
         },
         "socials": {
           "type": "bloks",
-          "pos": 7,
+          "pos": 8,
           "restrict_components": true,
           "component_whitelist": [
             "social_item"
           ]
+        },
+        "show_on": {
+          "type": "options",
+          "pos": 9,
+          "options": [
+            {
+              "name": "Default / Hauptseite",
+              "value": "default"
+            },
+            {
+              "name": "Gifhorn (gf)",
+              "value": "gifhorn"
+            },
+            {
+              "name": "Wolfsburg (wob)",
+              "value": "wolfsburg"
+            },
+            {
+              "name": "Helmstedt (he)",
+              "value": "helmstedt"
+            },
+            {
+              "name": "Instagram (ig)",
+              "value": "instagram"
+            }
+          ]
+        },
+        "display_in_default": {
+          "type": "boolean",
+          "pos": 10,
+          "default_value": true
         }
       }
     },

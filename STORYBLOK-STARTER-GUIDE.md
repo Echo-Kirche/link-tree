@@ -438,11 +438,14 @@ The bottom footer section containing organization address, mandatory German lega
 | `organization_name` | Organization Name | Official registered name of the church/association. | `Text` | `Kirche im Brauhaus e.V.` | No | e.g. `Kirche im Brauhaus e.V.`. |
 | `street` | Street Address | Registered street address. | `Text` | `Schützenplatz 1` | No | e.g. `Schützenplatz 1`. |
 | `city` | Postal Code & City | City and postal code. | `Text` | `38518 Gifhorn` | No | e.g. `38518 Gifhorn`. |
-| `email` | Contact E-Mail | Official contact email. | `Text` | `info@kirche-echo.de` | No | e.g. `info@kirche-echo.de`. |
+| `email` | Contact E-Mail | Official contact email. | `Text` | `info@kirche-im-brauhaus.de` | No | e.g. `info@kirche-im-brauhaus.de`. |
+| `mailto` | Custom Mailto URI | Custom mailto link with optional subject. | `Text` | None | No | e.g. `mailto:david.loewens@kib-gifhorn.de?subject=Kontakt%20EchoHelmstedt`. |
 | `impressum_url` | Impressum URL | Mandatory link to legal imprint (DDG/TMG). | `Link` or `Text` | `/impressum/` | No | Local static route: `/impressum/`. |
 | `datenschutz_url` | Datenschutz URL | Mandatory link to privacy policy (DSGVO). | `Link` or `Text` | `/datenschutz/` | No | Local static route: `/datenschutz/`. |
 | `copyright_year` | Copyright Year | Year shown in copyright notice. | `Text` | `2026` | No | Current year (e.g. `2026`). |
 | `socials` | Social Icons | List of circular social media buttons. | `Blocks` | None | No | Restrict to: `social_item`. |
+| `show_on` | Show On Surfaces | Campus routes that display this footer. | `Multi-Option` | None | No | Options: `default`, `gifhorn`, `wolfsburg`, `helmstedt`, `instagram`. |
+| `display_in_default` | Display on Home | Whether to show this footer on root `/`. | `Boolean` | `true` | No | Set `false` for campus-specific footers. |
 
 ---
 

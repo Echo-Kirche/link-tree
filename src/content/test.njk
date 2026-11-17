@@ -52,8 +52,9 @@ eleventyComputed:
     </ul>
   </main>
 
-  {% if storyblok and storyblok.content and storyblok.content.footer and storyblok.content.footer[0] %}
-    {% set footerBlok = storyblok.content.footer[0] %}
-  {% endif %}
-  {% include "components/FooterLegal.njk" %}
+  {% set rawFooters = storyblok.content.footer if (storyblok and storyblok.content and storyblok.content.footer and storyblok.content.footer.length) else footers %}
+  {% set visibleFooters = rawFooters | filterBySurface('all') %}
+  {% for footerBlok in visibleFooters %}
+    {% include "components/FooterLegal.njk" %}
+  {% endfor %}
 </div>

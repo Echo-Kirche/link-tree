@@ -75,4 +75,43 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     const testHtml = fs.readFileSync(path.join(siteDir, 'test', 'index.html'), 'utf8');
     assert.match(testHtml, /data-display-in-default="false"/, 'Test switcher page must preserve all items for dynamic client-side filtering');
   });
+
+  test('Footer variations render correct location details, addresses, mailto and socials per campus', () => {
+    // Gifhorn
+    const gfHtml = fs.readFileSync(path.join(siteDir, 'gifhorn', 'index.html'), 'utf8');
+    assert.match(gfHtml, /Echo Gifhorn/, 'Gifhorn footer must contain Echo Gifhorn');
+    assert.match(gfHtml, /Schützenplatz 1/, 'Gifhorn footer must contain Schützenplatz 1');
+    assert.match(gfHtml, /38518 Gifhorn/, 'Gifhorn footer must contain 38518 Gifhorn');
+    assert.match(gfHtml, /href="mailto:info@kirche-im-brauhaus\.de"/, 'Gifhorn footer must link to info@kirche-im-brauhaus.de');
+    assert.match(gfHtml, /href="https:\/\/www\.instagram\.com\/kircheimbrauhaus\/"/, 'Gifhorn footer must link to Gifhorn Instagram');
+    assert.match(gfHtml, /href="https:\/\/whatsapp\.com\/channel\/0029Vb6fOzl11ulLp4jHlI0V"/, 'Gifhorn footer must link to Gifhorn WhatsApp');
+
+    // Wolfsburg
+    const wobHtml = fs.readFileSync(path.join(siteDir, 'wolfsburg', 'index.html'), 'utf8');
+    assert.match(wobHtml, /Echo Wolfsburg/, 'Wolfsburg footer must contain Echo Wolfsburg');
+    assert.match(wobHtml, /Leonardo Hotel Wolfsburg City Center/, 'Wolfsburg footer must contain Leonardo Hotel');
+    assert.match(wobHtml, /Rathausstraße 1/, 'Wolfsburg footer must contain Rathausstraße 1');
+    assert.match(wobHtml, /38440 Wolfsburg/, 'Wolfsburg footer must contain 38440 Wolfsburg');
+    assert.match(wobHtml, /href="mailto:info@kirche-im-brauhaus\.de"/, 'Wolfsburg footer must link to info@kirche-im-brauhaus.de');
+    assert.match(wobHtml, /href="https:\/\/www\.instagram\.com\/echo\.wolfsburg\/"/, 'Wolfsburg footer must link to Wolfsburg Instagram');
+    assert.match(wobHtml, /href="https:\/\/whatsapp\.com\/channel\/0029VaAagKEI7BeE8yhtQW0f"/, 'Wolfsburg footer must link to Wolfsburg WhatsApp');
+
+    // Helmstedt
+    const heHtml = fs.readFileSync(path.join(siteDir, 'helmstedt', 'index.html'), 'utf8');
+    const heFooter = heHtml.match(/<footer[\s\S]*?<\/footer>/)?.[0] || '';
+    assert.match(heFooter, /Echo Helmstedt/, 'Helmstedt footer must contain Echo Helmstedt');
+    assert.match(heFooter, /Helmstedt/, 'Helmstedt footer must contain Helmstedt');
+    assert.doesNotMatch(heFooter, /Schützenplatz 1/, 'Helmstedt footer must not contain Gifhorn street');
+    assert.doesNotMatch(heFooter, /Leonardo Hotel/, 'Helmstedt footer must not contain Wolfsburg venue');
+    assert.match(heFooter, /href="mailto:david\.loewens@kib-gifhorn\.de\?subject=Kontakt%20EchoHelmstedt"/, 'Helmstedt footer must have mailto with subject');
+    assert.match(heFooter, />david\.loewens@kib-gifhorn\.de</, 'Helmstedt footer must display David Loewens email');
+    assert.match(heFooter, /href="https:\/\/www\.instagram\.com\/echo\.helmstedt\/"/, 'Helmstedt footer must link to Helmstedt Instagram');
+    assert.match(heFooter, /href="https:\/\/whatsapp\.com\/channel\/0029VbDmLfb2P59tKORzGs21"/, 'Helmstedt footer must link to Helmstedt WhatsApp');
+
+    // Test page contains all 3 footer variations with data-show-on
+    const testHtml = fs.readFileSync(path.join(siteDir, 'test', 'index.html'), 'utf8');
+    assert.match(testHtml, /data-show-on="default,gifhorn,instagram"/, 'Test page must render Gifhorn footer with data-show-on');
+    assert.match(testHtml, /data-show-on="wolfsburg"/, 'Test page must render Wolfsburg footer with data-show-on');
+    assert.match(testHtml, /data-show-on="helmstedt"/, 'Test page must render Helmstedt footer with data-show-on');
+  });
 });

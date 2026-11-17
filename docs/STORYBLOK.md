@@ -237,14 +237,17 @@ The legal notice, organization address, and social media icons at the bottom of 
 
 - **How to create**: Add inside the `footer` field of `link_page`.
 - **Fields to fill**:
-  - `organization_name` (Text): Name of legal entity (e.g., `Kirche im Brauhaus e.V.`).
-  - `street` (Text): Street address (e.g., `Schützenplatz 1`).
-  - `city` (Text): Zip code and city (e.g., `38518 Gifhorn`).
+  - `organization_name` (Text): Name of legal entity (e.g., `Echo Gifhorn`, `Echo Wolfsburg`, `Echo Helmstedt`).
+  - `street` (Text): Street address (e.g., `Schützenplatz 1`, or leave blank for Helmstedt).
+  - `city` (Text): Zip code and city (e.g., `38518 Gifhorn`, `38440 Wolfsburg`, `Helmstedt`).
   - `email` (Text): Contact email address.
+  - `mailto` (Text, Optional): Custom mailto URI with subject (e.g., `mailto:david.loewens@kib-gifhorn.de?subject=Kontakt%20EchoHelmstedt`).
   - `impressum_url` (Text): Link to Impressum (e.g., `https://kirche-echo.de/impressum/`).
   - `datenschutz_url` (Text): Link to Privacy Policy (e.g., `https://kirche-echo.de/datenschutz/`).
   - `copyright_year` (Text): Year (e.g., `2026`).
   - `socials` (Bloks): Add circular social media buttons (`social_item`).
+  - `show_on` (Multi-Options): Select which campus surfaces display this footer (`default`, `gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
+  - `display_in_default` (Boolean): Check to show this footer on the main/default landing page.
 
 ---
 
@@ -415,14 +418,17 @@ Der Bereich ganz unten auf der Seite mit Impressum, Datenschutz und Social-Media
 
 - **Wo einfügen**: In das Feld `footer` der `link_page`.
 - **Felder zum Ausfüllen**:
-  - `organization_name` (Text): Offizieller Name (z. B. `Kirche im Brauhaus e.V.`).
-  - `street` (Text): Straße und Hausnummer (z. B. `Schützenplatz 1`).
-  - `city` (Text): Postleitzahl und Ort (z. B. `38518 Gifhorn`).
-  - `email` (Text): Kontakt-E-Mail.
+  - `organization_name` (Text): Offizieller Name (z. B. `Echo Gifhorn`, `Echo Wolfsburg`, `Echo Helmstedt`).
+  - `street` (Text): Straße und Hausnummer (z. B. `Schützenplatz 1` oder für Helmstedt leer lassen).
+  - `city` (Text): Postleitzahl und Ort (z. B. `38518 Gifhorn`, `38440 Wolfsburg`, `Helmstedt`).
+  - `email` (Text): Kontakt-E-Mail (z. B. `info@kirche-im-brauhaus.de`, `david.loewens@kib-gifhorn.de`).
+  - `mailto` (Text, Optional): E-Mail-Link mit Betreff (z. B. `mailto:david.loewens@kib-gifhorn.de?subject=Kontakt%20EchoHelmstedt`).
   - `impressum_url` (Text): Link zum Impressum (z. B. `https://kirche-echo.de/impressum/`).
   - `datenschutz_url` (Text): Link zur Datenschutzerklärung (z. B. `https://kirche-echo.de/datenschutz/`).
   - `copyright_year` (Text): Jahr (z. B. `2026`).
   - `socials` (Blöcke): Füge hier runde Social-Media-Buttons ein (`social_item`).
+  - `show_on` (Mehrfachauswahl): Auf welchen Standorten dieser Footer erscheint (`default`, `gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
+  - `display_in_default` (Schalter): Auf der Hauptseite anzeigen (`true` oder `false`).
 
 ---
 

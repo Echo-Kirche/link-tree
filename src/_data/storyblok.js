@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import footers from './footers.js';
 
 function youtubeVideoId(value = '') {
   if (!value) return '';
@@ -214,26 +215,27 @@ export default async function () {
         },
       ],
       body: bodyBloks,
-      footer: [
-        {
-          _uid: 'footer-legal',
-          component: 'footer_legal',
-          organization_name: operator.name || 'Echo Kirche',
-          street: operator.address?.street || 'Schützenplatz 1',
-          city: operator.address?.city || '38518 Gifhorn',
-          email: operator.contact?.email || 'info@kirche-im-brauhaus.de',
-          impressum_url: operator.urls?.impressum || 'https://kirche-echo.de/impressum/',
-          datenschutz_url: operator.urls?.datenschutz || 'https://kirche-echo.de/datenschutz/',
-          copyright_year: '2026',
-          socials: (site.socials || []).map((s, idx) => ({
-            _uid: `social-${idx}`,
-            component: 'social_item',
-            platform: s.platform,
-            url: s.url,
-            label: s.label || s.platform,
-          })),
-        },
-      ],
+      footer: footers.map((f, idx) => ({
+        _uid: `footer-legal-${f.id || idx}`,
+        component: 'footer_legal',
+        organization_name: f.organization_name,
+        street: f.street,
+        city: f.city,
+        email: f.email,
+        mailto: f.mailto,
+        impressum_url: f.impressum_url,
+        datenschutz_url: f.datenschutz_url,
+        copyright_year: f.copyright_year,
+        show_on: f.showOn,
+        display_in_default: f.displayInDefault,
+        socials: (f.socials || []).map((s, sIdx) => ({
+          _uid: `social-${f.id || idx}-${sIdx}`,
+          component: 'social_item',
+          platform: s.platform,
+          url: s.url,
+          label: s.label || s.platform,
+        })),
+      })),
     },
   };
 
