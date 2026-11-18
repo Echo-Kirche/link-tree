@@ -78,4 +78,26 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(testHtml, /data-switch-value="instagram"/, 'Instagram switcher target must exist');
     assert.match(testHtml, /role="toolbar"/, 'Toolbar role must exist for switcher buttons');
   });
+
+  test('ThemeSwitcher renders on /test page with all 6 brand themes and active badge', () => {
+    assert.match(testHtml, /class="theme-switcher surface-switcher"/, 'ThemeSwitcher container must exist on test page');
+    assert.match(testHtml, /data-theme-value="light"/, 'Light theme button must exist');
+    assert.match(testHtml, /data-theme-value="pale"/, 'Pale theme button must exist');
+    assert.match(testHtml, /data-theme-value="soft"/, 'Soft theme button must exist');
+    assert.match(testHtml, /data-theme-value="dark"/, 'Dark theme button must exist');
+    assert.match(testHtml, /data-theme-value="teal"/, 'Teal theme button must exist');
+    assert.match(testHtml, /data-theme-value="lavender"/, 'Lavender theme button must exist');
+    assert.match(testHtml, /id="active-theme-badge"/, 'Active theme badge indicator must exist');
+  });
+
+  test('Client-side scripts support reactive theme updates without breaking static builds', () => {
+    const switcherJs = fs.readFileSync(path.join(siteDir, 'assets', 'js', 'surface-switcher.js'), 'utf8');
+    assert.match(switcherJs, /applyTheme/, 'surface-switcher.js must export or define applyTheme');
+    assert.match(switcherJs, /data-theme-value/, 'surface-switcher.js must handle data-theme-value buttons');
+    assert.match(switcherJs, /active-theme-badge/, 'surface-switcher.js must update active-theme-badge');
+
+    const bridgeJs = fs.readFileSync(path.join(siteDir, 'assets', 'js', 'storyblok-bridge.js'), 'utf8');
+    assert.match(bridgeJs, /content\.theme/, 'storyblok-bridge.js must read content.theme');
+    assert.doesNotMatch(bridgeJs, /sb\.on\('input'[^}]*reload\(\)/, 'storyblok-bridge.js must NOT reload on input');
+  });
 });

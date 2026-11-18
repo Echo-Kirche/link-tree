@@ -1,5 +1,7 @@
+{% set currentTheme = (storyblok.content.theme.value if (storyblok and storyblok.content and storyblok.content.theme and storyblok.content.theme.value) else (storyblok.content.theme if (storyblok and storyblok.content) else site.theme)) or 'light' %}
+{% set currentSurface = surface or (storyblok.content.surface.value if (storyblok and storyblok.content and storyblok.content.surface and storyblok.content.surface.value) else (storyblok.content.surface if (storyblok and storyblok.content) else 'default')) or 'default' %}
 <!DOCTYPE html>
-<html lang="de" data-surface="{{ surface or (storyblok.content.surface if (storyblok and storyblok.content) else 'default') }}" data-theme="{{ (storyblok.content.theme if (storyblok and storyblok.content and storyblok.content.theme) else 'light') }}">
+<html lang="de" data-surface="{{ currentSurface }}" data-theme="{{ currentTheme }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">

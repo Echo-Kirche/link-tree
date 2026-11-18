@@ -198,7 +198,7 @@ export default async function () {
       _uid: 'root-page',
       component: 'link_page',
       title: site.profile?.name || 'Echo Kirche',
-      theme: 'light',
+      theme: process.env.LINKTREE_THEME || site.theme || 'light',
       surface: 'default',
       profile: [
         {

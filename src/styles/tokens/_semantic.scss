@@ -3,6 +3,8 @@
   --color-text: var(--ek-text, #1B1B1B);
   --color-text-muted: var(--ek-mauve, #846B8A);
   --color-surface: #FFFFFF;
+  --color-surface-subtle: #FAFAFA;
+  --color-card-bg: var(--color-surface, #FFFFFF);
   --color-border: var(--ek-hairline, #E0E0E0);
   --color-action-bg: var(--ek-ink, #08415C);
   --color-action-bg-hover: #063146;
@@ -32,6 +34,7 @@
   --color-text: var(--ek-text, #1B1B1B);
   --color-text-muted: var(--ek-mauve, #846B8A);
   --color-surface: #FFFFFF;
+  --color-surface-subtle: #FAFAFA;
   --color-border: var(--ek-hairline, #E0E0E0);
   --color-action-bg: var(--ek-ink, #08415C);
   --color-action-bg-hover: #063146;
@@ -45,6 +48,7 @@
   --color-text: var(--ek-ink, #08415C);
   --color-text-muted: var(--ek-mauve, #846B8A);
   --color-surface: #FFFFFF;
+  --color-surface-subtle: #F9F5CF;
   --color-border: #DDDAB0;
   --color-action-bg: var(--ek-ink, #08415C);
   --color-action-bg-hover: #063146;
@@ -57,6 +61,7 @@
   --color-text: var(--ek-text, #1B1B1B);
   --color-text-muted: var(--ek-muted, #888888);
   --color-surface: #FFFFFF;
+  --color-surface-subtle: #F5F5F5;
   --color-border: var(--ek-hairline, #E0E0E0);
   --color-action-bg: var(--ek-ink, #08415C);
   --color-action-bg-hover: #063146;
@@ -69,6 +74,7 @@
   --color-text: #FFFFFF;
   --color-text-muted: #D0C4D4;
   --color-surface: #14171A;
+  --color-surface-subtle: #1D2125;
   --color-border: #283036;
   --color-action-bg: var(--ek-ink, #08415C);
   --color-action-bg-hover: #0C5375;
@@ -81,6 +87,7 @@
   --color-text: var(--ek-warm, #FEFADC);
   --color-text-muted: #FFFFFF;
   --color-surface: #063146;
+  --color-surface-subtle: #0B4A68;
   --color-border: #0D587C;
   --color-action-bg: var(--ek-warm, #FEFADC);
   --color-action-bg-hover: #FFFFFF;
@@ -93,6 +100,7 @@
   --color-text: #FFFFFF;
   --color-text-muted: var(--ek-warm, #FEFADC);
   --color-surface: #735B78;
+  --color-surface-subtle: #896F8F;
   --color-border: #967D9C;
   --color-action-bg: var(--ek-warm, #FEFADC);
   --color-action-bg-hover: #FFFFFF;

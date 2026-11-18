@@ -61,4 +61,20 @@ describe('Component State Changes & CSS Verification', () => {
     assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/, 'CSS must support prefers-reduced-motion');
     assert.match(css, /transition-duration:\s*0?\.01ms\s*!important/, 'Reduced motion must collapse transition durations');
   });
+
+  test('All 6 brand themes are defined in CSS with semantic variables', () => {
+    assert.match(css, /\[data-theme=["']?light["']?\],\s*\[data-theme=["']?white["']?\]/, 'CSS must define light/white theme');
+    assert.match(css, /\[data-theme=["']?pale["']?\],\s*\[data-theme=["']?warm["']?\]/, 'CSS must define pale/warm theme');
+    assert.match(css, /\[data-theme=["']?soft["']?\]/, 'CSS must define soft theme');
+    assert.match(css, /\[data-theme=["']?dark["']?\]/, 'CSS must define dark theme');
+    assert.match(css, /\[data-theme=["']?teal["']?\]/, 'CSS must define teal theme');
+    assert.match(css, /\[data-theme=["']?lavender["']?\]/, 'CSS must define lavender theme');
+  });
+
+  test('Dark, teal, and lavender themes invert avatar logo for high contrast', () => {
+    assert.match(css, /\[data-theme=["']?dark["']?\]\s+\.profile-header__avatar/, 'Dark theme must invert avatar');
+    assert.match(css, /\[data-theme=["']?teal["']?\]\s+\.profile-header__avatar/, 'Teal theme must invert avatar');
+    assert.match(css, /\[data-theme=["']?lavender["']?\]\s+\.profile-header__avatar/, 'Lavender theme must invert avatar');
+    assert.match(css, /brightness\(0\)\s*invert\(1\)/, 'Avatar inversion filter must be applied');
+  });
 });

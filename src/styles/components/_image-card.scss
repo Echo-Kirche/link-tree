@@ -73,7 +73,7 @@
   block-size: 2.25rem;
   border-radius: var(--primitive-radius-pill, 9999px);
   background-color: var(--color-action-bg, #08415c);
-  color: #ffffff;
+  color: var(--color-action-text, #ffffff);
   box-shadow: var(--ek-shadow-xs, 0 1px 6px rgba(8, 65, 92, 0.06));
   transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
   pointer-events: none;

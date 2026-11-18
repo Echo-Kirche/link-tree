@@ -27,6 +27,21 @@ eleventyComputed:
       </div>
     </nav>
 
+    <nav class="theme-switcher surface-switcher" aria-label="Theme Switcher">
+      <span class="surface-switcher__label">Themes testen:</span>
+      <div class="surface-switcher__group" role="toolbar" aria-label="Theme Optionen">
+        <button type="button" class="surface-switcher__btn" data-theme-value="light" aria-pressed="false">Light / White</button>
+        <button type="button" class="surface-switcher__btn" data-theme-value="pale" aria-pressed="false">Pale / Buttergelb</button>
+        <button type="button" class="surface-switcher__btn" data-theme-value="soft" aria-pressed="false">Soft</button>
+        <button type="button" class="surface-switcher__btn" data-theme-value="dark" aria-pressed="false">Dark</button>
+        <button type="button" class="surface-switcher__btn" data-theme-value="teal" aria-pressed="false">Teal</button>
+        <button type="button" class="surface-switcher__btn" data-theme-value="lavender" aria-pressed="false">Lavender</button>
+      </div>
+      <div class="surface-switcher__status" aria-live="polite">
+        Aktives Theme: <strong id="active-theme-badge">light</strong>
+      </div>
+    </nav>
+
     {% set rawItems = storyblok.content.body if (storyblok and storyblok.content and storyblok.content.body) else site.links %}
     {% set visibleLinks = rawItems | filterBySurface('all') %}
     <ul class="linktree-list" role="list">

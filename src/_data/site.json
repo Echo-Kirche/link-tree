@@ -1,5 +1,6 @@
 {
   "schemaVersion": 1,
+  "theme": "light",
   "profile": {
     "name": "Echo Kirche",
     "avatar": "/assets/images/logo.svg"
