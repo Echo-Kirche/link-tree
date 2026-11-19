@@ -6,27 +6,32 @@
   const VALID_SLUGS = ['ig', 'instagram', 'wob', 'wolfsburg', 'gf', 'gifhorn', 'he', 'helmstedt', 'default', 'all'];
   const VALID_ROUTES = ['', 'index.html', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'impressum', 'datenschutz', 'assets', 'css'];
 
+  const getP = (q) => q.get('surface') || q.get('switch') || q.get('campus') || q.get('location');
+
+  const hideLoader = () => {
+    const l = document.getElementById('page-loader');
+    if (l) l.classList.add('is-hidden');
+  };
+
   if (typeof location !== 'undefined') {
     const seg = location.pathname.toLowerCase().replace(/^\/|\/$/g, '').split('/')[0];
     const q = new URLSearchParams(location.search);
-    const p = q.get('surface') || q.get('switch') || q.get('campus') || q.get('location');
+    const p = getP(q);
 
     const isPreview =
       location.hostname === 'localhost' ||
       location.hostname === '127.0.0.1' ||
-      q.has('_storyblok') ||
-      q.has('_storyblok_tk') ||
-      q.has('preview') ||
-      q.has('_token') ||
+      ['_storyblok', '_storyblok_tk', 'preview', '_token'].some((k) => q.has(k)) ||
       (window.self !== window.top && (document.referrer || '').includes('storyblok.com')) ||
       (document.querySelector('meta[name="storyblok-version"]')?.getAttribute('content') === 'draft');
 
+    const is404 = seg === '404' || seg === '404.html' || Boolean(document.querySelector('meta[http-equiv="refresh"]'));
     const isTestBlocked = Boolean(seg === 'test' && !isPreview);
     const isUnmatchedPath = Boolean(seg && !VALID_ROUTES.includes(seg));
     const isUnmatchedParam = Boolean(p && !VALID_SLUGS.includes(p.toLowerCase().replace(/^\/|\/$/g, '').trim()));
     const isUnmatchedFlag = Boolean(q.has('bs') || q.has('/bs'));
 
-    if (isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag) {
+    if (is404 || isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag) {
       if (typeof location.replace === 'function') location.replace('/');
       else location.href = '/';
       return;
@@ -35,7 +40,7 @@
 
   const getS = () => {
     const q = new URLSearchParams(location.search);
-    const p = q.get('surface') || q.get('switch') || q.get('campus') || q.get('location');
+    const p = getP(q);
     if (p) {
       const norm = p.toLowerCase().replace(/^\/|\/$/g, '').trim();
       return M[norm] || (VALID_SURFACES.includes(norm) ? norm : 'default');
@@ -53,11 +58,28 @@
     return document.documentElement.dataset.theme || 'light';
   };
 
+  const setBtns = (sel, key, val) => {
+    $$(sel).forEach((b) => {
+      const act = b.dataset[key] === val;
+      b.setAttribute('aria-pressed', act ? 'true' : 'false');
+      b.classList.toggle('is-active', act);
+    });
+  };
+
+  const pushState = (key, val, defVal) => {
+    if (history.pushState) {
+      const u = new URL(location.href);
+      if (val === defVal) u.searchParams.delete(key);
+      else u.searchParams.set(key, val);
+      history.pushState({ surface: document.documentElement.dataset.surface, theme: document.documentElement.dataset.theme }, '', u);
+    }
+  };
+
   const applySurface = (s, push) => {
     if (s && s !== 'all') document.documentElement.dataset.surface = s;
     $$('[data-show-on],[data-hide-on],[data-display-in-default]').forEach((el) => {
-      const show = (el.dataset.showOn || '').split(',').map((x) => x.trim()).filter(Boolean);
-      const hide = (el.dataset.hideOn || '').split(',').map((x) => x.trim()).filter(Boolean);
+      const show = el.dataset.showOn ? el.dataset.showOn.split(',').map((x) => x.trim()) : [];
+      const hide = el.dataset.hideOn ? el.dataset.hideOn.split(',').map((x) => x.trim()) : [];
       const def = el.dataset.displayInDefault;
       let vis = true;
       if (s !== 'all') {
@@ -70,21 +92,10 @@
       el.style.display = vis ? '' : 'none';
     });
 
-    $$('.surface-switcher__btn[data-switch-value]').forEach((btn) => {
-      const act = btn.dataset.switchValue === s;
-      btn.setAttribute('aria-pressed', act ? 'true' : 'false');
-      btn.classList.toggle('is-active', act);
-    });
-
+    setBtns('.surface-switcher__btn[data-switch-value]', 'switchValue', s);
     const b = document.getElementById('active-switch-badge');
     if (b) b.textContent = s;
-
-    if (push && history.pushState) {
-      const u = new URL(location.href);
-      if (s === 'default') u.searchParams.delete('surface');
-      else u.searchParams.set('surface', s);
-      history.pushState({ surface: s, theme: document.documentElement.dataset.theme }, '', u);
-    }
+    if (push) pushState('surface', s, 'default');
   };
 
   const applyTheme = (theme, push) => {
@@ -92,32 +103,24 @@
     const norm = String(theme).toLowerCase();
     document.documentElement.dataset.theme = norm;
 
-    $$('[data-theme-value]').forEach((btn) => {
-      const act = btn.dataset.themeValue === norm;
-      btn.setAttribute('aria-pressed', act ? 'true' : 'false');
-      btn.classList.toggle('is-active', act);
-    });
-
+    setBtns('[data-theme-value]', 'themeValue', norm);
     const b = document.getElementById('active-theme-badge');
     if (b) b.textContent = norm;
-
-    if (push && history.pushState) {
-      const u = new URL(location.href);
-      if (norm === 'light') u.searchParams.delete('theme');
-      else u.searchParams.set('theme', norm);
-      history.pushState({ surface: document.documentElement.dataset.surface, theme: norm }, '', u);
-    }
+    if (push) pushState('theme', norm, 'light');
   };
 
   window.applySurface = applySurface;
   window.applyTheme = applyTheme;
+  window.hideLoader = hideLoader;
 
   const init = () => {
-    $$('.surface-switcher__btn[data-switch-value]').forEach((btn) => {
-      btn.onclick = (e) => { e.preventDefault(); applySurface(btn.dataset.switchValue, true); };
-    });
-    $$('[data-theme-value]').forEach((btn) => {
-      btn.onclick = (e) => { e.preventDefault(); applyTheme(btn.dataset.themeValue, true); };
+    hideLoader();
+    $$(['.surface-switcher__btn[data-switch-value]', '[data-theme-value]'].join(',')).forEach((b) => {
+      b.onclick = (e) => {
+        e.preventDefault();
+        if (b.dataset.switchValue) applySurface(b.dataset.switchValue, true);
+        if (b.dataset.themeValue) applyTheme(b.dataset.themeValue, true);
+      };
     });
     if (document.querySelector('.surface-switcher') || new URLSearchParams(location.search).has('surface') || new URLSearchParams(location.search).has('switch')) {
       applySurface(getS(), false);

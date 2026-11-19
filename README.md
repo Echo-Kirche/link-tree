@@ -58,6 +58,7 @@ flowchart TD
 
 - **Multi-Location Surface Routing**: Dedicated, blazing-fast static routes (`/gf`, `/gifhorn`, `/wob`, `/wolfsburg`, `/he`, `/helmstedt`, `/ig`, `/instagram`) generated at build time with clean canonical URLs.
 - **Preview vs. Production Security**: The `/test` page with interactive surface and theme switchers is strictly reserved for preview mode and hidden on the production site (automatically redirects regular visitors to `/`).
+- **404 Root Redirection & Echo Logo Lazy Loader**: Unmatched routes and 404s display a clean, animated lazy loader featuring just the Echo logo and automatically redirect visitors to the root page (`/`). Image cards also include the Echo logo as a subtle SVG placeholder while lazy loading.
 - **Brand Color Constancy**: Strict adherence to the Echo brand palette across all routes. City switches, surfaces, and query parameters filter content without changing brand colors.
 - **Collapsible Service Times Card (`DropdownCard`)**:
   - Implemented with pure CSS `<details>` / `<summary>` (100% accessible, zero client-side JavaScript required).

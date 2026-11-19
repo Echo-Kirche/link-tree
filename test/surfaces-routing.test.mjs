@@ -184,11 +184,19 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.equal(checkRedirect('/', '?theme=dark'), null, '?theme=dark must not redirect');
   });
 
-  test('Netlify redirect configuration redirects unmatched routes and blocks /test in production', () => {
+  test('Netlify redirect configuration redirects unmatched routes to 404 and blocks /test in production', () => {
     const toml = fs.readFileSync(path.resolve('netlify.toml'), 'utf8');
-    assert.match(toml, /from\s*=\s*"\/\*"\s*\n\s*to\s*=\s*"\/"\s*\n\s*status\s*=\s*302/, 'Netlify configuration must redirect /* to / with 302 status');
+    assert.match(toml, /from\s*=\s*"\/\*"\s*\n\s*to\s*=\s*"\/404\.html"\s*\n\s*status\s*=\s*404/, 'Netlify configuration must serve /404.html for /* with 404 status');
     assert.match(toml, /from\s*=\s*"\/test"\s*\n\s*to\s*=\s*"\/"\s*\n\s*status\s*=\s*302/, 'Netlify configuration must redirect /test to / in production');
     assert.match(toml, /from\s*=\s*"\/test"\s*\n\s*query\s*=\s*\{_storyblok\s*=\s*":storyblok"\}\s*\n\s*to\s*=\s*"\/test\/index\.html"/, 'Netlify configuration must permit /test with _storyblok preview');
   });
+
+  test('404 page exists and contains Echo logo lazy loader and root redirect', () => {
+    const notFoundHtml = fs.readFileSync(path.resolve('_site/404.html'), 'utf8');
+    assert.match(notFoundHtml, /class="lazy-loader"/, '404 page must render lazy-loader');
+    assert.match(notFoundHtml, /class="fa-svg fa-echo-logo"/, '404 page must render Echo logo');
+    assert.match(notFoundHtml, /http-equiv="refresh"\s+content="0;\s*url=\/"/, '404 page must have meta refresh to root page');
+  });
 });
+
 

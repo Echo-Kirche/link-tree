@@ -15,6 +15,7 @@ if (!fs.existsSync(siteDir)) {
 // 1. Verify required routes exist
 const requiredFiles = [
   path.join(siteDir, 'index.html'),
+  path.join(siteDir, '404.html'),
   path.join(siteDir, 'impressum', 'index.html'),
   path.join(siteDir, 'datenschutz', 'index.html'),
   path.join(siteDir, 'css', 'main.css'),

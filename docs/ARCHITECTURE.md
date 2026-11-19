@@ -138,6 +138,7 @@ The site generates dedicated static HTML files at build time:
 | `/he/` & `/helmstedt/` | `helmstedt` | Helmstedt location landing page (Sunday service at 12:00, Helmstedt hero photo). |
 | `/ig/` & `/instagram/` | `instagram` | Instagram bio traffic landing page. |
 | `/test/` | `all` | Preview-only test page containing surface and theme testing toolbars. Hidden on production (automatically redirects regular visitors to `/`). |
+| `/404.html` | `default` | Branded 404 page featuring the Echo logo lazy loader; automatically redirects visitors back to the root page (`/`). |
 
 ### 5.3 Brand Color Invariant (Strict Rule)
 
