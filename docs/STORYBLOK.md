@@ -473,9 +473,14 @@ To enable the real-time Storyblok Visual Editor inside your deployed Netlify sit
    - **Automatic bridge detection**: When Storyblok embeds the page inside its Visual Editor iframe (`?_storyblok=...`), [`storyblok-bridge.js`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/js/storyblok-bridge.js) automatically loads the Storyblok Bridge.
    - **Instant theme & surface reactivity**: Changes to themes (e.g. `dark`, `teal`, `light`), page titles, and surface filters reflect live in the iframe via `postMessage` events (`sb.on('input')`) with **zero reload required**.
    - **CSP Frame Security**: The Content Security Policy in [`netlify.toml`](file:///Users/Shared/projeckt/goto/link-tree/netlify.toml) explicitly includes `frame-ancestors 'self' https://app.storyblok.com https://*.storyblok.com;`, allowing secure embedding without browser blockages.
-3. **Draft Preview on Netlify (Deploy Previews & Staging)**:
-   - For your production site, set `STORYBLOK_VERSION=published` in Netlify environment variables so only approved content is visible.
-   - To preview draft stories before publishing, set `STORYBLOK_VERSION=draft` in a Netlify Deploy Preview or Branch Deploy context (**Site configuration → Environment variables**).
+3. **Draft Preview vs. Published Live Site / Entwurf-Vorschau vs. Veröffentlichte Live-Seite**:
+   - **Public Live Site (Published)**: The production build on Netlify compiles with `STORYBLOK_VERSION=published` (the default). Visitors to your website only ever see approved, published stories.
+   - **Storyblok Visual Editor (Draft Preview)**: When you edit inside Storyblok's Visual Editor (`?_storyblok=...`), [`storyblok-bridge.js`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/js/storyblok-bridge.js) automatically connects, fetches the latest `version=draft` story directly from the Storyblok API, and updates the preview live in real-time as you type or save (`input` and `change` events).
+   - **Saving vs. Publishing**: Saving a draft in Storyblok updates the preview in real-time without publishing to public visitors. When you are ready for everyone to see the changes, click **Publish** in Storyblok; the Storyblok Webhook then triggers Netlify to rebuild the live published site in ~30 seconds.
+   - **Multi-Environment Netlify Contexts**: [`netlify.toml`](file:///Users/Shared/projeckt/goto/link-tree/netlify.toml) is pre-configured with:
+     - `[context.production.environment]` -> `STORYBLOK_VERSION = "published"`
+     - `[context.deploy-preview.environment]` -> `STORYBLOK_VERSION = "draft"`
+     - `[context.branch-deploy.environment]` -> `STORYBLOK_VERSION = "draft"`
 
 ### How to Verify That Preview is Working (Without Publishing or Deploying)
 
@@ -509,6 +514,10 @@ So aktivierst du die Live-Vorschau des Storyblok Visual Editors auf Netlify:
    - **Automatische Erkennung**: Nur wenn die Seite im Storyblok-Editor geladen wird (`?_storyblok=...`), lädt [`storyblok-bridge.js`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/js/storyblok-bridge.js) die Vorschau-Bridge.
    - **Echtzeit-Updates**: Farbthemen (`dark`, `teal`, etc.), Titel und Filter aktualisieren sich im Visual Editor sofort beim Tippen ohne Neuladen.
    - **Iframe-Sicherheit (CSP)**: In [`netlify.toml`](file:///Users/Shared/projeckt/goto/link-tree/netlify.toml) ist `frame-ancestors 'self' https://app.storyblok.com https://*.storyblok.com;` bereits hinterlegt, damit Storyblok die Seite einbetten darf.
+3. **Entwurf-Vorschau vs. Veröffentlichte Live-Seite**:
+   - **Öffentliche Live-Website (Veröffentlicht)**: Der Produktions-Build auf Netlify wird immer mit `STORYBLOK_VERSION=published` gebaut. Besucher sehen zu jeder Zeit ausschließlich den freigegebenen, veröffentlichten Stand.
+   - **Storyblok Visual Editor (Entwurf-Vorschau)**: Wenn du Inhalte in Storyblok bearbeitest, lädt [`storyblok-bridge.js`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/js/storyblok-bridge.js) die neuesten Entwürfe (`version=draft`) live aus der API und aktualisiert die Vorschau sofort in Echtzeit.
+   - **Speichern vs. Veröffentlichen**: Beim Klick auf **Speichern** in Storyblok bleibt dein Entwurf in der Vorschau sichtbar, ohne die öffentliche Website zu verändern. Erst wenn du auf **Veröffentlichen** klickst, löst der Webhook einen Netlify-Rebuild aus und aktualisiert die öffentliche Live-Seite.
 
 ---
 

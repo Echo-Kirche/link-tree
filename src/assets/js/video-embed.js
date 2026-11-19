@@ -41,6 +41,8 @@
     });
   }
 
+  window.initVideoEmbeds = initVideoEmbeds;
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initVideoEmbeds);
   } else {

@@ -32,12 +32,18 @@
 # Context-specific overrides
 [context.production]
   command = "npm run build"
+[context.production.environment]
+  STORYBLOK_VERSION = "published"
 
 [context.deploy-preview]
   command = "npm run build"
+[context.deploy-preview.environment]
+  STORYBLOK_VERSION = "draft"
 
 [context.branch-deploy]
   command = "npm run build"
+[context.branch-deploy.environment]
+  STORYBLOK_VERSION = "draft"
 
 # ------------------------------------------------------------------------------
 # Security & Privacy Headers (GDPR / DSGVO & Storyblok Visual Editor Compliant)

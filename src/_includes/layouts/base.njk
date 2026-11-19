@@ -7,6 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ title or (storyblok.content.title if (storyblok and storyblok.content) else site.profile.name) }}</title>
   <meta name="description" content="{{ description or site.profile.bio }}">
+  {% if storyblok and storyblok.token %}
+  <meta name="storyblok-token" content="{{ storyblok.token }}">
+  <meta name="storyblok-slug" content="{{ storyblok.slug or 'home' }}">
+  {% endif %}
   <link rel="preload" href="/assets/fonts/ClashDisplay-Semibold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/css/main.css">
 </head>
