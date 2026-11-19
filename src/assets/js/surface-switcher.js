@@ -1,13 +1,43 @@
 (() => {
   const M = { ig: 'instagram', wob: 'wolfsburg', gf: 'gifhorn', he: 'helmstedt' };
   const VALID_THEMES = ['light', 'white', 'pale', 'warm', 'soft', 'dark', 'teal', 'lavender'];
+  const VALID_SURFACES = ['instagram', 'wolfsburg', 'gifhorn', 'helmstedt', 'default', 'all'];
+  const VALID_SLUGS = ['ig', 'instagram', 'wob', 'wolfsburg', 'gf', 'gifhorn', 'he', 'helmstedt', 'default', 'all'];
+  const VALID_ROUTES = ['', 'index.html', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'impressum', 'datenschutz', 'assets', 'css'];
+
+  // Route & parameter validation:
+  // If the route or surface param does not match (e.g. /bs, ?surface=bs, ?switch=bs), redirect to home without params.
+  if (typeof location !== 'undefined') {
+    const seg = location.pathname.toLowerCase().replace(/^\/|\/$/g, '').split('/')[0];
+    const q = new URLSearchParams(location.search);
+    const p = q.get('surface') || q.get('switch') || q.get('campus') || q.get('location');
+
+    const isUnmatchedPath = Boolean(seg && !VALID_ROUTES.includes(seg));
+    const isUnmatchedParam = Boolean(p && !VALID_SLUGS.includes(p.toLowerCase().replace(/^\/|\/$/g, '').trim()));
+    const isUnmatchedFlag = Boolean(q.has('bs') || q.has('/bs'));
+
+    if (isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag) {
+      if (typeof location.replace === 'function') {
+        location.replace('/');
+      } else {
+        location.href = '/';
+      }
+      return;
+    }
+  }
 
   const getS = () => {
     const q = new URLSearchParams(location.search);
-    const p = q.get('surface') || q.get('switch');
-    if (p) return p.toLowerCase();
+    const p = q.get('surface') || q.get('switch') || q.get('campus') || q.get('location');
+    if (p) {
+      const norm = p.toLowerCase().replace(/^\/|\/$/g, '').trim();
+      return M[norm] || (VALID_SURFACES.includes(norm) ? norm : 'default');
+    }
+    for (const [k, v] of Object.entries(M)) {
+      if (q.has(k) || q.has(v)) return v;
+    }
     const seg = location.pathname.toLowerCase().replace(/^\/|\/$/g, '').split('/')[0];
-    return M[seg] || (seg === 'test' ? 'default' : seg) || document.documentElement.dataset.surface || 'default';
+    return M[seg] || (VALID_SURFACES.includes(seg) ? seg : (seg === 'test' ? 'default' : document.documentElement.dataset.surface || 'default'));
   };
 
   const getTheme = () => {

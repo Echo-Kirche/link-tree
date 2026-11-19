@@ -100,4 +100,54 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(bridgeJs, /content\.theme/, 'storyblok-bridge.js must read content.theme');
     assert.doesNotMatch(bridgeJs, /sb\.on\('input'[^}]*reload\(\)/, 'storyblok-bridge.js must NOT reload on input');
   });
+
+  test('Storyblok link objects resolve cleanly and never render [object Object]', async () => {
+    // 1. Verify that no generated HTML file contains [object Object] in href
+    assert.doesNotMatch(indexHtml, /href="\[object Object\]"/, 'index.html must not contain [object Object] href');
+    assert.doesNotMatch(testHtml, /href="\[object Object\]"/, 'test.html must not contain [object Object] href');
+
+    // 2. Test resolveStoryblokUrl with Storyblok multilink objects
+    const { resolveStoryblokUrl, normalizeStoryblokLinks } = await import('../src/utils/storyblok-url.js');
+
+    // External URL multilink
+    const externalLink = { id: '', url: 'https://apple.com', linktype: 'url', fieldtype: 'multilink', cached_url: 'https://apple.com' };
+    assert.equal(resolveStoryblokUrl(externalLink), 'https://apple.com', 'Should resolve external link object');
+
+    // Internal Story multilink
+    const storyLink = { id: '123', url: '', linktype: 'story', fieldtype: 'multilink', cached_url: 'gifhorn' };
+    assert.equal(resolveStoryblokUrl(storyLink), '/gifhorn/', 'Should resolve internal story link object');
+
+    // Home Story multilink
+    const homeStoryLink = { id: '123', url: '', linktype: 'story', fieldtype: 'multilink', cached_url: 'home' };
+    assert.equal(resolveStoryblokUrl(homeStoryLink), '/', 'Should resolve home story link to /');
+
+    // Email multilink
+    const emailLink = { id: '', url: 'info@kirche-echo.de', linktype: 'email', fieldtype: 'multilink', cached_url: 'info@kirche-echo.de' };
+    assert.equal(resolveStoryblokUrl(emailLink), 'mailto:info@kirche-echo.de', 'Should resolve email link to mailto:');
+
+    // Plain string URL
+    assert.equal(resolveStoryblokUrl('https://example.com'), 'https://example.com', 'Should preserve plain string URL');
+
+    // Recursive tree normalization
+    const mockBlokTree = {
+      body: [
+        {
+          component: 'link_button',
+          label: 'Apple',
+          url: externalLink,
+        },
+      ],
+      footer: [
+        {
+          component: 'footer_legal',
+          impressum_url: { linktype: 'url', url: 'https://kirche-echo.de/impressum/' },
+        },
+      ],
+    };
+
+    const normalized = normalizeStoryblokLinks(mockBlokTree);
+    assert.equal(normalized.body[0].url, 'https://apple.com', 'normalizeStoryblokLinks must resolve nested link_button url');
+    assert.equal(normalized.footer[0].impressum_url, 'https://kirche-echo.de/impressum/', 'normalizeStoryblokLinks must resolve nested footer impressum_url');
+  });
 });
+

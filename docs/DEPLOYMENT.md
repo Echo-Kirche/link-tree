@@ -21,7 +21,13 @@ Use a minimal `netlify.toml` after implementation:
 
 Add production headers only after testing them against the generated site.
 
+### Content Rebuilds vs Code Redeployments
+- **Code redeployment**: Pushing commits to GitHub triggers a code build.
+- **Content rebuild (Storyblok)**: You do **not** need to redeploy code for CMS updates. Connect a Netlify **Build Hook** (`Site configuration` → `Build & deploy` → `Build hooks`) to Storyblok's publish webhook (`Settings` → `Webhooks`). Netlify then re-runs `npm run build` and updates the static HTML automatically in ~30 seconds when content is published.
+- **Manual rebuild**: Trigger anytime via Netlify Dashboard (`Deploys` → `Trigger deploy` → `Clear cache and deploy site`) or cURL: `curl -X POST -d '{}' <BUILD_HOOK_URL>`.
+
 ## Cloudflare Pages
+
 
 Configure:
 - build command: `npm run build`

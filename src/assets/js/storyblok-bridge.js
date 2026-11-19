@@ -43,6 +43,19 @@
       }
 
       if (content.title) document.title = content.title;
+
+      if (content.profile && Array.isArray(content.profile) && content.profile[0]) {
+        const prof = content.profile[0];
+        const nameEl = document.querySelector('.profile-header__name-text');
+        if (nameEl && prof.name) nameEl.textContent = prof.name;
+        const bioEl = document.querySelector('.profile-header__bio');
+        if (bioEl && prof.bio !== undefined) bioEl.textContent = prof.bio;
+        const avatarEl = document.querySelector('.profile-header__avatar');
+        if (avatarEl && prof.avatar) {
+          const src = typeof prof.avatar === 'object' && prof.avatar ? prof.avatar.filename : prof.avatar;
+          if (src) avatarEl.src = src;
+        }
+      }
     });
   };
   document.body.appendChild(bridge);

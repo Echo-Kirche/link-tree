@@ -1,7 +1,8 @@
 <div class="video-link-card"{% if item.provider == "youtube" and item.youtube_video_id %} data-video-embed="youtube" data-video-id="{{ item.youtube_video_id }}" data-video-title="{{ item.label }}"{% endif %}>
   {% set videoImgSrc = item.image.filename if (item.image and item.image.filename) else (item.image.src if item.image else '') %}
   {% set youtubeUrl = "https://www.youtube.com/watch?v=" + item.youtube_video_id if (item.provider == "youtube" and item.youtube_video_id) else "" %}
-  {% set destinationUrl = youtubeUrl if youtubeUrl else item.url %}
+  {% set resolvedItemUrl = (item.url | resolveUrl) if (item.url | resolveUrl) else (item.url.url or item.url.cached_url or item.url or '') %}
+  {% set destinationUrl = youtubeUrl if youtubeUrl else resolvedItemUrl %}
   {% if videoImgSrc %}
   <div class="video-link-card__media">
     <img src="{{ videoImgSrc }}" alt="{{ item.image.alt or item.label }}" width="{{ item.image.width or 1280 }}" height="{{ item.image.height or 720 }}" loading="lazy" />

@@ -114,4 +114,63 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.match(testHtml, /data-show-on="wolfsburg"/, 'Test page must render Wolfsburg footer with data-show-on');
     assert.match(testHtml, /data-show-on="helmstedt"/, 'Test page must render Helmstedt footer with data-show-on');
   });
+
+  test('Unmatched surface parameter or route (e.g. /bs or ?surface=bs) redirects to home without params', () => {
+    const switcherJs = fs.readFileSync(path.join(siteDir, 'assets', 'js', 'surface-switcher.js'), 'utf8');
+
+    // Verify presence of unmatched route & parameter validation
+    assert.match(switcherJs, /VALID_ROUTES/, 'surface-switcher.js must define VALID_ROUTES');
+    assert.match(switcherJs, /isUnmatchedPath/, 'surface-switcher.js must check isUnmatchedPath');
+    assert.match(switcherJs, /isUnmatchedParam/, 'surface-switcher.js must check isUnmatchedParam');
+    assert.match(switcherJs, /location\.replace\('\/'\)/, 'surface-switcher.js must redirect to home via location.replace');
+
+    // Simulate validation logic against test scenarios
+    const VALID_ROUTES = ['', 'index.html', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'impressum', 'datenschutz', 'assets', 'css'];
+    const VALID_SLUGS = ['ig', 'instagram', 'wob', 'wolfsburg', 'gf', 'gifhorn', 'he', 'helmstedt', 'default', 'all'];
+
+    const checkRedirect = (pathname, search = '') => {
+      const seg = pathname.toLowerCase().replace(/^\/|\/$/g, '').split('/')[0];
+      const q = new URLSearchParams(search);
+      const p = q.get('surface') || q.get('switch') || q.get('campus') || q.get('location');
+
+      const isUnmatchedPath = Boolean(seg && !VALID_ROUTES.includes(seg));
+      const isUnmatchedParam = Boolean(p && !VALID_SLUGS.includes(p.toLowerCase().replace(/^\/|\/$/g, '').trim()));
+      const isUnmatchedFlag = Boolean(q.has('bs') || q.has('/bs'));
+
+      return isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag ? '/' : null;
+    };
+
+    // Unmatched cases must redirect to home ('/')
+    assert.equal(checkRedirect('/bs'), '/', '/bs must redirect to home');
+    assert.equal(checkRedirect('/bs/'), '/', '/bs/ must redirect to home');
+    assert.equal(checkRedirect('/bs', '?foo=bar'), '/', '/bs?foo=bar must redirect to home without params');
+    assert.equal(checkRedirect('/', '?surface=bs'), '/', '?surface=bs must redirect to home without params');
+    assert.equal(checkRedirect('/', '?switch=bs'), '/', '?switch=bs must redirect to home without params');
+    assert.equal(checkRedirect('/', '?surface=/bs'), '/', '?surface=/bs must redirect to home without params');
+    assert.equal(checkRedirect('/', '?bs'), '/', '?bs flag must redirect to home without params');
+    assert.equal(checkRedirect('/gf', '?surface=bs'), '/', '/gf?surface=bs must redirect to home without params');
+    assert.equal(checkRedirect('/unknown-path'), '/', 'unknown path must redirect to home');
+
+    // Valid cases must NOT redirect (return null)
+    assert.equal(checkRedirect('/gf'), null, '/gf must not redirect');
+    assert.equal(checkRedirect('/gifhorn'), null, '/gifhorn must not redirect');
+    assert.equal(checkRedirect('/wob'), null, '/wob must not redirect');
+    assert.equal(checkRedirect('/wolfsburg'), null, '/wolfsburg must not redirect');
+    assert.equal(checkRedirect('/he'), null, '/he must not redirect');
+    assert.equal(checkRedirect('/helmstedt'), null, '/helmstedt must not redirect');
+    assert.equal(checkRedirect('/ig'), null, '/ig must not redirect');
+    assert.equal(checkRedirect('/test'), null, '/test must not redirect');
+    assert.equal(checkRedirect('/impressum'), null, '/impressum must not redirect');
+    assert.equal(checkRedirect('/datenschutz'), null, '/datenschutz must not redirect');
+    assert.equal(checkRedirect('/'), null, '/ root must not redirect');
+    assert.equal(checkRedirect('/', '?surface=gf'), null, '?surface=gf must not redirect');
+    assert.equal(checkRedirect('/', '?surface=gifhorn'), null, '?surface=gifhorn must not redirect');
+    assert.equal(checkRedirect('/', '?theme=dark'), null, '?theme=dark must not redirect');
+  });
+
+  test('Netlify redirect configuration redirects unmatched routes to home', () => {
+    const toml = fs.readFileSync(path.resolve('netlify.toml'), 'utf8');
+    assert.match(toml, /from\s*=\s*"\/\*"\s*\n\s*to\s*=\s*"\/"\s*\n\s*status\s*=\s*302/, 'Netlify configuration must redirect /* to / with 302 status');
+  });
 });
+

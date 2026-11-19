@@ -455,3 +455,125 @@ Mit `show_on` und `hide_on` steuerst du, welche Links auf welchen Unterseiten er
 | `<domain>/he` oder `/helmstedt` | `helmstedt` | Zeigt Links speziell für Helmstedt. |
 | `<domain>/ig` oder `/instagram` | `instagram` | Zeigt Links speziell für Instagram-Besucher. |
 | `<domain>/test` | `all` | Test-Seite mit interaktivem Umschalter zum Prüfen aller Filter. |
+
+---
+
+## 6. Enabling Live Preview in Netlify / Visual Editor Live-Vorschau in Netlify
+
+### English
+
+To enable the real-time Storyblok Visual Editor inside your deployed Netlify site:
+
+1. **Configure Storyblok Visual Editor Location**:
+   - In Storyblok: Go to **Settings** → **Visual Editor**.
+   - Under **Location (default URL)**, enter your Netlify site URL (e.g., `https://your-site.netlify.app/` or your custom domain).
+   - For local development, you can create a second environment set to `http://localhost:8080/`.
+2. **How the Live Preview Works**:
+   - **Zero visitor overhead**: Visitors to `https://your-site.netlify.app/` receive static HTML with 0 KB Storyblok JS.
+   - **Automatic bridge detection**: When Storyblok embeds the page inside its Visual Editor iframe (`?_storyblok=...`), [`storyblok-bridge.js`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/js/storyblok-bridge.js) automatically loads the Storyblok Bridge.
+   - **Instant theme & surface reactivity**: Changes to themes (e.g. `dark`, `teal`, `light`), page titles, and surface filters reflect live in the iframe via `postMessage` events (`sb.on('input')`) with **zero reload required**.
+   - **CSP Frame Security**: The Content Security Policy in [`netlify.toml`](file:///Users/Shared/projeckt/goto/link-tree/netlify.toml) explicitly includes `frame-ancestors 'self' https://app.storyblok.com https://*.storyblok.com;`, allowing secure embedding without browser blockages.
+3. **Draft Preview on Netlify (Deploy Previews & Staging)**:
+   - For your production site, set `STORYBLOK_VERSION=published` in Netlify environment variables so only approved content is visible.
+   - To preview draft stories before publishing, set `STORYBLOK_VERSION=draft` in a Netlify Deploy Preview or Branch Deploy context (**Site configuration → Environment variables**).
+
+### How to Verify That Preview is Working (Without Publishing or Deploying)
+
+You do **NOT** need to click "Publish" in Storyblok or wait for Netlify to deploy to see your changes! Follow this checklist:
+
+1. **Check the Storyblok Visual Editor Iframe**:
+   - Open your story (e.g. `Home`) in Storyblok.
+   - You should see your site rendered in the main preview pane.
+   - In your browser's Developer Tools (F12) Console inside the iframe, you should see that Storyblok Bridge connected successfully.
+2. **Test Real-Time Live Input (Zero Reload, Zero Deploy)**:
+   - In the left sidebar of Storyblok, change the **Theme** (e.g. from `light` to `dark` or `teal`).
+   - The preview window will **instantly** change color without any page reload or deployment!
+   - Change the **Name** or **Bio** in the Profile section or the **Page Title**: it will update live on screen in real time.
+3. **If the Preview Shows a Blank Screen or Refuses to Connect**:
+   - **Protocol mismatch**: Make sure the URL in **Settings → Visual Editor** begins with `https://` (for Netlify), not `http://`.
+   - **Trailing slash**: Enter `https://your-site.netlify.app/` (with a trailing `/`).
+   - **AdBlocker / Shield**: Some browser privacy shields (like Brave Shields or aggressive adblockers) block iframes from third-party cookies. Install the official **[Storyblok Chrome Extension](https://chromewebstore.google.com/detail/storyblok-visual-editor/ciaomclhhlagbepfdiaekaeepocbbdfd)** or disable shields for `app.storyblok.com`.
+   - **CSP Headers**: Netlify already provides `frame-ancestors 'self' https://app.storyblok.com https://*.storyblok.com;`. If you deployed custom headers elsewhere, verify this header is present.
+
+---
+
+
+So aktivierst du die Live-Vorschau des Storyblok Visual Editors auf Netlify:
+
+1. **Vorschau-URL in Storyblok hinterlegen**:
+   - In Storyblok: Öffne **Settings** → **Visual Editor**.
+   - Trage unter **Location (default URL)** die URL deiner Netlify-Website ein (z. B. `https://deine-seite.netlify.app/` oder deine eigene Domain).
+   - Für die lokale Entwicklung kannst du eine zweite Umgebung für `http://localhost:8080/` hinzufügen.
+2. **Funktionsweise der Live-Vorschau**:
+   - **Keine Skripte für normale Besucher**: Normale Webseiten-Besucher laden 0 KB Storyblok-Code.
+   - **Automatische Erkennung**: Nur wenn die Seite im Storyblok-Editor geladen wird (`?_storyblok=...`), lädt [`storyblok-bridge.js`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/js/storyblok-bridge.js) die Vorschau-Bridge.
+   - **Echtzeit-Updates**: Farbthemen (`dark`, `teal`, etc.), Titel und Filter aktualisieren sich im Visual Editor sofort beim Tippen ohne Neuladen.
+   - **Iframe-Sicherheit (CSP)**: In [`netlify.toml`](file:///Users/Shared/projeckt/goto/link-tree/netlify.toml) ist `frame-ancestors 'self' https://app.storyblok.com https://*.storyblok.com;` bereits hinterlegt, damit Storyblok die Seite einbetten darf.
+
+---
+
+## 7. Rebuilding vs. Redeploying / Neu erstellen vs. Neu ausrollen bei Inhaltsänderungen
+
+### Should I redeploy Netlify each time I make a change? / Muss ich Netlify jedes Mal neu ausrollen?
+
+> [!IMPORTANT]
+> **No! You do NOT need to redeploy code or push to Git each time you make a change in Storyblok.**
+> Because this is a static website (JAMstack), Netlify only needs to run the build command (`npm run build`) to fetch the latest published content from Storyblok's API and generate fresh static HTML.
+
+> [!IMPORTANT]
+> **Nein! Du musst keinen Code neu ausrollen und keine Git-Commits erstellen, wenn du Inhalte in Storyblok änderst.**
+> Netlify muss lediglich den Build-Befehl (`npm run build`) ausführen, um die neuesten Daten per Storyblok-API abzurufen und die statischen HTML-Seiten zu aktualisieren.
+
+---
+
+### Method 1: Automatic Rebuilds with Webhooks (Recommended / Automatisch per Webhook)
+
+Configure Storyblok to automatically ping Netlify whenever content is published or unpublished:
+
+1. **Create a Build Hook in Netlify**:
+   - In the Netlify Dashboard, navigate to: **Site configuration** → **Build & deploy** → **Continuous deployment** → **Build hooks**.
+   - Click **Add build hook**.
+   - Enter a title: `Storyblok Content Update`.
+   - Select branch: `master` (or `main`).
+   - Click **Save**.
+   - Copy the generated Webhook URL (format: `https://api.netlify.com/build_hooks/<UNIQUE_ID>`).
+
+2. **Add the Webhook in Storyblok**:
+   - In your Storyblok Space, navigate to: **Settings** → **Webhooks**.
+   - Click **New Webhook**.
+   - Enter a Name: `Netlify Production Rebuild`.
+   - In **Webhook URL**, paste the Netlify Build Hook URL you copied in step 1.
+   - Under **Trigger Events**, select:
+     - `Story published`
+     - `Story unpublished`
+   - Click **Save**.
+
+3. **How It Works**:
+   - Whenever an editor clicks **Publish** in Storyblok, Storyblok automatically notifies Netlify.
+   - Netlify executes `npm run build`, fetches the updated content from the Storyblok Content Delivery API, compiles all static pages, and deploys the update to the global CDN in **~30 seconds**.
+   - **Zero code redeploys or Git commits required.**
+
+---
+
+### Method 2: Manual Rebuild from Netlify Dashboard / Manuell im Netlify Dashboard
+
+If you ever need to trigger an immediate rebuild without publishing a story in Storyblok:
+
+1. Log in to the [Netlify Dashboard](https://app.netlify.com/).
+2. Select your site.
+3. Go to the **Deploys** tab.
+4. Click **Trigger deploy** in the top right.
+5. Select **Deploy site** (or **Clear cache and deploy site** if you suspect cached data).
+6. Netlify will fetch the latest Storyblok content and regenerate the site.
+
+---
+
+### Method 3: Trigger a Rebuild via Terminal / CLI / Rebuild per Terminal
+
+You can also trigger a rebuild at any time using a simple `curl` request from your terminal or CI/CD script:
+
+```bash
+# Trigger an instant static content rebuild on Netlify:
+curl -X POST -d '{}' https://api.netlify.com/build_hooks/<YOUR_BUILD_HOOK_ID>
+```
+

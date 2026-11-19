@@ -526,31 +526,68 @@ The website provides an **Interactive Test Suite & Surface Switcher**:
 
 ---
 
-# PART H — Netlify Environment Variables & Webhook Rebuilds
+# PART H — Netlify Live Preview, Environment Variables & Automated Rebuilds
 
-## Netlify Environment Variables
+## 1. Enabling Live Preview in Netlify (Visual Editor)
+To view and edit your website live inside the Storyblok Visual Editor iframe:
+1. **Set the Visual Editor Location**:
+   - In Storyblok: Go to **Settings** → **Visual Editor**.
+   - Under **Location (default URL)**, enter your Netlify site URL: `https://your-site.netlify.app/` (or your custom domain).
+   - If developing locally, you can create a second environment set to `http://localhost:8080/`.
+2. **Why it works seamlessly**:
+   - The site uses [`storyblok-bridge.js`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/js/storyblok-bridge.js), which loads the official Storyblok Bridge **only** when viewed inside the Visual Editor (`?_storyblok=...`). Production visitors load 0 KB third-party JS.
+   - Theme changes, title edits, and surface toggles reflect immediately via real-time postMessage events without reloading the page.
+   - Netlify's Content Security Policy in [`netlify.toml`](file:///Users/Shared/projeckt/goto/link-tree/netlify.toml) already permits framing via `frame-ancestors 'self' https://app.storyblok.com https://*.storyblok.com;`.
+
+## 2. Netlify Environment Variables
 In Netlify (**Site Configuration → Environment Variables**):
-- `STORYBLOK_TOKEN`: Your **Public** access token.
-- `STORYBLOK_VERSION`: `published`
+- `STORYBLOK_TOKEN`: Your **Public** access token from Storyblok (**Settings → Access Tokens**).
+- `STORYBLOK_VERSION`: `published` (for Production) or `draft` (for preview environments).
 - `STORYBLOK_SLUG`: `home`
 
-For preview/development builds:
-- `STORYBLOK_VERSION`: `draft`
+> [!TIP]
+> To preview **draft** stories on Netlify before publishing them to the public, set `STORYBLOK_VERSION=draft` in your Netlify Deploy Previews or Branch Deploys context.
 
-## Automatic Rebuild on Publish
-To have Netlify automatically rebuild and publish your site whenever an editor clicks **Publish** in Storyblok:
-1. In Netlify: Go to **Build & Deploy → Continuous Deployment → Build hooks**.
+---
+
+## 3. Rebuilding vs. Redeploying: How Content Updates Work
+
+### Q: Should I redeploy Netlify each time I make a change, or is there a way to rebuild?
+**A: No, you do NOT need to redeploy your code, touch Git, or push commits!**
+
+Because this is a static JAMstack site (Eleventy + Storyblok Headless CMS), Netlify simply needs to run the build process (`npm run build`). When it runs, Eleventy fetches the latest published content directly from the Storyblok API and compiles it into high-performance static HTML.
+
+You have three simple ways to trigger a content rebuild:
+
+### Method A: Automatic Rebuild on Publish (Recommended)
+Set up a webhook so Netlify rebuilds automatically whenever you click **Publish**:
+1. In Netlify: Go to **Site configuration** → **Build & deploy** → **Continuous deployment** → **Build hooks**.
 2. Click **Add build hook**.
 3. Name: `Storyblok Publish`, Branch: `master`.
-4. Copy the generated webhook URL.
-5. In Storyblok: Go to **Settings → Webhooks**.
+4. Copy the generated Webhook URL (`https://api.netlify.com/build_hooks/...`).
+5. In Storyblok: Go to **Settings** → **Webhooks**.
 6. Click **New Webhook**.
-7. Name: `Netlify Deploy`.
-8. Webhook URL: Paste the Netlify build hook URL.
+7. Name: `Netlify Production Deploy`.
+8. Webhook URL: Paste your Netlify build hook URL.
 9. Event: Check **Story published** and **Story unpublished**.
 10. Click **Save**.
 
-Now, whenever you publish changes in Storyblok, Netlify automatically compiles and updates your live website in seconds!
+*Result: Every time you publish in Storyblok, Netlify automatically rebuilds and deploys the updated website in ~30 seconds.*
+
+### Method B: Manual Rebuild from Netlify Dashboard
+If you want to trigger a rebuild without changing code or publishing a story:
+1. Open the [Netlify Dashboard](https://app.netlify.com/).
+2. Click on your site → **Deploys** tab.
+3. In the upper right corner, click **Trigger deploy**.
+4. Select **Clear cache and deploy site** (or **Deploy site**).
+5. Netlify will immediately fetch the latest Storyblok content and regenerate the site.
+
+### Method C: One-Click Rebuild via Terminal (cURL)
+You can trigger a rebuild with a single terminal command:
+```bash
+curl -X POST -d '{}' https://api.netlify.com/build_hooks/<YOUR_BUILD_HOOK_ID>
+```
+
 
 ---
 

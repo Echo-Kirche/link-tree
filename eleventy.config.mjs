@@ -1,3 +1,5 @@
+import { resolveStoryblokUrl } from './src/utils/storyblok-url.js';
+
 export default function (eleventyConfig) {
   // Passthrough copy static assets
   eleventyConfig.addPassthroughCopy({ 'src/assets': 'assets' });
@@ -36,6 +38,11 @@ export default function (eleventyConfig) {
       return true;
     });
   });
+
+  // Resolve Storyblok URLs (handles both plain strings and Storyblok multilink/link objects)
+  eleventyConfig.addFilter('resolveUrl', resolveStoryblokUrl);
+
+
 
   // Storyblok visual editor editable attribute
   eleventyConfig.addFilter('storyblokEditable', (blok) => {

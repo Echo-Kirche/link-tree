@@ -1,4 +1,5 @@
-<a class="image-card image-card--vertical" href="{{ item.url }}" rel="noopener noreferrer">
+{% set resolvedCardUrl = (item.url | resolveUrl) if (item.url | resolveUrl) else (item.url.url or item.url.cached_url or item.url or '#') %}
+<a class="image-card image-card--vertical" href="{{ resolvedCardUrl }}" rel="noopener noreferrer">
   {% set imgSrc = item.image.filename if (item.image and item.image.filename) else (item.image.src if item.image else '') %}
   {% if imgSrc %}
   <div class="image-card__media">

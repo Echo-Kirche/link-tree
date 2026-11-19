@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import footers from './footers.js';
+import { normalizeStoryblokLinks } from '../utils/storyblok-url.js';
 
 function youtubeVideoId(value = '') {
   if (!value) return '';
@@ -54,7 +55,7 @@ export default async function () {
             return {
               source: 'storyblok-api',
               story: foundStory,
-              content: foundStory.content,
+              content: normalizeStoryblokLinks(foundStory.content),
             };
           }
         }
@@ -66,13 +67,14 @@ export default async function () {
           return {
             source: 'storyblok-api',
             story: json.story,
-            content: json.story.content,
+            content: normalizeStoryblokLinks(json.story.content),
           };
         }
       }
       console.warn(`Storyblok API returned status ${res.status}. Falling back to local data.`);
     } catch (err) {
       console.warn(`Failed to fetch from Storyblok API (${err.message}). Falling back to local data.`);
+
     }
   }
 
