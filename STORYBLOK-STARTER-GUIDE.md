@@ -82,7 +82,7 @@ Instead of building separate websites for Gifhorn, Wolfsburg, Helmstedt, or Inst
 - `/wob/` and `/wolfsburg/` → Wolfsburg campus visitors
 - `/he/` and `/helmstedt/` → Helmstedt campus visitors
 - `/ig/` and `/instagram/` → Instagram bio traffic
-- `/test/` → Interactive preview page with a live surface switcher
+- `/test/` → Preview-only test page with live surface and theme switchers (hidden on production)
 
 A Storyblok **Datasource** is a centralized, reusable list of key-value pairs. Using a datasource ensures that campus names and slugs are managed in one place and reused across all components.
 
@@ -511,17 +511,21 @@ In Gifhorn, services are held at 10:00 and 12:00 in the BSK-Saal, and Echo Kids 
 
 ---
 
-# PART G — Previewing and Testing Your Surfaces
+# PART G — Previewing and Testing Your Surfaces (Preview Mode Only)
 
 The website provides an **Interactive Test Suite & Surface Switcher**:
-1. Open your browser to `/test` (e.g. `https://your-site.netlify.app/test/` or `http://localhost:8080/test/`).
-2. You will see a clean test toolbar at the top with buttons:
+1. Open your browser to `/test` in preview mode:
+   - In Storyblok: View your story in the Visual Editor.
+   - In browser: Visit `https://your-site.netlify.app/test?preview=true` (or locally at `http://localhost:8080/test/`).
+   - *Note*: On the live **production** site, `/test` is hidden and automatically redirects regular visitors to the homepage (`/`).
+2. You will see clean test toolbars at the top with buttons:
    - **All** (shows every block without filtering)
    - **Default** (shows only default landing page content)
    - **Gifhorn** (previews `/gf`)
    - **Wolfsburg** (previews `/wob`)
    - **Helmstedt** (previews `/he`)
    - **Instagram** (previews `/ig`)
+   - **Themes** (switch live between Light, Pale, Soft, Dark, Teal, Lavender)
 3. Click between them to test your filtering live before publishing to production!
 
 ---

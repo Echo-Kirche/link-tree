@@ -29,7 +29,7 @@ flowchart TD
     WOB["/wob & /wolfsburg (Wolfsburg Campus)"]
     HE["/he & /helmstedt (Helmstedt Campus)"]
     IG["/ig & /instagram (Instagram Bio)"]
-    Test["/test (Interactive Preview Switcher)"]
+    Test["/test (Preview-Only Testing Toolbar)"]
     Legal["/impressum & /datenschutz (Legal / DSGVO)"]
   end
 
@@ -56,7 +56,8 @@ flowchart TD
 
 ## 2. Key Features
 
-- **Multi-Location Surface Routing**: Dedicated, blazing-fast static routes (`/gf`, `/gifhorn`, `/wob`, `/wolfsburg`, `/he`, `/helmstedt`, `/ig`, `/instagram`, `/test`) generated at build time with clean canonical URLs.
+- **Multi-Location Surface Routing**: Dedicated, blazing-fast static routes (`/gf`, `/gifhorn`, `/wob`, `/wolfsburg`, `/he`, `/helmstedt`, `/ig`, `/instagram`) generated at build time with clean canonical URLs.
+- **Preview vs. Production Security**: The `/test` page with interactive surface and theme switchers is strictly reserved for preview mode and hidden on the production site (automatically redirects regular visitors to `/`).
 - **Brand Color Constancy**: Strict adherence to the Echo brand palette across all routes. City switches, surfaces, and query parameters filter content without changing brand colors.
 - **Collapsible Service Times Card (`DropdownCard`)**:
   - Implemented with pure CSS `<details>` / `<summary>` (100% accessible, zero client-side JavaScript required).

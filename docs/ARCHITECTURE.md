@@ -137,7 +137,7 @@ The site generates dedicated static HTML files at build time:
 | `/wob/` & `/wolfsburg/` | `wolfsburg` | Wolfsburg location landing page (Sunday service at 11:00, Wolfsburg hero photo). |
 | `/he/` & `/helmstedt/` | `helmstedt` | Helmstedt location landing page (Sunday service at 12:00, Helmstedt hero photo). |
 | `/ig/` & `/instagram/` | `instagram` | Instagram bio traffic landing page. |
-| `/test/` | `all` | Interactive test preview page containing the `.surface-switcher` toolbar to verify all surface filters live. |
+| `/test/` | `all` | Preview-only test page containing surface and theme testing toolbars. Hidden on production (automatically redirects regular visitors to `/`). |
 
 ### 5.3 Brand Color Invariant (Strict Rule)
 
