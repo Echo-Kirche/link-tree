@@ -137,6 +137,44 @@
   to = "/instagram/"
   status = 301
 
+# Allow /test only in Storyblok preview or with explicit preview query parameter
+[[redirects]]
+  from = "/test"
+  query = {_storyblok = ":storyblok"}
+  to = "/test/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/test/*"
+  query = {_storyblok = ":storyblok"}
+  to = "/test/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/test"
+  query = {preview = ":preview"}
+  to = "/test/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/test/*"
+  query = {preview = ":preview"}
+  to = "/test/index.html"
+  status = 200
+
+# On published production site, redirect regular visitors from /test to home
+[[redirects]]
+  from = "/test"
+  to = "/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/test/*"
+  to = "/"
+  status = 302
+  force = true
+
 # Fallback for unmatched routes: redirect to home
 [[redirects]]
   from = "/*"

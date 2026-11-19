@@ -1,27 +1,34 @@
 (() => {
+  const $$ = (s) => document.querySelectorAll(s);
   const M = { ig: 'instagram', wob: 'wolfsburg', gf: 'gifhorn', he: 'helmstedt' };
   const VALID_THEMES = ['light', 'white', 'pale', 'warm', 'soft', 'dark', 'teal', 'lavender'];
   const VALID_SURFACES = ['instagram', 'wolfsburg', 'gifhorn', 'helmstedt', 'default', 'all'];
   const VALID_SLUGS = ['ig', 'instagram', 'wob', 'wolfsburg', 'gf', 'gifhorn', 'he', 'helmstedt', 'default', 'all'];
   const VALID_ROUTES = ['', 'index.html', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'impressum', 'datenschutz', 'assets', 'css'];
 
-  // Route & parameter validation:
-  // If the route or surface param does not match (e.g. /bs, ?surface=bs, ?switch=bs), redirect to home without params.
   if (typeof location !== 'undefined') {
     const seg = location.pathname.toLowerCase().replace(/^\/|\/$/g, '').split('/')[0];
     const q = new URLSearchParams(location.search);
     const p = q.get('surface') || q.get('switch') || q.get('campus') || q.get('location');
 
+    const isPreview =
+      location.hostname === 'localhost' ||
+      location.hostname === '127.0.0.1' ||
+      q.has('_storyblok') ||
+      q.has('_storyblok_tk') ||
+      q.has('preview') ||
+      q.has('_token') ||
+      (window.self !== window.top && (document.referrer || '').includes('storyblok.com')) ||
+      (document.querySelector('meta[name="storyblok-version"]')?.getAttribute('content') === 'draft');
+
+    const isTestBlocked = Boolean(seg === 'test' && !isPreview);
     const isUnmatchedPath = Boolean(seg && !VALID_ROUTES.includes(seg));
     const isUnmatchedParam = Boolean(p && !VALID_SLUGS.includes(p.toLowerCase().replace(/^\/|\/$/g, '').trim()));
     const isUnmatchedFlag = Boolean(q.has('bs') || q.has('/bs'));
 
-    if (isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag) {
-      if (typeof location.replace === 'function') {
-        location.replace('/');
-      } else {
-        location.href = '/';
-      }
+    if (isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag) {
+      if (typeof location.replace === 'function') location.replace('/');
+      else location.href = '/';
       return;
     }
   }
@@ -48,22 +55,22 @@
 
   const applySurface = (s, push) => {
     if (s && s !== 'all') document.documentElement.dataset.surface = s;
-    document.querySelectorAll('[data-show-on],[data-hide-on],[data-display-in-default]').forEach((el) => {
+    $$('[data-show-on],[data-hide-on],[data-display-in-default]').forEach((el) => {
       const show = (el.dataset.showOn || '').split(',').map((x) => x.trim()).filter(Boolean);
       const hide = (el.dataset.hideOn || '').split(',').map((x) => x.trim()).filter(Boolean);
       const def = el.dataset.displayInDefault;
       let vis = true;
       if (s !== 'all') {
         if (s === 'default') {
-          if (def !== undefined) { if (def !== 'true') vis = false; }
-          else if (show.length && !show.includes('default')) vis = false;
+          if (def !== undefined) vis = (def === 'true');
+          else if (show.length) vis = show.includes('default');
         } else if (show.length && !show.includes(s)) vis = false;
-        if (hide.length && hide.includes(s)) vis = false;
+        if (hide.includes(s)) vis = false;
       }
       el.style.display = vis ? '' : 'none';
     });
 
-    document.querySelectorAll('.surface-switcher__btn[data-switch-value]').forEach((btn) => {
+    $$('.surface-switcher__btn[data-switch-value]').forEach((btn) => {
       const act = btn.dataset.switchValue === s;
       btn.setAttribute('aria-pressed', act ? 'true' : 'false');
       btn.classList.toggle('is-active', act);
@@ -85,7 +92,7 @@
     const norm = String(theme).toLowerCase();
     document.documentElement.dataset.theme = norm;
 
-    document.querySelectorAll('[data-theme-value]').forEach((btn) => {
+    $$('[data-theme-value]').forEach((btn) => {
       const act = btn.dataset.themeValue === norm;
       btn.setAttribute('aria-pressed', act ? 'true' : 'false');
       btn.classList.toggle('is-active', act);
@@ -106,18 +113,15 @@
   window.applyTheme = applyTheme;
 
   const init = () => {
-    document.querySelectorAll('.surface-switcher__btn[data-switch-value]').forEach((btn) => {
+    $$('.surface-switcher__btn[data-switch-value]').forEach((btn) => {
       btn.onclick = (e) => { e.preventDefault(); applySurface(btn.dataset.switchValue, true); };
     });
-
-    document.querySelectorAll('[data-theme-value]').forEach((btn) => {
+    $$('[data-theme-value]').forEach((btn) => {
       btn.onclick = (e) => { e.preventDefault(); applyTheme(btn.dataset.themeValue, true); };
     });
-
     if (document.querySelector('.surface-switcher') || new URLSearchParams(location.search).has('surface') || new URLSearchParams(location.search).has('switch')) {
       applySurface(getS(), false);
     }
-
     if (new URLSearchParams(location.search).has('theme') || document.querySelector('[data-theme-value]')) {
       applyTheme(getTheme(), false);
     }

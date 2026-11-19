@@ -11,6 +11,7 @@
   <meta name="storyblok-token" content="{{ storyblok.token }}">
   <meta name="storyblok-slug" content="{{ storyblok.slug or 'home' }}">
   {% endif %}
+  <meta name="storyblok-version" content="{{ (storyblok and storyblok.version) or 'published' }}">
   <link rel="preload" href="/assets/fonts/ClashDisplay-Semibold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/css/main.css">
 </head>

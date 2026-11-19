@@ -122,23 +122,40 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.match(switcherJs, /VALID_ROUTES/, 'surface-switcher.js must define VALID_ROUTES');
     assert.match(switcherJs, /isUnmatchedPath/, 'surface-switcher.js must check isUnmatchedPath');
     assert.match(switcherJs, /isUnmatchedParam/, 'surface-switcher.js must check isUnmatchedParam');
+    assert.match(switcherJs, /isTestBlocked/, 'surface-switcher.js must check isTestBlocked');
     assert.match(switcherJs, /location\.replace\('\/'\)/, 'surface-switcher.js must redirect to home via location.replace');
 
     // Simulate validation logic against test scenarios
     const VALID_ROUTES = ['', 'index.html', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'impressum', 'datenschutz', 'assets', 'css'];
     const VALID_SLUGS = ['ig', 'instagram', 'wob', 'wolfsburg', 'gf', 'gifhorn', 'he', 'helmstedt', 'default', 'all'];
 
-    const checkRedirect = (pathname, search = '') => {
+    const checkRedirect = (pathname, search = '', hostname = 'example.com') => {
       const seg = pathname.toLowerCase().replace(/^\/|\/$/g, '').split('/')[0];
       const q = new URLSearchParams(search);
       const p = q.get('surface') || q.get('switch') || q.get('campus') || q.get('location');
 
+      const isPreview =
+        hostname === 'localhost' ||
+        hostname === '127.0.0.1' ||
+        q.has('_storyblok') ||
+        q.has('_storyblok_tk') ||
+        q.has('preview') ||
+        q.has('_token');
+
+      const isTestBlocked = Boolean(seg === 'test' && !isPreview);
       const isUnmatchedPath = Boolean(seg && !VALID_ROUTES.includes(seg));
       const isUnmatchedParam = Boolean(p && !VALID_SLUGS.includes(p.toLowerCase().replace(/^\/|\/$/g, '').trim()));
       const isUnmatchedFlag = Boolean(q.has('bs') || q.has('/bs'));
 
-      return isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag ? '/' : null;
+      return isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag ? '/' : null;
     };
+
+    // /test is blocked on published production site, but allowed in preview
+    assert.equal(checkRedirect('/test', '', 'example.com'), '/', '/test on published site must redirect to home');
+    assert.equal(checkRedirect('/test', '?foo=bar', 'example.com'), '/', '/test without preview param must redirect to home');
+    assert.equal(checkRedirect('/test', '?_storyblok=123', 'example.com'), null, '/test in Storyblok preview must be allowed');
+    assert.equal(checkRedirect('/test', '?preview=true', 'example.com'), null, '/test with preview param must be allowed');
+    assert.equal(checkRedirect('/test', '', 'localhost'), null, '/test on localhost must be allowed');
 
     // Unmatched cases must redirect to home ('/')
     assert.equal(checkRedirect('/bs'), '/', '/bs must redirect to home');
@@ -159,7 +176,6 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.equal(checkRedirect('/he'), null, '/he must not redirect');
     assert.equal(checkRedirect('/helmstedt'), null, '/helmstedt must not redirect');
     assert.equal(checkRedirect('/ig'), null, '/ig must not redirect');
-    assert.equal(checkRedirect('/test'), null, '/test must not redirect');
     assert.equal(checkRedirect('/impressum'), null, '/impressum must not redirect');
     assert.equal(checkRedirect('/datenschutz'), null, '/datenschutz must not redirect');
     assert.equal(checkRedirect('/'), null, '/ root must not redirect');
@@ -168,9 +184,11 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.equal(checkRedirect('/', '?theme=dark'), null, '?theme=dark must not redirect');
   });
 
-  test('Netlify redirect configuration redirects unmatched routes to home', () => {
+  test('Netlify redirect configuration redirects unmatched routes and blocks /test in production', () => {
     const toml = fs.readFileSync(path.resolve('netlify.toml'), 'utf8');
     assert.match(toml, /from\s*=\s*"\/\*"\s*\n\s*to\s*=\s*"\/"\s*\n\s*status\s*=\s*302/, 'Netlify configuration must redirect /* to / with 302 status');
+    assert.match(toml, /from\s*=\s*"\/test"\s*\n\s*to\s*=\s*"\/"\s*\n\s*status\s*=\s*302/, 'Netlify configuration must redirect /test to / in production');
+    assert.match(toml, /from\s*=\s*"\/test"\s*\n\s*query\s*=\s*\{_storyblok\s*=\s*":storyblok"\}\s*\n\s*to\s*=\s*"\/test\/index\.html"/, 'Netlify configuration must permit /test with _storyblok preview');
   });
 });
 
