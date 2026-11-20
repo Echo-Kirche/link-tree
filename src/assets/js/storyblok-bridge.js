@@ -8,7 +8,6 @@
     (location.search.includes('_storyblok') ||
       location.search.includes('_storyblok_tk') ||
       location.search.includes('_token') ||
-      location.search.includes('preview=') ||
       (window.self !== window.top && (document.referrer || '').includes('storyblok.com')) ||
       window.__TEST_STORYBLOK_BRIDGE__);
 
@@ -251,7 +250,8 @@
   bridge.async = true;
   bridge.onload = () => {
     if (!window.StoryblokBridge) return;
-    const sb = new window.StoryblokBridge({ preventClicks: true, resolveLinks: 'url' });
+    const isFramed = typeof window !== 'undefined' && window.self !== window.top;
+    const sb = new window.StoryblokBridge({ preventClicks: isFramed, resolveLinks: 'url' });
 
     sb.on('published', () => window.location.reload());
 

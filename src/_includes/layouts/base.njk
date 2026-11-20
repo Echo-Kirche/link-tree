@@ -9,7 +9,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ title or (storyblok.content.title if (storyblok and storyblok.content) else site.profile.name) }}</title>
   <meta name="description" content="{{ description or site.profile.bio }}">
-  <meta name="storyblok-version" content="{{ (storyblok and storyblok.version) or 'published' }}">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="{{ '#000000' if currentTheme == 'dark' else ('#08415C' if currentTheme == 'teal' else ('#846B8A' if currentTheme == 'lavender' else ('#FEFADC' if (currentTheme == 'pale' or currentTheme == 'warm') else '#FFFFFF'))) }}">
   {% if is404 %}
   <meta http-equiv="refresh" content="0; url=/">
   {% endif %}

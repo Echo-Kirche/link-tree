@@ -291,6 +291,139 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.equal(list.children.length, 1, 'Removed item must be pruned from DOM');
     assert.equal(list.children[0].dataset.uid, 'uid-initial-1', 'Only remaining item must be uid-initial-1');
   });
+
+  test('Mobile Android Chrome theme support, viewport meta tags, and touch optimizations', () => {
+    // 1. Meta tags in HTML head
+    assert.match(indexHtml, /<meta\s+name="color-scheme"\s+content="light dark">/, 'HTML head must specify color-scheme: light dark');
+    assert.match(indexHtml, /<meta\s+name="theme-color"\s+content="[^"]+">/, 'HTML head must specify theme-color meta tag');
+    assert.match(testHtml, /<meta\s+name="color-scheme"\s+content="light dark">/, 'Test HTML head must specify color-scheme: light dark');
+    assert.match(testHtml, /<meta\s+name="theme-color"\s+content="[^"]+">/, 'Test HTML head must specify theme-color meta tag');
+
+    // 2. CSS color-scheme rules preventing Android Chrome Auto-Dark inversion
+    const css = fs.readFileSync(path.join(siteDir, 'css', 'main.css'), 'utf8');
+    assert.match(css, /\[data-theme=["']?dark["']?\]\s*\{[^}]*color-scheme:\s*dark/i, 'CSS dark theme must declare color-scheme: dark');
+    assert.match(css, /\[data-theme=["']?teal["']?\]\s*\{[^}]*color-scheme:\s*dark/i, 'CSS teal theme must declare color-scheme: dark');
+    assert.match(css, /\[data-theme=["']?warm["']?\]\s*\{[^}]*color-scheme:\s*light/i, 'CSS warm/pale theme must declare color-scheme: light');
+
+    // 3. Root html background to prevent viewport canvas flashing
+    assert.match(css, /html\s*\{[^}]*background-color:\s*var\(--color-page-bg\)/i, 'html root element must define background-color to avoid viewport flashing');
+
+    // 4. Touch action manipulation for instant mobile response
+    assert.match(css, /\.surface-switcher__btn\s*\{[^}]*touch-action:\s*manipulation/i, 'Switcher buttons must use touch-action: manipulation to eliminate mobile 300ms delay');
+  });
+
+  test('Theme query param (?theme=dark, ?theme=teal) and applyTheme update document theme, colorScheme and meta theme-color', () => {
+    const switcherJs = fs.readFileSync(path.join(siteDir, 'assets', 'js', 'surface-switcher.js'), 'utf8');
+
+    class MockMeta {
+      constructor(name, content) {
+        this.name = name;
+        this.content = content;
+      }
+      setAttribute(k, v) {
+        if (k === 'content') this.content = v;
+      }
+      getAttribute(k) {
+        return k === 'content' ? this.content : null;
+      }
+    }
+
+    class MockEl {
+      constructor(tag) {
+        this.tagName = tag.toUpperCase();
+        this.dataset = {};
+        this.style = {};
+        this.attributes = {};
+      }
+      setAttribute(k, v) { this.attributes[k] = v; }
+      getAttribute(k) { return this.attributes[k]; }
+      classList = {
+        toggle: () => {},
+        add: () => {},
+        remove: () => {}
+      };
+    }
+
+    const themeMeta = new MockMeta('theme-color', '#ffffff');
+    const htmlEl = new MockEl('html');
+
+    const sandbox = {
+      window: {},
+      document: {
+        documentElement: htmlEl,
+        querySelector(sel) {
+          if (sel === 'meta[name="theme-color"]') return themeMeta;
+          return null;
+        },
+        querySelectorAll() { return []; },
+        getElementById() { return null; },
+        readyState: 'complete',
+        addEventListener() {}
+      },
+      location: {
+        pathname: '/test/',
+        search: '?preview=true&theme=dark',
+        hostname: 'example.com'
+      },
+      URLSearchParams,
+      URL,
+      history: { pushState() {} }
+    };
+    sandbox.window = sandbox;
+
+    runInNewContext(switcherJs, sandbox);
+    assert.equal(typeof sandbox.applyTheme, 'function', 'applyTheme must be exposed');
+
+    // 1. Initial dark theme from query param
+    assert.equal(htmlEl.dataset.theme, 'dark', 'Dataset theme must be set to dark');
+    assert.equal(htmlEl.style.colorScheme, 'dark', 'colorScheme style must be dark for dark theme');
+    assert.equal(themeMeta.content, '#000', 'theme-color meta content must be updated to #000 for dark theme');
+
+    // 2. Switch to teal theme
+    sandbox.applyTheme('teal', false);
+    assert.equal(htmlEl.dataset.theme, 'teal', 'Dataset theme must be set to teal');
+    assert.equal(htmlEl.style.colorScheme, 'dark', 'colorScheme style must be dark for teal theme');
+    assert.equal(themeMeta.content, '#08415c', 'theme-color meta content must be updated to #08415c for teal theme');
+
+    // 3. Switch to pale theme
+    sandbox.applyTheme('pale', false);
+    assert.equal(htmlEl.dataset.theme, 'pale', 'Dataset theme must be set to pale');
+    assert.equal(htmlEl.style.colorScheme, 'light', 'colorScheme style must be light for pale theme');
+    assert.equal(themeMeta.content, '#fefadc', 'theme-color meta content must be updated to #fefadc for pale theme');
+  });
+
+  test('Storyblok bridge does not block mobile clicks when opened standalone (preventClicks disabled outside iframe)', () => {
+    const bridgeJs = fs.readFileSync(path.join(siteDir, 'assets', 'js', 'storyblok-bridge.js'), 'utf8');
+
+    // Verify bridge guards preventClicks with isFramed / window.self !== window.top
+    assert.match(bridgeJs, /preventClicks:\s*isFramed/, 'Bridge must set preventClicks: isFramed so standalone mobile tabs do not have clicks blocked');
+    assert.match(bridgeJs, /isFramed\s*=\s*(typeof window !== 'undefined' &&\s*)?window\.self\s*!==\s*window\.top/, 'Bridge must detect whether running framed in Visual Editor');
+  });
+
+  test('Security & Secrets Audit: no tokens, secrets, or env credentials in final build or git tracking', () => {
+    // 1. Scan all files in _site for secret patterns
+    function scanDir(dir) {
+      const files = fs.readdirSync(dir);
+      for (const f of files) {
+        const full = path.join(dir, f);
+        if (fs.statSync(full).isDirectory()) {
+          scanDir(full);
+        } else if (f.endsWith('.html') || f.endsWith('.js') || f.endsWith('.json')) {
+          const content = fs.readFileSync(full, 'utf8');
+          // Disallow draft tokens, secret tokens, private keys, or passwords
+          assert.doesNotMatch(content, /storyblok-token/i, `Secret leak in ${full}: contains storyblok-token`);
+          assert.doesNotMatch(content, /STORYBLOK_TOKEN\s*=\s*['"][a-zA-Z0-9_-]+['"]/i, `Secret leak in ${full}: contains token assignment`);
+          assert.doesNotMatch(content, /-----BEGIN (RSA |EC )?PRIVATE KEY-----/, `Secret leak in ${full}: contains private key`);
+        }
+      }
+    }
+    scanDir(siteDir);
+
+    // 2. Check .gitignore excludes .env files
+    const gitignore = fs.readFileSync(path.resolve('.gitignore'), 'utf8');
+    assert.match(gitignore, /\.env/, '.gitignore must ignore .env files');
+  });
 });
+
 
 
