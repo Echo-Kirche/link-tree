@@ -53,9 +53,10 @@ for (const file of jsFiles) {
     console.error(`Error: Found unexpected client-side JavaScript bundle: ${relPath}`);
     process.exit(1);
   }
-  // Verify that justified JS files stay under budget (< 6 KB each)
+  // Verify that justified JS files stay under budget (< 6 KB for production scripts, < 16 KB for preview editor bridge)
   const size = fs.statSync(file).size;
-  if (size > 6144) {
+  const maxBudget = file.endsWith('storyblok-bridge.js') ? 16384 : 6144;
+  if (size > maxBudget) {
     console.error(`Error: ${relPath} exceeded size budget: ${size} bytes`);
     process.exit(1);
   }

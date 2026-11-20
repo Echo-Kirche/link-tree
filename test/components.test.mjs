@@ -2,6 +2,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { runInNewContext } from 'node:vm';
 import { resolveStoryblokUrl, normalizeStoryblokLinks } from '../src/utils/storyblok-url.js';
 
 const siteDir = path.resolve('_site');
@@ -167,5 +168,128 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.equal(resolveStoryblokUrl('vbscript:msgbox(1)'), '#', 'vbscript: protocol must be blocked');
     assert.equal(resolveStoryblokUrl({ url: 'javascript:void(0)' }), '#', 'Object with javascript url must be blocked');
   });
+
+  test('Storyblok bridge supports real-time Visual Editor reconciliation: adding, removing, and reordering link_button using stable _uid', () => {
+    const bridgeJs = fs.readFileSync(path.join(siteDir, 'assets', 'js', 'storyblok-bridge.js'), 'utf8');
+
+    class MockElement {
+      constructor(tag) {
+        this.tagName = tag.toUpperCase();
+        this.children = [];
+        this.dataset = {};
+        this._classList = new Set();
+        this.innerHTML = '';
+        this.textContent = '';
+        this.href = '';
+        this.src = '';
+      }
+      get classList() {
+        const self = this;
+        return {
+          add(c) { self._classList.add(c); },
+          contains(c) { return self._classList.has(c); },
+          remove(c) { self._classList.delete(c); }
+        };
+      }
+      set className(cn) {
+        this._classList = new Set(cn.split(/\s+/).filter(Boolean));
+      }
+      get className() {
+        return Array.from(this._classList).join(' ');
+      }
+      appendChild(child) {
+        const idx = this.children.indexOf(child);
+        if (idx !== -1) this.children.splice(idx, 1);
+        this.children.push(child);
+        child.parentElement = this;
+        return child;
+      }
+      remove() {
+        if (this.parentElement) {
+          const idx = this.parentElement.children.indexOf(this);
+          if (idx !== -1) this.parentElement.children.splice(idx, 1);
+          this.parentElement = null;
+        }
+      }
+      querySelector(sel) {
+        return null;
+      }
+    }
+
+    const list = new MockElement('ul');
+    list.className = 'linktree-list';
+    const initialItem = new MockElement('li');
+    initialItem.className = 'linktree-item';
+    initialItem.dataset.uid = 'uid-initial-1';
+    list.appendChild(initialItem);
+
+    const doc = {
+      title: '',
+      documentElement: new MockElement('html'),
+      querySelector(sel) {
+        if (sel === '.linktree-list') return list;
+        return null;
+      },
+      createElement(tag) {
+        return new MockElement(tag);
+      },
+      body: new MockElement('body')
+    };
+
+    const sandbox = {
+      window: {},
+      document: doc,
+      location: { search: '?_storyblok=1' },
+      URLSearchParams,
+      Set, Map, Array, String, Boolean, console
+    };
+    sandbox.window = sandbox;
+
+    runInNewContext(bridgeJs, sandbox);
+    assert.equal(typeof sandbox.storyblokApplyContent, 'function', 'storyblokApplyContent must be exposed for bridge updates');
+
+    // 1. Add a new link_button
+    sandbox.storyblokApplyContent({
+      body: [
+        { _uid: 'uid-initial-1', component: 'link_button', label: 'Existing Button' },
+        {
+          _uid: 'uid-new-link',
+          component: 'link_button',
+          label: 'Test Link Button',
+          url: 'https://example.com/test-button',
+          show_on: ['instagram', 'default']
+        }
+      ]
+    });
+
+    assert.equal(list.children.length, 2, 'New item must be dynamically appended to linktree-list');
+    const addedItem = list.children[1];
+    assert.equal(addedItem.dataset.uid, 'uid-new-link', 'Added item must have matching data-uid');
+    assert.match(addedItem.innerHTML, /class="link-button/, 'Added item must have link-button class');
+    assert.match(addedItem.innerHTML, /Test Link Button/, 'Added item must render label');
+    assert.match(addedItem.innerHTML, /href="https:\/\/example\.com\/test-button"/, 'Added item must have resolved URL');
+    assert.match(addedItem.innerHTML, /class="link-button__icon"/, 'Added item must have icon wrapper');
+    assert.equal(addedItem.dataset.showOn, 'instagram,default', 'Surface filtering show_on attributes must be preserved');
+
+    // 2. Reorder items (place new button before initial button)
+    sandbox.storyblokApplyContent({
+      body: [
+        { _uid: 'uid-new-link', component: 'link_button', label: 'Test Link Button' },
+        { _uid: 'uid-initial-1', component: 'link_button', label: 'Existing Button' }
+      ]
+    });
+    assert.equal(list.children[0].dataset.uid, 'uid-new-link', 'First item in DOM must be uid-new-link after reorder');
+    assert.equal(list.children[1].dataset.uid, 'uid-initial-1', 'Second item in DOM must be uid-initial-1 after reorder');
+
+    // 3. Remove the link_button
+    sandbox.storyblokApplyContent({
+      body: [
+        { _uid: 'uid-initial-1', component: 'link_button', label: 'Existing Button' }
+      ]
+    });
+    assert.equal(list.children.length, 1, 'Removed item must be pruned from DOM');
+    assert.equal(list.children[0].dataset.uid, 'uid-initial-1', 'Only remaining item must be uid-initial-1');
+  });
 });
+
 
