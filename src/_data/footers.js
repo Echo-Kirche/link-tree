@@ -52,7 +52,7 @@ export default [
     component: 'footer_legal',
     organization_name: 'Echo Wolfsburg',
     venue: 'Leonardo Hotel Wolfsburg City Center',
-    street: 'Leonardo Hotel Wolfsburg City Center<br>Rathausstraße 1',
+    street: 'Leonardo Hotel Wolfsburg City Center, Rathausstraße 1',
     city: '38440 Wolfsburg',
     email: 'info@kirche-im-brauhaus.de',
     mailto: 'mailto:info@kirche-im-brauhaus.de',
@@ -72,6 +72,11 @@ export default [
         platform: 'whatsapp',
         url: 'https://whatsapp.com/channel/0029VaAagKEI7BeE8yhtQW0f',
         label: 'WhatsApp (Echo Wolfsburg)',
+      },
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/@KircheimBrauhaus',
+        label: 'YouTube (@KircheimBrauhaus)',
       },
       {
         platform: 'spotify',
@@ -115,6 +120,11 @@ export default [
         platform: 'whatsapp',
         url: 'https://whatsapp.com/channel/0029VbDmLfb2P59tKORzGs21',
         label: 'WhatsApp (Echo Helmstedt)',
+      },
+      {
+        platform: 'youtube',
+        url: 'https://www.youtube.com/@KircheimBrauhaus',
+        label: 'YouTube (@KircheimBrauhaus)',
       },
       {
         platform: 'spotify',
