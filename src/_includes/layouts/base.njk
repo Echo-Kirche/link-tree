@@ -1,5 +1,7 @@
-{% set currentTheme = (storyblok.content.theme.value if (storyblok and storyblok.content and storyblok.content.theme and storyblok.content.theme.value) else (storyblok.content.theme if (storyblok and storyblok.content) else site.theme)) or 'light' %}
-{% set currentSurface = surface or (storyblok.content.surface.value if (storyblok and storyblok.content and storyblok.content.surface and storyblok.content.surface.value) else (storyblok.content.surface if (storyblok and storyblok.content) else 'default')) or 'default' %}
+{% set rawTheme = (storyblok.content.theme.value if (storyblok and storyblok.content and storyblok.content.theme and storyblok.content.theme.value) else (storyblok.content.theme if (storyblok and storyblok.content) else site.theme)) or 'light' %}
+{% set rawSurface = surface or (storyblok.content.surface.value if (storyblok and storyblok.content and storyblok.content.surface and storyblok.content.surface.value) else (storyblok.content.surface if (storyblok and storyblok.content) else 'default')) or 'default' %}
+{% set currentTheme = rawTheme | sanitizeTheme %}
+{% set currentSurface = rawSurface | sanitizeSurface %}
 <!DOCTYPE html>
 <html lang="de" data-surface="{{ currentSurface }}" data-theme="{{ currentTheme }}">
 <head>
@@ -7,10 +9,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ title or (storyblok.content.title if (storyblok and storyblok.content) else site.profile.name) }}</title>
   <meta name="description" content="{{ description or site.profile.bio }}">
-  {% if storyblok and storyblok.token %}
-  <meta name="storyblok-token" content="{{ storyblok.token }}">
-  <meta name="storyblok-slug" content="{{ storyblok.slug or 'home' }}">
-  {% endif %}
   <meta name="storyblok-version" content="{{ (storyblok and storyblok.version) or 'published' }}">
   {% if is404 %}
   <meta http-equiv="refresh" content="0; url=/">

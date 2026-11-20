@@ -11,49 +11,59 @@
 
   if (!isSB) return;
 
-  const metaToken = document.querySelector('meta[name="storyblok-token"]')?.getAttribute('content');
-  const metaSlug = document.querySelector('meta[name="storyblok-slug"]')?.getAttribute('content') || 'home';
+  const VALID_THEMES = ['light', 'white', 'pale', 'warm', 'soft', 'dark', 'teal', 'lavender'];
+  const VALID_SURFACES = ['instagram', 'wolfsburg', 'gifhorn', 'helmstedt', 'default', 'all'];
+
   const q = new URLSearchParams(location.search);
-  const token = q.get('_token') || metaToken || '';
-  const slug = metaSlug;
+  const token = q.get('_token') || q.get('_storyblok_tk[token]') || '';
+  const slug = q.get('_slug') || 'home';
 
   function resolveUrl(u) {
     if (!u) return '#';
-    if (typeof u === 'string') return u.trim() || '#';
-    if (typeof u === 'object') {
+    let url = '#';
+    if (typeof u === 'string') url = u.trim();
+    else if (typeof u === 'object') {
       if (u.linktype === 'email') {
         const mail = (u.url || u.cached_url || '').trim();
-        return mail.startsWith('mailto:') ? mail : `mailto:${mail}`;
+        url = mail ? (mail.startsWith('mailto:') ? mail : `mailto:${mail}`) : '#';
+      } else if (u.linktype === 'story') {
+        const s = (u.cached_url || u.url || '').replace(/^\/|\/$/g, '').trim();
+        url = (!s || s === 'home') ? '/' : `/${s}/`;
+      } else {
+        url = (u.url || u.cached_url || '#').trim();
       }
-      if (u.linktype === 'story') {
-        const s = (u.cached_url || u.url || '').replace(/^\/|\/$/g, '');
-        return (!s || s === 'home') ? '/' : `/${s}/`;
-      }
-      return u.url || u.cached_url || '#';
     }
-    return '#';
+    const low = url.toLowerCase();
+    if (low.startsWith('javascript:') || low.startsWith('data:') || low.startsWith('vbscript:')) {
+      return '#';
+    }
+    return url;
   }
 
   function applyContent(content) {
     if (!content) return;
 
-    // 1. Theme update
+    // 1. Theme update (strictly validated against allowed CSS themes)
     if (content.theme !== undefined) {
       const t = typeof content.theme === 'object' && content.theme ? content.theme.value : content.theme;
       if (t) {
-        const norm = String(t).toLowerCase();
-        document.documentElement.dataset.theme = norm;
-        if (typeof window.applyTheme === 'function') window.applyTheme(norm, false);
+        const norm = String(t).toLowerCase().trim();
+        if (VALID_THEMES.includes(norm)) {
+          document.documentElement.dataset.theme = norm;
+          if (typeof window.applyTheme === 'function') window.applyTheme(norm, false);
+        }
       }
     }
 
-    // 2. Surface update
+    // 2. Surface update (strictly validated)
     if (content.surface !== undefined) {
       const s = typeof content.surface === 'object' && content.surface ? content.surface.value : content.surface;
       if (s) {
-        const normS = String(s).toLowerCase();
-        if (typeof window.applySurface === 'function') window.applySurface(normS, false);
-        else document.documentElement.dataset.surface = normS;
+        const normS = String(s).toLowerCase().trim();
+        if (VALID_SURFACES.includes(normS)) {
+          if (typeof window.applySurface === 'function') window.applySurface(normS, false);
+          else document.documentElement.dataset.surface = normS;
+        }
       }
     }
 

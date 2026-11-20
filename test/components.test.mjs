@@ -2,6 +2,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { resolveStoryblokUrl, normalizeStoryblokLinks } from '../src/utils/storyblok-url.js';
 
 const siteDir = path.resolve('_site');
 
@@ -153,6 +154,18 @@ describe('Component Markup & Accessibility Contracts', () => {
   test('Regular pages do not render lazy-loader overlay (404-only)', () => {
     assert.doesNotMatch(indexHtml, /id="page-loader"/, 'Regular pages must not render page loader overlay');
     assert.doesNotMatch(indexHtml, /class="lazy-loader"/, 'Regular pages must not contain lazy-loader markup');
+  });
+
+  test('Storyblok token is never embedded in HTML meta tags or attributes', () => {
+    assert.doesNotMatch(indexHtml, /name=["']storyblok-token["']/i, 'HTML must never contain storyblok-token meta tag');
+    assert.doesNotMatch(testHtml, /name=["']storyblok-token["']/i, 'Test HTML must never contain storyblok-token meta tag');
+  });
+
+  test('resolveStoryblokUrl blocks dangerous javascript: and data: protocols', () => {
+    assert.equal(resolveStoryblokUrl('javascript:alert(1)'), '#', 'javascript: protocol must be blocked');
+    assert.equal(resolveStoryblokUrl('data:text/html;base64,PHNjcmlwdD4='), '#', 'data: protocol must be blocked');
+    assert.equal(resolveStoryblokUrl('vbscript:msgbox(1)'), '#', 'vbscript: protocol must be blocked');
+    assert.equal(resolveStoryblokUrl({ url: 'javascript:void(0)' }), '#', 'Object with javascript url must be blocked');
   });
 });
 

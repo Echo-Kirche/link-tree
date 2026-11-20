@@ -68,7 +68,7 @@
   <div class="footer-legal__address">
     <p>
       {{ orgName }}<br>
-      {% if streetVal and streetVal != "" %}{{ streetVal | safe }}<br>{% endif %}
+      {% if streetVal and streetVal != "" %}{{ streetVal }}<br>{% endif %}
       {% if cityVal and cityVal != "" %}{{ cityVal }}<br>{% endif %}
       <a href="{{ mailtoVal }}" target="_blank" rel="noopener">{{ emailVal }}</a>
     </p>
