@@ -126,7 +126,7 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.match(switcherJs, /location\.replace\('\/'\)/, 'surface-switcher.js must redirect to home via location.replace');
 
     // Simulate validation logic against test scenarios
-    const VALID_ROUTES = ['', 'index.html', 'home', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'impressum', 'datenschutz', 'assets', 'css'];
+    const VALID_ROUTES = ['', 'index.html', 'home', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'impressum', 'datenschutz', 'assets', 'css', '404', '404.html'];
     const VALID_SLUGS = ['ig', 'instagram', 'wob', 'wolfsburg', 'gf', 'gifhorn', 'he', 'helmstedt', 'default', 'all'];
 
     const checkRedirect = (pathname, search = '', hostname = 'example.com') => {
@@ -143,12 +143,13 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
         q.has('_token') ||
         q.has('_storyblok_c');
 
+      const is404 = seg === '404' || seg === '404.html';
       const isTestBlocked = Boolean(seg === 'test' && !isPreview);
       const isUnmatchedPath = Boolean(seg && !VALID_ROUTES.includes(seg));
       const isUnmatchedParam = Boolean(p && !VALID_SLUGS.includes(p.toLowerCase().replace(/^\/|\/$/g, '').trim()));
       const isUnmatchedFlag = Boolean(q.has('bs') || q.has('/bs'));
 
-      return !isPreview && (isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag) ? '/' : null;
+      return !is404 && !isPreview && (isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag) ? '/' : null;
     };
 
     // /test is blocked on published production site, but allowed in preview
@@ -168,6 +169,10 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.equal(checkRedirect('/', '?bs'), '/', '?bs flag must redirect to home without params');
     assert.equal(checkRedirect('/gf', '?surface=bs'), '/', '/gf?surface=bs must redirect to home without params');
     assert.equal(checkRedirect('/unknown-path'), '/', 'unknown path must redirect to home');
+
+    // 404 page must NOT redirect
+    assert.equal(checkRedirect('/404'), null, '/404 must not redirect');
+    assert.equal(checkRedirect('/404.html'), null, '/404.html must not redirect');
 
     // Storyblok preview requests are exempt from redirects to prevent interrupting the editor
     assert.equal(checkRedirect('/unknown-path', '?_storyblok=123'), null, 'Storyblok preview on unknown path must be exempt from redirect');
@@ -192,20 +197,29 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.equal(checkRedirect('/', '?theme=dark'), null, '?theme=dark must not redirect');
   });
 
-  test('Netlify redirect configuration redirects unmatched routes to 404 and blocks /test in production', () => {
+  test('Netlify configuration redirects unmatched routes to 404, maps /home to /, and blocks /test in production', () => {
     const toml = fs.readFileSync(path.resolve('netlify.toml'), 'utf8');
+    const headers = fs.readFileSync(path.resolve('_headers'), 'utf8');
+
     assert.match(toml, /from\s*=\s*"\/\*"\s*\n\s*to\s*=\s*"\/404\.html"\s*\n\s*status\s*=\s*404/, 'Netlify configuration must serve /404.html for /* with 404 status');
     assert.match(toml, /from\s*=\s*"\/test"\s*\n\s*to\s*=\s*"\/"\s*\n\s*status\s*=\s*302/, 'Netlify configuration must redirect /test to / in production');
     assert.match(toml, /from\s*=\s*"\/test"\s*\n\s*query\s*=\s*\{_storyblok\s*=\s*":storyblok"\}\s*\n\s*to\s*=\s*"\/test\/index\.html"/, 'Netlify configuration must permit /test with _storyblok preview');
     assert.match(toml, /from\s*=\s*"\/home"\s*\n\s*to\s*=\s*"\/"\s*\n\s*status\s*=\s*200/, 'Netlify configuration must map /home to / with 200 rewrite');
-    assert.match(toml, /from\s*=\s*"\/\*"\s*\n\s*query\s*=\s*\{_storyblok\s*=\s*":storyblok"\}\s*\n\s*to\s*=\s*"\/"\s*\n\s*status\s*=\s*200/, 'Netlify configuration must rewrite Storyblok preview requests to / with status 200');
+
+    // Cross-Origin-Opener-Policy must not be set as it breaks Storyblok Visual Editor postMessage iframe connection
+    assert.doesNotMatch(toml, /Cross-Origin-Opener-Policy/, 'Netlify toml must not set Cross-Origin-Opener-Policy');
+    assert.doesNotMatch(headers, /Cross-Origin-Opener-Policy/, '_headers must not set Cross-Origin-Opener-Policy');
+
+    // Catch-all query rewrites for /* must not be present
+    assert.doesNotMatch(toml, /from\s*=\s*"\/\*"\s*\n\s*query\s*=/, 'Netlify toml must not have catch-all query rewrites for /*');
   });
 
-  test('404 page exists and contains Echo logo lazy loader and root redirect', () => {
+  test('404 page exists and contains accessible link to root page without auto-redirect or lazy loader', () => {
     const notFoundHtml = fs.readFileSync(path.resolve('_site/404.html'), 'utf8');
-    assert.match(notFoundHtml, /class="lazy-loader"/, '404 page must render lazy-loader');
-    assert.match(notFoundHtml, /class="fa-svg fa-echo-logo"/, '404 page must render Echo logo');
-    assert.match(notFoundHtml, /http-equiv="refresh"\s+content="0;\s*url=\/"/, '404 page must have meta refresh to root page');
+    assert.match(notFoundHtml, /<a\s+href="\/"[^>]*class="[^"]*link-button[^"]*"[^>]*>Zurück zur Startseite<\/a>/, '404 page must render a link to /');
+    assert.doesNotMatch(notFoundHtml, /class="lazy-loader"/, '404 page must not render lazy-loader');
+    assert.doesNotMatch(notFoundHtml, /http-equiv="refresh"/, '404 page must not auto-refresh to root');
+    assert.match(notFoundHtml, /<link\s+rel="icon"\s+type="image\/webp"\s+href="\/assets\/images\/favicon\.webp">/, '404 page must render favicon.webp in head');
   });
 });
 

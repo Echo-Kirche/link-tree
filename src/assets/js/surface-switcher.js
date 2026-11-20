@@ -4,7 +4,7 @@
   const VALID_THEMES = ['light', 'white', 'pale', 'warm', 'soft', 'dark', 'teal', 'lavender'];
   const VALID_SURFACES = ['instagram', 'wolfsburg', 'gifhorn', 'helmstedt', 'default', 'all'];
   const VALID_SLUGS = ['ig', 'instagram', 'wob', 'wolfsburg', 'gf', 'gifhorn', 'he', 'helmstedt', 'default', 'all'];
-  const VALID_ROUTES = ['', 'index.html', 'home', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'impressum', 'datenschutz', 'assets', 'css'];
+  const VALID_ROUTES = ['', 'index.html', 'home', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'impressum', 'datenschutz', 'assets', 'css', '404', '404.html'];
 
   const getP = (q) => q.get('surface') || q.get('switch') || q.get('campus') || q.get('location');
 
@@ -25,13 +25,13 @@
       (window.self !== window.top && (document.referrer || '').includes('storyblok.com')) ||
       (document.querySelector('meta[name="storyblok-version"]')?.getAttribute('content') === 'draft');
 
-    const is404 = seg === '404' || seg === '404.html' || Boolean(document.querySelector('meta[http-equiv="refresh"]'));
+    const is404 = seg === '404' || seg === '404.html' || Boolean(document.querySelector('.not-found-page'));
     const isTestBlocked = Boolean(seg === 'test' && !isPreview);
     const isUnmatchedPath = Boolean(seg && !VALID_ROUTES.includes(seg));
     const isUnmatchedParam = Boolean(p && !VALID_SLUGS.includes(p.toLowerCase().replace(/^\/|\/$/g, '').trim()));
     const isUnmatchedFlag = Boolean(q.has('bs') || q.has('/bs'));
 
-    if (!isPreview && (is404 || isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag)) {
+    if (!is404 && !isPreview && (isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag)) {
       if (typeof location.replace === 'function') location.replace('/');
       else location.href = '/';
       return;

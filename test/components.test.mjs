@@ -152,7 +152,8 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.equal(normalized.footer[0].impressum_url, 'https://kirche-echo.de/impressum/', 'normalizeStoryblokLinks must resolve nested footer impressum_url');
   });
 
-  test('Regular pages do not render lazy-loader overlay (404-only)', () => {
+  test('Pages render favicon.webp in head and do not render lazy-loader overlay', () => {
+    assert.match(indexHtml, /<link\s+rel="icon"\s+type="image\/webp"\s+href="\/assets\/images\/favicon\.webp">/, 'HTML must render favicon.webp in head');
     assert.doesNotMatch(indexHtml, /id="page-loader"/, 'Regular pages must not render page loader overlay');
     assert.doesNotMatch(indexHtml, /class="lazy-loader"/, 'Regular pages must not contain lazy-loader markup');
   });
