@@ -6,8 +6,8 @@ export default [
     venue: 'Brauhaus in Gifhorn',
     street: 'Schützenplatz 1',
     city: '38518 Gifhorn',
-    email: 'info@kirche-im-brauhaus.de',
-    mailto: 'mailto:info@kirche-im-brauhaus.de',
+    email: 'info@kirche-echo.de',
+    mailto: 'mailto:info@kirche-echo.de',
     contact_url: 'https://fcg-gifhorn.church.tools/publicgroup/1379',
     impressum_url: 'https://kirche-echo.de/impressum/',
     datenschutz_url: 'https://kirche-echo.de/datenschutz/',
@@ -37,7 +37,7 @@ export default [
       },
       {
         platform: 'email',
-        url: 'mailto:info@kirche-im-brauhaus.de',
+        url: 'mailto:info@kirche-echo.de',
         label: 'E-Mail',
       },
       {
@@ -54,8 +54,8 @@ export default [
     venue: 'Leonardo Hotel Wolfsburg City Center',
     street: 'Leonardo Hotel Wolfsburg City Center, Rathausstraße 1',
     city: '38440 Wolfsburg',
-    email: 'info@kirche-im-brauhaus.de',
-    mailto: 'mailto:info@kirche-im-brauhaus.de',
+    email: 'info@kirche-echo.de',
+    mailto: 'mailto:info@kirche-echo.de',
     contact_url: 'https://fcg-gifhorn.church.tools/publicgroup/1628',
     impressum_url: 'https://kirche-echo.de/impressum/',
     datenschutz_url: 'https://kirche-echo.de/datenschutz/',
@@ -85,7 +85,7 @@ export default [
       },
       {
         platform: 'email',
-        url: 'mailto:info@kirche-im-brauhaus.de',
+        url: 'mailto:info@kirche-echo.de',
         label: 'E-Mail',
       },
       {

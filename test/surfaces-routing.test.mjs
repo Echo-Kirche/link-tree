@@ -82,7 +82,7 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.match(gfHtml, /Echo Gifhorn/, 'Gifhorn footer must contain Echo Gifhorn');
     assert.match(gfHtml, /Schützenplatz 1/, 'Gifhorn footer must contain Schützenplatz 1');
     assert.match(gfHtml, /38518 Gifhorn/, 'Gifhorn footer must contain 38518 Gifhorn');
-    assert.match(gfHtml, /href="mailto:info@kirche-im-brauhaus\.de"/, 'Gifhorn footer must link to info@kirche-im-brauhaus.de');
+    assert.match(gfHtml, /href="mailto:info@kirche-echo\.de"/, 'Gifhorn footer must link to info@kirche-echo.de');
     assert.match(gfHtml, /href="https:\/\/www\.instagram\.com\/kircheimbrauhaus\/"/, 'Gifhorn footer must link to Gifhorn Instagram');
     assert.match(gfHtml, /href="https:\/\/whatsapp\.com\/channel\/0029Vb6fOzl11ulLp4jHlI0V"/, 'Gifhorn footer must link to Gifhorn WhatsApp');
 
@@ -92,7 +92,7 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.match(wobHtml, /Leonardo Hotel Wolfsburg City Center/, 'Wolfsburg footer must contain Leonardo Hotel');
     assert.match(wobHtml, /Rathausstraße 1/, 'Wolfsburg footer must contain Rathausstraße 1');
     assert.match(wobHtml, /38440 Wolfsburg/, 'Wolfsburg footer must contain 38440 Wolfsburg');
-    assert.match(wobHtml, /href="mailto:info@kirche-im-brauhaus\.de"/, 'Wolfsburg footer must link to info@kirche-im-brauhaus.de');
+    assert.match(wobHtml, /href="mailto:info@kirche-echo\.de"/, 'Wolfsburg footer must link to info@kirche-echo.de');
     assert.match(wobHtml, /href="https:\/\/www\.instagram\.com\/echo\.wolfsburg\/"/, 'Wolfsburg footer must link to Wolfsburg Instagram');
     assert.match(wobHtml, /href="https:\/\/whatsapp\.com\/channel\/0029VaAagKEI7BeE8yhtQW0f"/, 'Wolfsburg footer must link to Wolfsburg WhatsApp');
 
