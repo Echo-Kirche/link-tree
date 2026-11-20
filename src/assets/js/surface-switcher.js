@@ -111,7 +111,6 @@
 
   window.applySurface = applySurface;
   window.applyTheme = applyTheme;
-  window.hideLoader = hideLoader;
 
   const init = () => {
     hideLoader();

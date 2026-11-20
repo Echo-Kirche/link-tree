@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
+  {% if is404 %}
   <div class="lazy-loader" id="page-loader" role="status" aria-live="polite">
     <div class="lazy-loader__logo" aria-label="Wird geladen...">
       <svg class="fa-svg fa-echo-logo" viewBox="0 0 100 100" fill="currentColor">
@@ -28,6 +29,7 @@
       </svg>
     </div>
   </div>
+  {% endif %}
   {{ content | safe }}
   <script src="/assets/js/video-embed.js" defer></script>
   <script src="/assets/js/surface-switcher.js" defer></script>

@@ -150,11 +150,9 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.equal(normalized.footer[0].impressum_url, 'https://kirche-echo.de/impressum/', 'normalizeStoryblokLinks must resolve nested footer impressum_url');
   });
 
-  test('LazyLoader renders Echo logo and accessible loading container', () => {
-    assert.match(indexHtml, /class="lazy-loader"/, 'Base layout must render lazy-loader');
-    assert.match(indexHtml, /id="page-loader"/, 'LazyLoader must have page-loader id');
-    assert.match(indexHtml, /class="lazy-loader__logo"/, 'LazyLoader logo wrapper must exist');
-    assert.match(indexHtml, /class="fa-svg fa-echo-logo"/, 'LazyLoader must contain Echo logo SVG');
+  test('Regular pages do not render lazy-loader overlay (404-only)', () => {
+    assert.doesNotMatch(indexHtml, /id="page-loader"/, 'Regular pages must not render page loader overlay');
+    assert.doesNotMatch(indexHtml, /class="lazy-loader"/, 'Regular pages must not contain lazy-loader markup');
   });
 });
 
