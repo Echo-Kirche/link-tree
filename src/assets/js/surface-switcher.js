@@ -25,13 +25,13 @@
       (window.self !== window.top && (document.referrer || '').includes('storyblok.com')) ||
       (document.querySelector('meta[name="storyblok-version"]')?.getAttribute('content') === 'draft');
 
-    const is404 = seg === '404' || seg === '404.html' || Boolean(document.querySelector('.not-found-page'));
+    const is404 = seg === '404' || seg === '404.html' || Boolean(document.querySelector('.not-found-page')) || Boolean(document.querySelector('meta[http-equiv="refresh"]'));
     const isTestBlocked = Boolean(seg === 'test' && !isPreview);
     const isUnmatchedPath = Boolean(seg && !VALID_ROUTES.includes(seg));
     const isUnmatchedParam = Boolean(p && !VALID_SLUGS.includes(p.toLowerCase().replace(/^\/|\/$/g, '').trim()));
     const isUnmatchedFlag = Boolean(q.has('bs') || q.has('/bs'));
 
-    if (!is404 && !isPreview && (isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag)) {
+    if (!isPreview && (is404 || isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag)) {
       if (typeof location.replace === 'function') location.replace('/');
       else location.href = '/';
       return;

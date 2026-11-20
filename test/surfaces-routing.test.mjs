@@ -149,7 +149,7 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
       const isUnmatchedParam = Boolean(p && !VALID_SLUGS.includes(p.toLowerCase().replace(/^\/|\/$/g, '').trim()));
       const isUnmatchedFlag = Boolean(q.has('bs') || q.has('/bs'));
 
-      return !is404 && !isPreview && (isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag) ? '/' : null;
+      return !isPreview && (is404 || isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag) ? '/' : null;
     };
 
     // /test is blocked on published production site, but allowed in preview
@@ -170,9 +170,10 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.equal(checkRedirect('/gf', '?surface=bs'), '/', '/gf?surface=bs must redirect to home without params');
     assert.equal(checkRedirect('/unknown-path'), '/', 'unknown path must redirect to home');
 
-    // 404 page must NOT redirect
-    assert.equal(checkRedirect('/404'), null, '/404 must not redirect');
-    assert.equal(checkRedirect('/404.html'), null, '/404.html must not redirect');
+    // 404 page redirects automatically to root when not in preview
+    assert.equal(checkRedirect('/404'), '/', '/404 must redirect to home');
+    assert.equal(checkRedirect('/404.html'), '/', '/404.html must redirect to home');
+    assert.equal(checkRedirect('/404', '?_storyblok=123'), null, '404 in preview must not redirect');
 
     // Storyblok preview requests are exempt from redirects to prevent interrupting the editor
     assert.equal(checkRedirect('/unknown-path', '?_storyblok=123'), null, 'Storyblok preview on unknown path must be exempt from redirect');
@@ -214,11 +215,11 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.doesNotMatch(toml, /from\s*=\s*"\/\*"\s*\n\s*query\s*=/, 'Netlify toml must not have catch-all query rewrites for /*');
   });
 
-  test('404 page exists and contains accessible link to root page without auto-redirect or lazy loader', () => {
+  test('404 page exists and contains automatic redirect to root, accessible link, and favicon', () => {
     const notFoundHtml = fs.readFileSync(path.resolve('_site/404.html'), 'utf8');
-    assert.match(notFoundHtml, /<a\s+href="\/"[^>]*class="[^"]*link-button[^"]*"[^>]*>Zurück zur Startseite<\/a>/, '404 page must render a link to /');
+    assert.match(notFoundHtml, /http-equiv="refresh"\s+content="0;\s*url=\/"/, '404 page must auto-refresh to root');
+    assert.match(notFoundHtml, /<a\s+href="\/"[^>]*class="[^"]*link-button[^"]*"[^>]*>Zurück zur Startseite<\/a>/, '404 page must render an accessible fallback link to /');
     assert.doesNotMatch(notFoundHtml, /class="lazy-loader"/, '404 page must not render lazy-loader');
-    assert.doesNotMatch(notFoundHtml, /http-equiv="refresh"/, '404 page must not auto-refresh to root');
     assert.match(notFoundHtml, /<link\s+rel="icon"\s+type="image\/webp"\s+href="\/assets\/images\/favicon\.webp">/, '404 page must render favicon.webp in head');
   });
 });
