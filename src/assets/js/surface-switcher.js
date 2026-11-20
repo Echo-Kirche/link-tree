@@ -4,7 +4,7 @@
   const VALID_THEMES = ['light', 'white', 'pale', 'warm', 'soft', 'dark', 'teal', 'lavender'];
   const VALID_SURFACES = ['instagram', 'wolfsburg', 'gifhorn', 'helmstedt', 'default', 'all'];
   const VALID_SLUGS = ['ig', 'instagram', 'wob', 'wolfsburg', 'gf', 'gifhorn', 'he', 'helmstedt', 'default', 'all'];
-  const VALID_ROUTES = ['', 'index.html', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'impressum', 'datenschutz', 'assets', 'css'];
+  const VALID_ROUTES = ['', 'index.html', 'home', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'impressum', 'datenschutz', 'assets', 'css'];
 
   const getP = (q) => q.get('surface') || q.get('switch') || q.get('campus') || q.get('location');
 
@@ -21,7 +21,7 @@
     const isPreview =
       location.hostname === 'localhost' ||
       location.hostname === '127.0.0.1' ||
-      ['_storyblok', '_storyblok_tk', 'preview', '_token'].some((k) => q.has(k)) ||
+      ['_storyblok', '_storyblok_tk', 'preview', '_token', '_storyblok_c'].some((k) => q.has(k) || location.search.includes(k)) ||
       (window.self !== window.top && (document.referrer || '').includes('storyblok.com')) ||
       (document.querySelector('meta[name="storyblok-version"]')?.getAttribute('content') === 'draft');
 
@@ -31,7 +31,7 @@
     const isUnmatchedParam = Boolean(p && !VALID_SLUGS.includes(p.toLowerCase().replace(/^\/|\/$/g, '').trim()));
     const isUnmatchedFlag = Boolean(q.has('bs') || q.has('/bs'));
 
-    if (is404 || isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag) {
+    if (!isPreview && (is404 || isTestBlocked || isUnmatchedPath || isUnmatchedParam || isUnmatchedFlag)) {
       if (typeof location.replace === 'function') location.replace('/');
       else location.href = '/';
       return;
@@ -49,7 +49,7 @@
       if (q.has(k) || q.has(v)) return v;
     }
     const seg = location.pathname.toLowerCase().replace(/^\/|\/$/g, '').split('/')[0];
-    return M[seg] || (VALID_SURFACES.includes(seg) ? seg : (seg === 'test' ? 'default' : document.documentElement.dataset.surface || 'default'));
+    return M[seg] || (VALID_SURFACES.includes(seg) ? seg : (seg === 'test' || seg === 'home' ? 'default' : document.documentElement.dataset.surface || 'default'));
   };
 
   const getTheme = () => {

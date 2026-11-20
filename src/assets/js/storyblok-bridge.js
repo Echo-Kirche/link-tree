@@ -7,6 +7,8 @@
     typeof window !== 'undefined' &&
     (location.search.includes('_storyblok') ||
       location.search.includes('_storyblok_tk') ||
+      location.search.includes('_token') ||
+      location.search.includes('preview=') ||
       (window.self !== window.top && (document.referrer || '').includes('storyblok.com')) ||
       window.__TEST_STORYBLOK_BRIDGE__);
 
@@ -24,7 +26,8 @@
 
   const q = new URLSearchParams(location.search);
   const token = q.get('_token') || q.get('_storyblok_tk[token]') || '';
-  const slug = q.get('_slug') || 'home';
+  const pathSeg = (typeof location !== 'undefined' && location.pathname ? location.pathname : '').toLowerCase().replace(/^\/|\/$/g, '').split('/')[0];
+  const slug = q.get('_slug') || (pathSeg && pathSeg !== 'home' && pathSeg !== 'index.html' ? pathSeg : 'home');
 
   function esc(s) {
     return s ? String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '';

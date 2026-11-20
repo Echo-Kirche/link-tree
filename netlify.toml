@@ -137,6 +137,17 @@
   to = "/instagram/"
   status = 301
 
+# Map Storyblok "home" slug to root path /
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 200
+
+[[redirects]]
+  from = "/home/*"
+  to = "/"
+  status = 200
+
 # Allow /test only in Storyblok preview or with explicit preview query parameter
 [[redirects]]
   from = "/test"
@@ -160,6 +171,25 @@
   from = "/test/*"
   query = {preview = ":preview"}
   to = "/test/index.html"
+  status = 200
+
+# Exempt Storyblok Visual Editor preview requests from 404 redirects and preserve query parameters
+[[redirects]]
+  from = "/*"
+  query = {_storyblok = ":storyblok"}
+  to = "/"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  query = {_storyblok_tk = ":token"}
+  to = "/"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  query = {_token = ":token"}
+  to = "/"
   status = 200
 
 # On published production site, redirect regular visitors from /test to home
