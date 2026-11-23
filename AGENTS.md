@@ -31,13 +31,22 @@ Every contribution MUST honor these five foundational invariants:
 - **2-Click Consent YouTube Facade**: Direct YouTube `<iframe>` embeds are strictly forbidden on initial load. Videos must render a static thumbnail facade (`video-embed.js`, < 1.5 KB). An iframe is dynamically injected ONLY upon an explicit user play click, loading exclusively from `https://www.youtube-nocookie.com`.
 - **Mandatory Privacy Ledger Compliance**: Any modification introducing a new network origin MUST be documented in [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md) and approved against [`docs/LEGAL-PRIVACY-DE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md).
 
-### 1.4 Brand Color Constancy Invariant
+### 1.4 Brand Color Constancy Invariant & Official Brand Assets
 - **Immutable Color Palette**: Brand colors (`#08415C` Dark Teal Blue, `#846B8A` Muted Lavender, `#FEFADC` Light Pastel Yellow) must **never** change based on URL parameters, surfaces, campus routes (`/gf`, `/wob`, `/he`), or sublinks.
 - **Content Filtering Only**: Surfaces and campus switches filter content visibility only; they never alter brand styling, button action fills, or typography tokens.
+- **Brand Logos & Media Assets Location**: All verified brand assets, official logos, and campus photography are self-hosted in [`src/assets/images/`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/):
+  - Primary Logo: [`src/assets/images/logo.svg`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/logo.svg) (Dark teal geometric mark, default avatar).
+  - Echo Kids Sub-brand Logo: [`src/assets/images/echo-kids.png`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/echo-kids.png).
+  - Web Favicon: [`src/assets/images/favicon.webp`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/favicon.webp).
+  - Avatar Placeholder: [`src/assets/images/avatar.svg`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/avatar.svg).
+  - Campus & Banner Photography: `src/assets/images/echo-home-gifhorn-1024x682.webp`, `src/assets/images/echo-home-helmstedt-803x1024.webp`, `src/assets/images/echo-home-wolfsburg-1024x666.webp`, `src/assets/images/es26-hero-1-1536x864.webp`.
+  - Fallback SVGs: `photo-vertical.svg`, `project-horizontal.svg`, `video-thumbnail.svg`.
+  - See [`docs/STYLEGUIDE.md#4-logo--media-rules`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md) for the complete asset inventory table, dimensions, and Schutzzone rules.
 
-### 1.5 Pure CSS Interactivity & Accessibility (WCAG 2.2 AA)
+### 1.5 Pure CSS Interactivity, Token Pairing & Accessibility (WCAG 2.2 AA)
 - **Zero-JS Collapsible Interactivity**: Interactive disclosures (e.g., `DropdownCard` service times) MUST use native HTML5 `<details>` and `<summary>` elements with pure CSS transitions.
-- **Keyboard & Contrast Compliance**: All interactive elements must provide visible `:focus-visible` focus rings and maintain a minimum contrast ratio of 4.5:1 for normal text (3:1 for large text).
+- **Strict Token Pairing**: Background colors must never be applied in isolation without an explicitly declared paired foreground/icon color. Follow `--color-[surface]` and `--color-on-[surface]` semantics (see [`docs/STYLEGUIDE.md#8-color-contrast-token-pairing--automated-css-testing`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md)).
+- **Keyboard & Contrast Compliance**: All interactive elements must provide visible `:focus-visible` focus rings and maintain a minimum contrast ratio of 4.5:1 for normal text (3:1 for large text / interactive UI).
 - **Reduced Motion**: All animations must respect `@media (prefers-reduced-motion: reduce)`.
 
 ---
@@ -80,6 +89,8 @@ Every contribution MUST honor these five foundational invariants:
 - **DO** compile Sass via `npm run build:sass` into the single output `_site/css/main.css`.
 - **DO** test both local fallback data (`npm run validate`) and Storyblok synchronization schemas before committing.
 - **DO** maintain the exact "e" clear space (*Schutzzone*) on all four sides of the Echo logo.
+- **DO** locate and reference brand logos and media assets in `src/assets/images/` as cataloged in [`docs/STYLEGUIDE.md#4-logo--media-rules`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md).
+- **DO** strictly pair all background tokens with their corresponding `--color-on-*` foreground tokens.
 - **DO** compress and convert all uploaded images to `.webp` format (max 400 KB, 1900px max width for heroes, 1400px for cards).
 - **DO** keep operator legal identity in `src/_data/operator.json` and maintain canonical external legal links to `https://kirche-echo.de/impressum/` and `https://kirche-echo.de/datenschutz/`.
 - **DO** run `npm run build && npm test` and ensure all 45+ test assertions pass.
@@ -157,7 +168,7 @@ flowchart TD
 | [`STORYBLOK-STARTER-GUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/STORYBLOK-STARTER-GUIDE.md) | Step-by-step onboarding guide for church editors setting up a new Storyblok space. |
 | [`docs/ARCHITECTURE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/ARCHITECTURE.md) | Complete system architecture, data flows, routing mechanics, and security headers. |
 | [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md) | Production specification for Storyblok blok schemas and local fallback data. |
-| [`docs/STYLEGUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md) | Authoritative visual design system: typography, colors, logo clear space, and tokens. |
+| [`docs/STYLEGUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md) | Authoritative visual design system: logo & media inventory (`src/assets/images/`), typography, colors, logo clear space, token pairing, and WCAG contrast rules. |
 | [`docs/DEPLOYMENT.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/DEPLOYMENT.md) | Static hosting, Netlify build hooks, webhook rebuilds, and caching policies. |
 | [`docs/LEGAL-PRIVACY-DE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md) | German/EU legal compliance requirements (DDG §5 Impressum, DSGVO Datenschutz). |
 | [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md) | Ledger of approved third-party network origins. |
