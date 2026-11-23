@@ -85,6 +85,7 @@ All 12 components are declared in [`storyblok/components.json`](file:///Users/Sh
 
 ```
 link_page (Root Page)
+├── a11y_button--skip (Pre-rendered skip-to-content keyboard anchor)
 ├── profile_header (Logo avatar, church name, bio tagline)
 ├── body (Ordered list of content blocks)
 │   ├── link_button (Full-width action button with optional icon)
@@ -95,6 +96,8 @@ link_page (Root Page)
 │   ├── video_link_card (Privacy 2-click video card with YouTube ID support)
 │   ├── group_block (Container card grouping nested buttons or media cards)
 │   └── section_heading (Uppercase category divider)
+├── a11y_button--floating (Persistent bottom-right accessibility trigger)
+├── a11y_modal (HTML5 dialog for font scaling & 21:1 high contrast modes)
 └── footer_legal (Organization details, Impressum/Datenschutz links, social buttons)
     └── social_item (Circular icon buttons for Instagram, YouTube, WhatsApp, etc.)
 ```
@@ -140,7 +143,7 @@ link_page (Root Page)
    - Zero tracking cookies, zero analytics, zero external font downloads.
 3. **Runtime Budget Checks (`scripts/verify-build.mjs`)**:
    - Target production JavaScript: 0 KB (excluding justified vanilla helpers).
-   - Maximum production script size: < 6 KB.
+   - Maximum production script size: < 10 KB (for `surface-switcher.js` covering campus switching, 6 brand themes, and the responsive a11y preferences modal & contrast toggler).
    - Preview visual editor bridge: < 16 KB.
    - Forbidden: Initial `<iframe>` tags, Google Fonts, unauthorized `<script>` tags, and `javascript:` URIs.
 

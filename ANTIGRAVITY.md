@@ -61,7 +61,7 @@ npm run build:eleventy
 # 4. Enforce bundle budget and scan for unauthorized scripts/iframes
 node scripts/verify-build.mjs
 
-# 5. Run full automated test suite (45+ tests across markup, routing, states)
+# 5. Run full automated test suite (55+ tests across markup, routing, states)
 npm test
 ```
 

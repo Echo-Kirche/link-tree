@@ -25,6 +25,7 @@ This file provides operational guidance for Anthropic's Claude Code and Claude-b
 - **Zero Token Leaks**: Never embed `STORYBLOK_TOKEN` or private keys in HTML meta tags, data attributes, or client bundles.
 - **Privacy (DSGVO)**: Zero initial third-party connections. Self-hosted fonts (`Clash Display`, `Inter`). No cookies on initial visit. 2-click consent facade for YouTube embeds via `youtube-nocookie.com`.
 - **Brand Color Constancy**: Brand colors (`#08415C` Dark Teal Blue, `#846B8A` Muted Lavender, `#FEFADC` Light Pastel Yellow) must **never** change based on URL parameters, surfaces, or campus routes.
+- **Accessibility (a11y) Suite**: Pre-rendered skip link (`.a11y-button--skip`), floating trigger (`.a11y-button--floating`), HTML5 `<dialog class="a11y-modal">` with fixed viewport positioning (`position: fixed; inset: 0; z-index: 99999`), mobile background scroll lock, font scaling (100%, 115%, 130%), and 21:1 WCAG AAA high contrast modes (`black-on-white`, `white-on-black`).
 - **Logo Clear Space**: Minimum clear space equal to the height/width of lowercase `"e"` from the logo on all four sides. Never stretch, compress, rotate, or distort.
 - **External Legal Links**: Impressum and Datenschutz point to canonical external URLs (`https://kirche-echo.de/...`). Local `/impressum` or `/datenschutz` routes must never be served.
 
@@ -45,7 +46,7 @@ npm run build:eleventy
 # Complete production build pipeline (validate -> sass -> 11ty -> verify)
 npm run build
 
-# Run automated test suites (45+ tests across markup, states, routes)
+# Run automated test suites (55+ tests across markup, states, routes)
 npm test
 
 # Start local dev server with hot reload
@@ -62,5 +63,5 @@ npm run dev
 
 ### Post-Flight:
 1. Run `npm run validate && npm run build && npm test`.
-2. Ensure all 45+ test assertions pass with 0 errors.
+2. Ensure all 55+ test assertions pass with 0 errors.
 3. Update corresponding `docs/*.md` if any schema, token, or dependency was altered.

@@ -186,7 +186,7 @@ The component strictly consumes paired design system tokens to ensure minimum 4.
 - **Surface**: `background-color: var(--color-surface); color: var(--color-on-surface);`
 - **Focus Ring**: `outline: 3px solid var(--color-focus-ring); outline-offset: 3px;`
 
-#### Semantic HTML Patterns
+#### Semantic HTML Patterns & Implementations
 
 1. **Skip-to-Content Link** (placed at start of `<body>` targeting `<main id="content">`):
 ```html
@@ -198,13 +198,36 @@ The component strictly consumes paired design system tokens to ensure minimum 4.
 </a>
 ```
 
-3. **Accessibility Modal Dialog (`.a11y-modal`)**:
-Native HTML5 `<dialog>` providing user preferences for font size increase and high contrast modes:
-- **Font Scaling**: Standard (`100%`), Groß (`115%` via `html[data-font-size="large"]`), Sehr groß (`130%` via `html[data-font-size="xlarge"]`).
+2. **Floating Accessibility Trigger Button** (persistent fixed button at bottom-right):
+```html
+<button type="button" class="a11y-button a11y-button--floating" id="a11y-trigger" aria-haspopup="dialog" aria-controls="a11y-modal" aria-label="Barrierefreiheit Optionen öffnen">
+  <span class="a11y-button__icon" aria-hidden="true">
+    <svg class="fa-svg fa-universal-access" viewBox="0 0 512 512" fill="currentColor" width="16" height="16">...</svg>
+  </span>
+  <span class="a11y-button__label">Barrierefreiheit</span>
+</button>
+```
+
+3. **Accessibility Preference Modal Dialog (`.a11y-modal`)**:
+Native HTML5 `<dialog>` providing responsive user preferences for font size scaling and high contrast modes:
+- **Mobile, DOM & Desktop Viewport Robustness**: Positioned with `position: fixed; inset: 0; z-index: 99999; width: 100vw; height: 100vh;` and centered flexbox display (`&[open]`). Prevents `<dialog>` fallback rendering below page footer on mobile devices.
+- **Scroll Bleed Prevention**: Dynamically applies `document.body.style.overflow = 'hidden'` while modal is open, restored to `''` upon modal dismissal.
+- **Dismissal Controls**: Closes via `#a11y-modal-close`, backdrop clicks/taps (`e.target === modal`), or the `Escape` key (`cancel` / `close` event listeners).
+- **Font Scaling Levels**:
+  - Standard (`100%`): baseline root typography.
+  - Groß (`115%`): activated via `html[data-font-size="large"]`.
+  - Sehr groß (`130%`): activated via `html[data-font-size="xlarge"]`.
 - **High Contrast Modes**:
-  - `[data-contrast="black-on-white"]`: Pure `#000000` text on `#FFFFFF` surface (21:1 contrast).
-  - `[data-contrast="white-on-black"]`: Pure `#FFFFFF` text on `#000000` surface (21:1 contrast).
-- **Trigger**: Click `.a11y-button--floating` or `#a11y-trigger` to open the modal. Dismissible via the close button, clicking outside the modal, or pressing the `Escape` key.
+  - `[data-contrast="black-on-white"]`: Pure `#000000` text, borders, and fills on `#FFFFFF` surface (21:1 WCAG AAA contrast ratio).
+  - `[data-contrast="white-on-black"]`: Pure `#FFFFFF` text, borders, and fills on `#000000` surface with auto-inverted avatar logo (21:1 WCAG AAA contrast ratio).
+  - Standard (`normal`): Restores all semantic colors back to the active brand theme.
+
+4. **Test Page Interactive Verification (`/test/index.html`)**:
+Dedicated toolbar section `.a11y-test-section` with interactive test controls:
+- `#a11y-test-skip`: Smoothly scrolls to `.linktree-list`, shifts focus, and temporarily illuminates the focus ring.
+- `#a11y-test-contrast-toggle`: Cycles `Standard` → `black-on-white` → `white-on-black` → `Standard`.
+- `#a11y-test-modal-trigger`: Opens the `.a11y-modal` dialog.
+- Live Status Badges: `#active-contrast-badge` and `#active-font-size-badge` with `aria-live="polite"`.
 
 ---
 

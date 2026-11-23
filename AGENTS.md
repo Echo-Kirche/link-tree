@@ -19,6 +19,7 @@ Every contribution MUST honor these five foundational invariants:
 ### 1.2 Schema & Content-Model Lock
 - **Schema Conformity**: All components, local data files (`src/_data/site.json`), and CMS stories must conform strictly to [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md), [`content.schema.json`](file:///Users/Shared/projeckt/goto/link-tree/content.schema.json), and [`storyblok/components.json`](file:///Users/Shared/projeckt/goto/link-tree/storyblok/components.json).
 - **Graceful Nullability & Fallbacks**: Components MUST gracefully handle optional, empty, or undefined CMS fields (such as `bio`, `icon`, `image`, `description`, `details`, `kidsLabel`, `actionLabel`) without breaking markup, throwing Nunjucks template errors, or rendering `[object Object]`.
+- **Image Box & Media Links Invariant**: Media cards (`image_card_horizontal`, `image_card_vertical`) MUST support dual image input representations: structured image asset objects (`{ filename }` or `{ src, alt, width, height }`) AND direct URL/path strings (`localAsset` or `safeUrl`). The `label` field is optional; omitting it renders a full-card clickable image banner without an empty title container.
 - **Offline Fallback Guarantee**: The build pipeline must succeed completely from local offline data (`src/_data/site.json`, `src/_data/operator.json`) whenever `STORYBLOK_TOKEN` is unset or the Storyblok API is unreachable.
 - **Dual-Tier Curation**:
   - *Tier 1 (`display_in_default` / `displayInDefault`)*: Curates the default landing page (`/`). When `false`, the item is omitted from `/`.
@@ -48,6 +49,13 @@ Every contribution MUST honor these five foundational invariants:
 - **Strict Token Pairing**: Background colors must never be applied in isolation without an explicitly declared paired foreground/icon color. Follow `--color-[surface]` and `--color-on-[surface]` semantics (see [`docs/STYLEGUIDE.md#8-color-contrast-token-pairing--automated-css-testing`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md)).
 - **Keyboard & Contrast Compliance**: All interactive elements must provide visible `:focus-visible` focus rings and maintain a minimum contrast ratio of 4.5:1 for normal text (3:1 for large text / interactive UI).
 - **Reduced Motion**: All animations must respect `@media (prefers-reduced-motion: reduce)`.
+- **Accessibility (a11y) Component Suite & Preferences Modal**:
+  - *Skip-to-Content*: All base templates MUST render `<a href="#content" class="a11y-button a11y-button--skip">` at the start of `<body>`. It remains hidden offscreen until keyboard-focused.
+  - *Floating Access Trigger*: A persistent floating pill button (`.a11y-button--floating`) at bottom-right opens the preferences popup via `aria-controls="a11y-modal"`.
+  - *HTML5 `<dialog class="a11y-modal">`*: Fully accessible modal for user display preferences. Must use fixed viewport centering (`position: fixed; inset: 0; z-index: 99999; inline-size: 100vw; block-size: 100vh;`) to prevent mobile fallback rendering at document bottom. Must lock background scrolling (`document.body.style.overflow = 'hidden'`) while open.
+  - *Font Scaling*: Supports 3 discrete levels via `html[data-font-size="normal|large|xlarge"]` (100%, 115%, 130%).
+  - *High Contrast Modes*: Supports `[data-contrast="black-on-white"]` and `[data-contrast="white-on-black"]` (providing 21:1 WCAG AAA contrast ratio) with automatic avatar logo inversion. Reversion to `normal` restores the active brand theme.
+  - *Test Page Verification*: The `/test/index.html` route MUST provide operational test controls (`#a11y-test-skip`, `#a11y-test-contrast-toggle`, `#a11y-test-modal-trigger`) and live status badges (`#active-contrast-badge`, `#active-font-size-badge`) verified across Mobile, DOM, and Desktop viewports.
 
 ---
 
@@ -91,14 +99,17 @@ Every contribution MUST honor these five foundational invariants:
 - **DO** maintain the exact "e" clear space (*Schutzzone*) on all four sides of the Echo logo.
 - **DO** locate and reference brand logos and media assets in `src/assets/images/` as cataloged in [`docs/STYLEGUIDE.md#4-logo--media-rules`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md).
 - **DO** strictly pair all background tokens with their corresponding `--color-on-*` foreground tokens.
+- **DO** maintain the pre-rendered skip-to-content link targeting `#content` and floating a11y trigger across all base templates.
+- **DO** preserve high contrast and font scaling token contracts and ensure test mode controls function across mobile, DOM, and desktop.
 - **DO** compress and convert all uploaded images to `.webp` format (max 400 KB, 1900px max width for heroes, 1400px for cards).
 - **DO** keep operator legal identity in `src/_data/operator.json` and maintain canonical external legal links to `https://kirche-echo.de/impressum/` and `https://kirche-echo.de/datenschutz/`.
-- **DO** run `npm run build && npm test` and ensure all 45+ test assertions pass.
+- **DO** run `npm run build && npm test` and ensure all 55+ test assertions pass.
 
 ### DO NOT:
 - **DO NOT** serve `/impressum` or `/datenschutz` as local routes on this domain; they must be external links pointing to `https://kirche-echo.de/...`.
 - **DO NOT** delete, rename, or archive documentation files without explicit user review.
 - **DO NOT** install client-side UI frameworks (React, Vue, Svelte, Alpine) or hydration scripts.
+- **DO NOT** break `.a11y-modal` fixed viewport centering or allow mobile background scrolling while the modal is open.
 - **DO NOT** make client-side network calls to the Storyblok API in production.
 - **DO NOT** add external fonts (`fonts.googleapis.com`, Adobe Fonts) or third-party tracking scripts.
 - **DO NOT** use YouTube `<iframe>` tags directly in Nunjucks templates without the 2-click consent facade.

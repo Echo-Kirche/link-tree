@@ -18,6 +18,7 @@ This document provides step-by-step procedural playbooks for common engineering 
 8. [`skill: privacy-review`](#skill-privacy-review)
 9. [`skill: legal-pages-integration`](#skill-legal-pages-integration)
 10. [`skill: deployment-and-verification`](#skill-deployment-and-verification)
+11. [`skill: accessibility-and-a11y-suite`](#skill-accessibility-and-a11y-suite)
 
 ---
 
@@ -218,6 +219,31 @@ This document provides step-by-step procedural playbooks for common engineering 
    npm run build
    npm test
    ```
-2. Verify all 45+ test assertions pass with 0 errors.
-3. Confirm `_site/` output has no unexpected JS files and that permitted JS bundles stay under budget (< 6 KB for production scripts, < 16 KB for preview bridge).
+2. Verify all 55+ test assertions pass with 0 errors.
+3. Confirm `_site/` output has no unexpected JS files and that permitted JS bundles stay under budget (< 10 KB for production scripts, < 16 KB for preview bridge).
 4. Verify security headers in `netlify.toml` and `_headers` are consistent.
+
+---
+
+## Skill: accessibility-and-a11y-suite
+
+**Use When**: Creating, modifying, or testing accessibility features, skip links, user preferences popups, font scaling, or high-contrast display modes.
+
+**Key Files**:
+- `src/_includes/components/A11yButton.njk`
+- `src/_includes/layouts/base.njk`
+- `src/styles/components/_a11y-button.scss`
+- `src/styles/tokens/_semantic.scss`
+- `src/styles/base/_typography.scss`
+- `src/assets/js/surface-switcher.js`
+- `src/content/test.njk`
+- `docs/STYLEGUIDE.md`
+
+**Procedure**:
+1. **Skip-to-Content Link**: Ensure `<a href="#content" class="a11y-button a11y-button--skip">` is pre-rendered at the top of `<body>` and hidden offscreen until keyboard-focused.
+2. **Floating Access Trigger**: Keep `.a11y-button--floating` positioned at the bottom-right of the viewport with appropriate `aria-haspopup="dialog"` and `aria-controls="a11y-modal"`.
+3. **Modal Dialog Centering & Mobile Resilience**: Ensure `.a11y-modal` enforces viewport-fixed positioning (`position: fixed; inset: 0; z-index: 99999; inline-size: 100vw; block-size: 100vh;`) so dialog fallback rendering never breaks below the page footer on mobile.
+4. **Scroll Bleed Prevention**: Lock background body scrolling (`document.body.style.overflow = 'hidden'`) while modal is open, and restore upon close/cancel.
+5. **Token Pairing & 21:1 Contrast**: All a11y buttons must pair background and foreground tokens. High-contrast modes (`black-on-white`, `white-on-black`) must achieve 21:1 WCAG AAA contrast and restore brand theme tokens cleanly on Standard reset.
+6. **Test Page Verification**: Maintain functional test controls on `/test` (`#a11y-test-skip`, `#a11y-test-contrast-toggle`, `#a11y-test-modal-trigger`) and live status badges (`#active-contrast-badge`, `#active-font-size-badge`).
+7. Run `npm test` to verify markup, styles, and behavioral contracts.

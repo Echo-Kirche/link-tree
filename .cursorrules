@@ -18,6 +18,7 @@ All AI coding assistants (Cursor, ChatGPT, Windsurf, Claude, Copilot, Antigravit
 - **Logo Clear Space**: Clear buffer equal to lowercase `"e"` on all four sides. Never distort or rotate.
 - **External Legal Links**: Impressum and Datenschutz point to canonical external URLs (`https://kirche-echo.de/...`). Local routes must never be served.
 - **Interactivity**: Pure CSS `<details>` / `<summary>` for collapsible cards (`DropdownCard`).
+- **Accessibility (a11y) Suite**: Skip link, floating trigger, HTML5 dialog for font scaling & 21:1 high contrast modes, mobile fixed positioning, and scroll locking.
 
 ## 3. Verification Sequence
 Always run before reporting task completion:
@@ -26,4 +27,4 @@ npm run validate
 npm run build
 npm test
 ```
-All 45+ test assertions must pass with 0 errors.
+All 55+ test assertions must pass with 0 errors.

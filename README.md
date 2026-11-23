@@ -6,6 +6,67 @@ A high-performance, static-first, privacy-compliant link-in-bio website with Sto
 
 ---
 
+## Quick Start: Git & AI Agent Setup
+
+### 1. How to Clone This Repository
+```bash
+# Clone the upstream repository
+git clone https://github.com/subinamathew/link-tree.git
+cd link-tree
+
+# OR clone your personal fork (replace <YOUR_USERNAME> with your GitHub handle)
+git clone https://github.com/<YOUR_USERNAME>/link-tree.git
+cd link-tree
+```
+
+### 1b. How to Get a GitHub Account, Username & Personal Access Token (PAT)
+```bash
+# 1. Sign up for a free GitHub account (your username is chosen during signup)
+open https://github.com/join
+
+# 2. Generate a Personal Access Token (PAT) with 'repo' scope
+open https://github.com/settings/tokens
+```
+
+### 1c. How to Login to Git and Set Username & Password / Token
+```bash
+# Set your Git commit identity
+git config --global user.name "<YOUR_GITHUB_USERNAME>"
+git config --global user.email "<YOUR_EMAIL@EXAMPLE.COM>"
+
+# Cache credentials in keychain (use your PAT as the password when prompted)
+git config --global credential.helper osxkeychain   # macOS
+# git config --global credential.helper store       # Linux / Windows
+
+# OR log in interactively via GitHub CLI (recommended)
+gh auth login
+```
+
+### 2. How to Import into AI Agents
+```bash
+# Navigate to the project directory
+cd link-tree
+
+# Launch with your agent environment or open as active workspace
+claude       # Claude Code
+cursor .     # Cursor IDE
+code .       # VS Code / GitHub Copilot
+# Antigravity: Open the 'link-tree' folder as your active Workspace
+```
+
+### 3. What is the First Command to Agents
+```bash
+# Shell command for initial setup and pre-flight verification
+npm install && npm run validate && npm run build && npm test
+```
+
+```text
+# First prompt instruction to send your AI agent:
+Read AGENTS.md and docs/STYLEGUIDE.md to internalize all architectural rules, then run: npm run validate && npm run build && npm test
+```
+
+---
+
 ## 1. Master Documentation Index & File Purpose Mapping
 
 > ⚠️ **FILE INTEGRITY GUARDRAIL FOR ALL AGENTS & CONTRIBUTORS**:
@@ -106,6 +167,12 @@ All contributors and AI agents must adhere to these established standards:
 - **Dual-Tier Content Curation**:
   - **Tier 1 (`display_in_default`)**: Boolean switch on every component to curate the default homepage (`/`) independently.
   - **Tier 2 (`show_on` / `hide_on`)**: Target components to specific campus routes (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
+- **Accessibility (a11y) Suite & Responsive Preferences Modal**:
+  - Pre-rendered skip-to-content anchor (`<a href="#content" class="a11y-button a11y-button--skip">`) targeting the main content area for keyboard navigation.
+  - Persistent floating trigger button (`.a11y-button--floating`) providing instant access to the preferences popup.
+  - Native HTML5 `<dialog class="a11y-modal">` for font scaling (100%, 115%, 130%) and 21:1 WCAG AAA high-contrast modes (`black-on-white`, `white-on-black`).
+  - Viewport-fixed positioning (`position: fixed; inset: 0; z-index: 99999`) and background scroll locking (`overflow: hidden`) for seamless mobile, DOM, and desktop operation.
+  - Dedicated interactive testing toolbar on `/test` with live status badges.
 - **Privacy-First (GDPR / DSGVO Compliant)**:
   - Zero cookies on initial page visit (no cookie banner required).
   - 2-click consent YouTube video player facade (`video-embed.js`, < 1.5 KB): YouTube iframes load only after an explicit user click, using `youtube-nocookie.com`.
@@ -120,6 +187,7 @@ All contributors and AI agents must adhere to these established standards:
 
 ```
 link_page (Page Root)
+├── a11y_button--skip (Pre-rendered skip-to-content keyboard anchor)
 ├── profile_header (Logo avatar, church name, bio tagline)
 ├── body (Ordered list of content blocks)
 │   ├── link_button (Full-width button with custom icon)
@@ -130,6 +198,8 @@ link_page (Page Root)
 │   ├── video_link_card (Privacy 2-click video card with YouTube ID support)
 │   ├── group_block (Container box for grouping nested buttons and cards)
 │   └── section_heading (Uppercase category divider)
+├── a11y_button--floating (Persistent bottom-right accessibility trigger)
+├── a11y_modal (HTML5 dialog for font scaling & 21:1 high contrast modes)
 └── footer_legal (Organization info, Impressum & Datenschutz links, social buttons)
     └── social_item (Circular icon buttons for Instagram, YouTube, Spotify, WhatsApp)
 ```
