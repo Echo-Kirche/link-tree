@@ -103,7 +103,7 @@
           "details": "Unsere Gottesdienste finden jeden Sonntag um 10:00 und 12:00 Uhr nebenan im BSK-Saal, Schützenplatz 3 statt.",
           "displayInDefault": true,
           "hasKids": true,
-          "kidsLabel": "Echo Kids verfügbar",
+          "kidsLabel": "Kinderkirche angeboten",
           "url": "https://kirche-echo.de/gifhorn",
           "actionLabel": "Standort Gifhorn →",
           "showOn": [
@@ -118,7 +118,7 @@
           "details": "Unsere Gottesdienste finden jeden Sonntag um 10:00 und 12:00 Uhr nebenan im BSK-Saal, Schützenplatz 3 statt.",
           "displayInDefault": true,
           "hasKids": true,
-          "kidsLabel": "Echo Kids verfügbar",
+          "kidsLabel": "Kinderkirche angeboten",
           "url": "https://kirche-echo.de/gifhorn",
           "actionLabel": "Standort Gifhorn →",
           "showOn": [
@@ -133,7 +133,7 @@
           "details": "Gottesdienst & Community",
           "displayInDefault": true,
           "hasKids": true,
-          "kidsLabel": "Echo Kids verfügbar",
+          "kidsLabel": "Kinderkirche angeboten",
           "url": "https://kirche-echo.de/wolfsburg",
           "actionLabel": "Standort Wolfsburg →",
           "showOn": [
@@ -148,7 +148,7 @@
           "details": "Gottesdienst & Gemeinschaft",
           "displayInDefault": true,
           "hasKids": false,
-          "kidsLabel": "Echo Kids verfügbar",
+          "kidsLabel": "Kinderkirche angeboten",
           "url": "https://kirche-echo.de/helmstedt",
           "actionLabel": "Standort Helmstedt →",
           "showOn": [

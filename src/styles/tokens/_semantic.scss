@@ -15,6 +15,14 @@
   --color-accent: var(--ek-ink, #08415C);
   --color-on-accent: #FFFFFF;
 
+  // Component Badge Tokens (Strictly Paired: Time & Kids Badges)
+  --color-badge-bg: var(--ek-warm, #FEFADC);
+  --color-badge-text-on-bg: var(--ek-ink, #08415C);
+  --color-badge-border: #DDDAB0;
+  --color-kids-badge-bg: #FFFFFF;
+  --color-kids-badge-text: var(--ek-ink, #08415C);
+  --color-kids-badge-border: rgba(0, 0, 0, 0.08);
+
   --color-surface-subtle: #F9F5CF;
   --color-card-bg: var(--color-surface, #FFFFFF);
   --color-border: #DDDAB0;
@@ -58,6 +66,12 @@
   --color-on-muted: var(--ek-ink, #08415C);
   --color-accent: var(--ek-ink, #08415C);
   --color-on-accent: #FFFFFF;
+  --color-badge-bg: var(--ek-warm, #FEFADC);
+  --color-badge-text-on-bg: var(--ek-ink, #08415C);
+  --color-badge-border: #E8E5BA;
+  --color-kids-badge-bg: #FFFFFF;
+  --color-kids-badge-text: var(--ek-ink, #08415C);
+  --color-kids-badge-border: var(--ek-hairline, #E0E0E0);
   --color-surface-subtle: #FAFAFA;
   --color-border: var(--ek-hairline, #E0E0E0);
   --color-action-bg: var(--color-primary, #08415C);
@@ -82,6 +96,12 @@
   --color-on-muted: var(--ek-ink, #08415C);
   --color-accent: var(--ek-ink, #08415C);
   --color-on-accent: #FFFFFF;
+  --color-badge-bg: var(--ek-warm, #FEFADC);
+  --color-badge-text-on-bg: var(--ek-ink, #08415C);
+  --color-badge-border: #DDDAB0;
+  --color-kids-badge-bg: #FFFFFF;
+  --color-kids-badge-text: var(--ek-ink, #08415C);
+  --color-kids-badge-border: #DDDAB0;
   --color-surface-subtle: #F9F5CF;
   --color-border: #DDDAB0;
   --color-action-bg: var(--color-primary, #08415C);
@@ -105,6 +125,12 @@
   --color-on-muted: var(--ek-ink, #08415C);
   --color-accent: var(--ek-ink, #08415C);
   --color-on-accent: #FFFFFF;
+  --color-badge-bg: var(--ek-warm, #FEFADC);
+  --color-badge-text-on-bg: var(--ek-ink, #08415C);
+  --color-badge-border: #E8E5BA;
+  --color-kids-badge-bg: #FFFFFF;
+  --color-kids-badge-text: var(--ek-ink, #08415C);
+  --color-kids-badge-border: var(--ek-hairline, #E0E0E0);
   --color-surface-subtle: #F5F5F5;
   --color-border: var(--ek-hairline, #E0E0E0);
   --color-action-bg: var(--color-primary, #08415C);
@@ -128,6 +154,12 @@
   --color-on-muted: #FFFFFF;
   --color-accent: #0C5375;
   --color-on-accent: #FFFFFF;
+  --color-badge-bg: #0C5375;
+  --color-badge-text-on-bg: #FFFFFF;
+  --color-badge-border: #0D587C;
+  --color-kids-badge-bg: #FFFFFF;
+  --color-kids-badge-text: var(--ek-ink, #08415C);
+  --color-kids-badge-border: #283036;
   --color-surface-subtle: #1D2125;
   --color-border: #283036;
   --color-action-bg: var(--color-primary, #08415C);
@@ -151,6 +183,12 @@
   --color-on-muted: var(--ek-warm, #FEFADC);
   --color-accent: var(--ek-warm, #FEFADC);
   --color-on-accent: var(--ek-ink, #08415C);
+  --color-badge-bg: var(--ek-warm, #FEFADC);
+  --color-badge-text-on-bg: var(--ek-ink, #08415C);
+  --color-badge-border: rgba(254, 250, 220, 0.4);
+  --color-kids-badge-bg: #FFFFFF;
+  --color-kids-badge-text: var(--ek-ink, #08415C);
+  --color-kids-badge-border: #0D587C;
   --color-surface-subtle: #0B4A68;
   --color-border: #0D587C;
   --color-action-bg: var(--color-primary, #FEFADC);
@@ -174,6 +212,12 @@
   --color-on-muted: var(--ek-warm, #FEFADC);
   --color-accent: var(--ek-warm, #FEFADC);
   --color-on-accent: #58415C;
+  --color-badge-bg: var(--ek-warm, #FEFADC);
+  --color-badge-text-on-bg: var(--ek-ink, #08415C);
+  --color-badge-border: rgba(254, 250, 220, 0.4);
+  --color-kids-badge-bg: #FFFFFF;
+  --color-kids-badge-text: var(--ek-ink, #08415C);
+  --color-kids-badge-border: #967D9C;
   --color-surface-subtle: #896F8F;
   --color-border: #967D9C;
   --color-action-bg: var(--color-primary, #FEFADC);

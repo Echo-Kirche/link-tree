@@ -36,7 +36,7 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(indexHtml, /class="dropdown-card__column-badge"/, 'DropdownCard column badges must exist');
     assert.match(indexHtml, /class="dropdown-card__kids-badge"/, 'DropdownCard kids badge must exist');
     assert.match(indexHtml, /dropdown-card__kids-logo|echo-kids\.png/, 'DropdownCard must render Echo Kids logo');
-    assert.match(indexHtml, /Echo Kids verfügbar/, 'DropdownCard must show Echo Kids available label');
+    assert.match(indexHtml, /Kinderkirche angeboten|Echo Kids verfügbar/, 'DropdownCard must show kids church label');
     assert.match(indexHtml, /BSK-Saal, Schützenplatz 3/, 'DropdownCard must show BSK-Saal venue');
     assert.match(indexHtml, /class="dropdown-card__action-link"/, 'DropdownCard action link must exist');
     assert.match(indexHtml, /Gifhorn \(10:00\)/, 'DropdownCard must include Gifhorn 10:00 card');

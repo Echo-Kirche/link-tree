@@ -167,7 +167,7 @@ export default async function () {
         details: t.details || '',
         display_in_default: t.displayInDefault ?? t.display_in_default ?? true,
         has_kids: t.hasKids ?? t.has_kids ?? false,
-        kids_label: t.kidsLabel || t.kids_label || 'Echo Kids verfügbar',
+        kids_label: (t.kidsLabel === 'Echo Kids' || t.kids_label === 'Echo Kids' || t.kidsLabel === 'Echo Kids verfügbar' || t.kids_label === 'Echo Kids verfügbar') ? 'Kinderkirche angeboten' : (t.kidsLabel || t.kids_label || 'Kinderkirche angeboten'),
         url: t.url || '',
         action_label: t.actionLabel || t.action_label || 'Standort & Infos →',
         show_on: t.showOn || t.show_on || [],

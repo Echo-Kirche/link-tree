@@ -39,9 +39,11 @@
           <div class="dropdown-card__column-badges">
             <span class="dropdown-card__column-badge">{{ col.time }}</span>
             {% if col.hasKids or col.has_kids or col.kids %}
-            <span class="dropdown-card__kids-badge" aria-label="{{ col.kidsLabel or col.kids_label or 'Echo Kids verfügbar' }}">
+            {% set kLabel = col.kidsLabel or col.kids_label %}
+            {% set cleanKidsLabel = 'Kinderkirche angeboten' if (not kLabel or kLabel == 'Echo Kids' or kLabel == 'Echo Kids verfügbar') else kLabel %}
+            <span class="dropdown-card__kids-badge" aria-label="{{ cleanKidsLabel }}">
               <img class="dropdown-card__kids-logo" src="/assets/images/echo-kids.png" alt="Echo Kids" width="39" height="14" loading="lazy">
-              <span>{{ col.kidsLabel or col.kids_label or "Echo Kids verfügbar" }}</span>
+              <span>{{ cleanKidsLabel }}</span>
             </span>
             {% endif %}
           </div>
@@ -70,9 +72,11 @@
           <div class="dropdown-card__time-badges">
             <span class="dropdown-card__time-badge">{{ timeItem.time }}</span>
             {% if timeItem.hasKids or timeItem.has_kids or timeItem.kids %}
-            <span class="dropdown-card__kids-badge" aria-label="{{ timeItem.kidsLabel or timeItem.kids_label or 'Echo Kids verfügbar' }}">
+            {% set kLabel = timeItem.kidsLabel or timeItem.kids_label %}
+            {% set cleanKidsLabel = 'Kinderkirche angeboten' if (not kLabel or kLabel == 'Echo Kids' or kLabel == 'Echo Kids verfügbar') else kLabel %}
+            <span class="dropdown-card__kids-badge" aria-label="{{ cleanKidsLabel }}">
               <img class="dropdown-card__kids-logo" src="/assets/images/echo-kids.png" alt="Echo Kids" width="39" height="14" loading="lazy">
-              <span>{{ timeItem.kidsLabel or timeItem.kids_label or "Echo Kids verfügbar" }}</span>
+              <span>{{ cleanKidsLabel }}</span>
             </span>
             {% endif %}
           </div>

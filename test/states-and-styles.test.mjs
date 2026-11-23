@@ -212,6 +212,8 @@ describe('Component State Changes & CSS Verification', () => {
       { name: 'Secondary Action / Button', bg: '--color-secondary', fg: '--color-on-secondary', minRatio: 4.5 },
       { name: 'Muted Container', bg: '--color-muted', fg: '--color-on-muted', minRatio: 4.5 },
       { name: 'Accent / Badge', bg: '--color-accent', fg: '--color-on-accent', minRatio: 4.5 },
+      { name: 'Time Badge (10:00 Uhr)', bg: '--color-badge-bg', fg: '--color-badge-text-on-bg', minRatio: 4.5 },
+      { name: 'Kids Badge (Kinderkirche)', bg: '--color-kids-badge-bg', fg: '--color-kids-badge-text', minRatio: 4.5 },
     ];
 
     themes.forEach((theme) => {
@@ -231,6 +233,30 @@ describe('Component State Changes & CSS Verification', () => {
         );
       });
     });
+  });
+
+  test('DropdownCard badges maintain high contrast without yellow-on-yellow in lavender & teal themes', () => {
+    const themes = getDefinedThemes();
+    const lavender = themes.find((t) => t.name === 'lavender');
+    const teal = themes.find((t) => t.name === 'teal');
+
+    assert.ok(lavender, 'Lavender theme must exist');
+    assert.ok(teal, 'Teal theme must exist');
+
+    const lavBg = resolveColor(lavender.tokens['--color-badge-bg'], lavender.tokens);
+    const lavFg = resolveColor(lavender.tokens['--color-badge-text-on-bg'], lavender.tokens);
+    assert.notEqual(lavBg.toLowerCase(), lavFg.toLowerCase(), 'Lavender badge must never use identical color for text and background (no yellow-on-yellow)');
+    const lavRatio = getWcagContrast(lavBg, lavFg);
+    assert.ok(lavRatio >= 4.5, `Lavender badge contrast (${lavBg} vs ${lavFg}) must be >= 4.5:1, got ${lavRatio.toFixed(2)}:1`);
+
+    const tealBg = resolveColor(teal.tokens['--color-badge-bg'], teal.tokens);
+    const tealFg = resolveColor(teal.tokens['--color-badge-text-on-bg'], teal.tokens);
+    assert.notEqual(tealBg.toLowerCase(), tealFg.toLowerCase(), 'Teal badge must never use identical color for text and background');
+    const tealRatio = getWcagContrast(tealBg, tealFg);
+    assert.ok(tealRatio >= 4.5, `Teal badge contrast (${tealBg} vs ${tealFg}) must be >= 4.5:1, got ${tealRatio.toFixed(2)}:1`);
+
+    assert.match(css, /\.dropdown-card__column-badge\{[^}]*--color-badge-text-on-bg/, 'Column badge must use paired --color-badge-text-on-bg');
+    assert.match(css, /\.dropdown-card__kids-badge\{[^}]*--color-kids-badge-text/, 'Kids badge must use paired --color-kids-badge-text');
   });
 
   test('Checklist: UI icons explicitly declare currentColor fill or stroke', () => {

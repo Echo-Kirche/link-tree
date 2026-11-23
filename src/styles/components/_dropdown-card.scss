@@ -143,10 +143,10 @@
     font-size: 0.8rem;
     font-weight: 600;
     font-family: var(--font-heading);
-    color: var(--color-action-bg);
-    background-color: var(--primitive-brand-pastel-yellow, #FEFADC);
+    color: var(--color-badge-text-on-bg, #08415C);
+    background-color: var(--color-badge-bg, #FEFADC);
     border-radius: var(--radius-control);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--color-badge-border, rgba(0, 0, 0, 0.08));
     margin: 0;
     white-space: normal;
     text-align: center;
@@ -156,13 +156,13 @@
   &__kids-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.35rem;
     padding: 0.2rem 0.5rem;
     font-size: 0.725rem;
     font-weight: 600;
-    color: var(--color-text);
-    background-color: var(--color-surface-subtle, var(--primitive-neutral-200, #F0F0F0));
-    border: 1px solid var(--color-border);
+    color: var(--color-kids-badge-text, #08415C);
+    background-color: var(--color-kids-badge-bg, #FFFFFF);
+    border: 1px solid var(--color-kids-badge-border, var(--color-border));
     border-radius: var(--radius-control);
     line-height: 1.2;
     white-space: nowrap;
@@ -257,11 +257,11 @@
     font-size: 0.85rem;
     font-weight: 700;
     font-family: var(--font-heading);
-    color: var(--color-action-bg);
-    background-color: var(--primitive-brand-pastel-yellow, #FEFADC);
+    color: var(--color-badge-text-on-bg, #08415C);
+    background-color: var(--color-badge-bg, #FEFADC);
     border-radius: var(--radius-control);
     white-space: nowrap;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-badge-border, rgba(0, 0, 0, 0.08));
   }
 
   &__footer {
