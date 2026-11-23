@@ -9,6 +9,11 @@
 
 .profile-header__avatar-wrapper {
   margin-block-end: var(--space-md);
+  padding: 1rem; // Schutzzone equal to height/width of lowercase "e"
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: content-box;
 }
 
 .profile-header__avatar {
@@ -38,7 +43,10 @@
   gap: 0.35em;
   margin-block-end: var(--space-xs);
   font-family: var(--font-heading);
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
 }
 
 .profile-header__name-logo {

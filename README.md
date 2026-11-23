@@ -6,7 +6,32 @@ A high-performance, static-first, privacy-compliant link-in-bio website with Sto
 
 ---
 
-## 1. System Architecture
+## 1. Master Documentation Index & File Purpose Mapping
+
+> ⚠️ **FILE INTEGRITY GUARDRAIL FOR ALL AGENTS & CONTRIBUTORS**:
+> **DO NOT** delete, rename, or archive any documentation file without explicit user approval. Every file in this table serves a dedicated, non-overlapping purpose within the project's guardrail system.
+
+| File Path | Target Audience / Purpose | Authoritative Scope |
+| :--- | :--- | :--- |
+| [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) | **All AI Agents & Developers** | **Single Source of Truth** for strict architectural rules, non-negotiable DO/DO NOT constraints, static-site locks, schema locks, privacy rules, BEM CSS, Conventional Commits, and pre/post-flight checks. |
+| [`README.md`](file:///Users/Shared/projeckt/goto/link-tree/README.md) *(This file)* | **Developers & Contributors** | Primary project overview, architecture diagram, master documentation index, build commands, and testing guidelines. |
+| [`ANTIGRAVITY.md`](file:///Users/Shared/projeckt/goto/link-tree/ANTIGRAVITY.md) | **Antigravity AI Agent** | Tool-specific operational workflows, pre-flight verification, testing commands, and artifact protocols for Antigravity. |
+| [`CLAUDE.md`](file:///Users/Shared/projeckt/goto/link-tree/CLAUDE.md) | **Claude Code Agents** | Tool-specific operational guidelines, verification steps, and quick references for Claude Code. |
+| [`.cursorrules`](file:///Users/Shared/projeckt/goto/link-tree/.cursorrules) | **Cursor IDE & AI Tools** | Cursor prompt configuration enforcing BEM, styleguide, and static-first architecture. |
+| [`.github/copilot-instructions.md`](file:///Users/Shared/projeckt/goto/link-tree/.github/copilot-instructions.md) | **GitHub Copilot** | Copilot code completion and workspace directives. |
+| [`SKILLS.md`](file:///Users/Shared/projeckt/goto/link-tree/SKILLS.md) | **All Agents (Task Library)** | Reusable procedural recipes for 10 discrete engineering tasks (adding components, updating schemas, privacy reviews). |
+| [`STORYBLOK-STARTER-GUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/STORYBLOK-STARTER-GUIDE.md) | **Human Content Editors & Onboarding** | Step-by-step onboarding guide for church staff to create a free Storyblok space, generate API tokens, and configure the Surfaces datasource. |
+| [`docs/ARCHITECTURE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/ARCHITECTURE.md) | **Technical Architects & Engineers** | Deep technical architecture blueprint, Eleventy pipeline, data flow, CSP headers, and bundle budget breakdown. |
+| [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md) | **Engineers & CMS Integrators** | Complete production content model specification for both Storyblok blok schemas and local `content.schema.json`. |
+| [`docs/DEPLOYMENT.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/DEPLOYMENT.md) | **DevOps & Release Engineers** | Production hosting contracts, Netlify build hooks, webhook publishing, and static cache policies. |
+| [`docs/LEGAL-PRIVACY-DE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md) | **Legal & Privacy Compliance** | German/EU regulatory compliance (DDG §5 Impressum, DSGVO Datenschutz, zero cookies, 2-click consent). |
+| [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md) | **Security & Privacy Auditing** | Ledger of all permitted third-party network origins (initial load: none; on-click: YouTube privacy mode). |
+| [`docs/STORYBLOK.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STORYBLOK.md) | **Content Editors & Developers** | Complete bilingual (English & Einfaches Deutsch) reference for all 12 Storyblok components and visual editing bridge. |
+| [`docs/STYLEGUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md) | **UI/UX Designers & Frontend Devs** | Echo Kirche design tokens, type scale, color invariants, logo clear space, media budgets, and BEM standards. |
+
+---
+
+## 2. System Architecture
 
 ```mermaid
 flowchart TD
@@ -54,23 +79,28 @@ flowchart TD
 
 ---
 
-## 2. Key Features
+## 3. Coding Standards & Conventions
 
-- **Multi-Location Surface Routing**: Dedicated, blazing-fast static routes (`/gf`, `/gifhorn`, `/wob`, `/wolfsburg`, `/he`, `/helmstedt`, `/ig`, `/instagram`) generated at build time with clean canonical URLs.
-- **Preview vs. Production Security**: The `/test` page with interactive surface and theme switchers is strictly reserved for preview mode and hidden on the production site (automatically redirects regular visitors to `/`).
-- **404 Root Redirection & Echo Logo Lazy Loader**: Unmatched routes and 404s display a clean, animated lazy loader featuring just the Echo logo and automatically redirect visitors to the root page (`/`). Image cards also include the Echo logo as a subtle SVG placeholder while lazy loading.
-- **Brand Color Constancy & Official Styleguide**: Strict adherence to the official Echo Kirche brand palette across all routes and components:
-  - **Primary Teal (`#08415C`)**, **Secondary Lavender (`#846B8A`)**, and **Background Light Pastel Yellow (`#FEFADC`)**. Full-bleed backgrounds can also use `#846B8A` or `#08415C` with inverted `#FFFFFF` or `#FEFADC` logos/text.
-  - **Typography**: `Clash Display` (600 Semibold for headings and *echo*; 400 Regular for sub-brands like *kids*); `Inter` (400 Regular) for body/UI/links; optional digital accents `Perandory Condensed` and `Sloop Script Pro`.
-  - **Type scale**: Strict H1–H6 hierarchy (48px, 40px, 32px, 24px, 20px, 18px) and body scale (18px, 16px, 14px, 12px, 10–11px).
-  - **Media Budget & Subject Matter**: Web images in `.webp` format only, max 400KB, max 1900px (heroes) and 1400px (standard cards). Authentic photos of people, community, faces, and visible emotions.
-  - **Logo Clear Space (*Schutzzone*)**: Minimum buffer equal to height/width of lowercase letter "e" on all sides. No text/graphics inside.
-  - **Unspecified CSS Defaults**: Line-height `1.4–1.5` (body) / `1.1–1.2` (headings), centered `~600px` container, `4px`/`8px`/`16px`/`999px` radii.
-  - City switches, surfaces, and query parameters filter content without changing brand colors.
+All contributors and AI agents must adhere to these established standards:
+- **Strict Patterns**: Adhere strictly to established architectural patterns, folder structures, and conventions in the codebase.
+- **Git Commits**: Follow Conventional Commits specification (`feat:`, `fix:`, `chore:`, `refactor:`, `style:`, `docs:`, `test:`).
+- **CSS / BEM**: Use strict BEM (`Block__Element--Modifier`) naming conventions for all CSS classes. Never use ID selectors for styling.
+- **Minimal HTML**: Keep HTML semantic and minimal. Omit redundant wrapper elements, unused attributes, and boilerplate bloat.
+- **Dependencies & Libraries**:
+  - **Don't Reinvent the Wheel**: Do not rewrite functionality already provided by standard JS frameworks or established libraries—import and use them instead.
+  - **Vet External Packages**: Only install well-known, actively maintained libraries with strong community adoption (high GitHub stars and weekly downloads).
+  - **Avoid Micro-Dependencies**: Never install trivial, one-liner packages (`is-odd`, `left-pad`, whitespace utilities). Write simple utility functions natively.
+
+---
+
+## 4. Key Architectural Features
+
+- **Multi-Location Surface Routing**: Dedicated static routes (`/gf`, `/gifhorn`, `/wob`, `/wolfsburg`, `/he`, `/helmstedt`, `/ig`, `/instagram`) generated at build time with clean canonical URLs.
+- **Preview vs. Production Security**: The `/test` page with interactive surface and theme switchers is strictly reserved for preview mode and redirected to `/` in production via Netlify config.
+- **Brand Color Constancy**: Strict adherence to the Echo brand palette (`#08415C` Dark Teal Blue, `#846B8A` Muted Lavender, `#FEFADC` Light Pastel Yellow) across all routes. City switches filter content without changing brand colors.
 - **Collapsible Service Times Card (`DropdownCard`)**:
   - Implemented with pure CSS `<details>` / `<summary>` (100% accessible, zero client-side JavaScript required).
   - Responsive 3-column auto-fit grid (`repeat(auto-fit, minmax(200px, 1fr))`) that stacks gracefully on mobile.
-  - Centered button label and icon layout.
   - Fully editable mini cards (`title`, `time`, `location`, `details`, `url`, `actionLabel`, `hasKids`, `kidsLabel`).
   - Built-in **Echo Kids available** indicator badge with inline child SVG icon.
 - **Dual-Tier Content Curation**:
@@ -78,8 +108,7 @@ flowchart TD
   - **Tier 2 (`show_on` / `hide_on`)**: Target components to specific campus routes (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
 - **Privacy-First (GDPR / DSGVO Compliant)**:
   - Zero cookies on initial page visit (no cookie banner required).
-  - 2-click consent YouTube video player facade (`video-embed.js`, < 1.5 KB): YouTube iframes load only after an explicit click, using `youtube-nocookie.com`.
-  - Supports standard YouTube video IDs (`youtube_video_id`), regular videos, and scheduled or active livestreams (`youtube_content_type: "live"`).
+  - 2-click consent YouTube video player facade (`video-embed.js`, < 1.5 KB): YouTube iframes load only after an explicit user click, using `youtube-nocookie.com`.
 - **Headless Storyblok Integration**:
   - Visual Editor bridge for live inline editing in the browser.
   - Offline local fallback data in `src/_data/site.json` ensures development and builds never fail if the API is unreachable.
@@ -87,7 +116,7 @@ flowchart TD
 
 ---
 
-## 3. Component Hierarchy
+## 5. Component Hierarchy
 
 ```
 link_page (Page Root)
@@ -107,7 +136,7 @@ link_page (Page Root)
 
 ---
 
-## 4. Development & Build Commands
+## 6. Development & Build Commands
 
 ```bash
 # Install dependencies
@@ -116,29 +145,18 @@ npm install
 # Start local development server (live reloading with Eleventy & Sass)
 npm run dev
 
-# Validate data against JSON Schema
+# Validate data against JSON Schema (Ajv)
 npm run validate
 
 # Production build (Validate -> Compile Sass -> Build Eleventy -> Verify output)
 npm run build
 
-# Run automated test suites (28 tests: markup, interactive states, surfaces)
+# Run automated test suites (45+ tests across markup, states, and routes)
 npm test
 
 # Push component schemas to Storyblok Space
-npm run storyblok:push -- --space <YOUR_SPACE_ID>
+npx storyblok push-components storyblok/components.json --space <YOUR_SPACE_ID>
 
 # Pull component schemas from Storyblok Space
-npm run storyblok:pull -- --space <YOUR_SPACE_ID>
+npx storyblok pull-components --space <YOUR_SPACE_ID>
 ```
-
----
-
-## 5. Documentation & Guides
-
-- [**System Architecture & Technical Specification**](file:///Users/Shared/projeckt/goto/link-tree/docs/ARCHITECTURE.md): Complete architecture blueprint, technical stack, security headers, and data flow.
-- [**Storyblok Component Reference & Editor Guidelines**](file:///Users/Shared/projeckt/goto/link-tree/docs/STORYBLOK.md): Detailed component documentation in **English** and **Einfaches Deutsch (German)** for content editors.
-- [**Beginner Storyblok Starter Setup Guide**](file:///Users/Shared/projeckt/goto/link-tree/STORYBLOK-STARTER-GUIDE.md): Step-by-step setup guide for creating a Storyblok space, obtaining tokens, pushing schemas, and setting up the Visual Editor.
-- [**Design System & Styleguide**](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md): Typography, color tokens, button states, and spacing scale.
-- [**Legal & Privacy Guide (Germany/EU)**](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md): DDG/DSGVO compliance requirements and configuration.
-- [**Agent Skills & Implementation Boundaries**](file:///Users/Shared/projeckt/goto/link-tree/SKILLS.md): Operational boundaries and rules for AI coding agents.

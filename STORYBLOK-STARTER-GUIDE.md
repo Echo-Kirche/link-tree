@@ -1,5 +1,7 @@
 # Storyblok Starter Setup Guide — link-tree
 
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for architectural rules, DO/DO NOT constraints, and quality standards. For the bilingual in-depth component reference manual, see [`docs/STORYBLOK.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STORYBLOK.md).
+
 This is the comprehensive, step-by-step setup guide for creating, configuring, and maintaining the **Echo Link-Tree** in Storyblok.
 
 It is written for anyone who has **never used Storyblok before**, adheres strictly to the **Storyblok Starter (Free) plan** (1 editor seat, 0 extra costs), and documents every single component, field, reason, type, default, and surface rule.

@@ -1,87 +1,83 @@
-# Antigravity Implementation Brief
+# Antigravity Agent Operational Brief — Echo Link-Tree
 
-Use this file as the starting brief when handing the repository to Antigravity or another coding agent.
+This document provides operational guidance for Google Antigravity agents working in the `link-tree` repository.
 
-## Objective
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for all architectural rules, "DO / DO NOT" constraints, privacy guardrails, and coding conventions. This document specifies tool workflows and execution protocols for Antigravity.
 
-Implement the static link-in-bio application specified by this repository according to the official **Echo Kirche Design System & Styleguide**.
+---
 
-Read, in this order:
-1. `AGENTS.md` (authoritative agent directives and Echo Kirche styleguide)
-2. `SKILLS.md`
-3. `docs/STYLEGUIDE.md` (official brand colors, typography, type scale, logo clear space, web image budget)
-4. `docs/ARCHITECTURE.md`
-5. `docs/CONTENT-MODEL.md`
-6. `docs/STORYBLOK.md`
-7. `docs/LEGAL-PRIVACY-DE.md`
-8. `docs/PRIVACY-DEPENDENCIES.md`
+## 1. Antigravity Agent Lifecycle & Workflow
 
-## Phase 1 — foundation
+When assigned a task in this repository, follow this structured execution protocol:
 
-Create:
-- package/build setup;
-- Eleventy config;
-- Sass pipeline with official Echo Kirche design tokens:
-  - Colors: `#08415C` (Teal), `#846B8A` (Lavender), `#FEFADC` (Pastel Yellow);
-  - Fonts: `Clash Display` (600 Semibold) for headings, `Inter` (400 Regular) for body/UI, `Perandory Condensed` & `Sloop Script Pro` for digital accents;
-  - Type scale: exact H1–H6 and body hierarchy;
-- JSON Schema validation;
-- base document/layout;
-- Storybook HTML + Vite config;
-- CI scripts for production build and Storybook build.
+```mermaid
+flowchart TD
+  Research["1. Research & Pre-Flight Check<br/>Read AGENTS.md + relevant docs/*.md"]
+  Plan["2. Planning Mode<br/>Create implementation_plan.md (if non-trivial)"]
+  Code["3. Implementation<br/>Adhere to BEM, tokens, minimal HTML, zero-JS"]
+  Verify["4. Verification & Testing<br/>npm run validate && npm run build && npm test"]
+  Walkthrough["5. Summary & Walkthrough<br/>Update walkthrough.md & document changes"]
 
-Do not add a client framework.
+  Research --> Plan
+  Plan --> Code
+  Code --> Verify
+  Verify --> Walkthrough
+```
 
-## Phase 2 — components
+### Step 1: Pre-Flight Document Check
+Before modifying any files:
+1. Review [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) for non-negotiable invariants.
+2. Read the domain-specific documentation file:
+   - Components & Schemas: [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md) and [`docs/STORYBLOK.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STORYBLOK.md)
+   - Design System & Tokens: [`docs/STYLEGUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md)
+   - Routing & Architecture: [`docs/ARCHITECTURE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/ARCHITECTURE.md)
+   - Privacy & Embeds: [`docs/LEGAL-PRIVACY-DE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md) and [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md)
+   - Deployment & Caching: [`docs/DEPLOYMENT.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/DEPLOYMENT.md)
 
-Implement:
-- ProfileHeader
-- LinkButton
-- ImageCardHorizontal
-- ImageCardVertical
-- VideoLinkCard
-- SectionHeading
-- FooterLegal
+### Step 2: Planning Mode & User Approval
+- For non-trivial modifications (new components, schema migrations, routing changes, architectural adjustments), create or update `implementation_plan.md` in the artifact directory before modifying code.
+- Wait for user confirmation or proceed when instructed.
 
-Use semantic HTML and shared markup/rendering logic where practical.
+### Step 3: Implementation
+- **Strict BEM**: Apply BEM naming for all CSS classes (`.block__element--modifier`).
+- **Design Tokens**: Consume CSS variables from `src/styles/tokens/_semantic.scss`.
+- **Pure CSS Interactivity**: Collapsible UI must use HTML5 `<details>` and `<summary>`.
+- **Zero Client Frameworks**: Never introduce React, Vue, Svelte, Alpine, or hydration scripts.
+- **Graceful Nullability**: Ensure all components render cleanly if optional CMS fields are missing.
 
-## Phase 3 — data and surfaces
+### Step 4: Verification Commands
+Execute the complete verification pipeline inside `link-tree`:
 
-Implement:
-- content loading;
-- schema validation;
-- `showOn` / `hideOn` filtering;
-- build-time `LINKTREE_SURFACE`;
-- Storybook global `surface` toolbar.
+```bash
+# 1. Validate content against JSON Schema
+npm run validate
 
-## Phase 4 — legal/privacy
+# 2. Compile Sass design tokens to _site/css/main.css
+npm run build:sass
 
-Implement:
-- Impressum route/template;
-- Datenschutz route/template;
-- operator config with explicit placeholders;
-- strict mode with zero third-party initial-load requests;
-- no YouTube/Instagram/TikTok iframe embeds.
+# 3. Compile static HTML with Eleventy
+npm run build:eleventy
 
-Do not manufacture legal operator details.
+# 4. Enforce bundle budget and scan for unauthorized scripts/iframes
+node scripts/verify-build.mjs
 
-## Phase 5 — quality
+# 5. Run full automated test suite (45+ tests across markup, routing, states)
+npm test
+```
 
-Add:
-- accessibility checks;
-- responsive stories;
-- HTML/content validation;
-- checks for accidental production JS;
-- production build inspection;
-- deployment config for Netlify and Cloudflare Pages.
+### Step 5: Post-Flight Documentation Sync
+- If a component schema changed, update [`storyblok/components.json`](file:///Users/Shared/projeckt/goto/link-tree/storyblok/components.json), [`content.schema.json`](file:///Users/Shared/projeckt/goto/link-tree/content.schema.json), and [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md).
+- If a style token changed, update `src/styles/tokens/` and [`docs/STYLEGUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md).
+- If an external network origin was introduced, update [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md).
+- Create or update `walkthrough.md` to document changes and test verification results.
 
-## Definition of done
+---
 
-The implementation must satisfy the Definition of Done in `AGENTS.md` and must build both the production site and Storybook from a clean checkout.
+## 2. Decision Hierarchy
 
-If a requirement is ambiguous, choose the option that:
-1. sends less data to third parties;
-2. uses less production JavaScript;
-3. keeps content/design configuration separate from markup;
-4. improves accessibility;
-5. preserves host portability.
+When faced with trade-offs or ambiguous requirements, prioritize in this strict order:
+1. **Privacy & Security**: Zero third-party connections on load, no data leaks, no client tokens.
+2. **Zero Runtime JavaScript**: Favor static HTML and pure CSS over client-side JS.
+3. **Architectural Constancy**: Never modify brand colors based on URL parameters or surfaces.
+4. **Accessibility (WCAG 2.2 AA)**: Semantic elements, `:focus-visible` states, contrast ratios.
+5. **Portability**: Pure static output ready for Netlify or Cloudflare Pages with zero server dependencies.

@@ -53,6 +53,14 @@ p {
   color: var(--color-text-muted);
 }
 
+// Echo Kirche Heading Scale Classes
+.text-h1 { font-family: var(--font-heading); font-weight: 600; font-size: 3rem; line-height: 1.1; }
+.text-h2 { font-family: var(--font-heading); font-weight: 600; font-size: 2.5rem; line-height: 1.15; }
+.text-h3 { font-family: var(--font-heading); font-weight: 600; font-size: 2rem; line-height: 1.2; }
+.text-h4 { font-family: var(--font-heading); font-weight: 600; font-size: 1.5rem; line-height: 1.2; }
+.text-h5 { font-family: var(--font-heading); font-weight: 600; font-size: 1.25rem; line-height: 1.2; }
+.text-h6 { font-family: var(--font-heading); font-weight: 600; font-size: 1.125rem; line-height: 1.2; }
+
 // Echo Kirche Type Scale Classes
 .body-large {
   font-family: var(--font-body);

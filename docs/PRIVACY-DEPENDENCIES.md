@@ -1,16 +1,37 @@
 # Privacy Dependency Ledger
 
-## Strict production profile
+This document catalogs all external network origins permitted in production for the `link-tree` static site.
 
-Expected third-party origins contacted on initial page load: **none**.
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for architectural rules, privacy guardrails, and coding standards.
 
-| Origin | Purpose | Data sent | Consent status | Enabled |
-|---|---|---|---|---|
-| none (on initial load) | — | — | — | — |
-| `https://www.youtube-nocookie.com` | Privacy-enhanced click-to-play video player | IP address, browser headers, playback telemetry upon play | Explicit 2-click consent on user play action | Enabled (user-initiated click only) |
+---
 
-## Rule
+## 1. Initial Page Load (Strict Profile)
 
-Any change that causes the browser to contact a new external origin must update this file in the same pull request.
+Expected third-party origins contacted on initial page visit: **NONE**.
 
-Outbound anchor navigation does not count as a page-load dependency because the request occurs only after the user chooses to leave the site.
+| Origin | Purpose | Data Sent | Consent Mechanism | Initial Load Status |
+| :--- | :--- | :--- | :--- | :--- |
+| `none` | — | — | — | **Zero connections** |
+
+---
+
+## 2. On-Demand / User-Initiated Connections
+
+The following origin is contacted **ONLY** after an explicit, affirmative user interaction:
+
+| Origin | Purpose | Data Sent | Consent Trigger | Enabled Status |
+| :--- | :--- | :--- | :--- | :--- |
+| `https://www.youtube-nocookie.com` | Privacy-enhanced YouTube video playback | IP address, browser headers, video playback telemetry | Explicit user click on the video play button (2-click consent facade) | Active (click-to-play only) |
+
+---
+
+## 3. Strict Ledger Invariant
+
+Any pull request or code change that causes the production client browser to contact a new external origin MUST:
+1. Update this ledger table with origin, purpose, data sent, and legal rationale.
+2. Comply with the legal guidelines in [`docs/LEGAL-PRIVACY-DE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md).
+3. Update Content Security Policy (CSP) headers in `netlify.toml` and `_headers`.
+4. Receive explicit user/human review before deployment.
+
+*(Note: Outbound anchor link clicks to external websites do not count as page dependencies because navigation leaves the application.)*

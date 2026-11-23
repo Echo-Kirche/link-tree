@@ -1,243 +1,224 @@
-# SKILLS.md
+# SKILLS.md — Task-Oriented Engineering Procedures
 
-This file describes the capabilities an implementation agent should use and the architectural boundaries it must respect.
+This document provides step-by-step procedural playbooks for common engineering tasks in the `link-tree` repository.
 
----
-
-## Architecture Overview
-
-```mermaid
-flowchart LR
-  CMS["Storyblok / Local JSON"] --> Engine["Eleventy (11ty) Compiler"]
-  Engine --> Routes["Static Routes (/ , /gf, /wob, /he, /ig, /test)"]
-  Tokens["Sass Design Tokens"] --> CSS["Single Compressed CSS"]
-  Routes --> Output["_site/ Output"]
-  CSS --> Output
-```
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for architectural rules, DO/DO NOT constraints, privacy guardrails, and coding conventions. All procedures below must strictly adhere to `AGENTS.md`.
 
 ---
 
-## Skill: static-site-architecture
+## Skill Index
 
-Use when creating or changing page structure, routing, layouts, or build behavior.
-
-Rules:
-- favor generated HTML over runtime rendering;
-- preserve zero-JS baseline output;
-- keep deployment portable between Netlify and Cloudflare Pages;
-- do not couple content to a hosting provider.
-
-Deliverables:
-- Eleventy config (`eleventy.config.mjs`);
-- layouts/partials/components in `src/_includes/`;
-- predictable static output in `_site/`.
+1. [`skill: static-site-development`](#skill-static-site-development)
+2. [`skill: dropdown-card-and-times`](#skill-dropdown-card-and-times)
+3. [`skill: dual-tier-curation`](#skill-dual-tier-curation)
+4. [`skill: content-schema-management`](#skill-content-schema-management)
+5. [`skill: storyblok-component-sync`](#skill-storyblok-component-sync)
+6. [`skill: sass-design-system`](#skill-sass-design-system)
+7. [`skill: surface-routing-and-switching`](#skill-surface-routing-and-switching)
+8. [`skill: privacy-review`](#skill-privacy-review)
+9. [`skill: legal-pages-integration`](#skill-legal-pages-integration)
+10. [`skill: deployment-and-verification`](#skill-deployment-and-verification)
 
 ---
 
-## Skill: dropdown-card-and-times-architecture
+## Skill: static-site-development
 
-Use when creating, editing, or styling service times, campus schedules, and collapsible cards.
+**Use When**: Creating or updating page templates, layouts, Nunjucks macros, or Eleventy configuration.
 
-Rules:
-- **Pure CSS `<details>` / `<summary>`**: Interactivity must function without any client-side JavaScript.
-- **Centered Header Content**: The summary button must center its label and church icon.
-- **Responsive 3-Column Grid**: Defaults to an auto-fit grid (`repeat(auto-fit, minmax(200px, 1fr))`) that wraps cleanly on mobile devices.
-- **100% Editable Mini Cards**: All sub-properties (`title`, `time`, `location`, `details`, `url`, `actionLabel`, `hasKids`, `kidsLabel`, `showOn`, `hideOn`) must be exposed in schemas and editable by content editors.
-- **Echo Kids Indicator**: Toggle badge with an inline child SVG icon and customizable label (default: `"Echo Kids verfügbar"`). When displaying the sub-brand text logo, **echo** is set in `Clash Display Semibold` (`600`) and **kids** is set in `Clash Display Regular` (`400`).
-- **Surface Scoping**: Filter internal columns using `filterBySurface` so that dedicated city pages (e.g., `/gf`) display their respective services (e.g., Gifhorn 10:00 & 12:00 in BSK-Saal), while `/` displays all active default cards.
+**Key Files**:
+- `eleventy.config.mjs`
+- `src/_includes/layouts/`
+- `src/_includes/components/`
+- `src/content/`
 
-Deliverables:
-- `src/_includes/components/DropdownCard.njk`;
-- `src/styles/components/_dropdown-card.scss`;
-- schema entries in `content.schema.json` and `storyblok/components.json`.
+**Procedure**:
+1. Check `AGENTS.md` §1.1 (Pure Static Output Lock).
+2. Author semantic, minimal HTML without unnecessary wrapper divs.
+3. Use Nunjucks filters (`filterBySurface`, `resolveUrl`, `storyblokEditable`) where appropriate.
+4. Ensure all dynamic URLs pass through `resolveUrl` to prevent unsafe protocols (`javascript:`, `data:`).
+5. Verify build output in `_site/` contains zero client-side framework scripts.
+
+---
+
+## Skill: dropdown-card-and-times
+
+**Use When**: Modifying service times, campus schedules, or collapsible disclosure cards.
+
+**Key Files**:
+- `src/_includes/components/DropdownCard.njk`
+- `src/styles/components/_dropdown-card.scss`
+- `storyblok/components.json` (`dropdown_card`, `dropdown_time_item`)
+- `content.schema.json`
+
+**Procedure**:
+1. **Pure CSS Interactivity**: Interactivity must use standard HTML5 `<details>` and `<summary>`. No JavaScript is permitted.
+2. **Responsive Grid**: Use the 3-column auto-fit grid (`repeat(auto-fit, minmax(200px, 1fr))`) that stacks gracefully on mobile.
+3. **Echo Kids Indicator**: Render the Echo Kids badge with inline child SVG when `hasKids` / `has_kids` is true. Ensure the wordmark follows the typography rule (*echo* in Semibold 600, *kids* in Regular 400).
+4. **Editable Mini Cards**: Ensure all sub-fields (`title`, `time`, `location`, `details`, `url`, `actionLabel`, `kidsLabel`) are supported and render cleanly even if optional details are omitted.
+5. Run `npm test` to verify dropdown markup and open/closed interactive states.
 
 ---
 
 ## Skill: dual-tier-curation
 
-Use when managing visibility between the main default landing page and dedicated location/channel routes.
+**Use When**: Managing visibility rules between the main homepage (`/`) and dedicated campus/channel routes (`/gf`, `/wob`, `/he`, `/ig`).
 
-Rules:
-- **Tier 1 (`display_in_default` / `displayInDefault`)**: Boolean toggle on every component and mini card.
-  - When `true` (or omitted), item appears on the default landing page (`/`).
-  - When `false`, item is hidden from the default landing page (`/`), allowing editors to curate a clean, focused default homepage.
-- **Tier 2 (`show_on` / `hide_on`)**: Multi-select target array (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
-  - Items with `displayInDefault: false` and `showOn: ["gifhorn"]` will only appear on `/gf` and `/gifhorn`.
-- On `/test`, all items remain present and can be toggled via the interactive toolbar.
+**Key Files**:
+- `eleventy.config.mjs` (`filterBySurface` filter)
+- `src/_data/storyblok.js`
+- `content.schema.json`
 
-Deliverables:
-- `displayInDefault` property in `content.schema.json`;
-- `display_in_default` field across all components in `storyblok/components.json`;
-- filter logic in `eleventy.config.mjs` (`filterBySurface`) and `src/assets/js/surface-switcher.js`.
-
----
-
-## Skill: content-schema
-
-Use when adding or modifying profile data, links, media cards, surfaces, or display rules.
-
-Rules:
-- schema-first;
-- validate build input with Ajv (`npm run validate`);
-- reject unknown item types unless intentionally versioned;
-- treat all authored HTML as untrusted unless explicitly sanitized.
-
-Deliverables:
-- `content.schema.json`;
-- example content in `examples/content.json` and `src/_data/site.json`;
-- validation script (`scripts/validate-content.mjs`).
+**Procedure**:
+1. **Tier 1 (`display_in_default` / `displayInDefault`)**:
+   - `true` (or omitted): Component renders on `/`.
+   - `false`: Component is hidden on `/`, reserving it exclusively for dedicated location routes.
+2. **Tier 2 (`show_on` / `hide_on`)**:
+   - `show_on`: Array of specific target surfaces (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
+   - `hide_on`: Array of surfaces where the item is excluded.
+3. Test with both local data (`src/_data/site.json`) and Storyblok preview payloads to ensure surface filtering functions correctly.
 
 ---
 
-## Skill: storyblok-component
+## Skill: content-schema-management
 
-Use whenever a UI component or visual variant changes.
+**Use When**: Adding, updating, or validating content models, fields, or sample data.
 
-Rules:
-- Maintain all 12 Storyblok blok schemas in `storyblok/components.json`:
-  1. `link_page` (Page Root)
-  2. `profile_header` (Logo, Name, Bio)
-  3. `link_button` (Standard Action Button)
-  4. `dropdown_card` (Collapsible Service Times Card)
-  5. `dropdown_time_item` (Service Time Mini Card)
-  6. `image_card_horizontal` (16:9 Media Card)
-  7. `image_card_vertical` (3:4 Flyer Card)
-  8. `video_link_card` (Privacy 2-Click YouTube Card)
-  9. `group_block` (Container Box)
-  10. `section_heading` (Category Divider)
-  11. `footer_legal` (Legal & Contact Information)
-  12. `social_item` (Social Media Icon Button)
-- Production markup rendered by Eleventy templates must strictly match the component specifications;
-- Support Storyblok `_editable` attributes for live visual click-to-edit in the Storyblok bridge;
-- Media & Images: All uploaded images must be in `.webp` format (`max 400KB`), max width `1900px` for hero images and `1400px` for standard images (`16:9`, `3:2`, `4:3`, `3:4` aspect ratios).
-- Logo Clear Space: Maintain clear space equal to the width/height of lowercase "e" on all four sides. Never distort or recolor outside official brand colors.
+**Key Files**:
+- `content.schema.json`
+- `src/_data/site.json`
+- `scripts/validate-content.mjs`
+- `docs/CONTENT-MODEL.md`
 
-Deliverables:
-- `storyblok/components.json`;
-- documentation in `docs/STORYBLOK.md` (English and German).
+**Procedure**:
+1. Update JSON Schema draft-2020-12 in `content.schema.json`.
+2. Ensure strict types, regex patterns, and `additionalProperties: false` where appropriate.
+3. Update `src/_data/site.json` and `examples/content.json` to reflect new valid configurations.
+4. Run `npm run validate` to test validation with Ajv.
+5. Update [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md) to document the schema changes.
+
+---
+
+## Skill: storyblok-component-sync
+
+**Use When**: Adding, updating, or synchronizing Storyblok CMS blok component schemas.
+
+**Key Files**:
+- `storyblok/components.json`
+- `src/_data/storyblok.js`
+- `eleventy.config.mjs` (`blokToComponent` filter)
+- `docs/STORYBLOK.md`
+
+**Procedure**:
+1. Define or update the component schema in `storyblok/components.json`.
+2. Add the snake_case to Nunjucks component mapping in `eleventy.config.mjs`.
+3. Update `src/_data/storyblok.js` to map CMS payload fields to template contracts with fallback values.
+4. Support the Storyblok Visual Editor `_editable` attribute using the `storyblokEditable` filter.
+5. Update [`docs/STORYBLOK.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STORYBLOK.md) in English and German.
+6. Push schemas using `npx storyblok push-components storyblok/components.json --space <SPACE_ID>`.
 
 ---
 
 ## Skill: sass-design-system
 
-Use for all presentation work.
+**Use When**: Modifying colors, spacing, typography scales, or component styles.
 
-Rules:
-- update tokens before scattering new values;
-- semantic tokens are preferred over literal colors in components;
-- new brand/styleguide inputs should primarily change token files, not component selectors;
-- keep components themeable through CSS custom properties;
-- **Official Brand Colors**:
-  - Primary / Dark Teal Blue: `#08415C` (headings, body text, logos, dark UI accents).
-  - Secondary / Muted Lavender: `#846B8A` (secondary text, highlights, buttons/accents).
-  - Background / Light Pastel Yellow: `#FEFADC` (page backgrounds, warm accents).
-  - Inverted / High-contrast: `#000000` and `#FFFFFF` for dark mode and inverted logos.
-- **Official Typography**:
-  - Headings & Sub-brand Wordmark: `Clash Display` (600 / Semibold). Sub-brand text logo: **echo** in Semibold 600, **kids** in Regular 400.
-  - Body & UI Text: `Inter` (400 / Regular).
-  - Optional Digital Accent Fonts: `Perandory Condensed` (Display) and `Sloop Script Pro` (Script).
-- **Exact Pixel Hierarchy & Type Scale**:
-  - H1: 48px (main title) | H2: 40px (major section) | H3: 32px (subsections)
-  - H4: 24px (profile title) | H5: 20px (cards, panels, link buttons) | H6: 18px (small headings)
-  - Body Large: 18px (bio intro/large copy) | Body: 16px (standard bio) | Body Small: 14px (secondary descriptions)
-  - Caption: 12px (captions/footer notes) | Overline/Label: 10px–11px (tags, badges, labels)
-- **Logo Clear Space (*Schutzzone*)**: Minimum buffer equal to height/width of lowercase `"e"` from *echo* wordmark on all four sides. No graphics, buttons, or text inside.
-- **Unspecified CSS Property Defaults**:
-  - line-height: `1.4–1.5` for body text, `1.1–1.2` for headings;
-  - letter-spacing: `normal` (`-0.01em` on large headings);
-  - container width: centered `~600px` (or `~42rem` / `672px`) max width;
-  - border radius: `4px` (small), `8px` (medium), `16px` (large), `999px` (pill);
-  - drop shadows: subtle, prioritizing borders and clean whitespace first.
-- **Strict adherence to brand colors**: never change colors based on URL parameters, surfaces, or sublinks. Brand identity and action colors must remain unified and consistent across all pages and views.
+**Key Files**:
+- `src/styles/tokens/_primitives.scss`
+- `src/styles/tokens/_semantic.scss`
+- `src/styles/components/`
+- `src/styles/main.scss`
+- `docs/STYLEGUIDE.md`
 
-Deliverables:
-- token updates in `src/styles/tokens/`;
-- component SCSS in `src/styles/components/`;
-- single compiled output `_site/css/main.css`.
+**Procedure**:
+1. Check `AGENTS.md` §1.4 (Brand Color Constancy Invariant). Never alter brand colors across surfaces.
+2. If introducing or updating visual variables, modify `_primitives.scss` and `_semantic.scss` first.
+3. Consume semantic variables (`var(--color-action-bg)`, `var(--color-text)`, etc.) in component SCSS. Never use raw hex codes in component files.
+4. Follow strict BEM naming (`.block__element--modifier`).
+5. Avoid selector nesting deeper than 3 levels; avoid `!important`; avoid ID selectors.
+6. Run `npm run build:sass` and verify `_site/css/main.css` compiles without warnings.
 
 ---
 
 ## Skill: surface-routing-and-switching
 
-Use when configuring or modifying surfaces, localized city routes, channel targeting, or test preview environments.
+**Use When**: Creating or modifying location routes, canonical shortcuts, or preview test toolbars.
 
-Rules:
-- Standard surface shortcuts and canonical routes:
-  - `<domain>/ig` and `<domain>/instagram` -> switch `instagram`
-  - `<domain>/wob` and `<domain>/wolfsburg` -> switch `wolfsburg`
-  - `<domain>/gf` and `<domain>/gifhorn` -> switch `gifhorn`
-  - `<domain>/he` and `<domain>/helmstedt` -> switch `helmstedt`
-- Default behavior:
-  - Surface-specific buttons and items (`showOn: ['gifhorn']`, `showOn: ['wolfsburg']`, etc.) must NOT be shown on the default route (`/`).
-  - Only general links or items with `displayInDefault: true` are visible on `/`.
-- Test preview switcher:
-  - The interactive switcher toolbar (`.surface-switcher`) is ONLY rendered on `/test` (`/test/index.html`).
-  - Production landing routes (`/`, `/gf`, `/wob`, etc.) remain uncluttered and show only the final tailored link list.
-- Query parameter support:
-  - `?surface=<slug>` and `?switch=<slug>` work dynamically across all pages via `surface-switcher.js`.
-- Brand color preservation:
-  - Surfaces strictly control content filtering/targeting only; they must NEVER change brand colors.
+**Key Files**:
+- `src/_data/surfaces.js`
+- `src/content/surfaces.njk`
+- `src/content/test.njk`
+- `src/assets/js/surface-switcher.js`
+- `netlify.toml` (redirects)
 
-Deliverables:
-- `src/_data/surfaces.js` route definitions;
-- `src/content/surfaces.njk` static multi-route pagination;
-- `src/content/test.njk` test preview route;
-- `src/assets/js/surface-switcher.js` helper.
+**Procedure**:
+1. Dedicated static routes must generate at build time:
+   - `/gf/` and `/gifhorn/` → `gifhorn`
+   - `/wob/` and `/wolfsburg/` → `wolfsburg`
+   - `/he/` and `/helmstedt/` → `helmstedt`
+   - `/ig/` and `/instagram/` → `instagram`
+   - `/test/` → `all` (preview switcher only; redirected to `/` in production via Netlify config).
+2. Ensure canonical 301 redirects are maintained in `netlify.toml`.
+3. Verify that the interactive switcher toolbar (`.surface-switcher`) is rendered ONLY on `/test`.
+4. Run `npm test` to verify all route and filter tests pass.
 
 ---
 
 ## Skill: privacy-review
 
-Use whenever adding analytics, embeds, forms, external assets, CDNs, scripts, storage, or third-party network requests.
+**Use When**: Adding media embeds, scripts, external links, or assets.
 
-Rules:
-- strict privacy profile remains default;
-- document every new external domain and purpose;
-- do not add consent banners merely as decoration;
-- 2-click consent facade for YouTube (`video-embed.js`) ensures no tracking cookies or iframes load on page visit.
+**Key Files**:
+- `docs/PRIVACY-DEPENDENCIES.md`
+- `docs/LEGAL-PRIVACY-DE.md`
+- `scripts/verify-build.mjs`
+- `netlify.toml` (CSP and Permissions-Policy headers)
 
-Deliverables:
-- update `docs/PRIVACY-DEPENDENCIES.md`;
-- update legal/privacy implementation notes.
-
----
-
-## Skill: germany-legal-page-integration
-
-Use to implement the legal-page templates and operator-config structure.
-
-Rules:
-- do not fabricate legal details;
-- keep operator identity/contact data in `src/_data/operator.json`;
-- use stable routes `/impressum/` and `/datenschutz/`.
-
-Deliverables:
-- templates in `src/content/impressum.njk` and `src/content/datenschutz.njk`.
+**Procedure**:
+1. **Initial Load Zero-Origin Check**: The production page must make zero third-party connections on initial visit.
+2. **2-Click YouTube Facade**: YouTube embeds must use `video-embed.js` (< 1.5 KB) and load `https://www.youtube-nocookie.com` only after an explicit click.
+3. If an external origin is legitimately required:
+   - Verify compliance with [`docs/LEGAL-PRIVACY-DE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md).
+   - Document origin, purpose, data sent, and consent mechanism in [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md).
+   - Update CSP in `netlify.toml` and `_headers`.
+4. Run `node scripts/verify-build.mjs` to ensure the privacy scan passes.
 
 ---
 
-## Skill: deployment
+## Skill: legal-pages-integration
 
-Use for Netlify or Cloudflare deployment configuration.
+**Use When**: Updating legal notices, Impressum, or Datenschutz templates.
 
-Rules:
-- static output only;
-- `npm run build` must run validation, Sass compilation, Eleventy build, and verify-build (tests are run separately via `npm test`);
-- security headers should be conservative and documented in `netlify.toml` and `_headers`.
+**Key Files**:
+- `src/_data/operator.json`
+- `src/content/impressum.njk`
+- `src/content/datenschutz.njk`
+- `docs/LEGAL-PRIVACY-DE.md`
 
-Deliverables:
-- `netlify.toml` and `_headers`;
-- verified `_site` output.
+**Procedure**:
+1. Maintain church operator legal identity in `src/_data/operator.json`. Never manufacture fictional legal values in production.
+2. Ensure `/impressum/` complies with DDG §5 (formerly TMG §5) requirements.
+3. Ensure `/datenschutz/` accurately describes the site's processing (zero initial cookies, self-hosted fonts, 2-click YouTube player).
+4. Run `npm test` to ensure legal routes exist and render correctly.
 
 ---
 
-## Agent handoff checklist
+## Skill: deployment-and-verification
 
-When handing work to another agent, include:
-- changed contracts;
-- schema version;
-- privacy impact;
-- new external domains;
-- new tokens;
-- Storyblok component schemas added/changed;
-- migration or deployment actions.
+**Use When**: Preparing releases, testing builds, or configuring hosting platforms (Netlify, Cloudflare).
+
+**Key Files**:
+- `netlify.toml`
+- `_headers`
+- `scripts/verify-build.mjs`
+- `package.json`
+
+**Procedure**:
+1. Run full verification sequence:
+   ```bash
+   npm run validate
+   npm run build
+   npm test
+   ```
+2. Verify all 45+ test assertions pass with 0 errors.
+3. Confirm `_site/` output has no unexpected JS files and that permitted JS bundles stay under budget (< 6 KB for production scripts, < 16 KB for preview bridge).
+4. Verify security headers in `netlify.toml` and `_headers` are consistent.

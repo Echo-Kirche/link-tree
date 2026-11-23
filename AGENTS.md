@@ -1,181 +1,163 @@
-# AGENTS.md
+# AGENTS.md — Authoritative Architecture & Agent Directives
 
-## Mission
-
-Build and maintain a privacy-first, static link-in-bio site from the contracts in this repository.
-
-This file is authoritative for all coding agents including **Antigravity**, **Claude Code**, **GitHub Copilot**, **ChatGPT**, **Codex**, and related LLM agent tooling.
+> **SINGLE SOURCE OF TRUTH**: This document is the primary, authoritative directive for all AI coding agents (**Antigravity**, **Claude Code**, **Cursor**, **GitHub Copilot**, **ChatGPT**, **Windsurf**, and related LLM tooling) and human contributors working in this repository.
+> When any other documentation, prompt, or external guideline conflicts with this document, **AGENTS.md takes absolute precedence**.
 
 ---
 
-## 1. Authoritative Echo Kirche Styleguide
+## 1. Core Architectural Invariants (Non-Negotiable)
 
-All agents must strictly follow the official **Echo Kirche** design system:
+Every contribution MUST honor these five foundational invariants:
 
-### 1.1 Spacing & Logo Clear Space (*Schutzzone*)
-* **Logo Clear Space:** Maintain a minimum clear buffer around all four sides of the logo equal to the **height/width of the lowercase letter `"e"`** from the *echo* wordmark. No text, buttons, borders, or other graphics may enter this zone.
-* **Logo Integrity:** Never stretch, compress, rotate, distort, or alter the proportions of the logo. Never recolor the logo outside approved brand colors.
-* **Inverted Applications:** High-contrast white (`#FFFFFF`) logo is strictly used on dark mode or full-bleed Dark Teal Blue (`#08415C`) / Muted Lavender (`#846B8A`) backgrounds.
+### 1.1 Pure Static Output Lock
+- **Static Pre-Rendering Only**: All production output must be 100% pre-rendered static HTML and CSS generated at build time via **Eleventy (11ty) v3.x** and **Dart Sass**.
+- **0 KB Runtime Frameworks**: NEVER introduce client-side frameworks or runtime hydration libraries (e.g., React, Vue, Svelte, Preact, Alpine.js, HTMX) solely for component rendering.
+- **No SSR / Server Dependencies**: The site must deploy as pure static files to Netlify or Cloudflare Pages with zero required serverless functions, Edge functions, or node server runtime in production.
+- **Build-Time Storyblok Execution**: Storyblok Content Delivery API calls occur strictly at build time (`src/_data/storyblok.js`). NEVER make client-side Storyblok API requests in production. The Storyblok Bridge (`storyblok-bridge.js`) is strictly isolated and loads ONLY when previewing inside the Storyblok Visual Editor iframe (`?_storyblok=...`).
+- **Zero Token Leaks**: NEVER expose or inject `STORYBLOK_TOKEN`, API keys, or private environment variables into production HTML `<meta>` tags, data attributes, inline scripts, or client bundles.
 
-### 1.2 Typography, Sizes & Hierarchy
-* **Headings & Logo Font:** `Clash Display`
-  * **Semibold (600)** for main headings and the word *echo*.
-  * **Regular (400)** for sub-brand/location qualifiers (such as *kids* in *echo kids*).
-* **Body, Buttons & Links Font:** `Inter` — **Regular (400)**.
-* **Optional Digital Accent Fonts** (for special banners or highlights): `Perandory Condensed` (headlines) and `Sloop Script Pro` (script accents/subheadings).
+### 1.2 Schema & Content-Model Lock
+- **Schema Conformity**: All components, local data files (`src/_data/site.json`), and CMS stories must conform strictly to [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md), [`content.schema.json`](file:///Users/Shared/projeckt/goto/link-tree/content.schema.json), and [`storyblok/components.json`](file:///Users/Shared/projeckt/goto/link-tree/storyblok/components.json).
+- **Graceful Nullability & Fallbacks**: Components MUST gracefully handle optional, empty, or undefined CMS fields (such as `bio`, `icon`, `image`, `description`, `details`, `kidsLabel`, `actionLabel`) without breaking markup, throwing Nunjucks template errors, or rendering `[object Object]`.
+- **Offline Fallback Guarantee**: The build pipeline must succeed completely from local offline data (`src/_data/site.json`, `src/_data/operator.json`) whenever `STORYBLOK_TOKEN` is unset or the Storyblok API is unreachable.
+- **Dual-Tier Curation**:
+  - *Tier 1 (`display_in_default` / `displayInDefault`)*: Curates the default landing page (`/`). When `false`, the item is omitted from `/`.
+  - *Tier 2 (`show_on` / `hide_on`)*: Targets specific campus or channel routes (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
 
-#### Exact Pixel Hierarchy & Linktree Usage
+### 1.3 German Privacy / DSGVO Guardrail
+- **Zero Initial Third-Party Connections**: On initial page visit, the browser MUST NOT contact any third-party origin. No Google Fonts, no external CDNs, no remote tracking pixels, and no analytics scripts.
+- **Self-Hosted Assets**: All fonts (`Clash Display`, `Inter`), images, icons, and stylesheets MUST be self-hosted in `src/assets/` and served locally.
+- **No Initial Cookies or Trackers**: No non-essential cookies, `localStorage`, `sessionStorage`, or device fingerprinting. The site must be 100% functional without requiring an intrusive cookie consent banner on landing.
+- **2-Click Consent YouTube Facade**: Direct YouTube `<iframe>` embeds are strictly forbidden on initial load. Videos must render a static thumbnail facade (`video-embed.js`, < 1.5 KB). An iframe is dynamically injected ONLY upon an explicit user play click, loading exclusively from `https://www.youtube-nocookie.com`.
+- **Mandatory Privacy Ledger Compliance**: Any modification introducing a new network origin MUST be documented in [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md) and approved against [`docs/LEGAL-PRIVACY-DE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md).
 
-| Element | Font | Weight | Digital Size | Linktree Clone Usage |
-| :--- | :--- | :--- | :--- | :--- |
-| **H1** | Clash Display | Semibold (600) | **48px** (`3rem`) | Main page title (if used) |
-| **H2** | Clash Display | Semibold (600) | **40px** (`2.5rem`) | Major section headers |
-| **H3** | Clash Display | Semibold (600) | **32px** (`2rem`) | Subsections |
-| **H4** | Clash Display | Semibold (600) | **24px** (`1.5rem`) | Profile title / sub-brand header |
-| **H5** | Clash Display | Semibold (600) | **20px** (`1.25rem`) | Cards, panels, and link buttons |
-| **H6** | Clash Display | Semibold (600) | **18px** (`1.125rem`) | Small headings |
-| **Body Large** | Inter | Regular (400) | **18px** (`1.125rem`) | Bio intro text or large body copy |
-| **Body** | Inter | Regular (400) | **16px** (`1rem`) | Standard bio/description text |
-| **Body Small** | Inter | Regular (400) | **14px** (`0.875rem`) | Secondary link descriptions |
-| **Caption** | Inter | Regular (400) | **12px** (`0.75rem`) | Image captions / footer notes |
-| **Overline / Label** | Inter | Regular (400) | **10px–11px** (`0.625rem–0.6875rem`) | Tags, badges, category labels |
+### 1.4 Brand Color Constancy Invariant
+- **Immutable Color Palette**: Brand colors (`#08415C` Dark Teal Blue, `#846B8A` Muted Lavender, `#FEFADC` Light Pastel Yellow) must **never** change based on URL parameters, surfaces, campus routes (`/gf`, `/wob`, `/he`), or sublinks.
+- **Content Filtering Only**: Surfaces and campus switches filter content visibility only; they never alter brand styling, button action fills, or typography tokens.
 
-### 1.3 Colors & Contrast Rules
-* **Page Background:** Light Pastel Yellow (`#FEFADC`) — designated for soft backgrounds (`rgb(254, 250, 220)`). *(Muted Lavender `#846B8A` or Dark Teal Blue `#08415C` can also be used as full-bleed backgrounds with inverted white `#FFFFFF` or Light Pastel Yellow `#FEFADC` text/logos.)*
-* **Primary Text & Dark Accents / Buttons:** Dark Teal Blue (`#08415C`, `rgb(8, 65, 92)`).
-* **Secondary Accents / Hover States:** Muted Lavender (`#846B8A`, `rgb(132, 107, 138)`).
-* **Brand Color Constancy Invariant:** Brand colors must **never** change based on URL parameters, surfaces, campus routes (`/gf`, `/wob`, `/he`), or sublinks. City switches and surfaces filter content visibility only; they never alter brand identity or action colors.
-
-### 1.4 Images & Media Specs (Avatars / Banners)
-* **Format & File Size:** `.webp` only, **maximum 400 KB** per image.
-* **Max Widths:** **1900px** max width for hero/banner images; **1400px** max width for standard images.
-* **Aspect Ratios:** `3:2`, `4:3`, or `16:9` (also `3:4` for portrait cards).
-* **Subject Matter:** Authentic photos of people, community, faces, and visible emotions.
-
-### 1.5 Unspecified CSS Properties (Clean Web Defaults)
-For properties not defined in the manual, use these defaults:
-* **Line height (leading):** `1.4–1.5` for body text; `1.1–1.2` for headings.
-* **Letter-spacing (kerning):** `normal` (or `-0.01em` on large display headings).
-* **Container / Column Width:** Centered `~600px` (or `~42rem` / `672px`) max-width container.
-* **Border Radius:** `4px` (small/controls), `8px` (medium/buttons/cards), `16px` (large/modals), `999px` (pill badges).
-* **Drop Shadows:** Subtle (`0 1px 6px rgba(8, 65, 92, 0.06)` or `0 4px 20px rgba(8, 65, 92, 0.08)`), prioritizing borders and whitespace first.
-* **Touch Targets:** Minimum `44px` height/width.
+### 1.5 Pure CSS Interactivity & Accessibility (WCAG 2.2 AA)
+- **Zero-JS Collapsible Interactivity**: Interactive disclosures (e.g., `DropdownCard` service times) MUST use native HTML5 `<details>` and `<summary>` elements with pure CSS transitions.
+- **Keyboard & Contrast Compliance**: All interactive elements must provide visible `:focus-visible` focus rings and maintain a minimum contrast ratio of 4.5:1 for normal text (3:1 for large text).
+- **Reduced Motion**: All animations must respect `@media (prefers-reduced-motion: reduce)`.
 
 ---
 
-## 2. Non-Negotiable Architecture
+## 2. Coding Standards & Conventions
 
-1. Prefer static HTML and CSS. Production JavaScript is opt-in, not the default.
-2. Use Eleventy (11ty) for static generation and Nunjucks for templates.
-3. Use Sass/SCSS for styling. Compile to a single minified production CSS file (`_site/css/main.css`).
-4. Use Storyblok as headless CMS with CLI component schemas and visual editing.
-5. Never introduce React/Vue/Svelte solely for component rendering.
-6. Content must be data-driven and validated against a schema before build (`content.schema.json`).
-7. All visual constants must come from design tokens in `src/styles/tokens/`.
-8. External embeds, analytics, trackers, remote fonts, and non-essential browser storage are forbidden by default.
-9. Accessibility and performance are acceptance criteria, not optional enhancements (WCAG 2.2 AA).
-10. Never place secrets, API keys, personal legal data, or production credentials in examples.
+### 2.1 CSS & BEM Architecture
+- **Strict BEM Naming**: All CSS classes must follow the BEM (`Block__Element--Modifier`) naming convention (e.g., `.link-card`, `.link-card__title`, `.link-card--horizontal`).
+- **No ID Selectors**: Never use ID selectors (`#id`) for CSS styling.
+- **Tokens First**: Never hardcode hex colors or spacing values in component stylesheets. Always consume semantic CSS custom properties defined in `src/styles/tokens/_semantic.scss` (e.g., `var(--color-action-bg)`, `var(--color-text)`, `var(--color-page-bg)`).
+- **Mobile-First**: Author CSS mobile-first, using `min-width` media queries for desktop enhancements.
+- **Selector Depth**: Avoid nesting deeper than 3 levels in SCSS.
 
----
+### 2.2 Minimal & Semantic HTML
+- **Semantic Tags**: Use proper HTML5 semantic elements (`<header>`, `<main>`, `<nav>`, `<section>`, `<article>`, `<footer>`, `<details>`, `<summary>`).
+- **Minimal DOM Tree**: Omit redundant wrapper `<div>` elements, unused container wrappers, and dead boilerplate.
+- **Safe URLs**: All dynamic URLs must pass through the `resolveUrl` Nunjucks filter to sanitize against dangerous `javascript:` and `data:` protocols.
 
-## 3. Production Runtime Budget
+### 2.3 Dependencies & Library Policy
+- **Don't Reinvent the Wheel**: Do not rewrite functionality already provided by standard JS frameworks or established libraries—import and use them instead when appropriate.
+- **Vet External Packages**: Only install well-known, actively maintained libraries with strong community adoption (high GitHub stars and weekly downloads).
+- **Avoid Micro-Dependencies**: NEVER install trivial, one-liner packages (e.g., `is-odd`, `left-pad`, or whitespace utilities). Write simple utility functions natively.
+- **Production Client-Side JS Budget**: Target 0 KB production JS. Any client-side script must be justified, self-contained vanilla JS (< 1.5 KB), and pass `scripts/verify-build.mjs`.
 
-- Client-side JavaScript: target 0 KB.
-- If JS is necessary, each feature must justify itself in code comments and documentation (< 1.5 KB total).
-- No framework hydration.
-- No runtime third-party dependency in production (Storyblok Bridge loads only during visual editor preview).
-- No remote font request; self-host `Clash Display` and use system font fallback stacks.
-- Images must have explicit width/height and responsive `srcset`/sizes when applicable.
-- Use `.webp` format (`max 400KB`, 1900px max width for heroes, 1400px for standard cards).
-
----
-
-## 4. Components
-
-Required UI primitives:
-- `ProfileHeader` (Logo avatar with lowercase "e" clear space buffer, church name, bio tagline)
-- `LinkButton` (Action button with primary `#08415C` fill and lavender hover state)
-- `DropdownCard` & `dropdown_time_item` (Pure CSS details/summary service times, Echo Kids badge)
-- `ImageCardHorizontal` (16:9 media card with title & arrow)
-- `ImageCardVertical` (3:4 portrait flyer card with title & arrow)
-- `VideoLinkCard` (Privacy 2-click YouTube player facade with YouTube ID model)
-- `GroupBlock` (Container box grouping nested cards and buttons)
-- `SectionHeading` (Uppercase category divider)
-- `FooterLegal` (Church legal data, Impressum/Datenschutz, social items)
-
-Every component must:
-- render valid semantic HTML;
-- work without JavaScript;
-- have focus-visible styles;
-- meet WCAG 2.2 AA contrast for normal usage;
-- map to a Storyblok blok component schema in `storyblok/components.json`;
-- adhere to Echo Kirche typography scale and brand colors;
-- avoid inline styles except for narrowly justified CSS custom-property values.
+### 2.4 Git & Commit Conventions
+- **Conventional Commits**: All commit messages must follow the Conventional Commits specification:
+  - `feat:` A new feature or component
+  - `fix:` A bug fix or schema correction
+  - `refactor:` Code restructuring without functional changes
+  - `style:` Design token, formatting, or CSS updates
+  - `docs:` Documentation or agent instruction changes
+  - `test:` Adding or updating test suites
+  - `chore:` Dependency updates, build script adjustments
 
 ---
 
-## 5. Source / Surface Variants
+## 3. Explicit "DO" and "DO NOT" Rules
 
-The page can be rendered for configurable campus and channel surfaces:
-- `default` (`/`)
-- `gifhorn` (`/gf`, `/gifhorn`)
-- `wolfsburg` (`/wob`, `/wolfsburg`)
-- `helmstedt` (`/he`, `/helmstedt`)
-- `instagram` (`/ig`, `/instagram`)
-- `all` (`/test` - preview testing only, redirected on production)
+### DO:
+- **DO** compile Sass via `npm run build:sass` into the single output `_site/css/main.css`.
+- **DO** test both local fallback data (`npm run validate`) and Storyblok synchronization schemas before committing.
+- **DO** maintain the exact "e" clear space (*Schutzzone*) on all four sides of the Echo logo.
+- **DO** compress and convert all uploaded images to `.webp` format (max 400 KB, 1900px max width for heroes, 1400px for cards).
+- **DO** keep operator legal identity in `src/_data/operator.json` and maintain stable routes `/impressum/` and `/datenschutz/`.
+- **DO** run `npm run build && npm test` and ensure all 45+ test assertions pass.
 
-Dual-tier content curation:
-- **Tier 1 (`display_in_default` / `displayInDefault`)**: Curates the default landing page (`/`).
-- **Tier 2 (`show_on` / `hide_on`)**: Targets specific campus or channel routes.
-
-Surfaces control content filtering only; they must **never** alter brand colors.
-
----
-
-## 6. Privacy Profiles
-
-### strict (default)
-- no analytics, no pixels, no third-party embeds on initial load
-- no remote fonts
-- no non-essential cookies, localStorage, or sessionStorage
-- 2-click consent facade for YouTube (`youtube-nocookie.com` only on explicit click)
-
-### consented (future, explicit feature)
-May allow privacy-impacting features only after an explicit product decision, legal review, and a consent implementation appropriate to the actual technology used. Agents must never silently switch from `strict` to `consented`.
+### DO NOT:
+- **DO NOT** delete, rename, or archive documentation files without explicit user review.
+- **DO NOT** install client-side UI frameworks (React, Vue, Svelte, Alpine) or hydration scripts.
+- **DO NOT** make client-side network calls to the Storyblok API in production.
+- **DO NOT** add external fonts (`fonts.googleapis.com`, Adobe Fonts) or third-party tracking scripts.
+- **DO NOT** use YouTube `<iframe>` tags directly in Nunjucks templates without the 2-click consent facade.
+- **DO NOT** alter brand identity colors based on URL parameters, campus routes, or query strings.
+- **DO NOT** hardcode production credentials or legal operator placeholders in public examples.
 
 ---
 
-## 7. CSS Rules
+## 4. Mandatory Pre-Flight & Post-Flight Checklists
 
-- SCSS architecture: tokens -> base -> utilities -> components -> pages.
-- Use CSS custom properties for runtime theme values (`--echo-teal`, `--echo-purple`, `--echo-cream`).
-- Follow mobile-first responsive design.
-- Prefer logical properties (`margin-inline`, `padding-block`) over physical equivalents.
-- Avoid selector nesting deeper than 3 levels.
-- Avoid `!important`.
-- No IDs for styling.
-- Respect `prefers-reduced-motion`.
+All agents MUST execute these checks for every code modification:
+
+```mermaid
+flowchart TD
+  subgraph PreFlight["1. Mandatory Pre-Flight Checks"]
+    P1["Read AGENTS.md (Authoritative Rules)"]
+    P2["Read Relevant docs/*.md for Task Domain"]
+    P3["Inspect package.json & existing components"]
+  end
+
+  subgraph Execution["2. Implementation"]
+    E1["Apply Minimal Semantic HTML / BEM SCSS"]
+    E2["Consume Design Tokens (_semantic.scss)"]
+    E3["Gracefully Handle Optional Fields"]
+  end
+
+  subgraph PostFlight["3. Mandatory Post-Flight Checks"]
+    F1["Run npm run validate (Ajv Schema Check)"]
+    F2["Run npm run build (Sass + 11ty + verify-build)"]
+    F3["Run npm test (All 45+ Test Suites)"]
+    F4["Update Corresponding docs/*.md if Schemas/Styles Changed"]
+  end
+
+  PreFlight --> Execution
+  Execution --> PostFlight
+```
+
+### Pre-Flight Checklist (Before Writing Code)
+1. Read this [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) file to internalize active constraints.
+2. Read the domain-specific documentation file:
+   - For components/markup: [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md) and [`docs/STORYBLOK.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STORYBLOK.md).
+   - For styling/tokens: [`docs/STYLEGUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md).
+   - For routing/surfaces: [`docs/ARCHITECTURE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/ARCHITECTURE.md).
+   - For privacy/embeds: [`docs/LEGAL-PRIVACY-DE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md) and [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md).
+   - For build/deployment: [`docs/DEPLOYMENT.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/DEPLOYMENT.md).
+
+### Post-Flight Checklist (Before Reporting Completion)
+1. Run `npm run validate` → JSON Schema validation must pass.
+2. Run `npm run build` → Sass compilation, Eleventy build, and `verify-build.mjs` must pass.
+3. Run `npm test` → All test suites must pass with 0 failures.
+4. Verify zero forbidden items were introduced (no remote fonts, no initial `<iframe>`, no unauthorized JS).
+5. If any component schema, design token, dependency, or routing rule was altered, update the corresponding documentation file in `docs/` in the same commit.
 
 ---
 
-## 8. Storyblok Requirements
+## 5. Master Documentation Index & Tool Alignment
 
-- Schema declaration: `storyblok/components.json`.
-- Bridge script: `src/assets/js/storyblok-bridge.js` (activates only in `?_storyblok=...` editor mode).
-- Offline fallback: Eleventy must build completely from local data (`src/_data/site.json`) when `STORYBLOK_TOKEN` is unset.
-- Content schema: `content.schema.json` validates local source files.
-
----
-
-## 9. Validation & Definition of Done
-
-A task or pull request is not complete until:
-- production build succeeds (`npm run build`);
-- automated test suites pass (`npm test`);
-- Storyblok schema is valid and synchronizable;
-- content schema validation succeeds (`npm run validate`);
-- Sass compiles without warnings;
-- HTML is semantically valid;
-- no unexpected production JS bundles are emitted;
-- Lighthouse/performance budget is not regressed;
-- Echo Kirche styleguide (clear space, colors, typography, type scale, media specs, web defaults) is 100% honored.
+| Target File | Intended Role & Scope |
+| :--- | :--- |
+| [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) | **Single Source of Truth** for all agent directives, constraints, and quality standards. |
+| [`README.md`](file:///Users/Shared/projeckt/goto/link-tree/README.md) | Human-facing project overview, technical architecture, and documentation directory. |
+| [`ANTIGRAVITY.md`](file:///Users/Shared/projeckt/goto/link-tree/ANTIGRAVITY.md) | Operational execution guide for Antigravity agents. References `AGENTS.md`. |
+| [`CLAUDE.md`](file:///Users/Shared/projeckt/goto/link-tree/CLAUDE.md) | Operational guidelines for Claude Code agents. References `AGENTS.md`. |
+| [`.cursorrules`](file:///Users/Shared/projeckt/goto/link-tree/.cursorrules) | Cursor IDE AI rules enforcing styleguide and architecture. References `AGENTS.md`. |
+| [`.github/copilot-instructions.md`](file:///Users/Shared/projeckt/goto/link-tree/.github/copilot-instructions.md) | GitHub Copilot prompt directives. References `AGENTS.md`. |
+| [`SKILLS.md`](file:///Users/Shared/projeckt/goto/link-tree/SKILLS.md) | Reusable task-oriented procedural library for specific development tasks. |
+| [`STORYBLOK-STARTER-GUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/STORYBLOK-STARTER-GUIDE.md) | Step-by-step onboarding guide for church editors setting up a new Storyblok space. |
+| [`docs/ARCHITECTURE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/ARCHITECTURE.md) | Complete system architecture, data flows, routing mechanics, and security headers. |
+| [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md) | Production specification for Storyblok blok schemas and local fallback data. |
+| [`docs/STYLEGUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md) | Authoritative visual design system: typography, colors, logo clear space, and tokens. |
+| [`docs/DEPLOYMENT.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/DEPLOYMENT.md) | Static hosting, Netlify build hooks, webhook rebuilds, and caching policies. |
+| [`docs/LEGAL-PRIVACY-DE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md) | German/EU legal compliance requirements (DDG §5 Impressum, DSGVO Datenschutz). |
+| [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md) | Ledger of approved third-party network origins. |
+| [`docs/STORYBLOK.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STORYBLOK.md) | Bilingual (EN/DE) reference for all 12 Storyblok components and Visual Editor. |
