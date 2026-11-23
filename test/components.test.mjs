@@ -75,8 +75,71 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(indexHtml, /class="donation-card__summary link-button/, 'DonationCard summary must be styled as link-button');
     assert.match(indexHtml, /class="donation-card__chevron"/, 'DonationCard must have chevron indicator');
     assert.match(indexHtml, /class="donation-card__btn donation-card__btn--paypal"/, 'DonationCard must render PayPal action button');
+    assert.match(indexHtml, /class="donation-card__btn donation-card__btn--iban"/, 'DonationCard must render Pay with IBAN button');
     assert.match(indexHtml, /class="donation-card__bank-details"/, 'DonationCard must render bank details definition list');
-    assert.match(indexHtml, /data-copy-iban=/, 'DonationCard must render copy button with data-copy-iban attribute');
+    assert.match(indexHtml, /class="donation-card__iban-code"/, 'DonationCard must render formatted IBAN code');
+    assert.match(indexHtml, /data-copy-iban="DE12 3456 7890 1234 5678 90"/, 'DonationCard must render copy button with data-copy-iban attribute');
+    assert.match(indexHtml, /class="donation-card__live-region sr-only"/, 'DonationCard must render live region for screen readers');
+  });
+
+  test('DonationCard Nunjucks template supports graceful nullability, custom labels, and safe URLs', async () => {
+    const nunjucks = (await import('nunjucks')).default;
+    const env = nunjucks.configure(path.resolve('src/_includes'), { autoescape: true });
+    env.addFilter('resolveUrl', (val) => typeof val === 'string' ? val : (val?.url || ''));
+    env.addFilter('storyblokEditable', () => '');
+
+    // 1. Minimal donation card with only required fields
+    const htmlMinimal = env.render('components/DonationCard.njk', {
+      item: {
+        id: 'donate-min',
+        type: 'donation-card',
+        label: 'Spenden Minimal'
+      }
+    });
+    assert.match(htmlMinimal, /<details class="donation-card"/);
+    assert.match(htmlMinimal, /Spenden Minimal/);
+    assert.doesNotMatch(htmlMinimal, /class="donation-card__description"/);
+    assert.doesNotMatch(htmlMinimal, /class="donation-card__actions"/);
+    assert.doesNotMatch(htmlMinimal, /class="donation-card__bank-card"/);
+
+    // 2. Card with PayPal only
+    const htmlPaypalOnly = env.render('components/DonationCard.njk', {
+      item: {
+        id: 'donate-paypal',
+        type: 'donation-card',
+        label: 'Spenden PayPal',
+        paypalUrl: 'https://paypal.me/test',
+        paypalLabel: 'Direkt per PayPal'
+      }
+    });
+    assert.match(htmlPaypalOnly, /class="donation-card__btn donation-card__btn--paypal"/);
+    assert.match(htmlPaypalOnly, /href="https:\/\/paypal\.me\/test"/);
+    assert.match(htmlPaypalOnly, /Direkt per PayPal/);
+    assert.doesNotMatch(htmlPaypalOnly, /class="donation-card__btn--iban"/);
+
+    // 3. Card with IBAN details and copy button
+    const htmlIbanOnly = env.render('components/DonationCard.njk', {
+      item: {
+        id: 'donate-iban',
+        type: 'donation-card',
+        label: 'Spenden IBAN',
+        ibanTitle: 'Banküberweisung',
+        accountName: 'Gemeinde Spendenkonto',
+        iban: 'DE99 1234 5678 0000 00',
+        bic: 'GENODED1',
+        bankName: 'Volksbank',
+        reference: 'Zweck: Jugend',
+        copyLabel: 'Nummer kopieren'
+      }
+    });
+    assert.match(htmlIbanOnly, /Banküberweisung/);
+    assert.match(htmlIbanOnly, /Gemeinde Spendenkonto/);
+    assert.match(htmlIbanOnly, /DE99 1234 5678 0000 00/);
+    assert.match(htmlIbanOnly, /GENODED1/);
+    assert.match(htmlIbanOnly, /Volksbank/);
+    assert.match(htmlIbanOnly, /Zweck: Jugend/);
+    assert.match(htmlIbanOnly, /data-copy-iban="DE99 1234 5678 0000 00"/);
+    assert.match(htmlIbanOnly, /Nummer kopieren/);
   });
 
   test('ImageCardHorizontal & ImageCardVertical render media cards with aspect ratios and arrows', () => {
@@ -145,6 +208,75 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(htmlObject, /<img src="\/assets\/images\/echo-home-gifhorn-1024x682\.webp"/);
     assert.match(htmlObject, /alt="Custom Alt Text"/);
     assert.match(htmlObject, /Classic Item/);
+  });
+
+  test('LinkButton and FaIcon support any Font Awesome icons (fa-*, raw SVG, standard names, and fallback)', async () => {
+    const nunjucks = (await import('nunjucks')).default;
+    const env = nunjucks.configure(path.resolve('src/_includes'), { autoescape: true });
+    env.addFilter('resolveUrl', (val) => typeof val === 'string' ? val : (val?.url || '#'));
+
+    // 1. Built-in icon
+    const htmlChurch = env.render('components/LinkButton.njk', {
+      item: { label: 'Church Link', url: 'https://example.com/church', icon: 'church' }
+    });
+    assert.match(htmlChurch, /class="link-button link-button--with-icon"/);
+    assert.match(htmlChurch, /class="fa-svg fa-church"/);
+    assert.match(htmlChurch, /Church Link/);
+
+    // 2. Newly supported Font Awesome names & prefixes (fa-cross, fa-solid fa-star, fa-phone, ticket, mug-hot)
+    const htmlCross = env.render('components/LinkButton.njk', {
+      item: { label: 'Cross Link', url: 'https://example.com/cross', icon: 'fa-cross' }
+    });
+    assert.match(htmlCross, /class="fa-svg fa-cross"/);
+
+    const htmlStar = env.render('components/LinkButton.njk', {
+      item: { label: 'Star Link', url: 'https://example.com/star', icon: 'fa-solid fa-star' }
+    });
+    assert.match(htmlStar, /class="fa-svg fa-star"/);
+
+    const htmlPhone = env.render('components/LinkButton.njk', {
+      item: { label: 'Phone Link', url: 'tel:+4912345678', icon: 'phone' }
+    });
+    assert.match(htmlPhone, /class="fa-svg fa-phone"/);
+
+    const htmlTicket = env.render('components/LinkButton.njk', {
+      item: { label: 'Ticket Link', url: 'https://example.com/ticket', icon: 'fa-ticket' }
+    });
+    assert.match(htmlTicket, /class="fa-svg fa-ticket"/);
+
+    const htmlCoffee = env.render('components/LinkButton.njk', {
+      item: { label: 'Coffee Link', url: 'https://example.com/coffee', icon: 'mug-hot' }
+    });
+    assert.match(htmlCoffee, /class="fa-svg fa-mug-hot"/);
+
+    // 3. Raw SVG input
+    const rawSvg = '<svg class="custom-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10"/></svg>';
+    const htmlRawSvg = env.render('components/LinkButton.njk', {
+      item: { label: 'Raw SVG Link', url: 'https://example.com/raw', icon: rawSvg }
+    });
+    assert.match(htmlRawSvg, /<svg class="custom-icon"/);
+    assert.match(htmlRawSvg, /class="link-button__icon"/);
+
+    // 4. Raw <i> tag input
+    const rawI = '<i class="fa-solid fa-guitar" aria-hidden="true"></i>';
+    const htmlRawI = env.render('components/LinkButton.njk', {
+      item: { label: 'Guitar Link', url: 'https://example.com/guitar', icon: rawI }
+    });
+    assert.match(htmlRawI, /<i class="fa-solid fa-guitar"/);
+
+    // 5. Arbitrary unlisted fa-* icon fallback
+    const htmlArbitrary = env.render('components/LinkButton.njk', {
+      item: { label: 'Bullhorn Link', url: 'https://example.com/bullhorn', icon: 'fa-bullhorn' }
+    });
+    assert.match(htmlArbitrary, /class="fa-svg fa-bullhorn"/);
+
+    // 6. Button without icon
+    const htmlNoIcon = env.render('components/LinkButton.njk', {
+      item: { label: 'No Icon Link', url: 'https://example.com/none', icon: '' }
+    });
+    assert.doesNotMatch(htmlNoIcon, /link-button--with-icon/);
+    assert.doesNotMatch(htmlNoIcon, /class="link-button__icon"/);
+    assert.match(htmlNoIcon, /No Icon Link/);
   });
 
   test('VideoLinkCard renders 2-click consent facade without initial iframe', () => {

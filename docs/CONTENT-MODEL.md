@@ -53,7 +53,7 @@ The root document containing the entire page tree:
 | `theme` | Options | No | Theme mode: `light` (default), `pale`, `warm`, `soft`, `dark`, `teal`, `lavender`. |
 | `surface` | Options | No | Default surface context (default: `"default"`). |
 | `profile` | Blocks | Yes | Exactly 1 `profile_header` blok. |
-| `body` | Blocks | Yes | Ordered array of content bloks (`link_button`, `dropdown_card`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `group_block`, `section_heading`). |
+| `body` | Blocks | Yes | Ordered array of content bloks (`link_button`, `dropdown_card`, `donation_card`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `group_block`, `section_heading`). |
 | `footer` | Blocks | Yes | Exactly 1 `footer_legal` blok. |
 
 ---
@@ -78,7 +78,7 @@ Prominent full-width button for primary calls-to-action:
 | :--- | :--- | :--- | :--- |
 | `label` | Text | Yes | Button label (max 160 chars). |
 | `url` | Text / Multilink | Yes | Safe destination URL (validated via `resolveUrl`). |
-| `icon` | Options | No | Optional icon: `church`, `calendar`, `video`, `heart`, `users`, `location`, `music`, `newsletter`, `podcast`, `envelope`, `globe`, `logo`, `link`. |
+| `icon` | Text | No | Optional icon: Any Font Awesome icon (e.g., `church`, `calendar`, `video`, `heart`, `users`, `location`, `music`, `newsletter`, `podcast`, `envelope`, `globe`, `logo`, `link`, `fa-cross`, `fa-star`, `fa-phone`, `ticket`, `mug-hot`, `bible`, or any `fa-*` icon), raw SVG string, or `<i>` class tag. |
 | `display_in_default` | Boolean | No | Tier 1 curation: `true` to render on `/`, `false` to hide from `/`. Default: `true`. |
 | `show_on` | Multi-select | No | Tier 2 target surfaces (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`). |
 | `hide_on` | Multi-select | No | Tier 2 excluded surfaces. |
@@ -92,7 +92,7 @@ Collapsible accordion disclosure powered by pure CSS `<details>` and `<summary>`
 | Field Name | Type | Required | Description & Validation |
 | :--- | :--- | :--- | :--- |
 | `label` | Text | Yes | Summary header text (e.g., `"Gottesdienste & Zeiten"`). |
-| `icon` | Options | No | Icon displayed next to label (default: `"church"`). |
+| `icon` | Text | No | Icon displayed next to label: `church` (default), or any Font Awesome `fa-*` icon, raw SVG, or `<i>` class tag. |
 | `description` | Text | No | Intro text revealed when expanded (max 300 chars). |
 | `layout` | Options | No | Layout mode: `"columns"` (responsive 3-column grid) or `"list"`. Default: `"columns"`. |
 | `locations` | Multi-select | No | Active location tags (`["gifhorn", "wolfsburg", "helmstedt"]`). |
@@ -123,7 +123,32 @@ Individual service schedule card nested inside `dropdown_card`:
 
 ---
 
-### 2.6 Horizontal Media Card: `image_card_horizontal`
+### 2.6 Donation & IBAN Dropdown Card: `donation_card`
+
+Collapsible donation and payment drawer powered by pure CSS `<details>` and `<summary>`, featuring dual action buttons (PayPal and Pay with IBAN / Online Banking) and a bank details card with accessible copy-to-clipboard functionality:
+
+| Field Name | Type | Required | Description & Validation |
+| :--- | :--- | :--- | :--- |
+| `label` | Text | Yes | Summary header text (e.g., `"Spenden & Unterstützen"`). |
+| `icon` | Text | No | Icon next to label: `heart` (default), or any Font Awesome icon (e.g., `church`, `calendar`, `video`, `users`, `location`, `link`, `fa-*`, raw SVG, or `<i>` class tag). |
+| `description` | Text | No | Intro text revealed when expanded (max 300 chars). |
+| `paypal_label` | Text | No | Label for PayPal button (default: `"Mit PayPal spenden"`). |
+| `paypal_url` | Text / Multilink | No | PayPal destination URL. |
+| `iban_link_label` | Text | No | Label for IBAN / Online Banking button (default: `"Online-Banking öffnen"`). |
+| `iban_link_url` | Text / Multilink | No | Online banking or external donation URL. |
+| `iban_title` | Text | No | Header of the bank details card (default: `"Per Banküberweisung (IBAN)"`). |
+| `account_name` | Text | No | Account holder name (e.g., `"Echo Kirche e.V."`). |
+| `iban` | Text | No | IBAN string (e.g., `"DE12 3456 7890 1234 5678 90"`). |
+| `bic` | Text | No | BIC / SWIFT code (e.g., `"PBNKDEFF"`). |
+| `bank_name` | Text | No | Name of the banking institution (e.g., `"Postbank"`). |
+| `reference` | Text | No | Recommended payment reference / Verwendungszweck. |
+| `copy_label` | Text | No | Label for the copy button (default: `"IBAN kopieren"`). |
+| `display_in_default` | Boolean | No | Tier 1 curation flag. Default: `true`. |
+| `show_on` / `hide_on` | Multi-select | No | Tier 2 surface filters. |
+
+---
+
+### 2.7 Horizontal Media Card: `image_card_horizontal`
 
 16:9 aspect-ratio visual banner card:
 

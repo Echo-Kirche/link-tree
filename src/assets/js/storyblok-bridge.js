@@ -51,6 +51,19 @@
     return (low.startsWith('javascript:') || low.startsWith('data:') || low.startsWith('vbscript:')) ? '#' : url;
   }
 
+  function renderIcon(icon) {
+    if (!icon) return I.link;
+    if (typeof icon === 'string' && (icon.includes('<svg') || icon.includes('<i') || icon.includes('<span'))) {
+      return icon;
+    }
+    const clean = String(icon).toLowerCase().trim().replace(/^fa-(solid|regular|brands)\s+/, '').replace(/^fas\s+|^far\s+|^fab\s+|^fa\s+/, '').replace(/^fa-/, '');
+    if (clean === 'arrow-right') return I.arr;
+    if (clean === 'chevron-down') return I.chev;
+    if (clean === 'play') return I.play;
+    if (clean === 'link') return I.link;
+    return `<svg class="fa-svg fa-${esc(clean)}" viewBox="0 0 512 512" fill="currentColor" width="18" height="18"><path d="M326.612 185.391c59.977 59.978 59.977 157.26 0 217.238l-87.045 87.045c-59.977 59.977-157.259 59.977-217.238 0-59.977-59.978-59.977-157.26 0-217.238l54.403-54.403c4.686-4.686 12.284-4.686 16.971 0l22.627 22.627c4.686 4.686 4.686 12.284 0 16.971l-54.403 54.403c-37.485 37.485-37.485 98.257 0 135.743 37.486 37.486 98.258 37.486 135.743 0l87.045-87.045c37.486-37.485 37.486-98.257 0-135.743-4.686-4.686-4.686-12.284 0-16.971l22.627-22.627c4.686-4.686 12.284-4.686 16.971 0l7.299 7.299zm162.776-162.776c-59.977-59.977-157.259-59.977-217.238 0l-87.045 87.045c-59.977 59.977-59.977 157.26 0 217.238l7.299 7.299c4.686 4.686 12.284 4.686 16.971 0l22.627-22.627c4.686-4.686 4.686-12.284 0-16.971l-7.299-7.299c-37.486-37.486-37.486-98.258 0-135.743l87.045-87.045c37.486-37.485 98.258-37.485 135.743 0 37.486 37.486 37.486 98.258 0 135.743l-54.403 54.403c-4.686 4.686-4.686 12.284 0 16.971l22.627 22.627c4.686 4.686 12.284 4.686 16.971 0l54.403-54.403c59.977-59.978 59.977-157.26 0-217.238z"/></svg>`;
+  }
+
   function setFilters(li, b) {
     const s = b.show_on || b.showOn;
     const h = b.hide_on || b.hideOn;
@@ -76,12 +89,15 @@
 
     if (c === 'link_button' || c === 'link') {
       const a = li.querySelector('a.link-button');
+      const icMarkup = renderIcon(b.icon);
       if (a) {
         a.href = url;
         const l = a.querySelector('.link-button__label');
         if (l) l.textContent = label;
+        const ic = a.querySelector('.link-button__icon');
+        if (ic) ic.innerHTML = icMarkup;
       } else {
-        li.innerHTML = `<a class="link-button link-button--with-icon" href="${url}" rel="noopener noreferrer"><span class="link-button__icon" aria-hidden="true">${I.link}</span><span class="link-button__label">${esc(label)}</span></a>`;
+        li.innerHTML = `<a class="link-button link-button--with-icon" href="${url}" rel="noopener noreferrer"><span class="link-button__icon" aria-hidden="true">${icMarkup}</span><span class="link-button__label">${esc(label)}</span></a>`;
       }
       return;
     }
@@ -120,13 +136,16 @@
 
     if (c === 'dropdown_card' || c === 'dropdown-card') {
       const card = li.querySelector('details.dropdown-card');
+      const icMarkup = renderIcon(b.icon || 'church');
       if (card) {
         const lbl = card.querySelector('.link-button__label');
         if (lbl) lbl.textContent = label;
+        const ic = card.querySelector('.link-button__icon');
+        if (ic) ic.innerHTML = icMarkup;
         const desc = card.querySelector('.dropdown-card__description');
         if (desc && b.description) desc.textContent = b.description;
       } else {
-        li.innerHTML = `<details class="dropdown-card"><summary class="dropdown-card__summary link-button link-button--with-icon"><span class="link-button__icon" aria-hidden="true">${I.link}</span><span class="link-button__label">${esc(label)}</span><span class="dropdown-card__chevron" aria-hidden="true">${I.chev}</span></summary><div class="dropdown-card__content">${b.description ? `<p class="dropdown-card__description">${esc(b.description)}</p>` : ''}</div></details>`;
+        li.innerHTML = `<details class="dropdown-card"><summary class="dropdown-card__summary link-button link-button--with-icon"><span class="link-button__icon" aria-hidden="true">${icMarkup}</span><span class="link-button__label">${esc(label)}</span><span class="dropdown-card__chevron" aria-hidden="true">${I.chev}</span></summary><div class="dropdown-card__content">${b.description ? `<p class="dropdown-card__description">${esc(b.description)}</p>` : ''}</div></details>`;
       }
       return;
     }

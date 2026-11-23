@@ -146,66 +146,9 @@
           "required": true
         },
         "icon": {
-          "type": "option",
+          "type": "text",
           "pos": 2,
-          "options": [
-            {
-              "name": "None",
-              "value": ""
-            },
-            {
-              "name": "Church",
-              "value": "church"
-            },
-            {
-              "name": "Calendar",
-              "value": "calendar"
-            },
-            {
-              "name": "Video",
-              "value": "video"
-            },
-            {
-              "name": "Heart / Spenden",
-              "value": "heart"
-            },
-            {
-              "name": "Users / Groups",
-              "value": "users"
-            },
-            {
-              "name": "Location / Map",
-              "value": "location"
-            },
-            {
-              "name": "Music / Playlist",
-              "value": "music"
-            },
-            {
-              "name": "Newsletter",
-              "value": "newsletter"
-            },
-            {
-              "name": "Podcast",
-              "value": "podcast"
-            },
-            {
-              "name": "Envelope / Email",
-              "value": "envelope"
-            },
-            {
-              "name": "Globe / Website",
-              "value": "globe"
-            },
-            {
-              "name": "Echo Logo",
-              "value": "logo"
-            },
-            {
-              "name": "Generic Link",
-              "value": "link"
-            }
-          ],
+          "description": "Icon name (e.g. church, calendar, fa-cross, fa-star, fa-ticket, or any Font Awesome icon)",
           "default_value": ""
         },
         "show_on": {
@@ -1092,42 +1035,9 @@
           "default_value": "Gottesdienste & Zeiten"
         },
         "icon": {
-          "type": "option",
+          "type": "text",
           "pos": 1,
-          "options": [
-            {
-              "name": "Church (Default)",
-              "value": "church"
-            },
-            {
-              "name": "Calendar",
-              "value": "calendar"
-            },
-            {
-              "name": "Video",
-              "value": "video"
-            },
-            {
-              "name": "Heart / Spenden",
-              "value": "heart"
-            },
-            {
-              "name": "Users / Groups",
-              "value": "users"
-            },
-            {
-              "name": "Location / Map",
-              "value": "location"
-            },
-            {
-              "name": "Music / Playlist",
-              "value": "music"
-            },
-            {
-              "name": "Generic Link",
-              "value": "link"
-            }
-          ],
+          "description": "Icon name (e.g. church, calendar, or any Font Awesome icon)",
           "default_value": "church"
         },
         "description": {
@@ -1292,17 +1202,9 @@
           "default_value": "Spenden & Unterstützen"
         },
         "icon": {
-          "type": "option",
+          "type": "text",
           "pos": 1,
-          "options": [
-            { "name": "Heart / Spenden (Default)", "value": "heart" },
-            { "name": "Church", "value": "church" },
-            { "name": "Calendar", "value": "calendar" },
-            { "name": "Video", "value": "video" },
-            { "name": "Users", "value": "users" },
-            { "name": "Location", "value": "location" },
-            { "name": "Link", "value": "link" }
-          ],
+          "description": "Icon name (e.g. heart, church, or any Font Awesome icon)",
           "default_value": "heart"
         },
         "description": {

@@ -127,7 +127,7 @@
         },
         "icon": {
           "type": "string",
-          "maxLength": 60
+          "maxLength": 2048
         }
       }
     },
@@ -255,7 +255,7 @@
         "displayInDefault": { "type": "boolean" },
         "url": { "$ref": "#/$defs/safeUrl" },
         "actionLabel": { "type": "string", "maxLength": 100 },
-        "icon": { "type": "string", "maxLength": 60 },
+        "icon": { "type": "string", "maxLength": 2048 },
         "description": { "type": "string", "maxLength": 300 },
         "locations": {
           "type": "array",
@@ -290,7 +290,7 @@
         "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
         "type": { "enum": ["donation-card", "donation-dropdown"] },
         "label": { "type": "string", "minLength": 1, "maxLength": 160 },
-        "icon": { "type": "string", "maxLength": 60 },
+        "icon": { "type": "string", "maxLength": 2048 },
         "description": { "type": "string", "maxLength": 300 },
         "paypalLabel": { "type": "string", "maxLength": 100 },
         "paypalUrl": { "$ref": "#/$defs/safeUrl" },

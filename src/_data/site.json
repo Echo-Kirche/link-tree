@@ -192,10 +192,21 @@
     },
     {
       "id": "donate-support",
-      "type": "donation-card",
+      "type": "link",
       "label": "Spenden & Unterstützen",
+      "url": "https://kirche-echo.de",
+      "displayInDefault": true,
+      "icon": "heart"
+    },
+    {
+      "id": "donate-dropdown",
+      "type": "donation-card",
+      "label": "Spenden & Geben (PayPal & IBAN)",
       "icon": "heart",
       "displayInDefault": true,
+      "showOn": [
+        "default"
+      ],
       "description": "Deine Spende unterstützt die gemeinnützige Arbeit und Vision von Echo Kirche in Gifhorn, Wolfsburg und Helmstedt.",
       "paypalLabel": "Mit PayPal spenden",
       "paypalUrl": "https://paypal.me/echokirche",

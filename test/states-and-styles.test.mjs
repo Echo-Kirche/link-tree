@@ -25,6 +25,16 @@ describe('Component State Changes & CSS Verification', () => {
     assert.match(css, /\.dropdown-card__action-link:focus-visible/, 'DropdownCard action link must define :focus-visible');
   });
 
+  test('DonationCard open and interactive state changes', () => {
+    assert.match(css, /\.donation-card\[open\]/, 'DonationCard must define [open] state');
+    assert.match(css, /\.donation-card__summary:focus-visible/, 'DonationCard summary must define :focus-visible');
+    assert.match(css, /\.donation-card__btn:hover/, 'DonationCard buttons must define :hover');
+    assert.match(css, /\.donation-card__btn:focus-visible/, 'DonationCard buttons must define :focus-visible');
+    assert.match(css, /\.donation-card__copy-btn:hover/, 'DonationCard copy button must define :hover');
+    assert.match(css, /\.donation-card__copy-btn\.is-copied/, 'DonationCard copy button must define .is-copied state');
+    assert.match(css, /\.donation-card__copy-btn:focus-visible/, 'DonationCard copy button must define :focus-visible');
+  });
+
   test('ImageCard interactive states (:hover, :active, :focus-visible, arrow slide)', () => {
     assert.match(css, /\.image-card:hover/, 'ImageCard must define :hover state');
     assert.match(css, /\.image-card:active/, 'ImageCard must define :active state');

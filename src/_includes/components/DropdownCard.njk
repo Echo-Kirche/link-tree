@@ -2,13 +2,8 @@
   <summary class="dropdown-card__summary link-button{% if item.icon and item.icon != '' %} link-button--with-icon{% endif %}">
     {% if item.icon and item.icon != '' %}
     <span class="link-button__icon" aria-hidden="true">
-      {% if item.icon == "church" or item.icon == "fa-church" %}
-      <svg class="fa-svg fa-church" viewBox="0 0 576 512" fill="currentColor" width="18" height="18"><path d="M576 448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64s28.7-64 64-64v-64c0-35.3 28.7-64 64-64h48v-32c0-17.7 14.3-32 32-32h16V64h-16c-8.8 0-16-7.2-16-16s7.2-16 16-16h16V16c0-8.8 7.2-16 16-16s16 7.2 16 16v16h16c8.8 0 16 7.2 16 16s-7.2 16-16 16h-16v128h16c17.7 0 32 14.3 32 32v32h48c35.3 0 64 28.7 64 64v64c35.3 0 64 28.7 64 64zM240 352v96h96v-96c0-26.5-21.5-48-48-48s-48 21.5-48 48z"/></svg>
-      {% elif item.icon == "calendar" or item.icon == "fa-calendar" or item.icon == "events" %}
-      <svg class="fa-svg fa-calendar" viewBox="0 0 448 512" fill="currentColor" width="18" height="18"><path d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80c-8.8 0-16 7.2-16 16v48c0 8.8 7.2 16 16 16h48c8.8 0 16-7.2 16-16V288c0-8.8-7.2-16-16-16H64zm128 0c-8.8 0-16 7.2-16 16v48c0 8.8 7.2 16 16 16h48c8.8 0 16-7.2 16-16V288c0-8.8-7.2-16-16-16H192zm144 0c-8.8 0-16 7.2-16 16v48c0 8.8 7.2 16 16 16h48c8.8 0 16-7.2 16-16V288c0-8.8-7.2-16-16-16H336z"/></svg>
-      {% else %}
-      <svg class="fa-svg fa-church" viewBox="0 0 576 512" fill="currentColor" width="18" height="18"><path d="M576 448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64s28.7-64 64-64v-64c0-35.3 28.7-64 64-64h48v-32c0-17.7 14.3-32 32-32h16V64h-16c-8.8 0-16-7.2-16-16s7.2-16 16-16h16V16c0-8.8 7.2-16 16-16s16 7.2 16 16v16h16c8.8 0 16 7.2 16 16s-7.2 16-16 16h-16v128h16c17.7 0 32 14.3 32 32v32h48c35.3 0 64 28.7 64 64v64c35.3 0 64 28.7 64 64zM240 352v96h96v-96c0-26.5-21.5-48-48-48s-48 21.5-48 48z"/></svg>
-      {% endif %}
+      {% set iconName = item.icon or "church" %}
+      {% include "components/FaIcon.njk" %}
     </span>
     {% endif %}
     <span class="link-button__label">{{ item.label }}</span>

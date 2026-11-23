@@ -60,7 +60,7 @@ Component schemas are declared in [`storyblok/components.json`](file:///Users/Sh
 | `link_page` | Content Type | Root content type holding page title, theme (`light`, `pale`, `soft`, `dark`, `teal`, `lavender`), surface, `profile` blok, `body` bloks, and `footer` blok. |
 | `profile_header` | Nestable Blok | Organization name, biography, and vector/raster avatar asset. |
 | `group_block` | Nestable Blok | Container block with optional title, description, and style variant (`card`, `soft`, `outline`, `transparent`) that groups nested buttons, cards, and videos inside. |
-| `link_button` | Nestable Blok | Label, URL, optional icon selection (`church`, `calendar`, `video`, `heart`, `users`, `location`, `music`, `newsletter`, `podcast`, `envelope`, `globe`, `logo`, `link`), and surface filtering rules (`show_on`, `hide_on`). |
+| `link_button` | Nestable Blok | Label, URL, optional icon selection (supports any Font Awesome icon like `fa-cross`, `fa-star`, `ticket`, `church`, or raw SVG), and surface filtering rules (`show_on`, `hide_on`). |
 | `dropdown_card` | Nestable Blok | Collapsible service times and locations card with responsive 3-column auto-fit grid and pure CSS details/summary state. |
 | `dropdown_time_item` | Nestable Blok | Individual service column/card with title, time badge, location, details, Echo Kids badge, and link. |
 | `image_card_horizontal` | Nestable Blok | 16:9 featured horizontal media card with title, URL, image asset, and bottom-right arrow indicator badge (`->`). |
@@ -127,7 +127,7 @@ A prominent full-width button that links to an external page or action.
 - **Fields to fill**:
   - `label` (Text, Required): Button text (e.g., `Spenden & Unterstützen` or `Website besuchen`).
   - `url` (Text, Required): Target web address (e.g., `https://kirche-echo.de/spenden`).
-  - `icon` (Dropdown, Optional): Choose an icon (`church`, `calendar`, `video`, `heart`, `users`, `location`, `music`, `newsletter`, `podcast`, `envelope`, `globe`, `logo`, `link`, or `None`).
+  - `icon` (Text, Optional): Enter any Font Awesome icon name (e.g., `church`, `calendar`, `video`, `heart`, `users`, `location`, `music`, `newsletter`, `podcast`, `envelope`, `globe`, `logo`, `link`, `fa-cross`, `fa-star`, `fa-phone`, `ticket`, `mug-hot`, `bible`, or any `fa-*` icon), raw SVG markup, or `<i>` class tag. Leave blank for no icon.
   - `display_in_default` (Boolean, Default: `true`): **Display on Default Page Switch**. Set to `true` to show on the default landing page (`/`). Set to `false` to hide on default and use exclusively for custom surfaces (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
   - `show_on` (Multi-select, Optional): Select specific surfaces if this button should only show there (e.g., choose `gifhorn` so it only shows on `/gf` and `/gifhorn`).
   - `hide_on` (Multi-select, Optional): Select surfaces where this button should be hidden.
@@ -143,7 +143,7 @@ A clean, interactive card showing church service times and locations. On click, 
   - `display_in_default` (Boolean, Default: `true`): **Display on Default Page Switch**. Set to `true` to show on default page.
   - `layout` (Dropdown, Default: `columns`): Choose `columns` (responsive 3-column card grid) or `list` (classic single-column list).
   - `locations` (Multi-select, Default: `["gifhorn", "wolfsburg", "helmstedt"]`): Select active locations/channels (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
-  - `icon` (Dropdown, Optional): Default is `church`.
+  - `icon` (Text, Optional): Icon name (default is `church`, or any `fa-*` icon, raw SVG, or `<i>` tag).
   - `description` (Text, Optional): Introductory text (e.g., `Feiere mit uns vor Ort in Gifhorn, Wolfsburg und Helmstedt oder online im Livestream:`).
   - `times` / `columns` (Bloks, Optional): Add one or more `dropdown_time_item` blocks for each column or time slot.
   - `url` (Text, Optional): Link for bottom action button (e.g., `https://kirche-echo.de`).
@@ -308,7 +308,7 @@ Ein großer, klickbarer Button für Links zu Webseiten, Aktionen oder Formularen
 - **Felder zum Ausfüllen**:
   - `label` (Text, Pflicht): Text auf dem Button (z. B. `Spenden & Unterstützen` oder `Website besuchen`).
   - `url` (Text, Pflicht): Die Webadresse (z. B. `https://kirche-echo.de/spenden`).
-  - `icon` (Auswahl, Optional): Wähle ein passendes Icon (`church` für Kirche, `calendar` für Kalender, `heart` für Spenden, `location` für Standort, `video`, `music`, `podcast`, `envelope`, `globe`, `logo` oder `None`).
+  - `icon` (Text, Optional): Gib ein beliebiges Font Awesome Icon ein (z. B. `church`, `calendar`, `heart`, `location`, `video`, `music`, `podcast`, `envelope`, `globe`, `logo`, `fa-cross`, `fa-star`, `fa-phone`, `ticket`, `mug-hot`, `bible` oder jedes andere `fa-*` Icon, raw SVG oder `<i>`-Tag). Leer lassen für kein Icon.
   - `display_in_default` (Schalter/Boolean, Standard: `true`): **Im Standard anzeigen**. Auf `true` setzen, um den Button auf der Hauptseite (`/`) anzuzeigen. Auf `false` setzen, wenn er nur auf Unterseiten (z. B. Gifhorn, Wolfsburg) erscheinen soll.
   - `show_on` (Mehrfachauswahl, Optional): Wähle einen Standort oder Kanal aus, wenn der Button **nur dort** sichtbar sein soll (z. B. `gifhorn` für `/gf` und `/gifhorn`). Wenn der Button für alle sichtbar sein soll, lass das Feld leer.
   - `hide_on` (Mehrfachauswahl, Optional): Hier kannst du den Button für bestimmte Kanäle ausblenden.
@@ -324,7 +324,7 @@ Ein interaktiver Button, der sich beim Anklicken sanft nach unten aufklappt. **S
   - `display_in_default` (Schalter/Boolean, Standard: `true`): **Im Standard anzeigen**. Auf `true` setzen, um die Karte auf der Hauptseite (`/`) anzuzeigen.
   - `layout` (Auswahl, Standard: `columns`): Wähle `columns` (responsives 3-Spalten-Raster) oder `list` (klassische einspaltige Liste).
   - `locations` (Mehrfachauswahl, Standard: `gifhorn`, `wolfsburg`, `helmstedt`): Wähle aus, welche Standorte/Kanäle angezeigt werden sollen (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
-  - `icon` (Auswahl, Optional): Standard ist `church` (Kirchen-Icon).
+  - `icon` (Text, Optional): Icon-Name (Standard ist `church`, oder jedes beliebige `fa-*` Icon, raw SVG oder `<i>`-Tag).
   - `description` (Text, Optional): Einleitender Text (z. B. `Feiere mit uns vor Ort in Gifhorn, Wolfsburg und Helmstedt oder online im Livestream:`).
   - `times` / `columns` (Blöcke, Optional): Füge hier für jeden Standort oder Gottesdienst einen `dropdown_time_item`-Eintrag ein.
   - `url` (Text, Optional): Link für den Haupt-Aktionsbutton ganz unten (z. B. `https://kirche-echo.de`).
