@@ -77,4 +77,23 @@ describe('Component State Changes & CSS Verification', () => {
     assert.match(css, /\[data-theme=["']?lavender["']?\]\s+\.profile-header__avatar/, 'Lavender theme must invert avatar');
     assert.match(css, /brightness\(0\)\s*invert\(1\)/, 'Avatar inversion filter must be applied');
   });
+
+  test('Echo Kirche Styleguide: Logo Clear Space (Schutzzone)', () => {
+    assert.match(css, /\.profile-header__avatar-wrapper\{[^}]*padding:\s*1rem/, 'Profile header avatar must have 1rem Schutzzone padding');
+  });
+
+  test('Echo Kirche Styleguide: Type Scale, Line-Heights and Wordmark', () => {
+    assert.match(css, /\.link-button\{[^}]*font-size:\s*1\.25rem/, 'LinkButton must use H5 (1.25rem / 20px)');
+    assert.match(css, /line-height:\s*1\.2/, 'Headings must use 1.1-1.2 line height');
+    assert.match(css, /line-height:\s*1\.5/, 'Body must use 1.4-1.5 line height');
+    assert.match(css, /\.sub-brand-wordmark|\.echo-kids-wordmark/, 'Sub-brand wordmark classes must exist');
+    assert.match(css, /\.wordmark-echo\{font-weight:\s*600/, 'Sub-brand wordmark echo must be Semibold 600');
+    assert.match(css, /\.wordmark-kids\{font-weight:\s*400/, 'Sub-brand wordmark kids must be Regular 400');
+  });
+
+  test('Echo Kirche Styleguide: Colors and Hover States', () => {
+    assert.match(css, /--color-action-bg-hover:\s*var\(--ek-mauve,\s*#846B8A\)|--color-action-bg-hover:\s*#846B8A/, 'Action hover must be Muted Lavender (#846B8A)');
+    assert.match(css, /--color-page-bg:\s*var\(--ek-warm,\s*#FEFADC\)|--color-page-bg:\s*#FEFADC/, 'Default page background must be Light Pastel Yellow (#FEFADC)');
+  });
 });
+
