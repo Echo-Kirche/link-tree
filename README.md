@@ -1,6 +1,10 @@
 # Echo Link-Tree
 
-A high-performance, static-first, privacy-compliant link-in-bio website with Storyblok headless CMS visual editing, multi-location surface routing, and pure-CSS responsive components.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Live Site](https://img.shields.io/badge/Live_Site-kirche--echo.de-08415C.svg)](https://kirche-echo.de)
+[![Privacy: DSGVO/GDPR Compliant](https://img.shields.io/badge/DSGVO%20%2F%20GDPR-Zero--Tracking-green.svg)](./docs/LEGAL-PRIVACY-DE.md)
+
+A high-performance, static-first, privacy-compliant link-in-bio platform for churches, mission organizations, and non-profits. Features Storyblok headless CMS visual editing, multi-location campus routing, and pure-CSS accessible components. Free and open source for ministries and charities worldwide.
 
 ---
 
@@ -228,3 +232,13 @@ npx storyblok push-components storyblok/components.json --space <YOUR_SPACE_ID>
 # Pull component schemas from Storyblok Space
 npx storyblok pull-components --space <YOUR_SPACE_ID>
 ```
+
+---
+
+## 7. License & Community Dedication
+
+This project is licensed under the **MIT License** — see the [`LICENSE`](./LICENSE) file for details.
+
+### Free for Churches, Mission Organizations & Non-Profits
+This platform is completely free and open-source for churches, Christian ministries, mission organizations, charities, and non-profits worldwide to fork, customize, and deploy.
+
