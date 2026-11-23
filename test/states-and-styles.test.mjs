@@ -51,6 +51,18 @@ describe('Component State Changes & CSS Verification', () => {
     assert.match(css, /\.a11y-button:active/, 'A11yButton must define :active state');
     assert.match(css, /\.a11y-button:focus-visible/, 'A11yButton must define :focus-visible state');
     assert.match(css, /\.a11y-button--skip:(?:focus|focus-visible)/, 'A11yButton skip modifier must define focus state');
+    assert.match(css, /\.a11y-modal__btn:hover/, 'A11yModal buttons must define :hover');
+    assert.match(css, /\.a11y-modal__btn\.is-active|\.a11y-modal__btn\[aria-pressed="true"\]/, 'A11yModal buttons must define active state');
+    assert.match(css, /\.a11y-modal__close:focus-visible/, 'A11yModal close button must define :focus-visible');
+  });
+
+  test('Accessibility font scaling and high contrast mode tokens in CSS', () => {
+    assert.match(css, /html\[data-font-size=["']?large["']?\]\{font-size:115%\}/, 'HTML data-font-size="large" must scale to 115%');
+    assert.match(css, /html\[data-font-size=["']?xlarge["']?\]\{font-size:130%\}/, 'HTML data-font-size="xlarge" must scale to 130%');
+    assert.match(css, /\[data-contrast=["']?black-on-white["']?\]\{[^}]*--color-page-bg:\s*#(?:fff|ffffff)/i, 'Black-on-white contrast must set pure white page bg');
+    assert.match(css, /\[data-contrast=["']?black-on-white["']?\]\{[^}]*--color-text:\s*#(?:000|000000)/i, 'Black-on-white contrast must set pure black text');
+    assert.match(css, /\[data-contrast=["']?white-on-black["']?\]\{[^}]*--color-page-bg:\s*#(?:000|000000)/i, 'White-on-black contrast must set pure black page bg');
+    assert.match(css, /\[data-contrast=["']?white-on-black["']?\]\{[^}]*--color-text:\s*#(?:fff|ffffff)/i, 'White-on-black contrast must set pure white text');
   });
 
   test('SurfaceSwitcher interactive states (:hover, .is-active, [aria-pressed="true"], :focus-visible)', () => {
@@ -193,6 +205,8 @@ describe('Component State Changes & CSS Verification', () => {
     assert.match(css, /\.a11y-button--secondary\{[^}]*background-color:[^;]+;[^}]*color:/, 'A11yButton secondary must declare paired background and color');
     assert.match(css, /\.a11y-button--surface\{[^}]*background-color:[^;]+;[^}]*color:/, 'A11yButton surface must declare paired background and color');
     assert.match(css, /\.a11y-button--floating\{[^}]*background-color:[^;]+;[^}]*color:/, 'A11yButton floating must declare paired background and color');
+    assert.match(css, /\.a11y-modal__dialog\{[^}]*background-color:[^;]+;[^}]*color:/, 'A11yModal dialog must declare paired background and color');
+    assert.match(css, /\.a11y-modal__btn\{[^}]*background-color:[^;]+;[^}]*color:/, 'A11yModal button must declare paired background and color');
   });
 
   test('Rule 2.2: Semantic Naming Structure declares mandatory on-[surface] tokens across themes', () => {

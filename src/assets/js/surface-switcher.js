@@ -105,8 +105,67 @@
     if (push) pushState('theme', norm, 'light');
   };
 
+  const applyFontSize = (size) => {
+    const s = size && size !== 'normal' ? size : '';
+    if (s) document.documentElement.dataset.fontSize = s;
+    else delete document.documentElement.dataset.fontSize;
+    setBtns('[data-font-size-value]', 'fontSizeValue', s || 'normal');
+  };
+
+  const applyContrast = (contrast) => {
+    const c = contrast && contrast !== 'normal' ? contrast : '';
+    if (c) document.documentElement.dataset.contrast = c;
+    else delete document.documentElement.dataset.contrast;
+    setBtns('[data-contrast-value]', 'contrastValue', c || 'normal');
+  };
+
+  const setupA11yModal = () => {
+    const modal = document.getElementById('a11y-modal');
+    if (!modal) return;
+    const open = () => {
+      if (typeof modal.showModal === 'function') modal.showModal();
+      else modal.setAttribute('open', '');
+    };
+    const close = () => {
+      if (typeof modal.close === 'function') modal.close();
+      else modal.removeAttribute('open');
+    };
+
+    $$('#a11y-trigger, #a11y-test-modal-trigger, [aria-controls="a11y-modal"]').forEach((b) => {
+      b.addEventListener('click', (e) => {
+        e.preventDefault();
+        open();
+      });
+    });
+
+    document.getElementById('a11y-modal-close')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      close();
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) close();
+    });
+
+    $$('[data-font-size-value]').forEach((b) => {
+      b.addEventListener('click', (e) => {
+        e.preventDefault();
+        applyFontSize(b.dataset.fontSizeValue);
+      });
+    });
+
+    $$('[data-contrast-value]').forEach((b) => {
+      b.addEventListener('click', (e) => {
+        e.preventDefault();
+        applyContrast(b.dataset.contrastValue);
+      });
+    });
+  };
+
   window.applySurface = applySurface;
   window.applyTheme = applyTheme;
+  window.applyFontSize = applyFontSize;
+  window.applyContrast = applyContrast;
 
   const init = () => {
     document.getElementById('page-loader')?.classList.add('is-hidden');
@@ -117,6 +176,7 @@
         if (b.dataset.themeValue) applyTheme(b.dataset.themeValue, true);
       });
     });
+    setupA11yModal();
     const q = new URLSearchParams(location.search);
     if (document.querySelector('.surface-switcher') || q.has('surface') || q.has('switch')) applySurface(getS(), false);
     if (q.has('theme') || document.querySelector('[data-theme-value]')) applyTheme(getTheme(), false);

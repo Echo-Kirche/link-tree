@@ -225,3 +225,69 @@
   --color-action-text: var(--ek-mauve, #846B8A);
   --color-focus-ring: var(--ek-warm, #FEFADC);
 }
+
+// High-Contrast Accessibility Modes ("Schwarz auf Weiß" & "Weiß auf Schwarz")
+[data-contrast="black-on-white"] {
+  color-scheme: light;
+  --color-page-bg: #FFFFFF !important;
+  --color-text: #000000 !important;
+  --color-text-muted: #222222 !important;
+  --color-surface: #FFFFFF !important;
+  --color-on-surface: #000000 !important;
+  --color-primary: #000000 !important;
+  --color-on-primary: #FFFFFF !important;
+  --color-secondary: #000000 !important;
+  --color-on-secondary: #FFFFFF !important;
+  --color-muted: #F0F0F0 !important;
+  --color-on-muted: #000000 !important;
+  --color-accent: #000000 !important;
+  --color-on-accent: #FFFFFF !important;
+  --color-badge-bg: #000000 !important;
+  --color-badge-text-on-bg: #FFFFFF !important;
+  --color-badge-border: #000000 !important;
+  --color-kids-badge-bg: #FFFFFF !important;
+  --color-kids-badge-text: #000000 !important;
+  --color-kids-badge-border: #000000 !important;
+  --color-surface-subtle: #EEEEEE !important;
+  --color-card-bg: #FFFFFF !important;
+  --color-border: #000000 !important;
+  --color-action-bg: #000000 !important;
+  --color-action-bg-hover: #333333 !important;
+  --color-action-text: #FFFFFF !important;
+  --color-focus-ring: #000000 !important;
+}
+
+[data-contrast="white-on-black"] {
+  color-scheme: dark;
+  --color-page-bg: #000000 !important;
+  --color-text: #FFFFFF !important;
+  --color-text-muted: #E0E0E0 !important;
+  --color-surface: #000000 !important;
+  --color-on-surface: #FFFFFF !important;
+  --color-primary: #FFFFFF !important;
+  --color-on-primary: #000000 !important;
+  --color-secondary: #FFFFFF !important;
+  --color-on-secondary: #000000 !important;
+  --color-muted: #1A1A1A !important;
+  --color-on-muted: #FFFFFF !important;
+  --color-accent: #FFFFFF !important;
+  --color-on-accent: #000000 !important;
+  --color-badge-bg: #FFFFFF !important;
+  --color-badge-text-on-bg: #000000 !important;
+  --color-badge-border: #FFFFFF !important;
+  --color-kids-badge-bg: #000000 !important;
+  --color-kids-badge-text: #FFFFFF !important;
+  --color-kids-badge-border: #FFFFFF !important;
+  --color-surface-subtle: #1A1A1A !important;
+  --color-card-bg: #000000 !important;
+  --color-border: #FFFFFF !important;
+  --color-action-bg: #FFFFFF !important;
+  --color-action-bg-hover: #E0E0E0 !important;
+  --color-action-text: #000000 !important;
+  --color-focus-ring: #FFFFFF !important;
+}
+
+[data-contrast="white-on-black"] .profile-header__avatar {
+  filter: brightness(0) invert(1);
+}
+

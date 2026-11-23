@@ -37,6 +37,17 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(testHtml, /class="a11y-button a11y-button--surface"/, 'Test page must render surface a11y button variant');
   });
 
+  test('A11yModal component renders accessible dialog, font size controls, and contrast options', () => {
+    assert.match(indexHtml, /<dialog class="a11y-modal" id="a11y-modal"/, 'A11yModal dialog must exist in DOM');
+    assert.match(indexHtml, /aria-labelledby="a11y-modal-title"/, 'A11yModal must be labeled by its title');
+    assert.match(indexHtml, /class="a11y-modal__close"/, 'A11yModal close button must exist');
+    assert.match(indexHtml, /data-font-size-value="normal"/, 'Font size normal option must exist');
+    assert.match(indexHtml, /data-font-size-value="large"/, 'Font size large option must exist');
+    assert.match(indexHtml, /data-font-size-value="xlarge"/, 'Font size xlarge option must exist');
+    assert.match(indexHtml, /data-contrast-value="black-on-white"/, 'High contrast black-on-white option must exist');
+    assert.match(indexHtml, /data-contrast-value="white-on-black"/, 'High contrast white-on-black option must exist');
+  });
+
   test('DropdownCard component renders accessible details/summary pattern', () => {
     assert.match(indexHtml, /<details class="dropdown-card"/, 'DropdownCard must use semantic <details>');
     assert.match(indexHtml, /<summary class="dropdown-card__summary link-button/, 'Summary must be styled as link-button');

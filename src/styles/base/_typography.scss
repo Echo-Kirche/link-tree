@@ -114,3 +114,13 @@ p {
     font-weight: 400;
   }
 }
+
+// Accessibility Font Scaling
+html[data-font-size="large"] {
+  font-size: 115%;
+}
+
+html[data-font-size="xlarge"] {
+  font-size: 130%;
+}
+

@@ -26,12 +26,46 @@
     <span class="a11y-button__label">Zum Hauptinhalt springen</span>
   </a>
   {{ content | safe }}
-  <a href="#content" class="a11y-button a11y-button--floating" aria-label="Nach oben / Barrierefreiheit">
+  <button type="button" class="a11y-button a11y-button--floating" id="a11y-trigger" aria-haspopup="dialog" aria-controls="a11y-modal" aria-label="Barrierefreiheit Optionen öffnen">
     <span class="a11y-button__icon" aria-hidden="true">
       <svg class="fa-svg fa-universal-access" viewBox="0 0 512 512" fill="currentColor" width="16" height="16"><path d="M256 48a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm-41.6 112h83.2c19.4 0 37.3 10.7 46.5 27.8l56 104c9 16.7 3 37.6-13.7 46.6s-37.6 3-46.6-13.7l-35.8-66.5v89.7l46.2 138.6c5.6 16.8-3.7 35.1-20.5 40.7s-35.1-3.7-40.7-20.5L256 400.9l-26.9 105.8c-5.6 16.8-23.9 26.1-40.7 20.5s-26.1-23.9-20.5-40.7l46.2-138.6v-89.7l-35.8 66.5c-9 16.7-29.9 22.7-46.6 13.7s-22.7-29.9-13.7-46.6l56-104c9.2-17.1 27.1-27.8 46.5-27.8z"/></svg>
     </span>
     <span class="a11y-button__label">Barrierefreiheit</span>
-  </a>
+  </button>
+
+  <dialog class="a11y-modal" id="a11y-modal" aria-labelledby="a11y-modal-title">
+    <div class="a11y-modal__dialog">
+      <header class="a11y-modal__header">
+        <h2 class="a11y-modal__title" id="a11y-modal-title">
+          <span class="a11y-modal__title-icon" aria-hidden="true">
+            <svg class="fa-svg fa-universal-access" viewBox="0 0 512 512" fill="currentColor" width="20" height="20"><path d="M256 48a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm-41.6 112h83.2c19.4 0 37.3 10.7 46.5 27.8l56 104c9 16.7 3 37.6-13.7 46.6s-37.6 3-46.6-13.7l-35.8-66.5v89.7l46.2 138.6c5.6 16.8-3.7 35.1-20.5 40.7s-35.1-3.7-40.7-20.5L256 400.9l-26.9 105.8c-5.6 16.8-23.9 26.1-40.7 20.5s-26.1-23.9-20.5-40.7l46.2-138.6v-89.7l-35.8 66.5c-9 16.7-29.9 22.7-46.6 13.7s-22.7-29.9-13.7-46.6l56-104c9.2-17.1 27.1-27.8 46.5-27.8z"/></svg>
+          </span>
+          Barrierefreiheit &amp; Anzeige
+        </h2>
+        <button type="button" class="a11y-modal__close" id="a11y-modal-close" aria-label="Schließen">&times;</button>
+      </header>
+
+      <div class="a11y-modal__body">
+        <section class="a11y-modal__section" aria-labelledby="a11y-font-label">
+          <span class="a11y-modal__label" id="a11y-font-label">Schriftgröße:</span>
+          <div class="a11y-modal__options" role="toolbar" aria-label="Schriftgröße Optionen">
+            <button type="button" class="a11y-modal__btn is-active" data-font-size-value="normal" aria-pressed="true">Standard (100%)</button>
+            <button type="button" class="a11y-modal__btn" data-font-size-value="large" aria-pressed="false">Groß (115%)</button>
+            <button type="button" class="a11y-modal__btn" data-font-size-value="xlarge" aria-pressed="false">Sehr groß (130%)</button>
+          </div>
+        </section>
+
+        <section class="a11y-modal__section" aria-labelledby="a11y-contrast-label">
+          <span class="a11y-modal__label" id="a11y-contrast-label">Hoher Kontrast:</span>
+          <div class="a11y-modal__options" role="toolbar" aria-label="Kontrast Optionen">
+            <button type="button" class="a11y-modal__btn is-active" data-contrast-value="normal" aria-pressed="true">Standard</button>
+            <button type="button" class="a11y-modal__btn" data-contrast-value="black-on-white" aria-pressed="false">Schwarz auf Weiß</button>
+            <button type="button" class="a11y-modal__btn" data-contrast-value="white-on-black" aria-pressed="false">Weiß auf Schwarz</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </dialog>
   <script src="/assets/js/video-embed.js" defer></script>
   <script src="/assets/js/surface-switcher.js" defer></script>
   <script src="/assets/js/storyblok-bridge.js" defer></script>

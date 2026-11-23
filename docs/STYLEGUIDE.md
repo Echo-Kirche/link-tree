@@ -198,15 +198,13 @@ The component strictly consumes paired design system tokens to ensure minimum 4.
 </a>
 ```
 
-2. **Interactive Action / Utility Button**:
-```html
-<button type="button" class="a11y-button" aria-label="Barrierefreiheit Menü">
-  <span class="a11y-button__icon" aria-hidden="true">
-    <svg class="fa-svg fa-universal-access" viewBox="0 0 512 512" fill="currentColor" width="16" height="16">...</svg>
-  </span>
-  <span class="a11y-button__label">Barrierefreiheit</span>
-</button>
-```
+3. **Accessibility Modal Dialog (`.a11y-modal`)**:
+Native HTML5 `<dialog>` providing user preferences for font size increase and high contrast modes:
+- **Font Scaling**: Standard (`100%`), Groß (`115%` via `html[data-font-size="large"]`), Sehr groß (`130%` via `html[data-font-size="xlarge"]`).
+- **High Contrast Modes**:
+  - `[data-contrast="black-on-white"]`: Pure `#000000` text on `#FFFFFF` surface (21:1 contrast).
+  - `[data-contrast="white-on-black"]`: Pure `#FFFFFF` text on `#000000` surface (21:1 contrast).
+- **Trigger**: Click `.a11y-button--floating` or `#a11y-trigger` to open the modal. Dismissible via the close button, clicking outside the modal, or pressing the `Escape` key.
 
 ---
 
