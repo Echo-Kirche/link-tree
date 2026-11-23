@@ -104,40 +104,57 @@ export default async function () {
       };
     }
     if (item.type === 'image-horizontal') {
+      const isStrImage = typeof item.image === 'string';
       return {
         _uid: item.id,
         component: 'image_card_horizontal',
-        label: item.label,
+        label: item.label || '',
         url: item.url,
         display_in_default: displayInDef,
-        image: {
-          filename: item.image?.src || '',
-          alt: item.image?.alt || '',
-          width: item.image?.width || 1200,
-          height: item.image?.height || 630,
-        },
+        image: isStrImage
+          ? {
+              filename: item.image,
+              alt: item.label || '',
+              width: 1200,
+              height: 630,
+            }
+          : {
+              filename: item.image?.src || item.image?.filename || '',
+              alt: item.image?.alt || item.label || '',
+              width: item.image?.width || 1200,
+              height: item.image?.height || 630,
+            },
         show_on: item.showOn || [],
         hide_on: item.hideOn || [],
       };
     }
     if (item.type === 'image-vertical') {
+      const isStrImage = typeof item.image === 'string';
       return {
         _uid: item.id,
         component: 'image_card_vertical',
-        label: item.label,
+        label: item.label || '',
         url: item.url,
         display_in_default: displayInDef,
-        image: {
-          filename: item.image?.src || '',
-          alt: item.image?.alt || '',
-          width: item.image?.width || 900,
-          height: item.image?.height || 1200,
-        },
+        image: isStrImage
+          ? {
+              filename: item.image,
+              alt: item.label || '',
+              width: 900,
+              height: 1200,
+            }
+          : {
+              filename: item.image?.src || item.image?.filename || '',
+              alt: item.image?.alt || item.label || '',
+              width: item.image?.width || 900,
+              height: item.image?.height || 1200,
+            },
         show_on: item.showOn || [],
         hide_on: item.hideOn || [],
       };
     }
     if (item.type === 'video-link') {
+      const isStrImage = typeof item.image === 'string';
       return {
         _uid: item.id,
         component: 'video_link_card',
@@ -147,12 +164,19 @@ export default async function () {
         youtube_video_id: item.provider === 'youtube' ? youtubeVideoId(item.youtube_video_id || item.url) : '',
         youtube_content_type: item.youtube_content_type || 'video',
         display_in_default: displayInDef,
-        image: {
-          filename: item.image?.src || '',
-          alt: item.image?.alt || '',
-          width: item.image?.width || 1280,
-          height: item.image?.height || 720,
-        },
+        image: isStrImage
+          ? {
+              filename: item.image,
+              alt: item.label || '',
+              width: 1280,
+              height: 720,
+            }
+          : {
+              filename: item.image?.src || item.image?.filename || '',
+              alt: item.image?.alt || '',
+              width: item.image?.width || 1280,
+              height: item.image?.height || 720,
+            },
         show_on: item.showOn || [],
         hide_on: item.hideOn || [],
       };

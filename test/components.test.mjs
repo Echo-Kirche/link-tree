@@ -75,6 +75,66 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(indexHtml, /loading="lazy"/, 'Images must use native lazy loading');
   });
 
+  test('ImageCardHorizontal & ImageCardVertical support direct link as image and optional label', async () => {
+    const nunjucks = (await import('nunjucks')).default;
+    const env = nunjucks.configure(path.resolve('src/_includes'), { autoescape: true });
+    env.addFilter('resolveUrl', (val) => typeof val === 'string' ? val : (val?.url || ''));
+
+    // 1. Direct string link as image with label
+    const htmlWithLinkAndLabel = env.render('components/ImageCardHorizontal.njk', {
+      item: {
+        url: 'https://example.com/event',
+        label: 'Event Banner',
+        image: '/assets/images/es26-hero-1-1536x864.webp'
+      }
+    });
+    assert.match(htmlWithLinkAndLabel, /class="image-card image-card--horizontal"/);
+    assert.match(htmlWithLinkAndLabel, /href="https:\/\/example\.com\/event"/);
+    assert.match(htmlWithLinkAndLabel, /<img src="\/assets\/images\/es26-hero-1-1536x864\.webp"/);
+    assert.match(htmlWithLinkAndLabel, /alt="Event Banner"/);
+    assert.match(htmlWithLinkAndLabel, /class="image-card__title"/);
+    assert.match(htmlWithLinkAndLabel, /Event Banner/);
+
+    // 2. Direct string link as image without label (pure image link banner)
+    const htmlImageOnly = env.render('components/ImageCardHorizontal.njk', {
+      item: {
+        url: 'https://example.com/banner',
+        image: 'https://example.com/banner.webp'
+      }
+    });
+    assert.match(htmlImageOnly, /href="https:\/\/example\.com\/banner"/);
+    assert.match(htmlImageOnly, /<img src="https:\/\/example\.com\/banner\.webp"/);
+    assert.doesNotMatch(htmlImageOnly, /class="image-card__content"/, 'Image-only link must not render empty content bar');
+
+    // 3. Vertical image card with string link as image
+    const htmlVertical = env.render('components/ImageCardVertical.njk', {
+      item: {
+        url: 'https://example.com/flyer',
+        image: '/assets/images/echo-home-helmstedt-803x1024.webp'
+      }
+    });
+    assert.match(htmlVertical, /class="image-card image-card--vertical"/);
+    assert.match(htmlVertical, /<img src="\/assets\/images\/echo-home-helmstedt-803x1024\.webp"/);
+    assert.doesNotMatch(htmlVertical, /class="image-card__content"/);
+
+    // 4. Object image format (backward compatibility)
+    const htmlObject = env.render('components/ImageCardHorizontal.njk', {
+      item: {
+        url: 'https://example.com/classic',
+        label: 'Classic Item',
+        image: {
+          src: '/assets/images/echo-home-gifhorn-1024x682.webp',
+          alt: 'Custom Alt Text',
+          width: 1024,
+          height: 682
+        }
+      }
+    });
+    assert.match(htmlObject, /<img src="\/assets\/images\/echo-home-gifhorn-1024x682\.webp"/);
+    assert.match(htmlObject, /alt="Custom Alt Text"/);
+    assert.match(htmlObject, /Classic Item/);
+  });
+
   test('VideoLinkCard renders 2-click consent facade without initial iframe', () => {
     assert.match(indexHtml, /class="video-link-card"/, 'VideoLinkCard container must exist');
     assert.match(indexHtml, /class="video-link-card__play-btn"/, 'Play facade button must exist');
@@ -445,7 +505,132 @@ describe('Component Markup & Accessibility Contracts', () => {
     const gitignore = fs.readFileSync(path.resolve('.gitignore'), 'utf8');
     assert.match(gitignore, /\.env/, '.gitignore must ignore .env files');
   });
+
+  test('Accessibility (a11y) Button Test controls on /test operate properly across Mobile, DOM, and Desktop', () => {
+    // 1. Static HTML assertions on /test/index.html
+    assert.match(testHtml, /id="a11y-test-skip"/, 'Test page must render skip button with id="a11y-test-skip"');
+    assert.match(testHtml, /id="a11y-test-contrast-toggle"/, 'Test page must render contrast toggle button with id="a11y-test-contrast-toggle"');
+    assert.match(testHtml, /id="a11y-test-modal-trigger"/, 'Test page must render modal trigger with id="a11y-test-modal-trigger"');
+    assert.match(testHtml, /id="active-contrast-badge"/, 'Test page must render active-contrast-badge');
+    assert.match(testHtml, /id="active-font-size-badge"/, 'Test page must render active-font-size-badge');
+
+    // 2. Client-side behavioral simulation in DOM/VM sandbox
+    const switcherJs = fs.readFileSync(path.join(siteDir, 'assets', 'js', 'surface-switcher.js'), 'utf8');
+
+    const htmlEl = { dataset: { surface: 'default', theme: 'light' }, style: {} };
+    const bodyEl = { style: {} };
+    const listeners = {};
+    const elementsById = {};
+
+    function createElement(id, tagName = 'div', dataset = {}) {
+      const el = {
+        id,
+        tagName,
+        dataset: { ...dataset },
+        style: {},
+        tabIndex: 0,
+        focusCount: 0,
+        scrollCount: 0,
+        _listeners: {},
+        addEventListener(event, fn) {
+          if (!this._listeners[event]) this._listeners[event] = [];
+          this._listeners[event].push(fn);
+        },
+        dispatchEvent(event) {
+          (this._listeners[event.type || event] || []).forEach(fn => fn(event));
+        },
+        focus(opts) { this.focusCount++; },
+        scrollIntoView(opts) { this.scrollCount++; },
+        setAttribute(k, v) { this[k] = v; },
+        removeAttribute(k) { delete this[k]; },
+        classList: { toggle() {}, add() {}, remove() {} },
+        textContent: ''
+      };
+      if (id) elementsById[id] = el;
+      return el;
+    }
+
+    const testSkipBtn = createElement('a11y-test-skip', 'button');
+    const testContrastBtn = createElement('a11y-test-contrast-toggle', 'button');
+    const testModalTrigger = createElement('a11y-test-modal-trigger', 'button');
+    const contrastBadge = createElement('active-contrast-badge');
+    const fontBadge = createElement('active-font-size-badge');
+    const linktreeList = createElement('linktree-list');
+    linktreeList.classList = {
+      contains(cls) { return cls === 'linktree-list'; },
+      toggle() {}, add() {}, remove() {}
+    };
+
+    let modalOpened = false;
+    const modalEl = createElement('a11y-modal', 'dialog');
+    modalEl.showModal = () => { modalOpened = true; modalEl.open = true; };
+    modalEl.close = () => { modalOpened = false; modalEl.open = false; modalEl.dispatchEvent({ type: 'close' }); };
+    const modalCloseBtn = createElement('a11y-modal-close', 'button');
+
+    const sandbox = {
+      document: {
+        documentElement: htmlEl,
+        body: bodyEl,
+        getElementById: (id) => elementsById[id] || null,
+        querySelector: (sel) => {
+          if (sel === '.linktree-list') return linktreeList;
+          if (sel === '#a11y-modal') return modalEl;
+          return null;
+        },
+        querySelectorAll: (sel) => {
+          if (sel.includes('#a11y-trigger') || sel.includes('#a11y-test-modal-trigger')) {
+            return [testModalTrigger];
+          }
+          return [];
+        },
+        addEventListener(evt, fn) {
+          if (!listeners[evt]) listeners[evt] = [];
+          listeners[evt].push(fn);
+        },
+        readyState: 'complete'
+      },
+      location: { pathname: '/test/index.html', search: '', hostname: 'localhost' },
+      URLSearchParams,
+      URL,
+      history: { pushState() {} },
+      setTimeout: (fn) => fn()
+    };
+    sandbox.window = sandbox;
+
+    runInNewContext(switcherJs, sandbox);
+
+    // Test A: Skip Button click focuses and scrolls main link list
+    testSkipBtn.dispatchEvent({ type: 'click', preventDefault() {} });
+    assert.equal(linktreeList.focusCount, 1, 'Clicking skip button must focus .linktree-list');
+    assert.equal(linktreeList.scrollCount, 1, 'Clicking skip button must smoothly scroll .linktree-list into view');
+
+    // Test B: Contrast Toggle cycles normal -> black-on-white -> white-on-black -> normal
+    assert.equal(htmlEl.dataset.contrast, undefined, 'Initial contrast should be default');
+    testContrastBtn.dispatchEvent({ type: 'click', preventDefault() {} });
+    assert.equal(htmlEl.dataset.contrast, 'black-on-white', 'First click toggles to black-on-white');
+    assert.equal(contrastBadge.textContent, 'black-on-white', 'Contrast badge updates to black-on-white');
+
+    testContrastBtn.dispatchEvent({ type: 'click', preventDefault() {} });
+    assert.equal(htmlEl.dataset.contrast, 'white-on-black', 'Second click toggles to white-on-black');
+    assert.equal(contrastBadge.textContent, 'white-on-black', 'Contrast badge updates to white-on-black');
+
+    testContrastBtn.dispatchEvent({ type: 'click', preventDefault() {} });
+    assert.equal(htmlEl.dataset.contrast, undefined, 'Third click resets contrast to standard');
+    assert.equal(contrastBadge.textContent, 'standard', 'Contrast badge resets to standard');
+
+    // Test C: Modal trigger opens modal and locks mobile/desktop body scrolling
+    assert.equal(modalOpened, false, 'Modal initially closed');
+    testModalTrigger.dispatchEvent({ type: 'click', preventDefault() {} });
+    assert.equal(modalOpened, true, 'Clicking modal trigger opens modal');
+    assert.equal(bodyEl.style.overflow, 'hidden', 'Opening modal locks body scroll');
+
+    // Test D: Close button unlocks body scrolling
+    modalCloseBtn.dispatchEvent({ type: 'click', preventDefault() {} });
+    assert.equal(modalOpened, false, 'Clicking close button closes modal');
+    assert.equal(bodyEl.style.overflow, '', 'Closing modal restores body scroll');
+  });
 });
+
 
 
 

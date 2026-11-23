@@ -171,26 +171,26 @@ A single location column card or time slot entry inside a `dropdown_card`. Every
 ---
 
 ### Component: `image_card_horizontal` (Featured Project 16:9)
-A landscape media card with a 16:9 preview image, title, and interactive arrow button. Great for sermon series, conferences, or featured campaigns.
+A landscape media card with a 16:9 preview image, title, and interactive arrow button. Great for sermon series, conferences, or featured campaigns. Can also be used as a pure image link banner by omitting the label.
 
 - **How to create**: Add inside `body` or inside a `group_block`.
 - **Fields to fill**:
-  - `label` (Text, Required): Headline under the image (e.g., `Neue Predigtreihe: Hoffnung`).
+  - `label` (Text, Optional): Headline under the image (e.g., `Neue Predigtreihe: Hoffnung`). Leave empty for a pure image link banner.
   - `url` (Text, Required): Target link.
-  - `image` (Asset, Required): Upload a 16:9 image (recommended size: `1200x675` or `1280x720` px).
+  - `image` (Asset / Link, Required): Upload a 16:9 image (recommended size: `1200x675` or `1280x720` px) or provide a direct image link URL string.
   - `display_in_default` (Boolean, Default: `true`): Set to `true` to display on the default page (`/`). Set to `false` to hide on default and use only on custom surfaces.
   - `show_on` / `hide_on` (Multi-select, Optional): Surface filtering.
 
 ---
 
 ### Component: `image_card_vertical` (Portrait Flyer 3:4)
-A portrait media card with a 3:4 image ratio. Great for event flyers and speaker announcements.
+A portrait media card with a 3:4 image ratio. Great for event flyers and speaker announcements. Can also be used as a pure image link banner by omitting the label.
 
 - **How to create**: Add inside `body` or inside a `group_block`.
 - **Fields to fill**:
-  - `label` (Text, Required): Title text under the image.
+  - `label` (Text, Optional): Title text under the image. Leave empty for a pure image link banner.
   - `url` (Text, Required): Destination web address.
-  - `image` (Asset, Required): Upload a 3:4 portrait image (recommended: `900x1200` px).
+  - `image` (Asset / Link, Required): Upload a 3:4 portrait image (recommended: `900x1200` px) or provide a direct image link URL string.
   - `display_in_default` (Boolean, Default: `true`): Set to `true` to display on the default page (`/`). Set to `false` to hide on default and use only on custom surfaces.
   - `show_on` / `hide_on` (Multi-select, Optional): Surface filtering.
 
@@ -352,26 +352,26 @@ Eine einzelne Minikarte für einen Standort oder Gottesdienst in der `dropdown_c
 ---
 
 ### Komponente: `image_card_horizontal` (Bildkarte im Querformat 16:9)
-Eine Bildkarte im 16:9 Querformat mit Bild, Titel und einem runden Pfeil-Button. Perfekt für Predigtreihen, Events oder wichtige Kampagnen.
+Eine Bildkarte im 16:9 Querformat mit Bild, Titel und einem runden Pfeil-Button. Perfekt für Predigtreihen, Events oder wichtige Kampagnen. Kann durch Weglassen des Titels auch als reiner Bild-Link-Banner genutzt werden.
 
 - **Wo einfügen**: In `body` oder innerhalb eines `group_block`.
 - **Felder zum Ausfüllen**:
-  - `label` (Text, Pflicht): Titel unter dem Bild (z. B. `Aktuelle Predigtreihe`).
+  - `label` (Text, Optional): Titel unter dem Bild (z. B. `Aktuelle Predigtreihe`). Kann für reine Bild-Banner weggelassen werden.
   - `url` (Text, Pflicht): Ziel-Link.
-  - `image` (Datei, Pflicht): Bild im 16:9-Format hochladen (Empfohlene Größe: `1200x675` oder `1280x720` Pixel).
+  - `image` (Datei / Link, Pflicht): Bild im 16:9-Format hochladen (Empfohlene Größe: `1200x675` oder `1280x720` Pixel) oder direkten Bild-Link/URL angeben.
   - `display_in_default` (Schalter/Boolean, Standard: `true`): Auf `true` setzen für Hauptseite (`/`), auf `false` nur für Unterseiten.
   - `show_on` / `hide_on` (Mehrfachauswahl, Optional): Standort-Filter.
 
 ---
 
 ### Komponente: `image_card_vertical` (Bildkarte im Hochformat 3:4)
-Eine Bildkarte im 3:4 Hochformat. Ideal für Flyer, Plakate oder Personen-Vorstellungen.
+Eine Bildkarte im 3:4 Hochformat. Ideal für Flyer, Plakate oder Personen-Vorstellungen. Kann durch Weglassen des Titels auch als reiner Bild-Link-Banner genutzt werden.
 
 - **Wo einfügen**: In `body` oder innerhalb eines `group_block`.
 - **Felder zum Ausfüllen**:
-  - `label` (Text, Pflicht): Titel unter dem Bild.
+  - `label` (Text, Optional): Titel unter dem Bild. Kann für reine Bild-Banner weggelassen werden.
   - `url` (Text, Pflicht): Ziel-Link.
-  - `image` (Datei, Pflicht): Hochformat-Bild hochladen (Empfohlene Größe: `900x1200` Pixel).
+  - `image` (Datei / Link, Pflicht): Hochformat-Bild hochladen (Empfohlene Größe: `900x1200` Pixel) oder direkten Bild-Link/URL angeben.
   - `display_in_default` (Schalter/Boolean, Standard: `true`): Auf `true` setzen für Hauptseite (`/`), auf `false` nur für Unterseiten.
   - `show_on` / `hide_on` (Mehrfachauswahl, Optional): Standort-Filter.
 

@@ -299,7 +299,7 @@
         "label": {
           "type": "text",
           "pos": 0,
-          "required": true
+          "required": false
         },
         "url": {
           "type": "text",
@@ -407,7 +407,7 @@
         "label": {
           "type": "text",
           "pos": 0,
-          "required": true
+          "required": false
         },
         "url": {
           "type": "text",

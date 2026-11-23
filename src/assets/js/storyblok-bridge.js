@@ -65,7 +65,7 @@
     const c = b.component || b.type || 'link_button';
     const label = b.label || b.title || '';
     const url = resolveUrl(b.url);
-    const src = b.image?.filename || b.image?.src || '';
+    const src = typeof b.image === 'string' ? b.image : (b.image?.filename || b.image?.src || '');
 
     if (c === 'section_heading' || c === 'section-heading') {
       const h = li.querySelector('.section-heading');
@@ -97,7 +97,7 @@
         if (img && src) img.src = src;
       } else {
         const cls = isV ? 'image-card image-card--vertical' : 'image-card image-card--horizontal';
-        li.innerHTML = `<a class="${cls}" href="${url}" rel="noopener noreferrer">${src ? `<div class="image-card__media"><img src="${esc(src)}" alt="${esc(label)}" loading="lazy"></div>` : ''}<div class="image-card__content"><span class="image-card__title">${esc(label)}</span><span class="image-card__arrow" aria-hidden="true">${I.arr}</span></div></a>`;
+        li.innerHTML = `<a class="${cls}" href="${url}" rel="noopener noreferrer">${src ? `<div class="image-card__media"><img src="${esc(src)}" alt="${esc(label)}" loading="lazy"></div>` : ''}${label ? `<div class="image-card__content"><span class="image-card__title">${esc(label)}</span><span class="image-card__arrow" aria-hidden="true">${I.arr}</span></div>` : ''}</a>`;
       }
       return;
     }

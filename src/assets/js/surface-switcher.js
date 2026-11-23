@@ -1,5 +1,6 @@
 (() => {
   const $$ = (s) => document.querySelectorAll(s);
+  const $id = (id) => document.getElementById(id);
   const M = { ig: 'instagram', wob: 'wolfsburg', gf: 'gifhorn', he: 'helmstedt' };
   const VALID_THEMES = ['light', 'white', 'pale', 'warm', 'soft', 'dark', 'teal', 'lavender'];
   const VALID_SURFACES = ['instagram', 'wolfsburg', 'gifhorn', 'helmstedt', 'default', 'all'];
@@ -45,7 +46,7 @@
       if (q.has(k) || q.has(v)) return v;
     }
     const s = clean(location.pathname).split('/')[0];
-    return M[s] || (VALID_SURFACES.includes(s) ? s : (['test', 'home'].includes(s) ? 'default' : document.documentElement.dataset.surface || 'default'));
+    return M[s] || (VALID_SURFACES.includes(s) ? s : (['test', 'home'].includes(s) ? 'default' : (document.documentElement.dataset.surface || 'default')));
   };
 
   const getTheme = () => {
@@ -84,7 +85,7 @@
     });
 
     setBtns('.surface-switcher__btn[data-switch-value]', 'switchValue', s);
-    const b = document.getElementById('active-switch-badge');
+    const b = $id('active-switch-badge');
     if (b) b.textContent = s;
     if (push) pushState('surface', s, 'default');
   };
@@ -100,7 +101,7 @@
     if (m && TC[norm]) m.setAttribute('content', TC[norm]);
 
     setBtns('[data-theme-value]', 'themeValue', norm);
-    const b = document.getElementById('active-theme-badge');
+    const b = $id('active-theme-badge');
     if (b) b.textContent = norm;
     if (push) pushState('theme', norm, 'light');
   };
@@ -110,6 +111,8 @@
     if (s) document.documentElement.dataset.fontSize = s;
     else delete document.documentElement.dataset.fontSize;
     setBtns('[data-font-size-value]', 'fontSizeValue', s || 'normal');
+    const b = $id('active-font-size-badge');
+    if (b) b.textContent = s || 'standard';
   };
 
   const applyContrast = (contrast) => {
@@ -117,48 +120,65 @@
     if (c) document.documentElement.dataset.contrast = c;
     else delete document.documentElement.dataset.contrast;
     setBtns('[data-contrast-value]', 'contrastValue', c || 'normal');
+    const b = $id('active-contrast-badge');
+    if (b) b.textContent = c || 'standard';
   };
 
   const setupA11yModal = () => {
-    const modal = document.getElementById('a11y-modal');
+    const modal = $id('a11y-modal');
     if (!modal) return;
     const open = () => {
-      if (typeof modal.showModal === 'function') modal.showModal();
-      else modal.setAttribute('open', '');
+      document.body.style.overflow = 'hidden';
+      if (typeof modal.showModal === 'function') {
+        try { modal.showModal(); } catch (_) { modal.setAttribute('open', ''); }
+      } else {
+        modal.setAttribute('open', '');
+      }
     };
     const close = () => {
-      if (typeof modal.close === 'function') modal.close();
-      else modal.removeAttribute('open');
+      document.body.style.overflow = '';
+      if (typeof modal.close === 'function') {
+        try { modal.close(); } catch (_) { modal.removeAttribute('open'); }
+      } else {
+        modal.removeAttribute('open');
+      }
     };
 
     $$('#a11y-trigger, #a11y-test-modal-trigger, [aria-controls="a11y-modal"]').forEach((b) => {
-      b.addEventListener('click', (e) => {
-        e.preventDefault();
-        open();
-      });
+      b.addEventListener('click', (e) => { e.preventDefault(); open(); });
     });
 
-    document.getElementById('a11y-modal-close')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      close();
-    });
-
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) close();
-    });
+    $id('a11y-modal-close')?.addEventListener('click', (e) => { e.preventDefault(); close(); });
+    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+    modal.addEventListener('close', () => { document.body.style.overflow = ''; });
+    modal.addEventListener('cancel', () => { document.body.style.overflow = ''; });
 
     $$('[data-font-size-value]').forEach((b) => {
-      b.addEventListener('click', (e) => {
-        e.preventDefault();
-        applyFontSize(b.dataset.fontSizeValue);
-      });
+      b.addEventListener('click', (e) => { e.preventDefault(); applyFontSize(b.dataset.fontSizeValue); });
     });
 
     $$('[data-contrast-value]').forEach((b) => {
-      b.addEventListener('click', (e) => {
-        e.preventDefault();
-        applyContrast(b.dataset.contrastValue);
-      });
+      b.addEventListener('click', (e) => { e.preventDefault(); applyContrast(b.dataset.contrastValue); });
+    });
+
+    $id('a11y-test-skip')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector('.linktree-list');
+      if (target) {
+        target.tabIndex = -1;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        target.focus({ preventScroll: true });
+        target.style.outline = '3px solid var(--color-focus-ring)';
+        setTimeout(() => { target.style.outline = ''; }, 1500);
+      }
+    });
+
+    $id('a11y-test-contrast-toggle')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const current = document.documentElement.dataset.contrast || 'normal';
+      const order = ['normal', 'black-on-white', 'white-on-black'];
+      const nextIdx = (order.indexOf(current) + 1) % order.length;
+      applyContrast(order[nextIdx]);
     });
   };
 
@@ -168,7 +188,7 @@
   window.applyContrast = applyContrast;
 
   const init = () => {
-    document.getElementById('page-loader')?.classList.add('is-hidden');
+    $id('page-loader')?.classList.add('is-hidden');
     $$('.surface-switcher__btn[data-switch-value], [data-theme-value]').forEach((b) => {
       b.addEventListener('click', (e) => {
         e.preventDefault();

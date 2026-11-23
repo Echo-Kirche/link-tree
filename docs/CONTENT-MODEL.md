@@ -129,9 +129,9 @@ Individual service schedule card nested inside `dropdown_card`:
 
 | Field Name | Type | Required | Description & Validation |
 | :--- | :--- | :--- | :--- |
-| `label` | Text | Yes | Card title (max 160 chars). |
+| `label` | Text | No | Optional card title (max 160 chars). When omitted, renders as an image-only link banner. |
 | `url` | Text / Multilink | Yes | Safe destination URL. |
-| `image` | Asset | Yes | Image asset (WebP, 16:9 ratio, max 1900px, max 400 KB). |
+| `image` | Asset / String Link | Yes | Image asset (WebP, 16:9 ratio, max 1900px, max 400 KB) or direct link/path string (e.g., `/assets/images/...` or `https://...`). |
 | `display_in_default` | Boolean | No | Tier 1 curation flag. Default: `true`. |
 | `show_on` / `hide_on` | Multi-select | No | Tier 2 surface filters. |
 
@@ -143,9 +143,9 @@ Individual service schedule card nested inside `dropdown_card`:
 
 | Field Name | Type | Required | Description & Validation |
 | :--- | :--- | :--- | :--- |
-| `label` | Text | Yes | Card title (max 160 chars). |
+| `label` | Text | No | Optional card title (max 160 chars). When omitted, renders as an image-only link banner. |
 | `url` | Text / Multilink | Yes | Safe destination URL. |
-| `image` | Asset | Yes | Image asset (WebP, 3:4 ratio, max 1400px, max 400 KB). |
+| `image` | Asset / String Link | Yes | Image asset (WebP, 3:4 ratio, max 1400px, max 400 KB) or direct link/path string (e.g., `/assets/images/...` or `https://...`). |
 | `display_in_default` | Boolean | No | Tier 1 curation flag. Default: `true`. |
 | `show_on` / `hide_on` | Multi-select | No | Tier 2 surface filters. |
 
@@ -235,6 +235,7 @@ Components MUST NOT crash when optional CMS fields are omitted. The following fa
 4. **Missing `image`**: Media cards fallback to a styled neutral placeholder or title-only card.
 5. **Storyblok Multilink vs Plain URL**: The `resolveUrl` filter handles both plain string URLs (`"https://kirche-echo.de"`) and Storyblok multilink objects (`{ linktype: "url", url: "https://..." }`), returning a safe string.
 6. **Dangerous Protocols**: `resolveUrl` blocks `javascript:` and `data:` protocols, returning empty string `""` to prevent XSS attacks.
+7. **Direct Image Links & Optional Labels in Media Cards**: Image cards (`image_card_horizontal`, `image_card_vertical`) accept both structured image objects (`{ src, alt, width, height }` or `{ filename }`) and direct string URLs/paths (a link as image). If `label` is omitted, the card renders as a pure image link banner without an empty bottom title bar.
 
 ---
 

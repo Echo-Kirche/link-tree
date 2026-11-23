@@ -1,11 +1,12 @@
 {% set resolvedCardUrl = item.url | resolveUrl %}
 <a class="image-card image-card--vertical" href="{{ resolvedCardUrl }}" rel="noopener noreferrer">
-  {% set imgSrc = item.image.filename if (item.image and item.image.filename) else (item.image.src if item.image else '') %}
+  {% set imgSrc = item.image.filename if (item.image and item.image.filename) else (item.image.src if (item.image and item.image.src) else (item.image if item.image else '')) %}
   {% if imgSrc %}
   <div class="image-card__media">
-    <img src="{{ imgSrc }}" alt="{{ item.image.alt or item.label }}" width="{{ item.image.width or 900 }}" height="{{ item.image.height or 1200 }}" loading="lazy" />
+    <img src="{{ imgSrc }}" alt="{{ item.image.alt or item.label or '' }}" width="{{ item.image.width or 900 }}" height="{{ item.image.height or 1200 }}" loading="lazy" />
   </div>
   {% endif %}
+  {% if item.label %}
   <div class="image-card__content">
     <span class="image-card__title">{{ item.label }}</span>
     <span class="image-card__arrow" aria-hidden="true">
@@ -14,4 +15,6 @@
       </svg>
     </span>
   </div>
+  {% endif %}
 </a>
+

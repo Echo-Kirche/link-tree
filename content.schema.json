@@ -75,6 +75,13 @@
         "height": { "type": "integer", "minimum": 1 }
       }
     },
+    "imageProp": {
+      "oneOf": [
+        { "$ref": "#/$defs/image" },
+        { "$ref": "#/$defs/localAsset" },
+        { "$ref": "#/$defs/safeUrl" }
+      ]
+    },
     "visibility": {
       "properties": {
         "showOn": {
@@ -143,44 +150,50 @@
       ]
     },
     "imageHorizontal": {
-      "allOf": [
-        { "$ref": "#/$defs/base" },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["image"],
-          "properties": {
-            "id": true,
-            "type": { "const": "image-horizontal" },
-            "label": true,
-            "url": true,
-            "displayInDefault": true,
-            "showOn": true,
-            "hideOn": true,
-            "image": { "$ref": "#/$defs/image" }
-          }
-        }
-      ]
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "url", "image"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+        "type": { "const": "image-horizontal" },
+        "label": { "type": "string", "maxLength": 160 },
+        "url": { "$ref": "#/$defs/safeUrl" },
+        "displayInDefault": { "type": "boolean" },
+        "showOn": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/surface" }
+        },
+        "hideOn": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/surface" }
+        },
+        "image": { "$ref": "#/$defs/imageProp" }
+      }
     },
     "imageVertical": {
-      "allOf": [
-        { "$ref": "#/$defs/base" },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["image"],
-          "properties": {
-            "id": true,
-            "type": { "const": "image-vertical" },
-            "label": true,
-            "url": true,
-            "displayInDefault": true,
-            "showOn": true,
-            "hideOn": true,
-            "image": { "$ref": "#/$defs/image" }
-          }
-        }
-      ]
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "url", "image"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+        "type": { "const": "image-vertical" },
+        "label": { "type": "string", "maxLength": 160 },
+        "url": { "$ref": "#/$defs/safeUrl" },
+        "displayInDefault": { "type": "boolean" },
+        "showOn": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/surface" }
+        },
+        "hideOn": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/surface" }
+        },
+        "image": { "$ref": "#/$defs/imageProp" }
+      }
     },
     "videoLink": {
       "allOf": [
@@ -198,7 +211,7 @@
             "showOn": true,
             "hideOn": true,
             "provider": { "enum": ["youtube", "vimeo", "other"] },
-            "image": { "$ref": "#/$defs/image" }
+            "image": { "$ref": "#/$defs/imageProp" }
           }
         }
       ]
