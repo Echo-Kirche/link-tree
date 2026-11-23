@@ -165,6 +165,17 @@
     line-height: 1.2;
     white-space: nowrap;
 
+    .dropdown-card__kids-logo,
+    img {
+      height: 14px;
+      width: auto;
+      max-width: 44px;
+      object-fit: contain;
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
     svg {
       flex-shrink: 0;
       width: 11px;
@@ -275,3 +286,12 @@
     }
   }
 }
+
+[data-theme="dark"],
+[data-theme="teal"],
+[data-theme="lavender"] {
+  .dropdown-card__kids-logo {
+    filter: brightness(0) invert(1);
+  }
+}
+
