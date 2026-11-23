@@ -95,5 +95,150 @@ describe('Component State Changes & CSS Verification', () => {
     assert.match(css, /--color-action-bg-hover:\s*var\(--ek-mauve,\s*#846B8A\)|--color-action-bg-hover:\s*#846B8A/, 'Action hover must be Muted Lavender (#846B8A)');
     assert.match(css, /--color-page-bg:\s*var\(--ek-warm,\s*#FEFADC\)|--color-page-bg:\s*#FEFADC/, 'Default page background must be Light Pastel Yellow (#FEFADC)');
   });
+
+  // --- Styleguide Rule: Color Contrast, Token Pairing & Automated CSS Testing ---
+
+  function sRgbToLinear(c) {
+    const v = c / 255;
+    return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  }
+
+  function relativeLuminance(hex) {
+    let clean = hex.replace('#', '');
+    if (clean.length === 3) clean = clean.split('').map(c => c + c).join('');
+    const r = parseInt(clean.substring(0, 2), 16);
+    const g = parseInt(clean.substring(2, 4), 16);
+    const b = parseInt(clean.substring(4, 6), 16);
+    return 0.2126 * sRgbToLinear(r) + 0.7152 * sRgbToLinear(g) + 0.0722 * sRgbToLinear(b);
+  }
+
+  function getWcagContrast(hex1, hex2) {
+    const l1 = relativeLuminance(hex1);
+    const l2 = relativeLuminance(hex2);
+    const lighter = Math.max(l1, l2);
+    const darker = Math.min(l1, l2);
+    return (lighter + 0.05) / (darker + 0.05);
+  }
+
+  function parseDeclarations(cssBlock) {
+    const tokens = {};
+    const decls = cssBlock.split(';');
+    for (const decl of decls) {
+      const colon = decl.indexOf(':');
+      if (colon === -1) continue;
+      const prop = decl.slice(0, colon).trim();
+      const val = decl.slice(colon + 1).trim();
+      if (prop.startsWith('--')) {
+        tokens[prop] = val;
+      }
+    }
+    return tokens;
+  }
+
+  const rootTokens = parseDeclarations(css.match(/:root\{([^}]+)\}/)?.[1] || '');
+
+  function resolveColor(val, themeTokens) {
+    if (!val) return null;
+    const hexMatch = val.match(/#[0-9a-fA-F]{3,8}/);
+    if (hexMatch) return hexMatch[0];
+    const varMatch = val.match(/var\((--[\w-]+)(?:,\s*([^)]+))?\)/);
+    if (varMatch) {
+      const targetVar = varMatch[1];
+      const fallback = varMatch[2];
+      if (themeTokens && themeTokens[targetVar]) {
+        return resolveColor(themeTokens[targetVar], themeTokens);
+      }
+      if (rootTokens[targetVar]) {
+        return resolveColor(rootTokens[targetVar], rootTokens);
+      }
+      if (fallback) {
+        return resolveColor(fallback, themeTokens);
+      }
+    }
+    return null;
+  }
+
+  function getDefinedThemes() {
+    const themeBlockRegex = /\[data-theme=["']?([\w-]+)["']?\](?:,\s*\[data-theme=["']?([\w-]+)["']?\])*\{([^}]+)\}/g;
+    const themes = [{ name: 'root (default)', tokens: rootTokens }];
+    let match;
+    while ((match = themeBlockRegex.exec(css)) !== null) {
+      const themeName = match[1];
+      const blockTokens = parseDeclarations(match[3]);
+      themes.push({
+        name: themeName,
+        tokens: { ...rootTokens, ...blockTokens }
+      });
+    }
+    return themes;
+  }
+
+  test('Rule 2.1: Strict Paired Tokens across components (no orphan backgrounds)', () => {
+    assert.match(css, /\.link-button\{[^}]*background-color:[^;]+;[^}]*color:/, 'LinkButton must declare paired background and color');
+    assert.match(css, /\.dropdown-card\{[^}]*background-color:[^;]+;[^}]*color:/, 'DropdownCard must declare paired background and color');
+    assert.match(css, /\.image-card\{[^}]*background-color:[^;]+;[^}]*color:/, 'ImageCard must declare paired background and color');
+    assert.match(css, /\.video-link-card\{[^}]*background-color:[^;]+;[^}]*color:/, 'VideoLinkCard must declare paired background and color');
+    assert.match(css, /\.social-button\{[^}]*background-color:[^;]+;[^}]*color:/, 'SocialButton must declare paired background and color');
+    assert.match(css, /\.surface-switcher\{[^}]*background-color:[^;]+;[^}]*color:/, 'SurfaceSwitcher container must declare paired background and color');
+    assert.match(css, /\.group-block--card\{[^}]*background-color:[^;]+;[^}]*color:/, 'GroupBlock card must declare paired background and color');
+    assert.match(css, /\.group-block--soft\{[^}]*background-color:[^;]+;[^}]*color:/, 'GroupBlock soft must declare paired background and color');
+  });
+
+  test('Rule 2.2: Semantic Naming Structure declares mandatory on-[surface] tokens across themes', () => {
+    const mandatoryPairs = [
+      ['--color-surface', '--color-on-surface'],
+      ['--color-primary', '--color-on-primary'],
+      ['--color-secondary', '--color-on-secondary'],
+      ['--color-muted', '--color-on-muted'],
+      ['--color-accent', '--color-on-accent']
+    ];
+
+    const themes = getDefinedThemes();
+    assert.ok(themes.length >= 6, 'Must define at least 6 theme configurations');
+
+    themes.forEach((theme) => {
+      mandatoryPairs.forEach(([bgToken, fgToken]) => {
+        assert.ok(theme.tokens[bgToken], `Theme [${theme.name}] must define background token ${bgToken}`);
+        assert.ok(theme.tokens[fgToken], `Theme [${theme.name}] must define mandatory paired foreground token ${fgToken}`);
+      });
+    });
+  });
+
+  test('Rule 3 & 4.1: Automated Token Matrix Testing verifies WCAG 2.1 AA text contrast across all themes', () => {
+    const themes = getDefinedThemes();
+    const contrastPairs = [
+      { name: 'Surface / Card', bg: '--color-surface', fg: '--color-on-surface', minRatio: 4.5 },
+      { name: 'Primary Action / Button', bg: '--color-primary', fg: '--color-on-primary', minRatio: 4.5 },
+      { name: 'Secondary Action / Button', bg: '--color-secondary', fg: '--color-on-secondary', minRatio: 4.5 },
+      { name: 'Muted Container', bg: '--color-muted', fg: '--color-on-muted', minRatio: 4.5 },
+      { name: 'Accent / Badge', bg: '--color-accent', fg: '--color-on-accent', minRatio: 4.5 },
+    ];
+
+    themes.forEach((theme) => {
+      contrastPairs.forEach((pair) => {
+        const bgVal = theme.tokens[pair.bg];
+        const fgVal = theme.tokens[pair.fg];
+        const bgHex = resolveColor(bgVal, theme.tokens);
+        const fgHex = resolveColor(fgVal, theme.tokens);
+
+        assert.ok(bgHex, `Theme [${theme.name}] ${pair.name}: failed to resolve background color for ${pair.bg}`);
+        assert.ok(fgHex, `Theme [${theme.name}] ${pair.name}: failed to resolve foreground color for ${pair.fg}`);
+
+        const ratio = getWcagContrast(bgHex, fgHex);
+        assert.ok(
+          ratio >= pair.minRatio,
+          `Theme [${theme.name}] ${pair.name} contrast (${bgHex} vs ${fgHex}) is ${ratio.toFixed(2)}:1, expected >= ${pair.minRatio}:1 (WCAG AA)`
+        );
+      });
+    });
+  });
+
+  test('Checklist: UI icons explicitly declare currentColor fill or stroke', () => {
+    assert.match(css, /\.link-button__icon\s+(?:svg|\.fa-svg)\{[^}]*fill:\s*currentColor/, 'LinkButton icon must use fill: currentColor');
+    assert.match(css, /\.dropdown-card__chevron\s+svg\{[^}]*fill:\s*currentColor/, 'DropdownCard chevron icon must use fill: currentColor');
+    assert.match(css, /\.social-button\s+(?:svg|\.fa-svg)\{[^}]*fill:\s*currentColor/, 'SocialButton icon must use fill: currentColor');
+    assert.match(css, /\.image-card__arrow\s+(?:svg|\.fa-svg)\{[^}]*fill:\s*currentColor/, 'ImageCard arrow icon must use fill: currentColor');
+    assert.match(css, /\.profile-header__name-logo\s+(?:svg|\.fa-svg)\{[^}]*fill:\s*currentColor/, 'Profile header logo must use fill: currentColor');
+  });
 });
 

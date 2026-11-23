@@ -2,6 +2,7 @@
   display: block;
   overflow: hidden;
   background-color: var(--color-surface);
+  color: var(--color-on-surface, var(--color-text));
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
