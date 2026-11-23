@@ -26,6 +26,16 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(indexHtml, /class="link-button__label"/, 'LinkButton label wrapper must exist');
   });
 
+  test('A11yButton component renders accessible markup, states, and icon', () => {
+    assert.match(indexHtml, /<a href="#content"[^>]*class="a11y-button a11y-button--skip"/, 'Skip link must exist on default page targeting #content');
+    assert.match(indexHtml, /class="a11y-button__icon"[^>]*aria-hidden="true"/, 'A11y button icon must be aria-hidden');
+    assert.match(indexHtml, /class="a11y-button__label"/, 'A11y button label wrapper must exist');
+    assert.match(indexHtml, /Zum Hauptinhalt springen/, 'Skip link must have accessible label');
+    assert.match(testHtml, /class="surface-switcher a11y-test-section"/, 'Test page must render a11y test section');
+    assert.match(testHtml, /class="a11y-button a11y-button--secondary"/, 'Test page must render secondary a11y button variant');
+    assert.match(testHtml, /class="a11y-button a11y-button--surface"/, 'Test page must render surface a11y button variant');
+  });
+
   test('DropdownCard component renders accessible details/summary pattern', () => {
     assert.match(indexHtml, /<details class="dropdown-card"/, 'DropdownCard must use semantic <details>');
     assert.match(indexHtml, /<summary class="dropdown-card__summary link-button/, 'Summary must be styled as link-button');

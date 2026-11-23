@@ -1,0 +1,37 @@
+{% set href = a11yHref or (item.href if item) %}
+{% set label = a11yLabel or (item.label if item) or "Zum Hauptinhalt springen" %}
+{% set isSkip = a11ySkip or (item.isSkip if item) %}
+{% set icon = a11yIcon or (item.icon if item) or ("arrow-down" if isSkip else "") %}
+{% set customClass = a11yClass or (item.class if item) %}
+
+{% if href or isSkip %}
+<a class="a11y-button{% if isSkip %} a11y-button--skip{% endif %}{% if customClass %} {{ customClass }}{% endif %}" href="{{ href or '#content' }}"{% if a11yAriaLabel %} aria-label="{{ a11yAriaLabel }}"{% endif %}>
+  {% if icon %}
+  <span class="a11y-button__icon" aria-hidden="true">
+    {% if icon == "arrow-down" %}
+    <svg class="fa-svg fa-arrow-down" viewBox="0 0 384 512" fill="currentColor" width="16" height="16"><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
+    {% elif icon == "contrast" or icon == "circle-half-stroke" %}
+    <svg class="fa-svg fa-contrast" viewBox="0 0 512 512" fill="currentColor" width="16" height="16"><path d="M448 256c0-106-86-192-192-192V448c106 0 192-86 192-192zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"/></svg>
+    {% elif icon == "universal-access" or icon == "a11y" %}
+    <svg class="fa-svg fa-universal-access" viewBox="0 0 512 512" fill="currentColor" width="16" height="16"><path d="M256 48a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm-41.6 112h83.2c19.4 0 37.3 10.7 46.5 27.8l56 104c9 16.7 3 37.6-13.7 46.6s-37.6 3-46.6-13.7l-35.8-66.5v89.7l46.2 138.6c5.6 16.8-3.7 35.1-20.5 40.7s-35.1-3.7-40.7-20.5L256 400.9l-26.9 105.8c-5.6 16.8-23.9 26.1-40.7 20.5s-26.1-23.9-20.5-40.7l46.2-138.6v-89.7l-35.8 66.5c-9 16.7-29.9 22.7-46.6 13.7s-22.7-29.9-13.7-46.6l56-104c9.2-17.1 27.1-27.8 46.5-27.8z"/></svg>
+    {% endif %}
+  </span>
+  {% endif %}
+  <span class="a11y-button__label">{{ label }}</span>
+</a>
+{% else %}
+<button type="button" class="a11y-button{% if customClass %} {{ customClass }}{% endif %}"{% if a11yAriaLabel %} aria-label="{{ a11yAriaLabel }}"{% endif %}>
+  {% if icon %}
+  <span class="a11y-button__icon" aria-hidden="true">
+    {% if icon == "arrow-down" %}
+    <svg class="fa-svg fa-arrow-down" viewBox="0 0 384 512" fill="currentColor" width="16" height="16"><path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
+    {% elif icon == "contrast" or icon == "circle-half-stroke" %}
+    <svg class="fa-svg fa-contrast" viewBox="0 0 512 512" fill="currentColor" width="16" height="16"><path d="M448 256c0-106-86-192-192-192V448c106 0 192-86 192-192zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"/></svg>
+    {% elif icon == "universal-access" or icon == "a11y" %}
+    <svg class="fa-svg fa-universal-access" viewBox="0 0 512 512" fill="currentColor" width="16" height="16"><path d="M256 48a48 48 0 1 1 0 96 48 48 0 1 1 0-96zm-41.6 112h83.2c19.4 0 37.3 10.7 46.5 27.8l56 104c9 16.7 3 37.6-13.7 46.6s-37.6 3-46.6-13.7l-35.8-66.5v89.7l46.2 138.6c5.6 16.8-3.7 35.1-20.5 40.7s-35.1-3.7-40.7-20.5L256 400.9l-26.9 105.8c-5.6 16.8-23.9 26.1-40.7 20.5s-26.1-23.9-20.5-40.7l46.2-138.6v-89.7l-35.8 66.5c-9 16.7-29.9 22.7-46.6 13.7s-22.7-29.9-13.7-46.6l56-104c9.2-17.1 27.1-27.8 46.5-27.8z"/></svg>
+    {% endif %}
+  </span>
+  {% endif %}
+  <span class="a11y-button__label">{{ label }}</span>
+</button>
+{% endif %}

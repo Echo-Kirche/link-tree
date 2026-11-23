@@ -162,6 +162,51 @@ Components must consume semantic tokens, not raw hex codes directly. See [Sectio
 - Images require meaningful `alt` attributes or empty `alt=""` for decorative assets.
 - Automated code-based contrast testing is enforced across all themes without screenshot regression tools.
 
+### 7.1 Accessibility (a11y) Button Component
+
+The `.a11y-button` component provides an accessible, keyboard-first interactive element designed for utility functions such as skip-to-content links, contrast toggles, and accessibility preference actions.
+
+#### BEM Class Hierarchy & Structure
+
+| Class Name | Type | Description |
+| :--- | :--- | :--- |
+| `.a11y-button` | Block | Base button container (`<a>` or `<button>`). Enforces min 44px (`2.75rem`) touch target and paired tokens. |
+| `.a11y-button__icon` | Element | Icon container for vector SVG glyphs (`fill: currentColor`). Marked `aria-hidden="true"`. |
+| `.a11y-button__label` | Element | Text label container ensuring inline display and text alignment. |
+| `.a11y-button--skip` | Modifier | Skip link pattern. Positioned off-screen (`top: -9999px`) until focused via keyboard (`:focus`, `:focus-visible`), then smoothly transitions into top center view. |
+| `.a11y-button--secondary` | Modifier | Secondary action variant paired with `--color-secondary` and `--color-on-secondary`. |
+| `.a11y-button--surface` | Modifier | Surface outline variant paired with `--color-surface` and `--color-on-surface`. |
+
+#### Token Pairing & Contrast Guarantee
+
+The component strictly consumes paired design system tokens to ensure minimum 4.5:1 WCAG AA contrast across all 6 brand themes (`light`, `pale`, `soft`, `dark`, `teal`, `lavender`):
+- **Base / Primary**: `background-color: var(--color-primary); color: var(--color-on-primary);`
+- **Secondary**: `background-color: var(--color-secondary); color: var(--color-on-secondary);`
+- **Surface**: `background-color: var(--color-surface); color: var(--color-on-surface);`
+- **Focus Ring**: `outline: 3px solid var(--color-focus-ring); outline-offset: 3px;`
+
+#### Semantic HTML Patterns
+
+1. **Skip-to-Content Link** (placed at start of `<body>` targeting `<main id="content">`):
+```html
+<a href="#content" class="a11y-button a11y-button--skip">
+  <span class="a11y-button__icon" aria-hidden="true">
+    <svg class="fa-svg fa-arrow-down" viewBox="0 0 384 512" fill="currentColor" width="16" height="16">...</svg>
+  </span>
+  <span class="a11y-button__label">Zum Hauptinhalt springen</span>
+</a>
+```
+
+2. **Interactive Action / Utility Button**:
+```html
+<button type="button" class="a11y-button" aria-label="Barrierefreiheit Menü">
+  <span class="a11y-button__icon" aria-hidden="true">
+    <svg class="fa-svg fa-universal-access" viewBox="0 0 512 512" fill="currentColor" width="16" height="16">...</svg>
+  </span>
+  <span class="a11y-button__label">Barrierefreiheit</span>
+</button>
+```
+
 ---
 
 ## 8. Color Contrast, Token Pairing & Automated CSS Testing

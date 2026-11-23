@@ -1,0 +1,94 @@
+.a11y-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs, 0.5rem);
+  min-block-size: 2.75rem; // 44px WCAG touch target
+  padding-block: var(--space-xs, 0.5rem);
+  padding-inline: var(--space-md, 1rem);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control, 8px);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.2;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    background-color: var(--color-action-bg-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--ek-shadow-sm, 0 4px 20px rgba(8, 65, 92, 0.08));
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--color-focus-ring);
+    outline-offset: 3px;
+  }
+
+  // Modifiers
+  &--secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-on-secondary);
+
+    &:hover {
+      background-color: var(--color-action-bg-hover);
+    }
+  }
+
+  &--surface {
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+    border-color: var(--color-border);
+
+    &:hover {
+      background-color: var(--color-surface-subtle);
+      color: var(--color-on-surface);
+    }
+  }
+
+  // Skip-to-content accessibility link (hidden offscreen until keyboard focused)
+  &--skip {
+    position: absolute;
+    top: -9999px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    white-space: nowrap;
+
+    &:focus,
+    &:focus-visible {
+      top: var(--space-md, 1rem);
+      transform: translateX(-50%) translateY(0);
+      box-shadow: var(--ek-shadow-md, 0 12px 40px rgba(8, 65, 92, 0.12));
+    }
+  }
+}
+
+.a11y-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg,
+  .fa-svg {
+    inline-size: 1rem;
+    block-size: 1rem;
+    fill: currentColor;
+  }
+}
+
+.a11y-button__label {
+  display: inline-block;
+  text-align: center;
+}

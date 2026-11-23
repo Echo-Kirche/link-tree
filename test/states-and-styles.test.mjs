@@ -46,6 +46,13 @@ describe('Component State Changes & CSS Verification', () => {
     assert.match(css, /\.social-button:focus-visible/, 'SocialButton must define :focus-visible state');
   });
 
+  test('A11yButton interactive states (:hover, :active, :focus-visible, skip focus)', () => {
+    assert.match(css, /\.a11y-button:hover/, 'A11yButton must define :hover state');
+    assert.match(css, /\.a11y-button:active/, 'A11yButton must define :active state');
+    assert.match(css, /\.a11y-button:focus-visible/, 'A11yButton must define :focus-visible state');
+    assert.match(css, /\.a11y-button--skip:(?:focus|focus-visible)/, 'A11yButton skip modifier must define focus state');
+  });
+
   test('SurfaceSwitcher interactive states (:hover, .is-active, [aria-pressed="true"], :focus-visible)', () => {
     assert.match(css, /\.surface-switcher__btn:hover/, 'SurfaceSwitcher button must define :hover');
     assert.match(css, /\.surface-switcher__btn\.is-active|\.surface-switcher__btn\[aria-pressed="true"\]/, 'SurfaceSwitcher must define active chip state');
@@ -182,6 +189,9 @@ describe('Component State Changes & CSS Verification', () => {
     assert.match(css, /\.surface-switcher\{[^}]*background-color:[^;]+;[^}]*color:/, 'SurfaceSwitcher container must declare paired background and color');
     assert.match(css, /\.group-block--card\{[^}]*background-color:[^;]+;[^}]*color:/, 'GroupBlock card must declare paired background and color');
     assert.match(css, /\.group-block--soft\{[^}]*background-color:[^;]+;[^}]*color:/, 'GroupBlock soft must declare paired background and color');
+    assert.match(css, /\.a11y-button\{[^}]*background-color:[^;]+;[^}]*color:/, 'A11yButton must declare paired background and color');
+    assert.match(css, /\.a11y-button--secondary\{[^}]*background-color:[^;]+;[^}]*color:/, 'A11yButton secondary must declare paired background and color');
+    assert.match(css, /\.a11y-button--surface\{[^}]*background-color:[^;]+;[^}]*color:/, 'A11yButton surface must declare paired background and color');
   });
 
   test('Rule 2.2: Semantic Naming Structure declares mandatory on-[surface] tokens across themes', () => {
@@ -265,6 +275,7 @@ describe('Component State Changes & CSS Verification', () => {
     assert.match(css, /\.social-button\s+(?:svg|\.fa-svg)\{[^}]*fill:\s*currentColor/, 'SocialButton icon must use fill: currentColor');
     assert.match(css, /\.image-card__arrow\s+(?:svg|\.fa-svg)\{[^}]*fill:\s*currentColor/, 'ImageCard arrow icon must use fill: currentColor');
     assert.match(css, /\.profile-header__name-logo\s+(?:svg|\.fa-svg)\{[^}]*fill:\s*currentColor/, 'Profile header logo must use fill: currentColor');
+    assert.match(css, /\.a11y-button__icon\s+(?:svg|\.fa-svg)\{[^}]*fill:\s*currentColor/, 'A11yButton icon must use fill: currentColor');
   });
 });
 
