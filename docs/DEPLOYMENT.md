@@ -37,9 +37,9 @@ All canonical campus and channel pages are generated within a **single build exe
 | `he/index.html` & `helmstedt/index.html` | `/he/`, `/helmstedt/` | `helmstedt` (Helmstedt campus services) |
 | `ig/index.html` & `instagram/index.html` | `/ig/`, `/instagram/` | `instagram` (Instagram bio traffic) |
 | `test/index.html` | `/test/` | `all` (Preview toolbar; redirected to `/` in production) |
-| `impressum/index.html` | `/impressum/` | Legal notice (DDG §5) |
-| `datenschutz/index.html` | `/datenschutz/` | Privacy notice (DSGVO) |
 | `404.html` | `/*` | Branded 404 page redirecting to `/` |
+
+*(Note: Impressum and Datenschutz are linked externally to `https://kirche-echo.de/...` and not generated as local static files.)*
 
 ---
 

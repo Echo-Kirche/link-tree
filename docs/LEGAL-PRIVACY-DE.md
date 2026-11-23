@@ -6,27 +6,26 @@ This document provides technical engineering guidance for complying with German 
 
 ---
 
-## 1. Required Legal Surfaces
+## 1. Required Legal Links
 
 German law mandates easily identifiable, directly accessible, and permanently available links to:
 1. **Impressum** (Site Notice / Provider Identification under § 5 DDG, formerly TMG)
 2. **Datenschutzerklärung** (Privacy Policy under Art. 13 DSGVO)
 
-These routes are permanently available at:
-- `/impressum/` (`src/content/impressum.njk`)
-- `/datenschutz/` (`src/content/datenschutz.njk`)
+To ensure canonical legal authority and prevent duplicate maintenance, the link-in-bio site links directly to the official church website's legal pages:
+- **Impressum**: `https://kirche-echo.de/impressum/`
+- **Datenschutz**: `https://kirche-echo.de/datenschutz/`
+
+These links are rendered in `FooterLegal.njk` with `target="_blank"` and `rel="noopener noreferrer"`. Local `/impressum` and `/datenschutz` routes are deliberately **not served** on this domain. Any direct request to these paths redirects to the home page or root.
 
 ---
 
-## 2. Impressum Implementation (§ 5 DDG)
+## 2. Operator Configuration
 
-The Impressum template renders provider data from `src/_data/operator.json`:
-- **Legal Entity Name**: e.g., `"Echo Kirche e.V."`
-- **Authorized Representatives**: Full name(s) of pastoral lead or board members
-- **Physical Address**: Street, postal code, city
-- **Electronic Contact**: Email address and phone number
-- **Register & Number**: Vereinsregister (VR) number and registering court (Amtsgericht)
-- **Editorial Responsibility**: § 18 Abs. 2 MStV responsible person (name and address)
+Provider and contact data is managed in `src/_data/operator.json`:
+- **Legal Entity Name**: e.g., `"Echo Kirche"`
+- **Address & Contact**: Physical address, contact email (`info@kirche-echo.de`), phone
+- **External URLs**: `urls.impressum` and `urls.datenschutz` pointing to canonical pages on `kirche-echo.de`
 
 > **Important**: Never manufacture fictitious legal operator data in production. Maintain genuine church entity details in `src/_data/operator.json`.
 

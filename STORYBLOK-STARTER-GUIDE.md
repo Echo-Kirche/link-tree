@@ -448,8 +448,8 @@ The bottom footer section containing organization address, mandatory German lega
 | `city` | Postal Code & City | City and postal code. | `Text` | `38518 Gifhorn` | No | e.g. `38518 Gifhorn`. |
 | `email` | Contact E-Mail | Official contact email. | `Text` | `info@kirche-echo.de` | No | e.g. `info@kirche-echo.de`. |
 | `mailto` | Custom Mailto URI | Custom mailto link with optional subject. | `Text` | None | No | e.g. `mailto:david.loewens@kib-gifhorn.de?subject=Kontakt%20EchoHelmstedt`. |
-| `impressum_url` | Impressum URL | Mandatory link to legal imprint (DDG/TMG). | `Link` or `Text` | `/impressum/` | No | Local static route: `/impressum/`. |
-| `datenschutz_url` | Datenschutz URL | Mandatory link to privacy policy (DSGVO). | `Link` or `Text` | `/datenschutz/` | No | Local static route: `/datenschutz/`. |
+| `impressum_url` | Impressum URL | Mandatory link to legal imprint (DDG/TMG). | `Link` or `Text` | `https://kirche-echo.de/impressum/` | No | External canonical link: `https://kirche-echo.de/impressum/`. |
+| `datenschutz_url` | Datenschutz URL | Mandatory link to privacy policy (DSGVO). | `Link` or `Text` | `https://kirche-echo.de/datenschutz/` | No | External canonical link: `https://kirche-echo.de/datenschutz/`. |
 | `copyright_year` | Copyright Year | Year shown in copyright notice. | `Text` | `2026` | No | Current year (e.g. `2026`). |
 | `socials` | Social Icons | List of circular social media buttons. | `Blocks` | None | No | Restrict to: `social_item`. |
 | `show_on` | Show On Surfaces | Campus routes that display this footer. | `Multi-Option` | None | No | Options: `default`, `gifhorn`, `wolfsburg`, `helmstedt`, `instagram`. |

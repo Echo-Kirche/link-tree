@@ -4,7 +4,7 @@
   const VALID_THEMES = ['light', 'white', 'pale', 'warm', 'soft', 'dark', 'teal', 'lavender'];
   const VALID_SURFACES = ['instagram', 'wolfsburg', 'gifhorn', 'helmstedt', 'default', 'all'];
   const VALID_SLUGS = ['ig', 'gf', 'wob', 'he', ...VALID_SURFACES];
-  const VALID_ROUTES = ['', 'index.html', 'home', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'impressum', 'datenschutz', 'assets', 'css', '404', '404.html'];
+  const VALID_ROUTES = ['', 'index.html', 'home', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'assets', 'css', '404', '404.html'];
 
   const getP = (q) => q.get('surface') || q.get('switch') || q.get('campus') || q.get('location');
   const clean = (s) => (s || '').toLowerCase().replace(/^\/|\/$/g, '').trim();

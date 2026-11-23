@@ -204,8 +204,8 @@ Contains church legal details, mandatory Impressum/Datenschutz links, and social
 | `street` | Text | Yes | Street address. |
 | `city` | Text | Yes | Postal code and city. |
 | `email` | Text | Yes | Contact email address. |
-| `impressum_url` | Text | Yes | Link to Impressum (default: `"/impressum/"`). |
-| `datenschutz_url` | Text | Yes | Link to Datenschutz (default: `"/datenschutz/"`). |
+| `impressum_url` | Text | Yes | Link to Impressum (default: `"https://kirche-echo.de/impressum/"`). |
+| `datenschutz_url` | Text | Yes | Link to Datenschutz (default: `"https://kirche-echo.de/datenschutz/"`). |
 | `copyright_year` | Number | No | Copyright year (default: current year). |
 | `socials` | Blocks | No | Array of `social_item` bloks. |
 | `display_in_default` | Boolean | No | Tier 1 curation flag. Default: `true`. |

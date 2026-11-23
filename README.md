@@ -55,7 +55,7 @@ flowchart TD
     HE["/he & /helmstedt (Helmstedt Campus)"]
     IG["/ig & /instagram (Instagram Bio)"]
     Test["/test (Preview-Only Testing Toolbar)"]
-    Legal["/impressum & /datenschutz (Legal / DSGVO)"]
+    NotFound["/404.html (Branded 404 Redirect)"]
   end
 
   subgraph Client["4. Client Runtime"]

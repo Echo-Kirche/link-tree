@@ -61,11 +61,11 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.doesNotMatch(indexHtml, /<iframe/i, 'No initial <iframe> allowed on page load');
   });
 
-  test('FooterLegal renders address, legal links, and social buttons', () => {
+  test('FooterLegal renders address, external legal links, and social buttons', () => {
     assert.match(indexHtml, /class="footer-legal"/, 'FooterLegal container must exist');
     assert.match(indexHtml, /class="footer-legal__address"/, 'Footer address must exist');
-    assert.match(indexHtml, /href="[^"]*\/impressum\/"/, 'Impressum link must exist');
-    assert.match(indexHtml, /href="[^"]*\/datenschutz\/"/, 'Datenschutz link must exist');
+    assert.match(indexHtml, /href="https:\/\/kirche-echo\.de\/impressum\/"[^>]*target="_blank"/, 'Impressum link must point externally with target="_blank"');
+    assert.match(indexHtml, /href="https:\/\/kirche-echo\.de\/datenschutz\/"[^>]*target="_blank"/, 'Datenschutz link must point externally with target="_blank"');
     assert.match(indexHtml, /class="[^"]*\bsocial-button\b/, 'Social icon buttons must exist');
     assert.match(indexHtml, /aria-label="/, 'Social buttons must have accessible aria-labels');
   });

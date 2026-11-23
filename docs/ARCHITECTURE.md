@@ -39,7 +39,7 @@ flowchart TD
     HE["/he/ & /helmstedt/<br/>(Helmstedt Surface)"]
     IG["/ig/ & /instagram/<br/>(Instagram Surface)"]
     TestRoute["/test/index.html<br/>(Interactive Surface Switcher)"]
-    Legal["/impressum/ & /datenschutz/<br/>(Legal & Privacy Pages)"]
+    NotFound["/404.html<br/>(Branded 404 Redirect Page)"]
   end
 
   subgraph ClientRuntime["4. Client Runtime"]
@@ -121,9 +121,9 @@ link_page (Root Page)
 | `/he/` & `/helmstedt/` | `helmstedt` | Helmstedt campus landing page (Sunday service at 12:00). |
 | `/ig/` & `/instagram/` | `instagram` | Instagram bio traffic landing page. |
 | `/test/` | `all` | Preview-only test page with interactive toolbars; redirected to `/` in production. |
-| `/impressum/` | `default` | Mandatory provider identification under § 5 DDG. |
-| `/datenschutz/` | `default` | Privacy notice under Art. 13 DSGVO. |
 | `/404.html` | `default` | Branded 404 page featuring the Echo logo; redirects to `/`. |
+
+*(Note: Legal requirements for Impressum and Datenschutzerklärung are served via external canonical links to `https://kirche-echo.de/impressum/` and `https://kirche-echo.de/datenschutz/` in the footer. Local routes are not served.)*
 
 ### 5.3 Brand Color Invariant
 **Brand colors must never change based on URL parameters, surfaces, or sublinks.**

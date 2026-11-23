@@ -81,10 +81,11 @@ Every contribution MUST honor these five foundational invariants:
 - **DO** test both local fallback data (`npm run validate`) and Storyblok synchronization schemas before committing.
 - **DO** maintain the exact "e" clear space (*Schutzzone*) on all four sides of the Echo logo.
 - **DO** compress and convert all uploaded images to `.webp` format (max 400 KB, 1900px max width for heroes, 1400px for cards).
-- **DO** keep operator legal identity in `src/_data/operator.json` and maintain stable routes `/impressum/` and `/datenschutz/`.
+- **DO** keep operator legal identity in `src/_data/operator.json` and maintain canonical external legal links to `https://kirche-echo.de/impressum/` and `https://kirche-echo.de/datenschutz/`.
 - **DO** run `npm run build && npm test` and ensure all 45+ test assertions pass.
 
 ### DO NOT:
+- **DO NOT** serve `/impressum` or `/datenschutz` as local routes on this domain; they must be external links pointing to `https://kirche-echo.de/...`.
 - **DO NOT** delete, rename, or archive documentation files without explicit user review.
 - **DO NOT** install client-side UI frameworks (React, Vue, Svelte, Alpine) or hydration scripts.
 - **DO NOT** make client-side network calls to the Storyblok API in production.

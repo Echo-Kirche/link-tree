@@ -126,7 +126,7 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.match(switcherJs, /location\.replace\('\/'\)/, 'surface-switcher.js must redirect to home via location.replace');
 
     // Simulate validation logic against test scenarios
-    const VALID_ROUTES = ['', 'index.html', 'home', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'impressum', 'datenschutz', 'assets', 'css', '404', '404.html'];
+    const VALID_ROUTES = ['', 'index.html', 'home', 'gf', 'gifhorn', 'wob', 'wolfsburg', 'he', 'helmstedt', 'ig', 'instagram', 'test', 'assets', 'css', '404', '404.html'];
     const VALID_SLUGS = ['ig', 'instagram', 'wob', 'wolfsburg', 'gf', 'gifhorn', 'he', 'helmstedt', 'default', 'all'];
 
     const checkRedirect = (pathname, search = '', hostname = 'example.com') => {
@@ -190,8 +190,8 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.equal(checkRedirect('/he'), null, '/he must not redirect');
     assert.equal(checkRedirect('/helmstedt'), null, '/helmstedt must not redirect');
     assert.equal(checkRedirect('/ig'), null, '/ig must not redirect');
-    assert.equal(checkRedirect('/impressum'), null, '/impressum must not redirect');
-    assert.equal(checkRedirect('/datenschutz'), null, '/datenschutz must not redirect');
+    assert.equal(checkRedirect('/impressum'), '/', '/impressum must redirect to home (external link only)');
+    assert.equal(checkRedirect('/datenschutz'), '/', '/datenschutz must redirect to home (external link only)');
     assert.equal(checkRedirect('/'), null, '/ root must not redirect');
     assert.equal(checkRedirect('/', '?surface=gf'), null, '?surface=gf must not redirect');
     assert.equal(checkRedirect('/', '?surface=gifhorn'), null, '?surface=gifhorn must not redirect');

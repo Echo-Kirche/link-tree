@@ -41,50 +41,6 @@
   margin: 0;
 }
 
-// Legal subpage styling
-.legal-page {
-  padding-block: var(--space-xl);
-
-  &__back {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-action-bg);
-    margin-block-end: var(--space-lg);
-
-    &:hover {
-      text-decoration: underline;
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--color-focus-ring);
-      outline-offset: 2px;
-      border-radius: var(--primitive-radius-sm);
-    }
-  }
-
-  &__title {
-    margin-block-end: var(--space-lg);
-  }
-
-  &__section {
-    margin-block-end: var(--space-xl);
-
-    h2 {
-      margin-block-end: var(--space-sm);
-    }
-
-    p,
-    address {
-      font-style: normal;
-      margin-block-end: var(--space-sm);
-      line-height: 1.6;
-    }
-  }
-}
-
 // 404 page styling
 .not-found-page {
   padding-block: var(--space-2xl, 3rem);

@@ -184,21 +184,20 @@ This document provides step-by-step procedural playbooks for common engineering 
 
 ---
 
-## Skill: legal-pages-integration
+## Skill: legal-links-integration
 
-**Use When**: Updating legal notices, Impressum, or Datenschutz templates.
+**Use When**: Updating legal notices, operator details, or footer links to Impressum and Datenschutz.
 
 **Key Files**:
 - `src/_data/operator.json`
-- `src/content/impressum.njk`
-- `src/content/datenschutz.njk`
+- `src/_includes/components/FooterLegal.njk`
 - `docs/LEGAL-PRIVACY-DE.md`
 
 **Procedure**:
-1. Maintain church operator legal identity in `src/_data/operator.json`. Never manufacture fictional legal values in production.
-2. Ensure `/impressum/` complies with DDG §5 (formerly TMG §5) requirements.
-3. Ensure `/datenschutz/` accurately describes the site's processing (zero initial cookies, self-hosted fonts, 2-click YouTube player).
-4. Run `npm test` to ensure legal routes exist and render correctly.
+1. Maintain church operator legal identity and canonical URLs in `src/_data/operator.json`. Never manufacture fictional legal values in production.
+2. Link Impressum and Datenschutz externally to canonical church URLs (`https://kirche-echo.de/impressum/` and `https://kirche-echo.de/datenschutz/`) with `target="_blank"` and `rel="noopener noreferrer"`.
+3. Do NOT serve local `/impressum` or `/datenschutz` static pages on this domain; they are external links.
+4. Run `npm test` to verify external legal links render properly.
 
 ---
 

@@ -16,14 +16,24 @@ if (!fs.existsSync(siteDir)) {
 const requiredFiles = [
   path.join(siteDir, 'index.html'),
   path.join(siteDir, '404.html'),
-  path.join(siteDir, 'impressum', 'index.html'),
-  path.join(siteDir, 'datenschutz', 'index.html'),
   path.join(siteDir, 'css', 'main.css'),
 ];
 
 for (const file of requiredFiles) {
   if (!fs.existsSync(file)) {
     console.error(`Error: Expected output file does not exist: ${path.relative(rootDir, file)}`);
+    process.exit(1);
+  }
+}
+
+// Verify that local legal routes are NOT served (must be external links only)
+const forbiddenPaths = [
+  path.join(siteDir, 'impressum'),
+  path.join(siteDir, 'datenschutz'),
+];
+for (const p of forbiddenPaths) {
+  if (fs.existsSync(p)) {
+    console.error(`Error: Forbidden local route exists: ${path.relative(rootDir, p)} - must be external link only`);
     process.exit(1);
   }
 }

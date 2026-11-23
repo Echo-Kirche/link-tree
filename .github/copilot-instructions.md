@@ -23,6 +23,7 @@ You are assisting on the **Echo Kirche** static website and link-in-bio platform
 - **Privacy First (DSGVO)**: No external fonts, no cookies on initial visit, 2-click consent facade for YouTube embeds (`youtube-nocookie.com`).
 - **Brand Color Constancy**: Colors (`#08415C` Dark Teal Blue, `#846B8A` Muted Lavender, `#FEFADC` Light Pastel Yellow) never change across routes.
 - **Logo Clear Space**: Clear space equal to lowercase `"e"` on all four sides. Never distort or rotate.
+- **External Legal Links**: Impressum and Datenschutz point to canonical external URLs (`https://kirche-echo.de/...`). Local routes must never be served.
 
 ---
 

@@ -26,6 +26,7 @@ This file provides operational guidance for Anthropic's Claude Code and Claude-b
 - **Privacy (DSGVO)**: Zero initial third-party connections. Self-hosted fonts (`Clash Display`, `Inter`). No cookies on initial visit. 2-click consent facade for YouTube embeds via `youtube-nocookie.com`.
 - **Brand Color Constancy**: Brand colors (`#08415C` Dark Teal Blue, `#846B8A` Muted Lavender, `#FEFADC` Light Pastel Yellow) must **never** change based on URL parameters, surfaces, or campus routes.
 - **Logo Clear Space**: Minimum clear space equal to the height/width of lowercase `"e"` from the logo on all four sides. Never stretch, compress, rotate, or distort.
+- **External Legal Links**: Impressum and Datenschutz point to canonical external URLs (`https://kirche-echo.de/...`). Local `/impressum` or `/datenschutz` routes must never be served.
 
 ---
 
