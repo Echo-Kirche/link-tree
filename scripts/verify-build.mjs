@@ -55,7 +55,7 @@ function findFiles(dir, ext) {
 }
 
 const jsFiles = findFiles(siteDir, '.js');
-const allowedJsFiles = ['assets/js/video-embed.js', 'assets/js/storyblok-bridge.js', 'assets/js/surface-switcher.js'];
+const allowedJsFiles = ['assets/js/video-embed.js', 'assets/js/storyblok-bridge.js', 'assets/js/surface-switcher.js', 'assets/js/clipboard-copy.js'];
 
 for (const file of jsFiles) {
   const relPath = path.relative(siteDir, file).replace(/\\/g, '/');
@@ -77,7 +77,7 @@ const htmlFiles = findFiles(siteDir, '.html');
 const forbiddenPatterns = [
   { pattern: /<iframe/i, message: 'Forbidden initial <iframe> embed found (violates zero initial third-party rule)' },
   { pattern: /fonts\.(googleapis|gstatic)\.com/i, message: 'Forbidden external font request found' },
-  { pattern: /<script(?![^>]*src=["']\/assets\/js\/(video-embed|storyblok-bridge|surface-switcher)\.js["'])[^>]*>/i, message: 'Forbidden unauthorized <script> tag found' },
+  { pattern: /<script(?![^>]*src=["']\/assets\/js\/(video-embed|storyblok-bridge|surface-switcher|clipboard-copy)\.js["'])[^>]*>/i, message: 'Forbidden unauthorized <script> tag found' },
   { pattern: /name=["']storyblok-token["']/i, message: 'Forbidden Storyblok API token meta tag found in HTML (security leak)' },
   { pattern: /href=["']javascript:/i, message: 'Forbidden unsafe javascript: URI found in HTML (XSS vector)' }
 ];

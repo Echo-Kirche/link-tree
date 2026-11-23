@@ -88,7 +88,9 @@
             "image_card_horizontal",
             "image_card_vertical",
             "video_link_card",
-            "section_heading"
+            "section_heading",
+            "dropdown_card",
+            "donation_card"
           ]
         },
         "footer": {
@@ -861,7 +863,8 @@
             "image_card_vertical",
             "video_link_card",
             "section_heading",
-            "dropdown_card"
+            "dropdown_card",
+            "donation_card"
           ]
         },
         "show_on": {
@@ -1272,6 +1275,122 @@
               "name": "YouTube",
               "value": "youtube"
             }
+          ]
+        }
+      }
+    },
+    {
+      "name": "donation_card",
+      "display_name": "Donation & IBAN Dropdown Card",
+      "is_root": false,
+      "is_nestable": true,
+      "schema": {
+        "label": {
+          "type": "text",
+          "pos": 0,
+          "required": true,
+          "default_value": "Spenden & Unterstützen"
+        },
+        "icon": {
+          "type": "option",
+          "pos": 1,
+          "options": [
+            { "name": "Heart / Spenden (Default)", "value": "heart" },
+            { "name": "Church", "value": "church" },
+            { "name": "Calendar", "value": "calendar" },
+            { "name": "Video", "value": "video" },
+            { "name": "Users", "value": "users" },
+            { "name": "Location", "value": "location" },
+            { "name": "Link", "value": "link" }
+          ],
+          "default_value": "heart"
+        },
+        "description": {
+          "type": "text",
+          "pos": 2,
+          "default_value": "Deine Spende unterstützt die Vision und gemeinnützige Arbeit von Echo Kirche."
+        },
+        "display_in_default": {
+          "type": "boolean",
+          "pos": 3,
+          "default_value": true,
+          "display_name": "Display on Default Page"
+        },
+        "paypal_label": {
+          "type": "text",
+          "pos": 4,
+          "default_value": "Mit PayPal spenden"
+        },
+        "paypal_url": {
+          "type": "multilink",
+          "pos": 5,
+          "default_value": "https://paypal.me/echokirche"
+        },
+        "iban_link_label": {
+          "type": "text",
+          "pos": 6,
+          "default_value": "Online-Banking öffnen"
+        },
+        "iban_link_url": {
+          "type": "multilink",
+          "pos": 7,
+          "default_value": "https://kirche-echo.de/spenden"
+        },
+        "iban_title": {
+          "type": "text",
+          "pos": 8,
+          "default_value": "Per Banküberweisung (IBAN)"
+        },
+        "account_name": {
+          "type": "text",
+          "pos": 9,
+          "default_value": "Echo Kirche e.V."
+        },
+        "iban": {
+          "type": "text",
+          "pos": 10,
+          "default_value": "DE12 3456 7890 1234 5678 90"
+        },
+        "bic": {
+          "type": "text",
+          "pos": 11,
+          "default_value": "PBNKDEFF"
+        },
+        "bank_name": {
+          "type": "text",
+          "pos": 12,
+          "default_value": "Postbank"
+        },
+        "reference": {
+          "type": "text",
+          "pos": 13,
+          "default_value": "Spende Echo Kirche"
+        },
+        "copy_label": {
+          "type": "text",
+          "pos": 14,
+          "default_value": "IBAN kopieren"
+        },
+        "show_on": {
+          "type": "options",
+          "pos": 15,
+          "options": [
+            { "name": "Default", "value": "default" },
+            { "name": "Gifhorn (gf)", "value": "gifhorn" },
+            { "name": "Wolfsburg (wob)", "value": "wolfsburg" },
+            { "name": "Helmstedt (he)", "value": "helmstedt" },
+            { "name": "Instagram (ig)", "value": "instagram" }
+          ]
+        },
+        "hide_on": {
+          "type": "options",
+          "pos": 16,
+          "options": [
+            { "name": "Default", "value": "default" },
+            { "name": "Gifhorn (gf)", "value": "gifhorn" },
+            { "name": "Wolfsburg (wob)", "value": "wolfsburg" },
+            { "name": "Helmstedt (he)", "value": "helmstedt" },
+            { "name": "Instagram (ig)", "value": "instagram" }
           ]
         }
       }

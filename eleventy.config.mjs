@@ -96,6 +96,8 @@ export default function (eleventyConfig) {
       content_block: 'GroupBlock.njk',
       card_block: 'GroupBlock.njk',
       dropdown_card: 'DropdownCard.njk',
+      donation_card: 'DonationCard.njk',
+      donation_dropdown: 'DonationCard.njk',
     };
     return mapping[componentName] || `${componentName}.njk`;
   });

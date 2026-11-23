@@ -191,7 +191,11 @@ export default async function () {
         details: t.details || '',
         display_in_default: t.displayInDefault ?? t.display_in_default ?? true,
         has_kids: t.hasKids ?? t.has_kids ?? false,
-        kids_label: (t.kidsLabel === 'Echo Kids' || t.kids_label === 'Echo Kids' || t.kidsLabel === 'Echo Kids verfügbar' || t.kids_label === 'Echo Kids verfügbar') ? 'Kinderkirche angeboten' : (t.kidsLabel || t.kids_label || 'Kinderkirche angeboten'),
+        kids_label: (t.kidsLabel && t.kidsLabel !== 'Kinderkirche angeboten' && t.kidsLabel !== 'Echo Kids' && t.kidsLabel !== 'Echo Kids verfügbar')
+          ? t.kidsLabel
+          : (t.kids_label && t.kids_label !== 'Kinderkirche angeboten' && t.kids_label !== 'Echo Kids' && t.kids_label !== 'Echo Kids verfügbar')
+            ? t.kids_label
+            : (t.time && t.time.includes('10:00') ? 'Echo Kids Check-in: 9:30 Uhr' : (t.time && t.time.includes('12:00') ? 'Echo Kids Check-in: 11:30 Uhr' : (t.time && t.time.includes('11:00') ? 'Echo Kids Check-in: 10:30 Uhr' : 'Echo Kids Check-in'))),
         url: t.url || '',
         action_label: t.actionLabel || t.action_label || 'Standort & Infos →',
         show_on: t.showOn || t.show_on || [],
@@ -212,6 +216,29 @@ export default async function () {
         columns: timesList,
         show_on: item.showOn || [],
         hide_on: item.hideOn || [],
+      };
+    }
+    if (item.type === 'donation-card' || item.type === 'donation-dropdown' || item.type === 'donation_card') {
+      return {
+        _uid: item.id,
+        component: 'donation_card',
+        label: item.label,
+        icon: item.icon || 'heart',
+        description: item.description || '',
+        display_in_default: displayInDef,
+        paypal_label: item.paypalLabel || item.paypal_label || 'Mit PayPal spenden',
+        paypal_url: item.paypalUrl || item.paypal_url || 'https://paypal.me/echokirche',
+        iban_link_label: item.ibanLinkLabel || item.iban_link_label || 'Online-Banking öffnen',
+        iban_link_url: item.ibanLinkUrl || item.iban_link_url || 'https://kirche-echo.de/spenden',
+        iban_title: item.ibanTitle || item.iban_title || 'Per Banküberweisung (IBAN)',
+        account_name: item.accountName || item.account_name || 'Echo Kirche e.V.',
+        iban: item.iban || '',
+        bic: item.bic || '',
+        bank_name: item.bankName || item.bank_name || '',
+        reference: item.reference || '',
+        copy_label: item.copyLabel || item.copy_label || 'IBAN kopieren',
+        show_on: item.showOn || item.show_on || [],
+        hide_on: item.hideOn || item.hide_on || [],
       };
     }
     return {

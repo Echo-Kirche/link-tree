@@ -57,14 +57,26 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(indexHtml, /class="dropdown-card__column"/, 'DropdownCard column items must exist');
     assert.match(indexHtml, /class="dropdown-card__column-badge"/, 'DropdownCard column badges must exist');
     assert.match(indexHtml, /class="dropdown-card__kids-badge"/, 'DropdownCard kids badge must exist');
-    assert.match(indexHtml, /dropdown-card__kids-logo|echo-kids\.png/, 'DropdownCard must render Echo Kids logo');
-    assert.match(indexHtml, /Kinderkirche angeboten|Echo Kids verfügbar/, 'DropdownCard must show kids church label');
+    assert.doesNotMatch(indexHtml, /echo-kids\.png/, 'Echo Kids logo must be removed');
+    assert.doesNotMatch(indexHtml, /Kinderkirche angeboten/, 'Kinderkirche angeboten label must be removed');
+    assert.match(indexHtml, /Echo Kids Check-in:\s*9:30\s*Uhr/, 'DropdownCard must show Echo Kids check-in for 10:00 service');
+    assert.match(indexHtml, /Echo Kids Check-in:\s*11:30\s*Uhr/, 'DropdownCard must show Echo Kids check-in for 12:00 service');
+    assert.match(indexHtml, /Echo Kids Check-in:\s*10:30\s*Uhr/, 'DropdownCard must show Echo Kids check-in for 11:00 service');
     assert.match(indexHtml, /BSK-Saal, Schützenplatz 3/, 'DropdownCard must show BSK-Saal venue');
     assert.match(indexHtml, /class="dropdown-card__action-link"/, 'DropdownCard action link must exist');
     assert.match(indexHtml, /Gifhorn \(10:00\)/, 'DropdownCard must include Gifhorn 10:00 card');
     assert.match(indexHtml, /Gifhorn \(12:00\)/, 'DropdownCard must include Gifhorn 12:00 card');
     assert.match(indexHtml, /Wolfsburg/, 'DropdownCard default must include Wolfsburg');
     assert.match(indexHtml, /Helmstedt/, 'DropdownCard default must include Helmstedt');
+  });
+
+  test('DonationCard component renders accessible drawer with PayPal and IBAN copy', () => {
+    assert.match(indexHtml, /<details class="donation-card"/, 'DonationCard must use semantic <details>');
+    assert.match(indexHtml, /class="donation-card__summary link-button/, 'DonationCard summary must be styled as link-button');
+    assert.match(indexHtml, /class="donation-card__chevron"/, 'DonationCard must have chevron indicator');
+    assert.match(indexHtml, /class="donation-card__btn donation-card__btn--paypal"/, 'DonationCard must render PayPal action button');
+    assert.match(indexHtml, /class="donation-card__bank-details"/, 'DonationCard must render bank details definition list');
+    assert.match(indexHtml, /data-copy-iban=/, 'DonationCard must render copy button with data-copy-iban attribute');
   });
 
   test('ImageCardHorizontal & ImageCardVertical render media cards with aspect ratios and arrows', () => {

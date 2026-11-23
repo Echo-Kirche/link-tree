@@ -37,7 +37,6 @@ Every contribution MUST honor these five foundational invariants:
 - **Content Filtering Only**: Surfaces and campus switches filter content visibility only; they never alter brand styling, button action fills, or typography tokens.
 - **Brand Logos & Media Assets Location**: All verified brand assets, official logos, and campus photography are self-hosted in [`src/assets/images/`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/):
   - Primary Logo: [`src/assets/images/logo.svg`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/logo.svg) (Dark teal geometric mark, default avatar).
-  - Echo Kids Sub-brand Logo: [`src/assets/images/echo-kids.png`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/echo-kids.png).
   - Web Favicon: [`src/assets/images/favicon.webp`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/favicon.webp).
   - Avatar Placeholder: [`src/assets/images/avatar.svg`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/avatar.svg).
   - Campus & Banner Photography: `src/assets/images/echo-home-gifhorn-1024x682.webp`, `src/assets/images/echo-home-helmstedt-803x1024.webp`, `src/assets/images/echo-home-wolfsburg-1024x666.webp`, `src/assets/images/es26-hero-1-1536x864.webp`.

@@ -40,11 +40,8 @@
             <span class="dropdown-card__column-badge">{{ col.time }}</span>
             {% if col.hasKids or col.has_kids or col.kids %}
             {% set kLabel = col.kidsLabel or col.kids_label %}
-            {% set cleanKidsLabel = 'Kinderkirche angeboten' if (not kLabel or kLabel == 'Echo Kids' or kLabel == 'Echo Kids verfügbar') else kLabel %}
-            <span class="dropdown-card__kids-badge" aria-label="{{ cleanKidsLabel }}">
-              <img class="dropdown-card__kids-logo" src="/assets/images/echo-kids.png" alt="Echo Kids" width="39" height="14" loading="lazy">
-              <span>{{ cleanKidsLabel }}</span>
-            </span>
+            {% set cleanKidsLabel = kLabel if (kLabel and kLabel != 'Kinderkirche angeboten' and kLabel != 'Echo Kids' and kLabel != 'Echo Kids verfügbar') else (('Echo Kids Check-in: 9:30 Uhr' if '10:00' in (col.time or '') else ('Echo Kids Check-in: 11:30 Uhr' if '12:00' in (col.time or '') else ('Echo Kids Check-in: 10:30 Uhr' if '11:00' in (col.time or '') else 'Echo Kids Check-in')))) %}
+            <span class="dropdown-card__kids-badge">{{ cleanKidsLabel }}</span>
             {% endif %}
           </div>
           {% if col.details %}
@@ -73,11 +70,8 @@
             <span class="dropdown-card__time-badge">{{ timeItem.time }}</span>
             {% if timeItem.hasKids or timeItem.has_kids or timeItem.kids %}
             {% set kLabel = timeItem.kidsLabel or timeItem.kids_label %}
-            {% set cleanKidsLabel = 'Kinderkirche angeboten' if (not kLabel or kLabel == 'Echo Kids' or kLabel == 'Echo Kids verfügbar') else kLabel %}
-            <span class="dropdown-card__kids-badge" aria-label="{{ cleanKidsLabel }}">
-              <img class="dropdown-card__kids-logo" src="/assets/images/echo-kids.png" alt="Echo Kids" width="39" height="14" loading="lazy">
-              <span>{{ cleanKidsLabel }}</span>
-            </span>
+            {% set cleanKidsLabel = kLabel if (kLabel and kLabel != 'Kinderkirche angeboten' and kLabel != 'Echo Kids' and kLabel != 'Echo Kids verfügbar') else (('Echo Kids Check-in: 9:30 Uhr' if '10:00' in (timeItem.time or '') else ('Echo Kids Check-in: 11:30 Uhr' if '12:00' in (timeItem.time or '') else ('Echo Kids Check-in: 10:30 Uhr' if '11:00' in (timeItem.time or '') else 'Echo Kids Check-in')))) %}
+            <span class="dropdown-card__kids-badge">{{ cleanKidsLabel }}</span>
             {% endif %}
           </div>
         </li>

@@ -56,7 +56,7 @@
           "details": "Unsere Gottesdienste finden jeden Sonntag um 10:00 und 12:00 Uhr nebenan im BSK-Saal, Schützenplatz 3 statt.",
           "displayInDefault": true,
           "hasKids": true,
-          "kidsLabel": "Kinderkirche angeboten",
+          "kidsLabel": "Echo Kids Check-in: 9:30 Uhr",
           "url": "https://example.com/gf",
           "actionLabel": "Standort Gifhorn →"
         },
@@ -67,7 +67,7 @@
           "details": "Unsere Gottesdienste finden jeden Sonntag um 10:00 und 12:00 Uhr nebenan im BSK-Saal, Schützenplatz 3 statt.",
           "displayInDefault": true,
           "hasKids": true,
-          "kidsLabel": "Kinderkirche angeboten",
+          "kidsLabel": "Echo Kids Check-in: 11:30 Uhr",
           "url": "https://example.com/gf",
           "actionLabel": "Standort Gifhorn →"
         },
@@ -78,7 +78,7 @@
           "details": "Gottesdienst & Community",
           "displayInDefault": true,
           "hasKids": true,
-          "kidsLabel": "Kinderkirche angeboten",
+          "kidsLabel": "Echo Kids Check-in: 10:30 Uhr",
           "url": "https://example.com/wob",
           "actionLabel": "Standort Wolfsburg →"
         },
@@ -89,13 +89,31 @@
           "details": "Gottesdienst & Gemeinschaft",
           "displayInDefault": true,
           "hasKids": false,
-          "kidsLabel": "Kinderkirche angeboten",
+          "kidsLabel": "",
           "url": "https://example.com/he",
           "actionLabel": "Standort Helmstedt →"
         }
       ],
       "url": "https://example.com/times",
       "actionLabel": "Alle Standorte & Livestream ansehen →"
+    },
+    {
+      "id": "donate-support",
+      "type": "donation-card",
+      "label": "Spenden & Unterstützen",
+      "icon": "heart",
+      "displayInDefault": true,
+      "description": "Deine Spende unterstützt unsere Arbeit vor Ort.",
+      "paypalLabel": "Mit PayPal spenden",
+      "paypalUrl": "https://paypal.me/example",
+      "ibanLinkLabel": "Online-Banking öffnen",
+      "ibanLinkUrl": "https://example.com/donate",
+      "ibanTitle": "Per Banküberweisung (IBAN)",
+      "accountName": "Echo Kirche e.V.",
+      "iban": "DE12 3456 7890 1234 5678 90",
+      "bic": "PBNKDEFF",
+      "bankName": "Postbank",
+      "copyLabel": "IBAN kopieren"
     }
   ]
 }

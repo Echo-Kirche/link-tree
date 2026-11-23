@@ -103,7 +103,7 @@
           "details": "Unsere Gottesdienste finden jeden Sonntag um 10:00 und 12:00 Uhr nebenan im BSK-Saal, Schützenplatz 3 statt.",
           "displayInDefault": true,
           "hasKids": true,
-          "kidsLabel": "Kinderkirche angeboten",
+          "kidsLabel": "Echo Kids Check-in: 9:30 Uhr",
           "url": "https://kirche-echo.de/gifhorn",
           "actionLabel": "Standort Gifhorn →",
           "showOn": [
@@ -118,7 +118,7 @@
           "details": "Unsere Gottesdienste finden jeden Sonntag um 10:00 und 12:00 Uhr nebenan im BSK-Saal, Schützenplatz 3 statt.",
           "displayInDefault": true,
           "hasKids": true,
-          "kidsLabel": "Kinderkirche angeboten",
+          "kidsLabel": "Echo Kids Check-in: 11:30 Uhr",
           "url": "https://kirche-echo.de/gifhorn",
           "actionLabel": "Standort Gifhorn →",
           "showOn": [
@@ -133,7 +133,7 @@
           "details": "Gottesdienst & Community",
           "displayInDefault": true,
           "hasKids": true,
-          "kidsLabel": "Kinderkirche angeboten",
+          "kidsLabel": "Echo Kids Check-in: 10:30 Uhr",
           "url": "https://kirche-echo.de/wolfsburg",
           "actionLabel": "Standort Wolfsburg →",
           "showOn": [
@@ -148,7 +148,7 @@
           "details": "Gottesdienst & Gemeinschaft",
           "displayInDefault": true,
           "hasKids": false,
-          "kidsLabel": "Kinderkirche angeboten",
+          "kidsLabel": "",
           "url": "https://kirche-echo.de/helmstedt",
           "actionLabel": "Standort Helmstedt →",
           "showOn": [
@@ -192,11 +192,22 @@
     },
     {
       "id": "donate-support",
-      "type": "link",
+      "type": "donation-card",
       "label": "Spenden & Unterstützen",
-      "url": "https://kirche-echo.de",
+      "icon": "heart",
       "displayInDefault": true,
-      "icon": "heart"
+      "description": "Deine Spende unterstützt die gemeinnützige Arbeit und Vision von Echo Kirche in Gifhorn, Wolfsburg und Helmstedt.",
+      "paypalLabel": "Mit PayPal spenden",
+      "paypalUrl": "https://paypal.me/echokirche",
+      "ibanLinkLabel": "Online-Banking öffnen",
+      "ibanLinkUrl": "https://kirche-echo.de/spenden",
+      "ibanTitle": "Per Banküberweisung (IBAN)",
+      "accountName": "Echo Kirche e.V.",
+      "iban": "DE12 3456 7890 1234 5678 90",
+      "bic": "PBNKDEFF",
+      "bankName": "Postbank",
+      "reference": "Spende Echo Kirche",
+      "copyLabel": "IBAN kopieren"
     },
     {
       "id": "location-directions",

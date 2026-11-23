@@ -102,7 +102,8 @@
         { "$ref": "#/$defs/imageHorizontal" },
         { "$ref": "#/$defs/imageVertical" },
         { "$ref": "#/$defs/videoLink" },
-        { "$ref": "#/$defs/dropdownCard" }
+        { "$ref": "#/$defs/dropdownCard" },
+        { "$ref": "#/$defs/donationCard" }
       ]
     },
     "base": {
@@ -269,6 +270,40 @@
           "type": "array",
           "items": { "$ref": "#/$defs/dropdownItem" }
         },
+        "showOn": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/surface" }
+        },
+        "hideOn": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/surface" }
+        }
+      }
+    },
+    "donationCard": {
+      "type": "object",
+      "required": ["id", "type", "label"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+        "type": { "enum": ["donation-card", "donation-dropdown"] },
+        "label": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "icon": { "type": "string", "maxLength": 60 },
+        "description": { "type": "string", "maxLength": 300 },
+        "paypalLabel": { "type": "string", "maxLength": 100 },
+        "paypalUrl": { "$ref": "#/$defs/safeUrl" },
+        "ibanLinkLabel": { "type": "string", "maxLength": 100 },
+        "ibanLinkUrl": { "$ref": "#/$defs/safeUrl" },
+        "ibanTitle": { "type": "string", "maxLength": 100 },
+        "accountName": { "type": "string", "maxLength": 150 },
+        "iban": { "type": "string", "maxLength": 50 },
+        "bic": { "type": "string", "maxLength": 30 },
+        "bankName": { "type": "string", "maxLength": 100 },
+        "reference": { "type": "string", "maxLength": 150 },
+        "copyLabel": { "type": "string", "maxLength": 80 },
+        "displayInDefault": { "type": "boolean" },
         "showOn": {
           "type": "array",
           "uniqueItems": true,

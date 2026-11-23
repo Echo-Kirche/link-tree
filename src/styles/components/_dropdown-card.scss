@@ -130,7 +130,7 @@
   &__column-badges,
   &__time-badges {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 0.35rem;
@@ -156,7 +156,7 @@
   &__kids-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    justify-content: center;
     padding: 0.2rem 0.5rem;
     font-size: 0.725rem;
     font-weight: 600;
@@ -165,25 +165,7 @@
     border: 1px solid var(--color-kids-badge-border, var(--color-border));
     border-radius: var(--radius-control);
     line-height: 1.2;
-    white-space: nowrap;
-
-    .dropdown-card__kids-logo,
-    img {
-      height: 14px;
-      width: auto;
-      max-width: 44px;
-      object-fit: contain;
-      display: inline-block;
-      vertical-align: middle;
-      flex-shrink: 0;
-    }
-
-    svg {
-      flex-shrink: 0;
-      width: 11px;
-      height: 11px;
-      fill: currentColor;
-    }
+    text-align: center;
   }
 
   &__column-details {

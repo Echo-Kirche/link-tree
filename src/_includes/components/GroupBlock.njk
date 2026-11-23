@@ -32,6 +32,9 @@
       {% elif subItem.component == "dropdown_card" or subItem.type == "dropdown-card" %}
         {% set item = subItem %}
         {% include "components/DropdownCard.njk" %}
+      {% elif subItem.component == "donation_card" or subItem.component == "donation_dropdown" or subItem.type == "donation-card" or subItem.type == "donation-dropdown" %}
+        {% set item = subItem %}
+        {% include "components/DonationCard.njk" %}
       {% endif %}
     </li>
     {% endfor %}

@@ -77,7 +77,6 @@ All official visual assets, brand marks, and photography are self-hosted in [`sr
 | Asset / File | Production Path | Format | Role / Usage | Dimensions / Ratio |
 | :--- | :--- | :--- | :--- | :--- |
 | **Primary Logo** | [`/assets/images/logo.svg`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/logo.svg) | SVG | Primary geometric symbol / mark of Echo Kirche. Default header avatar and official branding. | Scalable vector (`100x100` viewBox) |
-| **Echo Kids Logo** | [`/assets/images/echo-kids.png`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/echo-kids.png) | PNG | Official sub-brand logo for Echo Kids children's ministry and family services. | `645x387` (transparent) |
 | **Site Favicon** | [`/assets/images/favicon.webp`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/favicon.webp) | WebP | Browser tab icon and PWA touch icon. | `150x150` square |
 | **Avatar Fallback** | [`/assets/images/avatar.svg`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/avatar.svg) | SVG | Generic profile silhouette avatar placeholder. | `160x160` circle |
 | **Gifhorn Hero** | [`/assets/images/echo-home-gifhorn-1024x682.webp`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/echo-home-gifhorn-1024x682.webp) | WebP | Campus hero photography for Gifhorn (`/gf`, `/gifhorn`). | `1024x682` (`3:2`) |
