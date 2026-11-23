@@ -72,6 +72,22 @@
       box-shadow: var(--ek-shadow-md, 0 12px 40px rgba(8, 65, 92, 0.12));
     }
   }
+
+  // Floating accessibility button (visible on all pages at bottom-right)
+  &--floating {
+    position: fixed;
+    bottom: var(--space-md, 1rem);
+    right: var(--space-md, 1rem);
+    z-index: 990;
+    border-radius: var(--primitive-radius-pill, 999px);
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    box-shadow: var(--ek-shadow-md, 0 12px 40px rgba(8, 65, 92, 0.16));
+
+    &:hover {
+      background-color: var(--color-action-bg-hover);
+    }
+  }
 }
 
 .a11y-button__icon {

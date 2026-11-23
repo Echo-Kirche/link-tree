@@ -192,6 +192,7 @@ describe('Component State Changes & CSS Verification', () => {
     assert.match(css, /\.a11y-button\{[^}]*background-color:[^;]+;[^}]*color:/, 'A11yButton must declare paired background and color');
     assert.match(css, /\.a11y-button--secondary\{[^}]*background-color:[^;]+;[^}]*color:/, 'A11yButton secondary must declare paired background and color');
     assert.match(css, /\.a11y-button--surface\{[^}]*background-color:[^;]+;[^}]*color:/, 'A11yButton surface must declare paired background and color');
+    assert.match(css, /\.a11y-button--floating\{[^}]*background-color:[^;]+;[^}]*color:/, 'A11yButton floating must declare paired background and color');
   });
 
   test('Rule 2.2: Semantic Naming Structure declares mandatory on-[surface] tokens across themes', () => {

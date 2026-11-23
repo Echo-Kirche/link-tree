@@ -28,6 +28,7 @@ describe('Component Markup & Accessibility Contracts', () => {
 
   test('A11yButton component renders accessible markup, states, and icon', () => {
     assert.match(indexHtml, /<a href="#content"[^>]*class="a11y-button a11y-button--skip"/, 'Skip link must exist on default page targeting #content');
+    assert.match(indexHtml, /class="a11y-button a11y-button--floating"/, 'Floating a11y button must exist on default page');
     assert.match(indexHtml, /class="a11y-button__icon"[^>]*aria-hidden="true"/, 'A11y button icon must be aria-hidden');
     assert.match(indexHtml, /class="a11y-button__label"/, 'A11y button label wrapper must exist');
     assert.match(indexHtml, /Zum Hauptinhalt springen/, 'Skip link must have accessible label');
