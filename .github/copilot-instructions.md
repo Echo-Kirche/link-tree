@@ -2,7 +2,7 @@
 
 You are assisting on the **Echo Kirche** static website and link-in-bio platform.
 
-> **RULE OF PRECEDENCE**: [`link-tree/AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for all architectural rules, DO/DO NOT constraints, privacy guardrails, and coding conventions.
+> **RULE OF PRECEDENCE**: [`link-tree/AGENTS.md`](../AGENTS.md) is the authoritative Single Source of Truth for all architectural rules, DO/DO NOT constraints, privacy guardrails, and coding conventions.
 
 ---
 

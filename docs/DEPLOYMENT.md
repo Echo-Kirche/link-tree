@@ -2,7 +2,7 @@
 
 This document details the production build pipeline, deployment contracts, hosting configurations (Netlify and Cloudflare Pages), security headers, and webhook automation for `link-tree`.
 
-> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for architectural rules and coding standards.
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](../AGENTS.md) is the authoritative Single Source of Truth for architectural rules and coding standards.
 
 ---
 
@@ -45,7 +45,7 @@ All canonical campus and channel pages are generated within a **single build exe
 
 ## 3. Netlify Configuration
 
-Netlify is the primary hosting platform, configured via [`netlify.toml`](file:///Users/Shared/projeckt/goto/link-tree/netlify.toml) and [`_headers`](file:///Users/Shared/projeckt/goto/link-tree/_headers).
+Netlify is the primary hosting platform, configured via [`netlify.toml`](../netlify.toml) and [`_headers`](../_headers).
 
 ### 3.1 Content Rebuilds via Storyblok Webhooks
 Content editors do **not** need to redeploy code to update content. Automatic rebuilding is configured via webhooks:

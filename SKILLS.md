@@ -2,7 +2,7 @@
 
 This document provides step-by-step procedural playbooks for common engineering tasks in the `link-tree` repository.
 
-> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for architectural rules, DO/DO NOT constraints, privacy guardrails, and coding conventions. All procedures below must strictly adhere to `AGENTS.md`.
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](./AGENTS.md) is the authoritative Single Source of Truth for architectural rules, DO/DO NOT constraints, privacy guardrails, and coding conventions. All procedures below must strictly adhere to `AGENTS.md`.
 
 ---
 
@@ -95,7 +95,7 @@ This document provides step-by-step procedural playbooks for common engineering 
 2. Ensure strict types, regex patterns, and `additionalProperties: false` where appropriate.
 3. Update `src/_data/site.json` and `examples/content.json` to reflect new valid configurations.
 4. Run `npm run validate` to test validation with Ajv.
-5. Update [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md) to document the schema changes.
+5. Update [`docs/CONTENT-MODEL.md`](./docs/CONTENT-MODEL.md) to document the schema changes.
 
 ---
 
@@ -114,7 +114,7 @@ This document provides step-by-step procedural playbooks for common engineering 
 2. Add the snake_case to Nunjucks component mapping in `eleventy.config.mjs`.
 3. Update `src/_data/storyblok.js` to map CMS payload fields to template contracts with fallback values.
 4. Support the Storyblok Visual Editor `_editable` attribute using the `storyblokEditable` filter.
-5. Update [`docs/STORYBLOK.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STORYBLOK.md) in English and German.
+5. Update [`docs/STORYBLOK.md`](./docs/STORYBLOK.md) in English and German.
 6. Push schemas using `npx storyblok push-components storyblok/components.json --space <SPACE_ID>`.
 
 ---
@@ -178,8 +178,8 @@ This document provides step-by-step procedural playbooks for common engineering 
 1. **Initial Load Zero-Origin Check**: The production page must make zero third-party connections on initial visit.
 2. **2-Click YouTube Facade**: YouTube embeds must use `video-embed.js` (< 1.5 KB) and load `https://www.youtube-nocookie.com` only after an explicit click.
 3. If an external origin is legitimately required:
-   - Verify compliance with [`docs/LEGAL-PRIVACY-DE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md).
-   - Document origin, purpose, data sent, and consent mechanism in [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md).
+   - Verify compliance with [`docs/LEGAL-PRIVACY-DE.md`](./docs/LEGAL-PRIVACY-DE.md).
+   - Document origin, purpose, data sent, and consent mechanism in [`docs/PRIVACY-DEPENDENCIES.md`](./docs/PRIVACY-DEPENDENCIES.md).
    - Update CSP in `netlify.toml` and `_headers`.
 4. Run `node scripts/verify-build.mjs` to ensure the privacy scan passes.
 

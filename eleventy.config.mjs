@@ -109,6 +109,19 @@ export default function (eleventyConfig) {
     return match ? match[1] : '';
   });
 
+  // Production HTML minification transform (zero runtime bloat, pre-rendered static compression)
+  eleventyConfig.addTransform('htmlmin', function (content) {
+    const path = this.page?.outputPath || '';
+    if (path.endsWith('.html')) {
+      return content
+        .replace(/<!--(?!\s*#(?:storyblok|\[if))[\s\S]*?-->/g, '')
+        .replace(/>\s+<(?!\/pre|\/code|\/textarea)/g, '><')
+        .replace(/[ \t]{2,}/g, ' ')
+        .trim();
+    }
+    return content;
+  });
+
   return {
     dir: {
       input: 'src/content',

@@ -2,7 +2,7 @@
 
 This document provides operational guidance for Google Antigravity agents working in the `link-tree` repository.
 
-> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for all architectural rules, "DO / DO NOT" constraints, privacy guardrails, and coding conventions. This document specifies tool workflows and execution protocols for Antigravity.
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](./AGENTS.md) is the authoritative Single Source of Truth for all architectural rules, "DO / DO NOT" constraints, privacy guardrails, and coding conventions. This document specifies tool workflows and execution protocols for Antigravity.
 
 ---
 
@@ -26,13 +26,13 @@ flowchart TD
 
 ### Step 1: Pre-Flight Document Check
 Before modifying any files:
-1. Review [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) for non-negotiable invariants.
+1. Review [`AGENTS.md`](./AGENTS.md) for non-negotiable invariants.
 2. Read the domain-specific documentation file:
-   - Components & Schemas: [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md) and [`docs/STORYBLOK.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STORYBLOK.md)
-   - Design System & Tokens: [`docs/STYLEGUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md)
-   - Routing & Architecture: [`docs/ARCHITECTURE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/ARCHITECTURE.md)
-   - Privacy & Embeds: [`docs/LEGAL-PRIVACY-DE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md) and [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md)
-   - Deployment & Caching: [`docs/DEPLOYMENT.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/DEPLOYMENT.md)
+   - Components & Schemas: [`docs/CONTENT-MODEL.md`](./docs/CONTENT-MODEL.md) and [`docs/STORYBLOK.md`](./docs/STORYBLOK.md)
+   - Design System & Tokens: [`docs/STYLEGUIDE.md`](./docs/STYLEGUIDE.md)
+   - Routing & Architecture: [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
+   - Privacy & Embeds: [`docs/LEGAL-PRIVACY-DE.md`](./docs/LEGAL-PRIVACY-DE.md) and [`docs/PRIVACY-DEPENDENCIES.md`](./docs/PRIVACY-DEPENDENCIES.md)
+   - Deployment & Caching: [`docs/DEPLOYMENT.md`](./docs/DEPLOYMENT.md)
 
 ### Step 2: Planning Mode & User Approval
 - For non-trivial modifications (new components, schema migrations, routing changes, architectural adjustments), create or update `implementation_plan.md` in the artifact directory before modifying code.
@@ -66,9 +66,9 @@ npm test
 ```
 
 ### Step 5: Post-Flight Documentation Sync
-- If a component schema changed, update [`storyblok/components.json`](file:///Users/Shared/projeckt/goto/link-tree/storyblok/components.json), [`content.schema.json`](file:///Users/Shared/projeckt/goto/link-tree/content.schema.json), and [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md).
-- If a style token changed, update `src/styles/tokens/` and [`docs/STYLEGUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md).
-- If an external network origin was introduced, update [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md).
+- If a component schema changed, update [`storyblok/components.json`](./storyblok/components.json), [`content.schema.json`](./content.schema.json), and [`docs/CONTENT-MODEL.md`](./docs/CONTENT-MODEL.md).
+- If a style token changed, update `src/styles/tokens/` and [`docs/STYLEGUIDE.md`](./docs/STYLEGUIDE.md).
+- If an external network origin was introduced, update [`docs/PRIVACY-DEPENDENCIES.md`](./docs/PRIVACY-DEPENDENCIES.md).
 - Create or update `walkthrough.md` to document changes and test verification results.
 
 ---

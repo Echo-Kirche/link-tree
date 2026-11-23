@@ -2,7 +2,7 @@
 
 This document provides technical engineering guidance for complying with German and EU digital regulations (DDG, DSGVO, TTDSG/TDDDG). This is engineering documentation, not legal counsel.
 
-> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for architectural rules and coding standards.
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](../AGENTS.md) is the authoritative Single Source of Truth for architectural rules and coding standards.
 
 ---
 
@@ -59,6 +59,6 @@ To allow church video content without violating GDPR data transfer rules, the si
 
 ## 5. Third-Party Dependency Ledger
 
-Every external network origin contacted by the production site must be cataloged in [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md).
+Every external network origin contacted by the production site must be cataloged in [`docs/PRIVACY-DEPENDENCIES.md`](./PRIVACY-DEPENDENCIES.md).
 - Initial Page Load: **Zero third-party origins**.
 - Post-Consent / User-Action: `https://www.youtube-nocookie.com` (video playback only).

@@ -2,8 +2,6 @@
 
 A high-performance, static-first, privacy-compliant link-in-bio website with Storyblok headless CMS visual editing, multi-location surface routing, and pure-CSS responsive components.
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/your-badge/deploy-status)](https://app.netlify.com)
-
 ---
 
 ## Quick Start: Git & AI Agent Setup
@@ -74,21 +72,21 @@ Read AGENTS.md and docs/STYLEGUIDE.md to internalize all architectural rules, th
 
 | File Path | Target Audience / Purpose | Authoritative Scope |
 | :--- | :--- | :--- |
-| [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) | **All AI Agents & Developers** | **Single Source of Truth** for strict architectural rules, non-negotiable DO/DO NOT constraints, static-site locks, schema locks, privacy rules, BEM CSS, Conventional Commits, and pre/post-flight checks. |
-| [`README.md`](file:///Users/Shared/projeckt/goto/link-tree/README.md) *(This file)* | **Developers & Contributors** | Primary project overview, architecture diagram, master documentation index, build commands, and testing guidelines. |
-| [`ANTIGRAVITY.md`](file:///Users/Shared/projeckt/goto/link-tree/ANTIGRAVITY.md) | **Antigravity AI Agent** | Tool-specific operational workflows, pre-flight verification, testing commands, and artifact protocols for Antigravity. |
-| [`CLAUDE.md`](file:///Users/Shared/projeckt/goto/link-tree/CLAUDE.md) | **Claude Code Agents** | Tool-specific operational guidelines, verification steps, and quick references for Claude Code. |
-| [`.cursorrules`](file:///Users/Shared/projeckt/goto/link-tree/.cursorrules) | **Cursor IDE & AI Tools** | Cursor prompt configuration enforcing BEM, styleguide, and static-first architecture. |
-| [`.github/copilot-instructions.md`](file:///Users/Shared/projeckt/goto/link-tree/.github/copilot-instructions.md) | **GitHub Copilot** | Copilot code completion and workspace directives. |
-| [`SKILLS.md`](file:///Users/Shared/projeckt/goto/link-tree/SKILLS.md) | **All Agents (Task Library)** | Reusable procedural recipes for 10 discrete engineering tasks (adding components, updating schemas, privacy reviews). |
-| [`STORYBLOK-STARTER-GUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/STORYBLOK-STARTER-GUIDE.md) | **Human Content Editors & Onboarding** | Step-by-step onboarding guide for church staff to create a free Storyblok space, generate API tokens, and configure the Surfaces datasource. |
-| [`docs/ARCHITECTURE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/ARCHITECTURE.md) | **Technical Architects & Engineers** | Deep technical architecture blueprint, Eleventy pipeline, data flow, CSP headers, and bundle budget breakdown. |
-| [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md) | **Engineers & CMS Integrators** | Complete production content model specification for both Storyblok blok schemas and local `content.schema.json`. |
-| [`docs/DEPLOYMENT.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/DEPLOYMENT.md) | **DevOps & Release Engineers** | Production hosting contracts, Netlify build hooks, webhook publishing, and static cache policies. |
-| [`docs/LEGAL-PRIVACY-DE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md) | **Legal & Privacy Compliance** | German/EU regulatory compliance (DDG §5 Impressum, DSGVO Datenschutz, zero cookies, 2-click consent). |
-| [`docs/PRIVACY-DEPENDENCIES.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/PRIVACY-DEPENDENCIES.md) | **Security & Privacy Auditing** | Ledger of all permitted third-party network origins (initial load: none; on-click: YouTube privacy mode). |
-| [`docs/STORYBLOK.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STORYBLOK.md) | **Content Editors & Developers** | Complete bilingual (English & Einfaches Deutsch) reference for all 12 Storyblok components and visual editing bridge. |
-| [`docs/STYLEGUIDE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STYLEGUIDE.md) | **UI/UX Designers & Frontend Devs** | Echo Kirche design tokens, type scale, color invariants, logo clear space, media budgets, and BEM standards. |
+| [`AGENTS.md`](./AGENTS.md) | **All AI Agents & Developers** | **Single Source of Truth** for strict architectural rules, non-negotiable DO/DO NOT constraints, static-site locks, schema locks, privacy rules, BEM CSS, Conventional Commits, and pre/post-flight checks. |
+| [`README.md`](./README.md) *(This file)* | **Developers & Contributors** | Primary project overview, architecture diagram, master documentation index, build commands, and testing guidelines. |
+| [`ANTIGRAVITY.md`](./ANTIGRAVITY.md) | **Antigravity AI Agent** | Tool-specific operational workflows, pre-flight verification, testing commands, and artifact protocols for Antigravity. |
+| [`CLAUDE.md`](./CLAUDE.md) | **Claude Code Agents** | Tool-specific operational guidelines, verification steps, and quick references for Claude Code. |
+| [`.cursorrules`](.cursorrules) | **Cursor IDE & AI Tools** | Cursor prompt configuration enforcing BEM, styleguide, and static-first architecture. |
+| [`.github/copilot-instructions.md`](.github/copilot-instructions.md) | **GitHub Copilot** | Copilot code completion and workspace directives. |
+| [`SKILLS.md`](./SKILLS.md) | **All Agents (Task Library)** | Reusable procedural recipes for 10 discrete engineering tasks (adding components, updating schemas, privacy reviews). |
+| [`STORYBLOK-STARTER-GUIDE.md`](./STORYBLOK-STARTER-GUIDE.md) | **Human Content Editors & Onboarding** | Step-by-step onboarding guide for church staff to create a free Storyblok space, generate API tokens, and configure the Surfaces datasource. |
+| [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) | **Technical Architects & Engineers** | Deep technical architecture blueprint, Eleventy pipeline, data flow, CSP headers, and bundle budget breakdown. |
+| [`docs/CONTENT-MODEL.md`](./docs/CONTENT-MODEL.md) | **Engineers & CMS Integrators** | Complete production content model specification for both Storyblok blok schemas and local `content.schema.json`. |
+| [`docs/DEPLOYMENT.md`](./docs/DEPLOYMENT.md) | **DevOps & Release Engineers** | Production hosting contracts, Netlify build hooks, webhook publishing, and static cache policies. |
+| [`docs/LEGAL-PRIVACY-DE.md`](./docs/LEGAL-PRIVACY-DE.md) | **Legal & Privacy Compliance** | German/EU regulatory compliance (DDG §5 Impressum, DSGVO Datenschutz, zero cookies, 2-click consent). |
+| [`docs/PRIVACY-DEPENDENCIES.md`](./docs/PRIVACY-DEPENDENCIES.md) | **Security & Privacy Auditing** | Ledger of all permitted third-party network origins (initial load: none; on-click: YouTube privacy mode). |
+| [`docs/STORYBLOK.md`](./docs/STORYBLOK.md) | **Content Editors & Developers** | Complete bilingual (English & Einfaches Deutsch) reference for all 12 Storyblok components and visual editing bridge. |
+| [`docs/STYLEGUIDE.md`](./docs/STYLEGUIDE.md) | **UI/UX Designers & Frontend Devs** | Echo Kirche design tokens, type scale, color invariants, logo clear space, media budgets, and BEM standards. |
 
 ---
 

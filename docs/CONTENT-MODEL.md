@@ -2,7 +2,7 @@
 
 This document specifies the authoritative production content model for the `link-tree` static site, detailing both the **Storyblok CMS Blok Schemas** (`storyblok/components.json`) and the **Local Fallback JSON Schema** (`content.schema.json`).
 
-> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for architectural rules and coding standards.
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](../AGENTS.md) is the authoritative Single Source of Truth for architectural rules and coding standards.
 
 ---
 

@@ -2,7 +2,7 @@
   {% set avatarSrc = profile.avatar.filename if (profile.avatar and profile.avatar.filename) else profile.avatar %}
   {% if avatarSrc %}
   <div class="profile-header__avatar-wrapper">
-    <img class="profile-header__avatar" src="{{ avatarSrc }}" alt="" width="96" height="96" loading="eager" />
+    <img class="profile-header__avatar" src="{{ avatarSrc }}" alt="" width="96" height="96" loading="eager" fetchpriority="high" decoding="async" />
   </div>
   {% endif %}
   <h1 class="profile-header__name">

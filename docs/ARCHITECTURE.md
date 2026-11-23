@@ -9,7 +9,7 @@
 4. **Dual-tier content curation**: Granular control via `displayInDefault` / `display_in_default` (curating the default landing page independently) alongside `showOn` / `hideOn` surface filtering.
 5. **Headless Storyblok integration**: Live in-browser visual editing via Storyblok's Visual Editor bridge during preview, paired with an offline JSON fallback (`src/_data/site.json`) and Storyblok CLI component synchronization.
 
-> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for all architectural rules, DO/DO NOT constraints, and quality standards.
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](../AGENTS.md) is the authoritative Single Source of Truth for all architectural rules, DO/DO NOT constraints, and quality standards.
 
 ---
 
@@ -81,7 +81,7 @@ flowchart TD
 
 ## 4. Component Hierarchy & Primitives
 
-All 12 components are declared in [`storyblok/components.json`](file:///Users/Shared/projeckt/goto/link-tree/storyblok/components.json), documented in [`docs/CONTENT-MODEL.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/CONTENT-MODEL.md), and implemented in `src/_includes/components/`:
+All 12 components are declared in [`storyblok/components.json`](../storyblok/components.json), documented in [`docs/CONTENT-MODEL.md`](./CONTENT-MODEL.md), and implemented in `src/_includes/components/`:
 
 ```
 link_page (Root Page)

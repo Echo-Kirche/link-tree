@@ -33,6 +33,15 @@
       else location.href = '/';
       return;
     }
+
+    if ((isPreview || (typeof window !== 'undefined' && window.__TEST_STORYBLOK_BRIDGE__)) && typeof document !== 'undefined' && typeof document.createElement === 'function') {
+      const sb = document.createElement('script');
+      sb.src = '/assets/js/storyblok-bridge.js';
+      sb.defer = true;
+      if (document.body && typeof document.body.appendChild === 'function') {
+        document.body.appendChild(sb);
+      }
+    }
   }
 
   const getS = () => {
@@ -188,7 +197,6 @@
   window.applyContrast = applyContrast;
 
   const init = () => {
-    $id('page-loader')?.classList.add('is-hidden');
     $$('.surface-switcher__btn[data-switch-value], [data-theme-value]').forEach((b) => {
       b.addEventListener('click', (e) => {
         e.preventDefault();

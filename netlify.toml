@@ -93,6 +93,12 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Client JavaScript scripts (revalidated to prevent stale code caching)
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 # Static images, icons, and client assets
 [[headers]]
   for = "/assets/*"

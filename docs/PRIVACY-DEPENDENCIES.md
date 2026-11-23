@@ -2,7 +2,7 @@
 
 This document catalogs all external network origins permitted in production for the `link-tree` static site.
 
-> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for architectural rules, privacy guardrails, and coding standards.
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](../AGENTS.md) is the authoritative Single Source of Truth for architectural rules, privacy guardrails, and coding standards.
 
 ---
 
@@ -30,7 +30,7 @@ The following origin is contacted **ONLY** after an explicit, affirmative user i
 
 Any pull request or code change that causes the production client browser to contact a new external origin MUST:
 1. Update this ledger table with origin, purpose, data sent, and legal rationale.
-2. Comply with the legal guidelines in [`docs/LEGAL-PRIVACY-DE.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/LEGAL-PRIVACY-DE.md).
+2. Comply with the legal guidelines in [`docs/LEGAL-PRIVACY-DE.md`](./LEGAL-PRIVACY-DE.md).
 3. Update Content Security Policy (CSP) headers in `netlify.toml` and `_headers`.
 4. Receive explicit user/human review before deployment.
 

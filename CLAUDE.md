@@ -2,7 +2,7 @@
 
 This file provides operational guidance for Anthropic's Claude Code and Claude-based development agents working on the Echo Kirche project.
 
-> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for all architectural rules, DO/DO NOT constraints, privacy guardrails, and coding conventions.
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](./AGENTS.md) is the authoritative Single Source of Truth for all architectural rules, DO/DO NOT constraints, privacy guardrails, and coding conventions.
 
 ---
 
@@ -58,7 +58,7 @@ npm run dev
 ## 4. Pre-Flight & Post-Flight Checklist
 
 ### Pre-Flight:
-1. Review [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) and relevant `docs/*.md`.
+1. Review [`AGENTS.md`](./AGENTS.md) and relevant `docs/*.md`.
 2. Inspect existing components in `src/_includes/components/` and tokens in `src/styles/tokens/`.
 
 ### Post-Flight:

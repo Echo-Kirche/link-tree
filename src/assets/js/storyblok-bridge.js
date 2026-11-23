@@ -97,7 +97,7 @@
         const ic = a.querySelector('.link-button__icon');
         if (ic) ic.innerHTML = icMarkup;
       } else {
-        li.innerHTML = `<a class="link-button link-button--with-icon" href="${url}" rel="noopener noreferrer"><span class="link-button__icon" aria-hidden="true">${icMarkup}</span><span class="link-button__label">${esc(label)}</span></a>`;
+        li.innerHTML = `<a class="link-button link-button--with-icon" href="${esc(url)}" rel="noopener noreferrer"><span class="link-button__icon" aria-hidden="true">${icMarkup}</span><span class="link-button__label">${esc(label)}</span></a>`;
       }
       return;
     }
@@ -113,7 +113,7 @@
         if (img && src) img.src = src;
       } else {
         const cls = isV ? 'image-card image-card--vertical' : 'image-card image-card--horizontal';
-        li.innerHTML = `<a class="${cls}" href="${url}" rel="noopener noreferrer">${src ? `<div class="image-card__media"><img src="${esc(src)}" alt="${esc(label)}" loading="lazy"></div>` : ''}${label ? `<div class="image-card__content"><span class="image-card__title">${esc(label)}</span><span class="image-card__arrow" aria-hidden="true">${I.arr}</span></div>` : ''}</a>`;
+        li.innerHTML = `<a class="${cls}" href="${esc(url)}" rel="noopener noreferrer">${src ? `<div class="image-card__media"><img src="${esc(src)}" alt="${esc(label)}" loading="lazy"></div>` : ''}${label ? `<div class="image-card__content"><span class="image-card__title">${esc(label)}</span><span class="image-card__arrow" aria-hidden="true">${I.arr}</span></div>` : ''}</a>`;
       }
       return;
     }
@@ -129,7 +129,7 @@
         const img = card.querySelector('img');
         if (img && src) img.src = src;
       } else {
-        li.innerHTML = `<div class="video-link-card"${prov === 'youtube' && id ? ` data-video-embed="youtube" data-video-id="${esc(id)}" data-video-title="${esc(label)}"` : ''}>${src ? `<div class="video-link-card__media"><img src="${esc(src)}" alt="${esc(label)}" loading="lazy"><button type="button" class="video-link-card__play-btn" aria-label="Video abspielen: ${esc(label)}"><span class="video-link-card__play-badge" aria-hidden="true">${I.play}</span></button><span class="video-link-card__arrow" aria-hidden="true">${I.arr}</span></div>` : ''}<div class="video-link-card__content"><a class="video-link-card__title" href="${dest}" target="_blank" rel="noopener noreferrer">${esc(label)}</a><span class="video-link-card__provider">${esc(prov)}</span></div></div>`;
+        li.innerHTML = `<div class="video-link-card"${prov === 'youtube' && id ? ` data-video-embed="youtube" data-video-id="${esc(id)}" data-video-title="${esc(label)}"` : ''}>${src ? `<div class="video-link-card__media"><img src="${esc(src)}" alt="${esc(label)}" loading="lazy"><button type="button" class="video-link-card__play-btn" aria-label="Video abspielen: ${esc(label)}"><span class="video-link-card__play-badge" aria-hidden="true">${I.play}</span></button><span class="video-link-card__arrow" aria-hidden="true">${I.arr}</span></div>` : ''}<div class="video-link-card__content"><a class="video-link-card__title" href="${esc(dest)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a><span class="video-link-card__provider">${esc(prov)}</span></div></div>`;
       }
       return;
     }

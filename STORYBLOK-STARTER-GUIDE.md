@@ -1,6 +1,6 @@
 # Storyblok Starter Setup Guide — link-tree
 
-> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for architectural rules, DO/DO NOT constraints, and quality standards. For the bilingual in-depth component reference manual, see [`docs/STORYBLOK.md`](file:///Users/Shared/projeckt/goto/link-tree/docs/STORYBLOK.md).
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](./AGENTS.md) is the authoritative Single Source of Truth for architectural rules, DO/DO NOT constraints, and quality standards. For the bilingual in-depth component reference manual, see [`docs/STORYBLOK.md`](./docs/STORYBLOK.md).
 
 This is the comprehensive, step-by-step setup guide for creating, configuring, and maintaining the **Echo Link-Tree** in Storyblok.
 
@@ -22,7 +22,7 @@ The website itself is compiled by **Eleventy (11ty)** into pure, lightning-fast 
 3. **2-Click YouTube Consent**: YouTube videos load a local/uploaded thumbnail first. An embed iframe is only created after an explicit user click on the play button, using YouTube Privacy-Enhanced Mode (`youtube-nocookie.com`).
 4. **Brand Color Constancy & Official Styleguide**:
    - **Colors**: Primary Teal (`#08415C`), Secondary Lavender (`#846B8A`), Background Pastel Yellow (`#FEFADC`).
-   - **Typography**: `Clash Display` (600 Semibold) for headings & sub-brand wordmarks; `Inter` (400 Regular) for body/UI; optional digital accents `Perandory Condensed` & `Sloop Script Pro`.
+   - **Typography**: `Clash Display` (600 Semibold) for headings & sub-brand wordmarks; `Inter` (400 Regular) for body/UI text.
    - **Sub-Brand Logo Rule**: When displaying the sub-brand text logo, **echo** is set in `Clash Display Semibold` (`600`) and **kids** is set in `Clash Display Regular` (`400`).
    - **Logo Clear Space (*Schutzzone*)**: Maintained equal to the width/height of lowercase "e" from *echo* wordmark on all four sides. No text, buttons, or graphics may enter this zone. Never stretch, compress, rotate, or distort the logo.
    - **Media Budget & Subject Matter**: Upload `.webp` format only, **max 400KB** per image, max width **1900px** for heroes and **1400px** for standard cards (`16:9`, `3:2`, `4:3`, `3:4` aspect ratios). Subject matter: authentic photos of people, community, faces, and visible emotions.
@@ -32,7 +32,7 @@ The website itself is compiled by **Eleventy (11ty)** into pure, lightning-fast 
    - **Tier 2 (`show_on` / `hide_on`)**: Targets components to specific campus routes (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
 
 The technical blueprint is declared in:
-[`storyblok/components.json`](file:///Users/Shared/projeckt/goto/link-tree/storyblok/components.json)
+[`storyblok/components.json`](./storyblok/components.json)
 
 ---
 
@@ -547,9 +547,9 @@ To view and edit your website live inside the Storyblok Visual Editor iframe:
    - Under **Location (default URL)**, enter your Netlify site URL: `https://your-site.netlify.app/` (or your custom domain).
    - If developing locally, you can create a second environment set to `http://localhost:8080/`.
 2. **Why it works seamlessly**:
-   - The site uses [`storyblok-bridge.js`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/js/storyblok-bridge.js), which loads the official Storyblok Bridge **only** when viewed inside the Visual Editor (`?_storyblok=...`). Production visitors load 0 KB third-party JS.
+   - The site uses [`storyblok-bridge.js`](./src/assets/js/storyblok-bridge.js), which loads the official Storyblok Bridge **only** when viewed inside the Visual Editor (`?_storyblok=...`). Production visitors load 0 KB third-party JS.
    - Theme changes, title edits, and surface toggles reflect immediately via real-time postMessage events without reloading the page.
-   - Netlify's Content Security Policy in [`netlify.toml`](file:///Users/Shared/projeckt/goto/link-tree/netlify.toml) already permits framing via `frame-ancestors 'self' https://app.storyblok.com https://*.storyblok.com;`.
+   - Netlify's Content Security Policy in [`netlify.toml`](./netlify.toml) already permits framing via `frame-ancestors 'self' https://app.storyblok.com https://*.storyblok.com;`.
 
 ## 2. Netlify Environment Variables
 In Netlify (**Site Configuration → Environment Variables**):

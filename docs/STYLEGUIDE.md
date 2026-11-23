@@ -4,7 +4,7 @@
 
 This document is the authoritative design system and styleguide for **Echo Kirche** and all related digital properties (including link-in-bio sites, web applications, and CMS components).
 
-> **RULE OF PRECEDENCE**: [`AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative Single Source of Truth for architectural rules, DO/DO NOT constraints, and quality standards.
+> **RULE OF PRECEDENCE**: [`AGENTS.md`](../AGENTS.md) is the authoritative Single Source of Truth for architectural rules, DO/DO NOT constraints, and quality standards.
 
 All development agents (Antigravity, Claude Code, Cursor, GitHub Copilot, ChatGPT, and human contributors) must strictly adhere to the tokens, typography scales, brand colors, media rules, and invariants defined here.
 
@@ -42,9 +42,6 @@ Brand colors must **never** change based on URL parameters, surfaces, campus rou
 * **Body & UI Text**: `Inter` (Weight: `400` / Regular)
   * CSS Token: `var(--font-body)`
   * System fallback stack: `"Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`.
-* **Optional Digital Accent Fonts** (for special banners, callouts, or magazine-style sections):
-  * **Display/Headline Accent**: `Perandory Condensed` (`--font-accent-display`)
-  * **Script/Subheading Accent**: `Sloop Script Pro` (`--font-accent-script`)
 
 ---
 
@@ -72,20 +69,20 @@ Apply this exact pixel hierarchy across all pages and components:
 
 ### 4.1 Approved Brand Logos & Media Inventory
 
-All official visual assets, brand marks, and photography are self-hosted in [`src/assets/images/`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/) (served in production under `/assets/images/`). Development agents must use only these verified local assets:
+All official visual assets, brand marks, and photography are self-hosted in [`src/assets/images/`](../src/assets/images) (served in production under `/assets/images/`). Development agents must use only these verified local assets:
 
 | Asset / File | Production Path | Format | Role / Usage | Dimensions / Ratio |
 | :--- | :--- | :--- | :--- | :--- |
-| **Primary Logo** | [`/assets/images/logo.svg`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/logo.svg) | SVG | Primary geometric symbol / mark of Echo Kirche. Default header avatar and official branding. | Scalable vector (`100x100` viewBox) |
-| **Site Favicon** | [`/assets/images/favicon.webp`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/favicon.webp) | WebP | Browser tab icon and PWA touch icon. | `150x150` square |
-| **Avatar Fallback** | [`/assets/images/avatar.svg`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/avatar.svg) | SVG | Generic profile silhouette avatar placeholder. | `160x160` circle |
-| **Gifhorn Hero** | [`/assets/images/echo-home-gifhorn-1024x682.webp`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/echo-home-gifhorn-1024x682.webp) | WebP | Campus hero photography for Gifhorn (`/gf`, `/gifhorn`). | `1024x682` (`3:2`) |
-| **Helmstedt Hero** | [`/assets/images/echo-home-helmstedt-803x1024.webp`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/echo-home-helmstedt-803x1024.webp) | WebP | Campus hero photography for Helmstedt (`/he`, `/helmstedt`). | `803x1024` (`3:4`) |
-| **Wolfsburg Hero** | [`/assets/images/echo-home-wolfsburg-1024x666.webp`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/echo-home-wolfsburg-1024x666.webp) | WebP | Campus hero photography for Wolfsburg (`/wob`, `/wolfsburg`). | `1024x666` (`3:2`) |
-| **Event / ES26 Banner** | [`/assets/images/es26-hero-1-1536x864.webp`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/es26-hero-1-1536x864.webp) | WebP | Featured hero image banner for Echo Summer / churchwide events. | `1536x864` (`16:9`) |
-| **Vertical Photo Placeholder** | [`/assets/images/photo-vertical.svg`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/photo-vertical.svg) | SVG | Fallback media placeholder for vertical portrait cards. | `3:4` aspect ratio |
-| **Horizontal Project Placeholder** | [`/assets/images/project-horizontal.svg`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/project-horizontal.svg) | SVG | Fallback media placeholder for horizontal event cards. | `16:9` aspect ratio |
-| **Video Thumbnail Facade** | [`/assets/images/video-thumbnail.svg`](file:///Users/Shared/projeckt/goto/link-tree/src/assets/images/video-thumbnail.svg) | SVG | Fallback graphic facade for the 2-click consent YouTube video player. | `16:9` aspect ratio |
+| **Primary Logo** | [`/assets/images/logo.svg`](../src/assets/images/logo.svg) | SVG | Primary geometric symbol / mark of Echo Kirche. Default header avatar and official branding. | Scalable vector (`100x100` viewBox) |
+| **Site Favicon** | [`/assets/images/favicon.webp`](../src/assets/images/favicon.webp) | WebP | Browser tab icon and PWA touch icon. | `150x150` square |
+| **Avatar Fallback** | [`/assets/images/avatar.svg`](../src/assets/images/avatar.svg) | SVG | Generic profile silhouette avatar placeholder. | `160x160` circle |
+| **Gifhorn Hero** | [`/assets/images/echo-home-gifhorn-1024x682.webp`](../src/assets/images/echo-home-gifhorn-1024x682.webp) | WebP | Campus hero photography for Gifhorn (`/gf`, `/gifhorn`). | `1024x682` (`3:2`) |
+| **Helmstedt Hero** | [`/assets/images/echo-home-helmstedt-803x1024.webp`](../src/assets/images/echo-home-helmstedt-803x1024.webp) | WebP | Campus hero photography for Helmstedt (`/he`, `/helmstedt`). | `803x1024` (`3:4`) |
+| **Wolfsburg Hero** | [`/assets/images/echo-home-wolfsburg-1024x666.webp`](../src/assets/images/echo-home-wolfsburg-1024x666.webp) | WebP | Campus hero photography for Wolfsburg (`/wob`, `/wolfsburg`). | `1024x666` (`3:2`) |
+| **Event / ES26 Banner** | [`/assets/images/es26-hero-1-1536x864.webp`](../src/assets/images/es26-hero-1-1536x864.webp) | WebP | Featured hero image banner for Echo Summer / churchwide events. | `1536x864` (`16:9`) |
+| **Vertical Photo Placeholder** | [`/assets/images/photo-vertical.svg`](../src/assets/images/photo-vertical.svg) | SVG | Fallback media placeholder for vertical portrait cards. | `3:4` aspect ratio |
+| **Horizontal Project Placeholder** | [`/assets/images/project-horizontal.svg`](../src/assets/images/project-horizontal.svg) | SVG | Fallback media placeholder for horizontal event cards. | `16:9` aspect ratio |
+| **Video Thumbnail Facade** | [`/assets/images/video-thumbnail.svg`](../src/assets/images/video-thumbnail.svg) | SVG | Fallback graphic facade for the 2-click consent YouTube video player. | `16:9` aspect ratio |
 
 ### 4.2 Logo Usage & Clear Space (*Schutzzone*)
 
@@ -120,8 +117,6 @@ Raw palette and font family values:
 - `--echo-cream`: `#FEFADC`
 - `--primitive-font-heading`: `"Clash Display", ...`
 - `--primitive-font-body`: `"Inter", ...`
-- `--primitive-font-accent-display`: `"Perandory Condensed", ...`
-- `--primitive-font-accent-script`: `"Sloop Script Pro", ...`
 
 ### Semantic tokens (`src/styles/tokens/_semantic.scss`)
 Application roles and paired surfaces:
