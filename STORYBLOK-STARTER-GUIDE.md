@@ -207,7 +207,7 @@ The root document for a link tree page.
 | `theme` | Color Theme | Selects the brand theme preset. | `Single Option` | `light` | No | Options: `light`, `pale`, `soft`, `dark`, `teal`, `lavender`. |
 | `surface` | Target Surface | Default surface for this page story. | `Single Option` | `default` | No | Source: `surfaces` datasource. |
 | `profile` | Profile Header | Holds the avatar, name, and bio header block. | `Blocks` | None | No | Restrict to: `profile_header`. Max: 1 block. |
-| `body` | Main Content | The main ordered list of links, cards, and groups. | `Blocks` | None | No | Restrict to: `group_block`, `link_button`, `dropdown_card`, `donation_card`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `section_heading`. Drag to reorder! |
+| `body` | Main Content | The main ordered list of links, cards, and groups. | `Blocks` | None | No | Restrict to: `group_block`, `link_button`, `dropdown_card`, `donation_card`, `accordion_buttons`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `section_heading`. Drag to reorder! |
 | `footer` | Legal Footer | Legal info, address, impressum, and social icons. | `Blocks` | None | No | Restrict to: `footer_legal`. Max: 1 block. |
 | `seo_title` | SEO Title | Overrides the browser title tag for search engines. | `Text` | Empty | No | Optional. |
 | `seo_description` | Meta Description | Summary text displayed in search results and embeds. | `Textarea` | Empty | No | Keep under 160 characters. |
@@ -396,7 +396,38 @@ An interactive, pure-CSS collapsible drawer with a dual-row interactive layout. 
 
 ---
 
-## 7. Nestable Block: `image_card_horizontal` (16:9 Featured Card)
+## 7. Nestable Block: `accordion_buttons` (Multi-Row Accordion Buttons & Expanded Drawer)
+
+A flexible, pure-CSS collapsible interactive accordion drawer. Solves the limitation of fixed-button cards by allowing you to add **any number of rows** inside the expandable drawer.
+
+### Row Configuration Types
+Inside the `rows` list, you can add and mix any number of rows of these three types:
+1. **1 Full Button (`full`)**: A prominent single button spanning 100% of the container width. Perfect for main call-to-actions (e.g. PayPal Giving, Ticket Booking, Livestream).
+2. **2 Half Buttons (`half`)**: Two side-by-side action buttons (50% width each), responsively adapting and stacking on narrow smartphone displays. Great for pairing related actions (e.g. "Online-Banking" and "Kontakt & Fragen").
+3. **1 Expanded Button / Panel (`expanded`)**: An interactive information card holding **up to 5 key-value fields** and an accessible copy-to-clipboard button:
+   - **Bank Details**: `Kontoinhaber`, `IBAN` (monospace code), `BIC`, `Bank`, and `Verwendungszweck` with one-click IBAN copy.
+   - **Event & Check-in Codes**: e.g., Christmas Event (`Event`, `Datum`, `Einlass`, `Ort`, `VIP-Code`) with one-click code copying.
+   - **Wi-Fi & Credentials**: `Netzwerk`, `Passwort`, `Verschlüsselung`, `Hinweise` with one-click password copying.
+
+- **Technical Name**: `accordion_buttons`
+- **Display Name**: `Accordion Buttons`
+- **Component Type**: **Nestable Block**
+
+### Fields
+
+| Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
+|---|---|---|---|---|---|---|
+| `label` | Card Header Label | Text on the expandable dropdown button. | `Text` | `Aktionen & Specials` | **Yes** | Prominent headline on the closed button. |
+| `icon` | Icon | Visual icon on the left of the button. | `Text` | `layer-group` | No | Any Font Awesome icon (e.g. `layer-group`, `star`, `heart`, `ticket`, `calendar`). |
+| `description` | Introductory Text | Explanatory message revealed when opened. | `Text` | Empty | No | Gives context for the buttons below. |
+| `rows` | Button Rows | The ordered list of button rows. | `Blocks` | None | **Yes** | Add rows of type `full`, `half`, or `expanded`. Any number of rows allowed! |
+| `display_in_default` | Display on Default | Tier 1 curation flag for landing page (`/`). | `Boolean` | `true` | No | Default `true`. |
+| `show_on` | Show On | Tier 2 surface allowlist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
+| `hide_on` | Hide On | Tier 2 surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
+
+---
+
+## 8. Nestable Block: `image_card_horizontal` (16:9 Featured Card)
 
 A landscape media card with a 16:9 image, headline, and interactive arrow button. Ideal for current sermon series, conferences, or campaigns.
 

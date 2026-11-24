@@ -64,6 +64,7 @@ Component schemas are declared in [`storyblok/components.json`](../storyblok/com
 | `dropdown_card` | Nestable Blok | Collapsible service times and locations card with responsive 3-column auto-fit grid and pure CSS details/summary state. |
 | `dropdown_time_item` | Nestable Blok | Individual service column/card with title, time badge, location, details, Echo Kids badge, and link. |
 | `donation_card` | Nestable Blok | Collapsible donation drawer and dropdown button with PayPal, online banking buttons, bank transfer details (IBAN/BIC), and one-click copy button. |
+| `accordion_buttons` | Nestable Blok | Multi-row collapsible accordion drawer with 1 full button, 2 half buttons, or 1 expanded button (up to 5 fields + copy button) per row, across any number of rows. |
 | `image_card_horizontal` | Nestable Blok | 16:9 featured horizontal media card with title, URL, image asset, and bottom-right arrow indicator badge (`->`). |
 | `image_card_vertical` | Nestable Blok | 3:4 portrait orientation media card with title, URL, image asset, and bottom-right arrow indicator badge (`->`). |
 | `video_link_card` | Nestable Blok | Privacy-first video card. YouTube uses a `youtube_video_id` plus optional `youtube_content_type` (`video` or `live`); non-YouTube providers may use `url`. The YouTube player loads only after an explicit click using YouTube Privacy-Enhanced Mode. |
@@ -243,6 +244,26 @@ A pure-CSS collapsible interactive drawer with a dual-row interactive layout. Wh
   - `bic` (Text, Optional): Bank BIC/SWIFT code (default: `PBNKDEFF`).
   - `bank_name` (Text, Optional): Name of the bank (default: `Postbank`).
   - `reference` (Text, Optional): Verwendungszweck / payment reference (default: `Spende Echo Kirche`).
+  - `show_on` / `hide_on` | Multi-select | No | Surface filtering rules.
+
+---
+
+### Component: `accordion_buttons` (Multi-Row Accordion Drawer)
+A pure-CSS collapsible interactive accordion drawer designed for versatile button layouts. Allows editors to create **any number of rows**, where each row can independently be configured as:
+1. **1 Full Button (`full`)**: 100% wide prominent action button with icon, label, and arrow.
+2. **2 Half Buttons (`half`)**: Two side-by-side action buttons (50% each) that adapt responsively.
+3. **1 Expanded Button / Card (`expanded`)**: An expandable details card with **up to 5 key-value fields** and a copy-to-clipboard button. Perfect for:
+   - Church bank transfer details (Kontoinhaber, IBAN, BIC, Bank, Verwendungszweck).
+   - Event check-in or VIP codes (Event, Datum, Einlass, Ort, VIP-Code).
+   - Wi-Fi credentials or promo discounts.
+
+- **How to create**: Add inside `body` or inside a `group_block`.
+- **Fields to fill**:
+  - `label` (Text, Required): Summary text on the expandable dropdown button (e.g. `Aktionen & Specials`).
+  - `icon` (Text, Optional): Leading icon name (default: `layer-group`, or any Font Awesome icon/SVG).
+  - `description` (Text, Optional): Introductory text displayed inside the drawer.
+  - `display_in_default` (Boolean, Default: `true`): Show on default landing page (`/`).
+  - `rows` (Blocks, Required): Add rows of type `full`, `half`, or `expanded`.
   - `show_on` / `hide_on` (Multi-select, Optional): Surface filtering rules.
 
 ---
@@ -481,6 +502,23 @@ Eine aufklappbare Spenden- und Beitrags-Schublade. Wird über einen **Dropdown-B
   - `bank_name` (Text, Optional): Bankinstitut (Standard: `Postbank`).
   - `reference` (Text, Optional): Verwendungszweck (Standard: `Spende Echo Kirche`).
   - `copy_label` (Text, Optional): Text des Kopierbuttons (Standard: `IBAN kopieren`).
+  - `show_on` / `hide_on` (Mehrfachauswahl, Optional): Filter für Standorte und Kanäle.
+
+---
+
+### Komponente: `accordion_buttons` (Mehrzeilige Accordion-Button-Karte)
+Eine reine CSS-Aufklappkarte für flexible, mehrzeilige Button-Layouts. Löst die Beschränkung auf feste Buttons und ermöglicht **beliebig viele Zeilen** mit unterschiedlichen Button-Typen:
+1. **1 Ganzer Button (`full`)**: Volle Breite (100 %) für Haupt-Aktionen (z. B. PayPal, Ticketbuchung).
+2. **2 Halbe Buttons (`half`)**: Zwei nebeneinanderliegende Buttons (je 50 %), die sich auf Smartphones responsiv anpassen.
+3. **1 Erweiterte Karte (`expanded`)**: Eine Informationskarte mit **bis zu 5 Datenfeldern** und Zwischenablage-Kopierbutton. Perfekt für Bankverbindungen, Event-VIP-Codes (z. B. Weihnachts-Event: Datum, Ort, Einlass, Code) oder WLAN-Zugangsdaten.
+
+- **Wo einfügen**: In `body` oder innerhalb eines `group_block`.
+- **Felder zum Ausfüllen**:
+  - `label` (Text, Pflicht): Text auf dem Aufklapp-Button (z. B. `Aktionen & Specials`).
+  - `icon` (Text, Optional): Icon-Name (Standard: `layer-group`, oder jedes Font Awesome Icon/SVG).
+  - `description` (Text, Optional): Einleitungstext im geöffneten Bereich.
+  - `rows` (Blöcke, Pflicht): Beliebig viele Zeilen vom Typ `full`, `half` oder `expanded`.
+  - `display_in_default` (Schalter/Boolean, Standard: `true`): Auf der Hauptseite (`/`) anzeigen.
   - `show_on` / `hide_on` (Mehrfachauswahl, Optional): Filter für Standorte und Kanäle.
 
 ---

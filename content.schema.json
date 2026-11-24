@@ -103,7 +103,8 @@
         { "$ref": "#/$defs/imageVertical" },
         { "$ref": "#/$defs/videoLink" },
         { "$ref": "#/$defs/dropdownCard" },
-        { "$ref": "#/$defs/donationCard" }
+        { "$ref": "#/$defs/donationCard" },
+        { "$ref": "#/$defs/accordionButtons" }
       ]
     },
     "base": {
@@ -353,7 +354,88 @@
           "type": "array",
           "uniqueItems": true,
           "items": { "$ref": "#/$defs/surface" }
+        },
+        "rows": { "$ref": "#/$defs/accordionRows" }
+      }
+    },
+    "accordionRows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["layout"],
+        "additionalProperties": false,
+        "properties": {
+          "layout": { "enum": ["full", "half", "expanded", "single", "dual", "card"] },
+          "button": {
+            "type": "object",
+            "required": ["label", "url"],
+            "additionalProperties": false,
+            "properties": {
+              "label": { "type": "string", "maxLength": 100 },
+              "url": { "$ref": "#/$defs/safeUrl" },
+              "icon": { "type": "string", "maxLength": 2048 },
+              "variant": { "type": "string", "maxLength": 50 },
+              "target": { "type": "string", "maxLength": 20 }
+            }
+          },
+          "buttons": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label", "url"],
+              "additionalProperties": false,
+              "properties": {
+                "label": { "type": "string", "maxLength": 100 },
+                "url": { "$ref": "#/$defs/safeUrl" },
+                "icon": { "type": "string", "maxLength": 2048 },
+                "variant": { "type": "string", "maxLength": 50 },
+                "target": { "type": "string", "maxLength": 20 }
+              }
+            }
+          },
+          "title": { "type": "string", "maxLength": 100 },
+          "icon": { "type": "string", "maxLength": 2048 },
+          "copyValue": { "type": "string", "maxLength": 500 },
+          "copyLabel": { "type": "string", "maxLength": 80 },
+          "fields": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "object",
+              "required": ["label", "value"],
+              "additionalProperties": false,
+              "properties": {
+                "label": { "type": "string", "maxLength": 100 },
+                "value": { "type": "string", "maxLength": 500 },
+                "isCode": { "type": "boolean" }
+              }
+            }
+          }
         }
+      }
+    },
+    "accordionButtons": {
+      "type": "object",
+      "required": ["id", "type", "label"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+        "type": { "enum": ["accordion-buttons", "accordion-card", "accordion-dropdown", "accordion_buttons"] },
+        "label": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "icon": { "type": "string", "maxLength": 2048 },
+        "description": { "type": "string", "maxLength": 300 },
+        "displayInDefault": { "type": "boolean" },
+        "showOn": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/surface" }
+        },
+        "hideOn": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/surface" }
+        },
+        "rows": { "$ref": "#/$defs/accordionRows" }
       }
     }
   }

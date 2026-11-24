@@ -1,0 +1,292 @@
+<details class="accordion-buttons"{% if item._editable %} {{ item | storyblokEditable | safe }}{% endif %}>
+  <summary class="accordion-buttons__summary link-button{% if item.icon and item.icon != '' %} link-button--with-icon{% endif %}">
+    {% if item.icon and item.icon != '' %}
+    <span class="link-button__icon" aria-hidden="true">
+      {% set iconName = item.icon or "layer-group" %}
+      {% include "components/FaIcon.njk" %}
+    </span>
+    {% endif %}
+    <span class="link-button__label">{{ item.label }}</span>
+    <span class="accordion-buttons__chevron" aria-hidden="true">
+      <svg class="fa-svg fa-chevron-down" viewBox="0 0 448 512" fill="currentColor" width="14" height="14"><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
+    </span>
+  </summary>
+
+  <div class="accordion-buttons__content">
+    {% if item.description %}
+    <p class="accordion-buttons__description">{{ item.description }}</p>
+    {% endif %}
+
+    {# Normalize rows: support item.rows or construct from flat buttons / legacy fields #}
+    {% set rowList = [] %}
+    {% if item.rows and item.rows.length > 0 %}
+      {% set rowList = item.rows %}
+    {% else %}
+      {# Construct rows from legacy/flat buttons or donation properties if rows not given #}
+      {% if item.buttons and item.buttons.length > 0 %}
+        {# Group buttons into full or half pairs #}
+        {% set tempHalf = [] %}
+        {% for b in item.buttons %}
+          {% if b.width == "half" %}
+            {% set tempHalf = (tempHalf.push(b), tempHalf) %}
+            {% if tempHalf.length == 2 %}
+              {% set rowList = (rowList.push({ layout: "half", buttons: tempHalf }), rowList) %}
+              {% set tempHalf = [] %}
+            {% endif %}
+          {% else %}
+            {% if tempHalf.length > 0 %}
+              {% set rowList = (rowList.push({ layout: "half", buttons: tempHalf }), rowList) %}
+              {% set tempHalf = [] %}
+            {% endif %}
+            {% set rowList = (rowList.push({ layout: "full", button: b }), rowList) %}
+          {% endif %}
+        {% endfor %}
+        {% if tempHalf.length > 0 %}
+          {% set rowList = (rowList.push({ layout: "half", buttons: tempHalf }), rowList) %}
+        {% endif %}
+      {% else %}
+        {# Check for button_1 / button_2 or PayPal / IBAN #}
+        {% set rawB1Url = item.button_1_url or item.btn1_url or item.button1_url or item.button1Url or item.paypalUrl or item.paypal_url %}
+        {% set rawB2Url = item.button_2_url or item.btn2_url or item.button2_url or item.button2Url or item.ibanLinkUrl or item.iban_link_url %}
+        {% set b1 = null %}
+        {% set b2 = null %}
+        {% if rawB1Url %}
+          {% set b1 = {
+            url: rawB1Url | resolveUrl,
+            label: item.button_1_label or item.btn1_label or item.button1_label or item.button1Label or item.paypalLabel or item.paypal_label or "Mit PayPal spenden",
+            icon: item.button_1_icon or item.btn1_icon or item.button1_icon or item.button1Icon or (("paypal" if (item.paypalUrl or item.paypal_url) else "")),
+            variant: item.button_1_variant or item.btn1_variant or item.button1_variant or (("paypal" if (item.paypalUrl or item.paypal_url) else "primary")),
+            target: item.button_1_target or item.btn1_target or (("_blank" if (item.paypalUrl or item.paypal_url) else ""))
+          } %}
+        {% endif %}
+        {% if rawB2Url %}
+          {% set b2 = {
+            url: rawB2Url | resolveUrl,
+            label: item.button_2_label or item.btn2_label or item.button2_label or item.button2Label or item.ibanLinkLabel or item.iban_link_label or "Online-Banking öffnen",
+            icon: item.button_2_icon or item.btn2_icon or item.button2_icon or item.button2Icon or (("building-columns" if (item.ibanLinkUrl or item.iban_link_url) else "")),
+            variant: item.button_2_variant or item.btn2_variant or item.button2_variant or (("iban" if (item.ibanLinkUrl or item.iban_link_url) else "secondary")),
+            target: item.button_2_target or item.btn2_target or ""
+          } %}
+        {% endif %}
+
+        {% if b1 and b2 %}
+          {% set rowList = (rowList.push({ layout: "half", buttons: [b1, b2] }), rowList) %}
+        {% elif b1 %}
+          {% set rowList = (rowList.push({ layout: "full", button: b1 }), rowList) %}
+        {% elif b2 %}
+          {% set rowList = (rowList.push({ layout: "full", button: b2 }), rowList) %}
+        {% endif %}
+
+        {# Check for expanded card content #}
+        {% set expTitle = item.card_title or item.cardTitle or item.ibanTitle or item.iban_title %}
+        {% set expIcon = item.card_icon or item.cardIcon or "building-columns" %}
+        {% set expIban = item.iban %}
+        {% set expAccount = item.accountName or item.account_name %}
+        {% set expBic = item.bic %}
+        {% set expBank = item.bankName or item.bank_name %}
+        {% set expRef = item.reference %}
+        {% set expDetails = item.details or item.custom_fields %}
+        {% if expTitle or expIban or expAccount or (expDetails and expDetails.length > 0) %}
+          {% set expFields = [] %}
+          {% if expDetails and expDetails.length > 0 %}
+            {% set expFields = expDetails %}
+          {% else %}
+            {% if expAccount %}{% set expFields = (expFields.push({ label: "Kontoinhaber", value: expAccount }), expFields) %}{% endif %}
+            {% if expIban %}{% set expFields = (expFields.push({ label: "IBAN", value: expIban, isCode: true }), expFields) %}{% endif %}
+            {% if expBic %}{% set expFields = (expFields.push({ label: "BIC", value: expBic, isCode: true }), expFields) %}{% endif %}
+            {% if expBank %}{% set expFields = (expFields.push({ label: "Bank", value: expBank }), expFields) %}{% endif %}
+            {% if expRef %}{% set expFields = (expFields.push({ label: "Verwendungszweck", value: expRef }), expFields) %}{% endif %}
+          {% endif %}
+          {% set rowList = (rowList.push({
+            layout: "expanded",
+            title: expTitle or "Details & Infos",
+            icon: expIcon,
+            copyValue: item.copy_value or item.copyValue or expIban,
+            copyLabel: item.copy_label or item.copyLabel or (("IBAN kopieren" if expIban else "Kopieren")),
+            fields: expFields
+          }), rowList) %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+    {% if rowList and rowList.length > 0 %}
+    <div class="accordion-buttons__rows">
+      {% for row in rowList %}
+      {% set layout = row.layout or "full" %}
+
+      {# 1. Full Button Row #}
+      {% if layout == "full" or layout == "single" %}
+        {% set btn = row.button or (row.buttons[0] if (row.buttons and row.buttons.length > 0) else null) or {
+          label: row.button_1_label or row.btn1_label or row.label or "Aktion",
+          url: row.button_1_url or row.btn1_url or row.url or "#",
+          icon: row.button_1_icon or row.btn1_icon or row.icon,
+          variant: row.button_1_variant or row.btn1_variant or row.variant or "primary",
+          target: row.button_1_target or row.btn1_target or row.target
+        } %}
+        {% set resolvedBtnUrl = btn.url | resolveUrl %}
+        {% if resolvedBtnUrl and resolvedBtnUrl != '#' %}
+        <div class="accordion-buttons__row accordion-buttons__row--full">
+          <a class="accordion-buttons__btn accordion-buttons__btn--{{ btn.variant or 'primary' }}" href="{{ resolvedBtnUrl }}"{% if btn.target %} target="{{ btn.target }}"{% endif %} rel="noopener noreferrer">
+            {% if btn.icon and btn.icon != '' %}
+            <span class="accordion-buttons__btn-icon" aria-hidden="true">
+              {% if btn.icon == "paypal" %}
+                <svg class="fa-svg fa-paypal" viewBox="0 0 384 512" fill="currentColor" width="18" height="18"><path d="M111.4 295.9c-3.5 19.2-17.4 108.7-21.5 134-.3 1.8-1 2.5-3 2.5H12.3c-7.6 0-13.1-6.6-12.1-13.9L58.8 46.6c1.5-9.6 10.1-16.9 20-16.9 152.3 0 165.1-3.7 204 45.4 26.2 33 22.8 77.8 7.3 112.5-18.7 41.9-56 68.6-104.9 76.5-6.9 1.1-11.8 7-10.7 13.8l7.9 44.5c.9 5.8-3.4 11-9.3 11.2l-69.7 2.3z"/></svg>
+              {% elif btn.icon == "building-columns" or btn.icon == "bank" %}
+                <svg class="fa-svg fa-building-columns" viewBox="0 0 512 512" fill="currentColor" width="18" height="18"><path d="M240 32c17.7 0 32 14.3 32 32V96h176c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H208V64c0-17.7 14.3-32 32-32zM32 192H96v192H32V192zm160 0h64v192H192V192zm224 0h64v192H416V192zM0 448c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32z"/></svg>
+              {% else %}
+                {% set iconName = btn.icon %}
+                {% include "components/FaIcon.njk" %}
+              {% endif %}
+            </span>
+            {% endif %}
+            <span class="accordion-buttons__btn-label">{{ btn.label }}</span>
+            <span class="accordion-buttons__btn-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+        {% endif %}
+
+      {# 2. Two Half Buttons Row #}
+      {% elif layout == "half" or layout == "dual" %}
+        {% set halfButtons = [] %}
+        {% if row.buttons and row.buttons.length > 0 %}
+          {% set halfButtons = row.buttons %}
+        {% else %}
+          {% if row.button_1_label or row.button_1_url %}
+            {% set halfButtons = (halfButtons.push({
+              label: row.button_1_label or "Aktion 1",
+              url: row.button_1_url or "#",
+              icon: row.button_1_icon,
+              variant: row.button_1_variant or "primary",
+              target: row.button_1_target
+            }), halfButtons) %}
+          {% endif %}
+          {% if row.button_2_label or row.button_2_url %}
+            {% set halfButtons = (halfButtons.push({
+              label: row.button_2_label or "Aktion 2",
+              url: row.button_2_url or "#",
+              icon: row.button_2_icon,
+              variant: row.button_2_variant or "secondary",
+              target: row.button_2_target
+            }), halfButtons) %}
+          {% endif %}
+        {% endif %}
+
+        {% if halfButtons and halfButtons.length > 0 %}
+        <div class="accordion-buttons__row accordion-buttons__row--half">
+          {% for btn in halfButtons %}
+          {% set resolvedBtnUrl = btn.url | resolveUrl %}
+          {% if resolvedBtnUrl and resolvedBtnUrl != '#' %}
+          <a class="accordion-buttons__btn accordion-buttons__btn--{{ btn.variant or 'primary' }}" href="{{ resolvedBtnUrl }}"{% if btn.target %} target="{{ btn.target }}"{% endif %} rel="noopener noreferrer">
+            {% if btn.icon and btn.icon != '' %}
+            <span class="accordion-buttons__btn-icon" aria-hidden="true">
+              {% if btn.icon == "paypal" %}
+                <svg class="fa-svg fa-paypal" viewBox="0 0 384 512" fill="currentColor" width="18" height="18"><path d="M111.4 295.9c-3.5 19.2-17.4 108.7-21.5 134-.3 1.8-1 2.5-3 2.5H12.3c-7.6 0-13.1-6.6-12.1-13.9L58.8 46.6c1.5-9.6 10.1-16.9 20-16.9 152.3 0 165.1-3.7 204 45.4 26.2 33 22.8 77.8 7.3 112.5-18.7 41.9-56 68.6-104.9 76.5-6.9 1.1-11.8 7-10.7 13.8l7.9 44.5c.9 5.8-3.4 11-9.3 11.2l-69.7 2.3z"/></svg>
+              {% elif btn.icon == "building-columns" or btn.icon == "bank" %}
+                <svg class="fa-svg fa-building-columns" viewBox="0 0 512 512" fill="currentColor" width="18" height="18"><path d="M240 32c17.7 0 32 14.3 32 32V96h176c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H208V64c0-17.7 14.3-32 32-32zM32 192H96v192H32V192zm160 0h64v192H192V192zm224 0h64v192H416V192zM0 448c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32z"/></svg>
+              {% else %}
+                {% set iconName = btn.icon %}
+                {% include "components/FaIcon.njk" %}
+              {% endif %}
+            </span>
+            {% endif %}
+            <span class="accordion-buttons__btn-label">{{ btn.label }}</span>
+            <span class="accordion-buttons__btn-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+
+      {# 3. Expanded Card Row (Max 5 Fields + Copy Button) #}
+      {% elif layout == "expanded" or layout == "details" or layout == "card" %}
+        {% set cardTitle = row.title or row.card_title or row.cardTitle or "Details & Infos" %}
+        {% set cardIcon = row.icon or row.card_icon or row.cardIcon or "building-columns" %}
+        {% set cardCopyValue = row.copy_value or row.copyValue or row.copyText or row.iban %}
+        {% set cardCopyLabel = row.copy_label or row.copyLabel or (("IBAN kopieren" if row.iban else "Kopieren")) %}
+
+        {# Assemble fields: up to 5 fields maximum #}
+        {% set fieldList = [] %}
+        {% if row.fields and row.fields.length > 0 %}
+          {% set fieldList = row.fields %}
+        {% elif row.details and row.details.length > 0 %}
+          {% set fieldList = row.details %}
+        {% else %}
+          {% if row.account_name or row.accountName %}{% set fieldList = (fieldList.push({ label: "Kontoinhaber", value: row.account_name or row.accountName }), fieldList) %}{% endif %}
+          {% if row.iban %}{% set fieldList = (fieldList.push({ label: "IBAN", value: row.iban, isCode: true }), fieldList) %}{% endif %}
+          {% if row.bic %}{% set fieldList = (fieldList.push({ label: "BIC", value: row.bic, isCode: true }), fieldList) %}{% endif %}
+          {% if row.bank_name or row.bankName %}{% set fieldList = (fieldList.push({ label: "Bank", value: row.bank_name or row.bankName }), fieldList) %}{% endif %}
+          {% if row.reference %}{% set fieldList = (fieldList.push({ label: "Verwendungszweck", value: row.reference }), fieldList) %}{% endif %}
+
+          {# Also check explicit field_1 to field_5 from Storyblok #}
+          {% if row.field_1_label and row.field_1_value %}{% set fieldList = (fieldList.push({ label: row.field_1_label, value: row.field_1_value, isCode: row.field_1_is_code }), fieldList) %}{% endif %}
+          {% if row.field_2_label and row.field_2_value %}{% set fieldList = (fieldList.push({ label: row.field_2_label, value: row.field_2_value, isCode: row.field_2_is_code }), fieldList) %}{% endif %}
+          {% if row.field_3_label and row.field_3_value %}{% set fieldList = (fieldList.push({ label: row.field_3_label, value: row.field_3_value, isCode: row.field_3_is_code }), fieldList) %}{% endif %}
+          {% if row.field_4_label and row.field_4_value %}{% set fieldList = (fieldList.push({ label: row.field_4_label, value: row.field_4_value, isCode: row.field_4_is_code }), fieldList) %}{% endif %}
+          {% if row.field_5_label and row.field_5_value %}{% set fieldList = (fieldList.push({ label: row.field_5_label, value: row.field_5_value, isCode: row.field_5_is_code }), fieldList) %}{% endif %}
+        {% endif %}
+
+        <div class="accordion-buttons__row accordion-buttons__row--expanded">
+          <div class="accordion-buttons__expanded-card">
+            {% if cardTitle %}
+            <div class="accordion-buttons__card-header">
+              <span class="accordion-buttons__card-icon" aria-hidden="true">
+                {% if cardIcon == "building-columns" or cardIcon == "bank" %}
+                  <svg class="fa-svg fa-building-columns" viewBox="0 0 512 512" fill="currentColor" width="16" height="16"><path d="M240 32c17.7 0 32 14.3 32 32V96h176c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H208V64c0-17.7 14.3-32 32-32zM32 192H96v192H32V192zm160 0h64v192H192V192zm224 0h64v192H416V192zM0 448c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32z"/></svg>
+                {% elif cardIcon == "credit-card" %}
+                  <svg class="fa-svg fa-credit-card" viewBox="0 0 576 512" fill="currentColor" width="16" height="16"><path d="M64 32C28.7 32 0 60.7 0 96v320c0 35.3 28.7 64 64 64h448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm448 96H64V96c0-17.7 14.3-32 32-32h384c17.7 0 32 14.3 32 32v32zm0 64v192c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V192h448zM96 352h64c8.8 0 16-7.2 16-16s-7.2-16-16-16H96c-8.8 0-16 7.2-16 16s7.2 16 16 16zm128 0h64c8.8 0 16-7.2 16-16s-7.2-16-16-16H224c-8.8 0-16 7.2-16 16s7.2 16 16 16z"/></svg>
+                {% else %}
+                  {% set iconName = cardIcon %}
+                  {% include "components/FaIcon.njk" %}
+                {% endif %}
+              </span>
+              <span class="accordion-buttons__card-title">{{ cardTitle }}</span>
+            </div>
+            {% endif %}
+
+            {% if fieldList and fieldList.length > 0 %}
+            <dl class="accordion-buttons__fields">
+              {# Enforce max 5 fields limit #}
+              {% for field in fieldList %}
+              {% if loop.index <= 5 %}
+              <div class="accordion-buttons__field-row">
+                <dt class="accordion-buttons__field-label">{{ field.label }}:</dt>
+                <dd class="accordion-buttons__field-value">
+                  {% if field.isCode or field.is_code %}
+                  <code class="accordion-buttons__code-value">{{ field.value }}</code>
+                  {% else %}
+                  {{ field.value }}
+                  {% endif %}
+                </dd>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </dl>
+            {% endif %}
+
+            {% if cardCopyValue %}
+            <button
+              type="button"
+              class="accordion-buttons__copy-btn"
+              {% if row.iban or (cardCopyValue and "DE" in cardCopyValue and cardCopyValue|length >= 20) %}
+              data-copy-iban="{{ cardCopyValue }}"
+              {% else %}
+              data-copy-text="{{ cardCopyValue }}"
+              {% endif %}
+              data-copied-label="Kopiert! ✓"
+              aria-label="{{ cardCopyLabel }} in die Zwischenablage kopieren"
+            >
+              <span class="accordion-buttons__copy-icon" aria-hidden="true">
+                <svg class="fa-svg fa-copy" viewBox="0 0 448 512" fill="currentColor" width="14" height="14"><path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16h140.1L384 99.9V320c0 8.8-7.2 16-16 16zM192 0C156.7 0 128 28.7 128 64v256c0 35.3 28.7 64 64 64h192c35.3 0 64-28.7 64-64V96c0-17-6.7-33.3-18.7-45.3L389.3 18.7C377.3 6.7 361 0 344 0H192zm-96 128H64c-35.3 0-64 28.7-64 64v256c0 35.3 28.7 64 64 64h192c35.3 0 64-28.7 64-64v-32h-48v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16h32v-48z"/></svg>
+              </span>
+              <span class="accordion-buttons__copy-text">{{ cardCopyLabel }}</span>
+            </button>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</details>

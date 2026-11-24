@@ -98,6 +98,9 @@ export default function (eleventyConfig) {
       dropdown_card: 'DropdownCard.njk',
       donation_card: 'DonationCard.njk',
       donation_dropdown: 'DonationCard.njk',
+      accordion_buttons: 'AccordionButtons.njk',
+      accordion_card: 'AccordionButtons.njk',
+      accordion_dropdown: 'AccordionButtons.njk',
     };
     return mapping[componentName] || `${componentName}.njk`;
   });

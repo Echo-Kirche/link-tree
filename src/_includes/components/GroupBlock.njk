@@ -35,6 +35,9 @@
       {% elif subItem.component == "donation_card" or subItem.component == "donation_dropdown" or subItem.type == "donation-card" or subItem.type == "donation-dropdown" %}
         {% set item = subItem %}
         {% include "components/DonationCard.njk" %}
+      {% elif subItem.component == "accordion_buttons" or subItem.component == "accordion_card" or subItem.component == "accordion_dropdown" or subItem.type == "accordion-buttons" or subItem.type == "accordion-card" or subItem.type == "accordion_buttons" %}
+        {% set item = subItem %}
+        {% include "components/AccordionButtons.njk" %}
       {% endif %}
     </li>
     {% endfor %}

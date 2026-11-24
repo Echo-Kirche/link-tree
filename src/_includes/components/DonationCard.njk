@@ -1,3 +1,6 @@
+{% if item.rows and item.rows.length > 0 %}
+  {% include "components/AccordionButtons.njk" %}
+{% else %}
 <details class="donation-card"{% if item._editable %} {{ item | storyblokEditable | safe }}{% endif %}>
   <summary class="donation-card__summary link-button{% if item.icon and item.icon != '' %} link-button--with-icon{% endif %}">
     {% if item.icon and item.icon != '' %}
@@ -185,3 +188,4 @@
     {% endif %}
   </div>
 </details>
+{% endif %}

@@ -248,6 +248,21 @@ export default async function () {
         bank_name: item.bankName || item.bank_name || '',
         reference: item.reference || '',
         copy_label: item.copyLabel || item.copy_label || 'IBAN kopieren',
+        rows: item.rows || [],
+        show_on: item.showOn || item.show_on || [],
+        hide_on: item.hideOn || item.hide_on || [],
+      };
+    }
+    if (item.type === 'accordion-buttons' || item.type === 'accordion-card' || item.type === 'accordion-dropdown' || item.type === 'accordion_buttons') {
+      return {
+        _uid: item.id,
+        component: 'accordion_buttons',
+        label: item.label,
+        icon: item.icon || 'layer-group',
+        description: item.description || '',
+        display_in_default: displayInDef,
+        rows: item.rows || [],
+        buttons: item.buttons || [],
         show_on: item.showOn || item.show_on || [],
         hide_on: item.hideOn || item.hide_on || [],
       };

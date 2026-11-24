@@ -236,6 +236,74 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(htmlStandaloneCopy, /Code kopieren/);
   });
 
+  test('AccordionButtons component renders accessible drawer with multi-row layout and expanded fields', async () => {
+    // 1. Verify indexHtml rendered default demo
+    assert.match(indexHtml, /<details class="accordion-buttons"/, 'AccordionButtons must use semantic <details>');
+    assert.match(indexHtml, /class="accordion-buttons__summary link-button/, 'AccordionButtons summary must be styled as link-button');
+    assert.match(indexHtml, /class="accordion-buttons__chevron"/, 'AccordionButtons must have chevron indicator');
+    assert.match(indexHtml, /class="accordion-buttons__row accordion-buttons__row--full"/, 'AccordionButtons must render full button row');
+    assert.match(indexHtml, /class="accordion-buttons__row accordion-buttons__row--half"/, 'AccordionButtons must render half button row');
+    assert.match(indexHtml, /class="accordion-buttons__row accordion-buttons__row--expanded"/, 'AccordionButtons must render expanded row');
+    assert.match(indexHtml, /data-copy-iban="DE12 3456 7890 1234 5678 90"/, 'AccordionButtons must render copy IBAN button');
+    assert.match(indexHtml, /data-copy-text="ECHO-XMAS-2026"/, 'AccordionButtons must render copy event code button');
+
+    // 2. Unit test: Multi-row with max 5 fields enforcement
+    const nunjucks = (await import('nunjucks')).default;
+    const env = nunjucks.configure(path.resolve('src/_includes'), { autoescape: true });
+    env.addFilter('resolveUrl', (val) => typeof val === 'string' ? val : (val?.url || ''));
+
+    const htmlMultiRow = env.render('components/AccordionButtons.njk', {
+      item: {
+        id: 'test-accordion',
+        label: 'Flexible Aktionen',
+        icon: 'layer-group',
+        description: 'Beliebige Anzahl an Zeilen und Buttons',
+        rows: [
+          {
+            layout: 'full',
+            button: { label: 'Einzelticket buchen', url: 'https://example.com/tickets', icon: 'ticket' }
+          },
+          {
+            layout: 'half',
+            buttons: [
+              { label: 'Halb-Button 1', url: 'https://example.com/1', icon: 'star' },
+              { label: 'Halb-Button 2', url: 'https://example.com/2', icon: 'heart' }
+            ]
+          },
+          {
+            layout: 'expanded',
+            title: 'Event-Details & Einlass',
+            icon: 'calendar',
+            copyValue: 'VIP-GIFT-2026',
+            copyLabel: 'Gutschein kopieren',
+            fields: [
+              { label: 'Feld 1', value: 'Wert 1' },
+              { label: 'Feld 2', value: 'Wert 2' },
+              { label: 'Feld 3', value: 'Wert 3' },
+              { label: 'Feld 4', value: 'Wert 4' },
+              { label: 'Feld 5', value: 'Wert 5', isCode: true },
+              { label: 'Feld 6 (Ignored)', value: 'Über Limit' },
+              { label: 'Feld 7 (Ignored)', value: 'Über Limit' }
+            ]
+          }
+        ]
+      }
+    });
+
+    assert.match(htmlMultiRow, /Einzelticket buchen/);
+    assert.match(htmlMultiRow, /Halb-Button 1/);
+    assert.match(htmlMultiRow, /Halb-Button 2/);
+    assert.match(htmlMultiRow, /Event-Details &amp; Einlass/);
+    assert.match(htmlMultiRow, /Feld 1:/);
+    assert.match(htmlMultiRow, /Feld 5:/);
+    assert.match(htmlMultiRow, /<code class="accordion-buttons__code-value">Wert 5<\/code>/);
+    // Enforce max 5 fields: Feld 6 and 7 must NOT be in the output
+    assert.doesNotMatch(htmlMultiRow, /Feld 6/);
+    assert.doesNotMatch(htmlMultiRow, /Feld 7/);
+    assert.match(htmlMultiRow, /data-copy-text="VIP-GIFT-2026"/);
+    assert.match(htmlMultiRow, /Gutschein kopieren/);
+  });
+
   test('ImageCardHorizontal & ImageCardVertical render media cards with aspect ratios and arrows', () => {
     assert.match(indexHtml, /class="image-card image-card--horizontal"/, 'ImageCardHorizontal must exist');
     assert.match(indexHtml, /class="image-card__media"/, 'Image media wrapper must exist');

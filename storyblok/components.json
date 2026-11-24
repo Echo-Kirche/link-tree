@@ -90,7 +90,8 @@
             "video_link_card",
             "section_heading",
             "dropdown_card",
-            "donation_card"
+            "donation_card",
+            "accordion_buttons"
           ]
         },
         "footer": {
@@ -807,7 +808,8 @@
             "video_link_card",
             "section_heading",
             "dropdown_card",
-            "donation_card"
+            "donation_card",
+            "accordion_buttons"
           ]
         },
         "show_on": {
@@ -1316,6 +1318,61 @@
         "hide_on": {
           "type": "options",
           "pos": 16,
+          "options": [
+            { "name": "Default", "value": "default" },
+            { "name": "Gifhorn (gf)", "value": "gifhorn" },
+            { "name": "Wolfsburg (wob)", "value": "wolfsburg" },
+            { "name": "Helmstedt (he)", "value": "helmstedt" },
+            { "name": "Instagram (ig)", "value": "instagram" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "accordion_buttons",
+      "display_name": "Accordion Buttons",
+      "is_root": false,
+      "is_nestable": true,
+      "schema": {
+        "label": {
+          "type": "text",
+          "pos": 0,
+          "required": true,
+          "default_value": "Mehr Aktionen"
+        },
+        "icon": {
+          "type": "text",
+          "pos": 1,
+          "default_value": "layer-group"
+        },
+        "description": {
+          "type": "textarea",
+          "pos": 2
+        },
+        "display_in_default": {
+          "type": "boolean",
+          "pos": 3,
+          "default_value": true
+        },
+        "rows": {
+          "type": "bloks",
+          "pos": 4,
+          "restrict_components": false
+        },
+        "show_on": {
+          "type": "options",
+          "pos": 5,
+          "options": [
+            { "name": "Default", "value": "default" },
+            { "name": "Gifhorn (gf)", "value": "gifhorn" },
+            { "name": "Wolfsburg (wob)", "value": "wolfsburg" },
+            { "name": "Helmstedt (he)", "value": "helmstedt" },
+            { "name": "Instagram (ig)", "value": "instagram" }
+          ]
+        },
+        "hide_on": {
+          "type": "options",
+          "pos": 6,
           "options": [
             { "name": "Default", "value": "default" },
             { "name": "Gifhorn (gf)", "value": "gifhorn" },

@@ -221,6 +221,74 @@
       "copyLabel": "IBAN kopieren"
     },
     {
+      "id": "accordion-demo",
+      "type": "accordion-buttons",
+      "label": "Aktionen & Specials (Accordion)",
+      "icon": "star",
+      "displayInDefault": true,
+      "showOn": [
+        "default"
+      ],
+      "description": "Entdecke unsere interaktiven Aktionen, Ticket-Codes und Bankverbindung mit flexiblen Button-Reihen.",
+      "rows": [
+        {
+          "layout": "full",
+          "button": {
+            "label": "Mit PayPal spenden",
+            "url": "https://paypal.me/echokirche",
+            "icon": "paypal",
+            "variant": "paypal",
+            "target": "_blank"
+          }
+        },
+        {
+          "layout": "half",
+          "buttons": [
+            {
+              "label": "Online-Banking öffnen",
+              "url": "https://kirche-echo.de/spenden",
+              "icon": "building-columns",
+              "variant": "secondary"
+            },
+            {
+              "label": "Kontakt & Fragen",
+              "url": "https://kirche-echo.de/kontakt",
+              "icon": "envelope",
+              "variant": "secondary"
+            }
+          ]
+        },
+        {
+          "layout": "expanded",
+          "title": "Per Banküberweisung (IBAN)",
+          "icon": "building-columns",
+          "copyValue": "DE12 3456 7890 1234 5678 90",
+          "copyLabel": "IBAN kopieren",
+          "fields": [
+            { "label": "Kontoinhaber", "value": "Echo Kirche e.V." },
+            { "label": "IBAN", "value": "DE12 3456 7890 1234 5678 90", "isCode": true },
+            { "label": "BIC", "value": "PBNKDEFF", "isCode": true },
+            { "label": "Bank", "value": "Postbank" },
+            { "label": "Verwendungszweck", "value": "Spende Echo Kirche" }
+          ]
+        },
+        {
+          "layout": "expanded",
+          "title": "Weihnachts-Event: VIP-Code",
+          "icon": "star",
+          "copyValue": "ECHO-XMAS-2026",
+          "copyLabel": "Code kopieren",
+          "fields": [
+            { "label": "Event", "value": "Echo Christmas Celebration" },
+            { "label": "Datum", "value": "24. Dezember 2026" },
+            { "label": "Einlass", "value": "15:30 Uhr" },
+            { "label": "Ort", "value": "BSK-Saal, Gifhorn" },
+            { "label": "VIP-Code", "value": "ECHO-XMAS-2026", "isCode": true }
+          ]
+        }
+      ]
+    },
+    {
       "id": "location-directions",
       "type": "link",
       "label": "Standort: Schützenplatz 1, Gifhorn",

@@ -53,7 +53,7 @@ The root document containing the entire page tree:
 | `theme` | Options | No | Theme mode: `light` (default), `pale`, `warm`, `soft`, `dark`, `teal`, `lavender`. |
 | `surface` | Options | No | Default surface context (default: `"default"`). |
 | `profile` | Blocks | Yes | Exactly 1 `profile_header` blok. |
-| `body` | Blocks | Yes | Ordered array of content bloks (`link_button`, `dropdown_card`, `donation_card`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `group_block`, `section_heading`). |
+| `body` | Blocks | Yes | Ordered array of content bloks (`link_button`, `dropdown_card`, `donation_card`, `accordion_buttons`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `group_block`, `section_heading`). |
 | `footer` | Blocks | Yes | Exactly 1 `footer_legal` blok. |
 
 ---
@@ -161,7 +161,33 @@ Collapsible interactive drawer powered by pure CSS `<details>` and `<summary>`. 
 
 ---
 
-### 2.7 Horizontal Media Card: `image_card_horizontal`
+### 2.7 Multi-Row Expandable Drawer: `accordion_buttons`
+
+A flexible, pure-CSS collapsible interactive accordion drawer powered by native `<details>` and `<summary>`. Supports **any number of rows** inside the drawer, where each row can be:
+- **1 Full Button** (`layout: "full"`): Stretches across 100% width.
+- **2 Half Buttons** (`layout: "half"`): Two side-by-side action buttons (50% width each), responsively adapting on narrow mobile viewports.
+- **1 Expanded Button / Panel** (`layout: "expanded"`): Rich details card displaying header title and icon, **up to 5 key-value fields** (with optional monospace code font for credentials or IDs), and an accessible one-click copy-to-clipboard button (`data-copy-text` / `data-copy-iban`). Ideal for bank transfer details, event check-in codes, Wi-Fi logins, and promo vouchers.
+
+| Field Name | Type | Required | Description & Validation |
+| :--- | :--- | :--- | :--- |
+| `label` | Text | Yes | Summary header text for the expandable dropdown button (e.g., `"Aktionen & Specials"`). |
+| `icon` | Text | No | Visual icon on trigger button (e.g., `layer-group`, `star`, `heart`, `ticket`, or any Font Awesome icon/SVG). |
+| `description` | Text | No | Optional introductory guidance text revealed when drawer is opened. |
+| `rows` | Blocks / Array | Yes | Array of row items, each configured as `full`, `half`, or `expanded`. |
+| `display_in_default` | Boolean | No | Tier 1 curation flag. Default: `true`. |
+| `show_on` / `hide_on` | Multi-select | No | Tier 2 surface filters. |
+
+#### Row Schema Definition (`accordion_row`)
+
+| Layout Type | Properties | Description |
+| :--- | :--- | :--- |
+| `full` | `button: { label, url, icon, variant, target }` | 1 single full-width button. |
+| `half` | `buttons: [ { label, url, icon, variant }, { label, url, icon, variant } ]` | 2 side-by-side half buttons (50% each). |
+| `expanded` | `title`, `icon`, `fields` (max 5 items: `{ label, value, isCode }`), `copyValue`, `copyLabel` | 1 expanded card with up to 5 fields and copy button. |
+
+---
+
+### 2.8 Horizontal Media Card: `image_card_horizontal`
 
 16:9 aspect-ratio visual banner card:
 
