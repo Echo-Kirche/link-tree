@@ -114,12 +114,21 @@
 
       {# 1. Full Button Row #}
       {% if layout == "full" or layout == "single" %}
-        {% set btn = row.button or (row.buttons[0] if (row.buttons and row.buttons.length > 0) else null) or {
-          label: row.button_1_label or row.btn1_label or row.label or "Aktion",
-          url: row.button_1_url or row.btn1_url or row.url or "#",
-          icon: row.button_1_icon or row.btn1_icon or row.icon,
-          target: row.button_1_target or row.btn1_target or row.target
-        } %}
+        {% set fullButtons = [] %}
+        {% if row.buttons and row.buttons.length > 0 %}
+          {% set fullButtons = row.buttons %}
+        {% elif row.button %}
+          {% set fullButtons = [row.button] %}
+        {% elif row.button_1_label or row.button_1_url or row.label or row.url %}
+          {% set fullButtons = [{
+            label: row.button_1_label or row.label or "Aktion",
+            url: row.button_1_url or row.url or "#",
+            icon: row.button_1_icon or row.icon,
+            target: row.button_1_target or row.target
+          }] %}
+        {% endif %}
+
+        {% for btn in fullButtons %}
         {% set resolvedBtnUrl = btn.url | resolveUrl %}
         {% if resolvedBtnUrl and resolvedBtnUrl != '#' %}
         <div class="accordion-buttons__row accordion-buttons__row--full">
@@ -134,6 +143,7 @@
           </a>
         </div>
         {% endif %}
+        {% endfor %}
 
       {# 2. Two Half Buttons Row #}
       {% elif layout == "half" or layout == "dual" %}
@@ -180,30 +190,31 @@
 
       {# 3. Expanded Card Row (Max 5 Fields + Copy Button) #}
       {% elif layout == "expanded" or layout == "details" or layout == "card" %}
-        {% set cardTitle = row.title or row.card_title or row.cardTitle or "Details & Infos" %}
-        {% set cardIcon = row.icon or row.card_icon or row.cardIcon or "building-columns" %}
-        {% set cardCopyValue = row.copy_value or row.copyValue or row.copyText or row.iban %}
-        {% set cardCopyLabel = row.copy_label or row.copyLabel or (("IBAN kopieren" if row.iban else "Kopieren")) %}
+        {% set expData = (row.buttons[0] if (row.buttons and row.buttons.length > 0 and (row.buttons[0].title or row.buttons[0].copy_value or row.buttons[0].copyValue or row.buttons[0].fields or row.buttons[0].iban or row.buttons[0].component == 'expanded_button')) else row) %}
+        {% set cardTitle = expData.title or expData.card_title or expData.cardTitle or "Details & Infos" %}
+        {% set cardIcon = expData.icon or expData.card_icon or expData.cardIcon or "building-columns" %}
+        {% set cardCopyValue = expData.copy_value or expData.copyValue or expData.copyText or expData.iban %}
+        {% set cardCopyLabel = expData.copy_label or expData.copyLabel or (("IBAN kopieren" if expData.iban else "Kopieren")) %}
 
         {# Assemble fields: up to 5 fields maximum #}
         {% set fieldList = [] %}
-        {% if row.fields and row.fields.length > 0 %}
-          {% set fieldList = row.fields %}
-        {% elif row.details and row.details.length > 0 %}
-          {% set fieldList = row.details %}
+        {% if expData.fields and expData.fields.length > 0 %}
+          {% set fieldList = expData.fields %}
+        {% elif expData.details and expData.details.length > 0 %}
+          {% set fieldList = expData.details %}
         {% else %}
-          {% if row.account_name or row.accountName %}{% set fieldList = (fieldList.push({ label: "Kontoinhaber", value: row.account_name or row.accountName }), fieldList) %}{% endif %}
-          {% if row.iban %}{% set fieldList = (fieldList.push({ label: "IBAN", value: row.iban, isCode: true }), fieldList) %}{% endif %}
-          {% if row.bic %}{% set fieldList = (fieldList.push({ label: "BIC", value: row.bic, isCode: true }), fieldList) %}{% endif %}
-          {% if row.bank_name or row.bankName %}{% set fieldList = (fieldList.push({ label: "Bank", value: row.bank_name or row.bankName }), fieldList) %}{% endif %}
-          {% if row.reference %}{% set fieldList = (fieldList.push({ label: "Verwendungszweck", value: row.reference }), fieldList) %}{% endif %}
+          {% if expData.account_name or expData.accountName %}{% set fieldList = (fieldList.push({ label: "Kontoinhaber", value: expData.account_name or expData.accountName }), fieldList) %}{% endif %}
+          {% if expData.iban %}{% set fieldList = (fieldList.push({ label: "IBAN", value: expData.iban, isCode: true }), fieldList) %}{% endif %}
+          {% if expData.bic %}{% set fieldList = (fieldList.push({ label: "BIC", value: expData.bic, isCode: true }), fieldList) %}{% endif %}
+          {% if expData.bank_name or expData.bankName %}{% set fieldList = (fieldList.push({ label: "Bank", value: expData.bank_name or expData.bankName }), fieldList) %}{% endif %}
+          {% if expData.reference %}{% set fieldList = (fieldList.push({ label: "Verwendungszweck", value: expData.reference }), fieldList) %}{% endif %}
 
           {# Also check explicit field_1 to field_5 from Storyblok #}
-          {% if row.field_1_label and row.field_1_value %}{% set fieldList = (fieldList.push({ label: row.field_1_label, value: row.field_1_value, isCode: row.field_1_is_code }), fieldList) %}{% endif %}
-          {% if row.field_2_label and row.field_2_value %}{% set fieldList = (fieldList.push({ label: row.field_2_label, value: row.field_2_value, isCode: row.field_2_is_code }), fieldList) %}{% endif %}
-          {% if row.field_3_label and row.field_3_value %}{% set fieldList = (fieldList.push({ label: row.field_3_label, value: row.field_3_value, isCode: row.field_3_is_code }), fieldList) %}{% endif %}
-          {% if row.field_4_label and row.field_4_value %}{% set fieldList = (fieldList.push({ label: row.field_4_label, value: row.field_4_value, isCode: row.field_4_is_code }), fieldList) %}{% endif %}
-          {% if row.field_5_label and row.field_5_value %}{% set fieldList = (fieldList.push({ label: row.field_5_label, value: row.field_5_value, isCode: row.field_5_is_code }), fieldList) %}{% endif %}
+          {% if expData.field_1_label and expData.field_1_value %}{% set fieldList = (fieldList.push({ label: expData.field_1_label, value: expData.field_1_value, isCode: expData.field_1_is_code }), fieldList) %}{% endif %}
+          {% if expData.field_2_label and expData.field_2_value %}{% set fieldList = (fieldList.push({ label: expData.field_2_label, value: expData.field_2_value, isCode: expData.field_2_is_code }), fieldList) %}{% endif %}
+          {% if expData.field_3_label and expData.field_3_value %}{% set fieldList = (fieldList.push({ label: expData.field_3_label, value: expData.field_3_value, isCode: expData.field_3_is_code }), fieldList) %}{% endif %}
+          {% if expData.field_4_label and expData.field_4_value %}{% set fieldList = (fieldList.push({ label: expData.field_4_label, value: expData.field_4_value, isCode: expData.field_4_is_code }), fieldList) %}{% endif %}
+          {% if expData.field_5_label and expData.field_5_value %}{% set fieldList = (fieldList.push({ label: expData.field_5_label, value: expData.field_5_value, isCode: expData.field_5_is_code }), fieldList) %}{% endif %}
         {% endif %}
 
         <div class="accordion-buttons__row accordion-buttons__row--expanded">

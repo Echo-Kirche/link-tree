@@ -1403,45 +1403,15 @@
           ],
           "default_value": "full"
         },
-        "button_1_label": {
-          "type": "text",
+        "buttons": {
+          "type": "bloks",
           "pos": 1,
-          "description": "Label for Full button, or Button 1 in Half layout"
-        },
-        "button_1_url": {
-          "type": "multilink",
-          "pos": 2,
-          "description": "Destination URL for Button 1"
-        },
-        "button_1_icon": {
-          "type": "text",
-          "pos": 3,
-          "description": "Icon for Button 1 (e.g. paypal, ticket, star)"
-        },
-        "button_1_target": {
-          "type": "text",
-          "pos": 4,
-          "description": "Target (e.g. _blank for external)"
-        },
-        "button_2_label": {
-          "type": "text",
-          "pos": 5,
-          "description": "Label for Button 2 in Half layout"
-        },
-        "button_2_url": {
-          "type": "multilink",
-          "pos": 6,
-          "description": "Destination URL for Button 2"
-        },
-        "button_2_icon": {
-          "type": "text",
-          "pos": 7,
-          "description": "Icon for Button 2 (e.g. envelope, building-columns)"
-        },
-        "button_2_target": {
-          "type": "text",
-          "pos": 8,
-          "description": "Target (e.g. _blank)"
+          "restrict_components": true,
+          "component_whitelist": [
+            "link_button",
+            "expanded_button"
+          ],
+          "description": "Buttons in this row: 1 link_button for Full, 2 link_buttons for Half, or 1 expanded_button for Expanded"
         },
         "title": {
           "type": "text",
@@ -1504,6 +1474,75 @@
         "field_5_label": { "type": "text", "pos": 32 },
         "field_5_value": { "type": "text", "pos": 33 },
         "field_5_is_code": { "type": "boolean", "pos": 34 }
+      }
+    },
+    {
+      "name": "expanded_button",
+      "display_name": "Expanded Button Card",
+      "is_root": false,
+      "is_nestable": true,
+      "schema": {
+        "title": {
+          "type": "text",
+          "pos": 0,
+          "description": "Header title of the expanded card (e.g. Per Banküberweisung (IBAN) or Event VIP-Code)"
+        },
+        "icon": {
+          "type": "text",
+          "pos": 1,
+          "description": "Icon next to title (e.g. building-columns, star, wifi)"
+        },
+        "copy_value": {
+          "type": "text",
+          "pos": 2,
+          "description": "Exact text copied to clipboard (e.g. IBAN string or promo code)"
+        },
+        "copy_label": {
+          "type": "text",
+          "pos": 3,
+          "default_value": "Kopieren",
+          "description": "Label on copy button (e.g. IBAN kopieren, Code kopieren)"
+        },
+        "account_name": {
+          "type": "text",
+          "pos": 4,
+          "description": "Bank account holder (e.g. Echo Kirche e.V.)"
+        },
+        "iban": {
+          "type": "text",
+          "pos": 5,
+          "description": "Bank IBAN"
+        },
+        "bic": {
+          "type": "text",
+          "pos": 6,
+          "description": "Bank BIC / SWIFT code"
+        },
+        "bank_name": {
+          "type": "text",
+          "pos": 7,
+          "description": "Bank name (e.g. Postbank)"
+        },
+        "reference": {
+          "type": "text",
+          "pos": 8,
+          "description": "Bank transfer payment reference (Verwendungszweck)"
+        },
+        "field_1_label": { "type": "text", "pos": 9 },
+        "field_1_value": { "type": "text", "pos": 10 },
+        "field_1_is_code": { "type": "boolean", "pos": 11 },
+        "field_2_label": { "type": "text", "pos": 12 },
+        "field_2_value": { "type": "text", "pos": 13 },
+        "field_2_is_code": { "type": "boolean", "pos": 14 },
+        "field_3_label": { "type": "text", "pos": 15 },
+        "field_3_value": { "type": "text", "pos": 16 },
+        "field_3_is_code": { "type": "boolean", "pos": 17 },
+        "field_4_label": { "type": "text", "pos": 18 },
+        "field_4_value": { "type": "text", "pos": 19 },
+        "field_4_is_code": { "type": "boolean", "pos": 20 },
+        "field_5_label": { "type": "text", "pos": 21 },
+        "field_5_value": { "type": "text", "pos": 22 },
+        "field_5_is_code": { "type": "boolean", "pos": 23 }
       }
     }
   ]

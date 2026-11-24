@@ -211,12 +211,14 @@
       "rows": [
         {
           "layout": "full",
-          "button": {
-            "label": "Mit PayPal spenden",
-            "url": "https://paypal.me/echokirche",
-            "icon": "paypal",
-            "target": "_blank"
-          }
+          "buttons": [
+            {
+              "label": "Mit PayPal spenden",
+              "url": "https://paypal.me/echokirche",
+              "icon": "paypal",
+              "target": "_blank"
+            }
+          ]
         },
         {
           "layout": "half",

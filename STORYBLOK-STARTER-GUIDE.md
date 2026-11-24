@@ -386,16 +386,16 @@ The live link tree uses this exact single component (`dropdown-accordion`):
 
 ---
 
-## 7. Nestable Block: `accordion_row` (Accordion Row: Full Button, Half Buttons, or Expanded Card)
+## 7. Nestable Block: `accordion_row` (Accordion Row: Full, Half, or Expanded)
 
 An individual interactive row nested inside `accordion_buttons`'s `rows` list. Just like `dropdown_time_item` is the nestable block for `dropdown_card`, **`accordion_row` is the nestable block for `accordion_buttons`**.
 
-Each row block features a `layout` selector that unlocks three distinct interactive patterns:
-1. **`full` (1 Full Button)**: A prominent full-width action button. Renders using the exact standard `link_button` model (`label`, `url`, `icon`, `target`).
-2. **`half` (2 Half Buttons)**: Two responsive side-by-side action buttons (50% width each). Both render using the exact same standard `link_button` model (`label`, `url`, `icon`, `target`).
-3. **`expanded` (1 Expanded Card)**: Its own rich information card model holding **up to 5 key-value fields** and an accessible copy-to-clipboard button.
+Each row contains a `layout` mode and a `buttons` block list. You simply add the button(s) into the row:
+1. **`full` (1 Full Button)**: 100% wide row. Add 1 `link_button` inside `buttons`.
+2. **`half` (2 Half Buttons)**: Side-by-side row (50% each, wrapping on mobile). Add 2 `link_button`s (Button 1 and Button 2) inside `buttons`.
+3. **`expanded` (1 Expanded Card)**: Rich information card row. Add 1 `expanded_button` inside `buttons` (or configure card fields directly on the row).
 
-> **Unified Button Model**: Buttons in `full` and `half` layouts use the exact same styling and behavior as regular page-level `link_button`s (`.link-button` pill, standard brand action tokens, accessible focus ring). All custom button color variants and arrow indicators have been removed for maximum brand consistency and simplicity. Editors can add **any number of rows** to an accordion!
+> **Pure Row &rarr; Button Architecture**: There are no artificial `button_1_label` or `button_2_label` fields. Every button in a `full` or `half` row is an actual, standard [`link_button`](#2-nestable-block-link_button-standard-link-button) component (`label`, `url`, `icon`, `target`). Editors can add **any number of rows**, and each row holds its respective button(s)!
 
 - **Technical Name**: `accordion_row`
 - **Display Name**: `Accordion Row`
@@ -405,17 +405,25 @@ Each row block features a `layout` selector that unlocks three distinct interact
 
 | Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
 |---|---|---|---|---|---|---|
-| `layout` | Layout Mode | Determines whether this row renders 1 full button, 2 half buttons, or an expanded card. | `Single Option` | `full` | **Yes** | Options: `full` (1 Full Button), `half` (2 Half Buttons), `expanded` (1 Expanded Card). |
-| `button_1_label` | Button 1 Label | Label for Full button, or Button 1 in Half layout. | `Text` | `Aktion` | No | e.g. `Mit PayPal spenden` or `Online-Banking öffnen`. |
-| `button_1_url` | Button 1 URL | Destination URL for Button 1. | `Link` or `Text` | Empty | No | e.g. `https://paypal.me/echokirche` or `https://kirche-echo.de/spenden`. |
-| `button_1_icon` | Button 1 Icon | Leading icon for Button 1. | `Text` | Empty | No | Font Awesome icon name (e.g. `paypal`, `ticket`, `building-columns`). |
-| `button_1_target` | Button 1 Target | Window target for Button 1 link. | `Text` | Empty | No | Set to `_blank` for external links (e.g. PayPal). |
-| `button_2_label` | Button 2 Label | Label for Button 2 (only used in `half` layout). | `Text` | Empty | No | e.g. `Kontakt & Fragen`. |
-| `button_2_url` | Button 2 URL | Destination URL for Button 2. | `Link` or `Text` | Empty | No | e.g. `https://kirche-echo.de/kontakt`. |
-| `button_2_icon` | Button 2 Icon | Leading icon for Button 2. | `Text` | Empty | No | Font Awesome icon name (e.g. `envelope`, `phone`). |
-| `button_2_target` | Button 2 Target | Window target for Button 2 link. | `Text` | Empty | No | e.g. `_blank` or leave empty. |
-| `title` | Card Title | Title of expanded card (only used in `expanded` layout). | `Text` | Empty | No | e.g. `Per Banküberweisung (IBAN)` or `Weihnachts-Event: VIP-Code`. |
-| `icon` | Card Icon | Icon next to card title. | `Text` | `building-columns` | No | Font Awesome icon name (e.g. `building-columns`, `star`, `wifi`, `key`). |
+| `layout` | Layout Mode | Determines how this row displays its child buttons or details card. | `Single Option` | `full` | **Yes** | Options: `full` (1 Full Button), `half` (2 Half Buttons), `expanded` (1 Expanded Card). |
+| `buttons` | Buttons in Row | The button component(s) belonging to this row. | `Blocks` | None | **Yes** | Allowed components: `link_button` (for `full` and `half` layouts) and `expanded_button` (for `expanded` layout). |
+
+---
+
+## 7b. Nestable Block: `expanded_button` (Expanded Card Model: Bank Details, Event Codes, Wi-Fi)
+
+A rich information card nested inside an `expanded` row's `buttons` list. Holds a title, icon, one-click copy-to-clipboard button, and **up to 5 key-value fields** (e.g. bank details or event credentials).
+
+- **Technical Name**: `expanded_button`
+- **Display Name**: `Expanded Button Card`
+- **Component Type**: **Nestable Block**
+
+### Fields
+
+| Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
+|---|---|---|---|---|---|---|
+| `title` | Card Title | Title of expanded card. | `Text` | Empty | No | e.g. `Per Banküberweisung (IBAN)` or `Weihnachts-Event: VIP-Code`. |
+| `icon` | Card Icon | Leading icon next to card title. | `Text` | `building-columns` | No | Font Awesome icon name (e.g. `building-columns`, `star`, `wifi`, `key`). |
 | `copy_value` | Copy Value | The exact string copied to the user's clipboard. | `Text` | Empty | No | e.g. `DE12 3456 7890 1234 5678 90` or `ECHO-XMAS-2026`. |
 | `copy_label` | Copy Button Label | Label displayed on the clipboard copy button. | `Text` | `Kopieren` | No | e.g. `IBAN kopieren` or `Code kopieren`. |
 | `account_name` | Bank: Kontoinhaber | Preset bank account holder. | `Text` | Empty | No | e.g. `Echo Kirche e.V.` |
@@ -441,51 +449,55 @@ Each row block features a `layout` selector that unlocks three distinct interact
 
 ### How to Configure the 4 Production Rows in Storyblok
 
-#### Row 1: PayPal Giving (`layout: full`)
-1. Click **Add block** inside `rows` &rarr; Select `accordion_row`.
+#### Row 1: PayPal Giving (`layout: full` &rarr; 1 button)
+1. In `accordion_buttons` &rarr; `rows` &rarr; click **Add block** &rarr; select `accordion_row`.
 2. `layout`: Select `1 Full Button (100% width)`.
-3. `button_1_label`: `Mit PayPal spenden`.
-4. `button_1_url`: `https://paypal.me/echokirche`.
-5. `button_1_icon`: `paypal`.
-6. `button_1_target`: `_blank`.
+3. In `buttons` &rarr; click **Add block** &rarr; select `link_button`:
+   - `label`: `Mit PayPal spenden`
+   - `url`: `https://paypal.me/echokirche`
+   - `icon`: `paypal`
+   - `target`: `_blank`
 
-#### Row 2: Online-Banking & Kontakt (`layout: half`)
-1. Click **Add block** inside `rows` &rarr; Select `accordion_row`.
+#### Row 2: Online-Banking & Kontakt (`layout: half` &rarr; button 1, button 2)
+1. In `accordion_buttons` &rarr; `rows` &rarr; click **Add block** &rarr; select `accordion_row`.
 2. `layout`: Select `2 Half Buttons (50% each)`.
-3. `button_1_label`: `Online-Banking öffnen`.
-4. `button_1_url`: `https://kirche-echo.de/spenden`.
-5. `button_1_icon`: `building-columns`.
-6. `button_2_label`: `Kontakt & Fragen`.
-7. `button_2_url`: `https://kirche-echo.de/kontakt`.
-8. `button_2_icon`: `envelope`.
+3. In `buttons` &rarr; click **Add block** &rarr; select `link_button` (Button 1):
+   - `label`: `Online-Banking öffnen`
+   - `url`: `https://kirche-echo.de/spenden`
+   - `icon`: `building-columns`
+4. In `buttons` &rarr; click **Add block** &rarr; select `link_button` (Button 2):
+   - `label`: `Kontakt & Fragen`
+   - `url`: `https://kirche-echo.de/kontakt`
+   - `icon`: `envelope`
 
-#### Row 3: Banküberweisung IBAN (`layout: expanded`)
-1. Click **Add block** inside `rows` &rarr; Select `accordion_row`.
+#### Row 3: Banküberweisung IBAN (`layout: expanded` &rarr; expanded button)
+1. In `accordion_buttons` &rarr; `rows` &rarr; click **Add block** &rarr; select `accordion_row`.
 2. `layout`: Select `1 Expanded Card`.
-3. `title`: `Per Banküberweisung (IBAN)`.
-4. `icon`: `building-columns`.
-5. `copy_value`: `DE12 3456 7890 1234 5678 90`.
-6. `copy_label`: `IBAN kopieren`.
-7. Fill bank details:
+3. In `buttons` &rarr; click **Add block** &rarr; select `expanded_button`:
+   - `title`: `Per Banküberweisung (IBAN)`
+   - `icon`: `building-columns`
+   - `copy_value`: `DE12 3456 7890 1234 5678 90`
+   - `copy_label`: `IBAN kopieren`
    - `account_name`: `Echo Kirche e.V.`
    - `iban`: `DE12 3456 7890 1234 5678 90`
    - `bic`: `PBNKDEFF`
    - `bank_name`: `Postbank`
    - `reference`: `Spende Echo Kirche`
 
-#### Row 4: Christmas Event VIP-Code (`layout: expanded`)
-1. Click **Add block** inside `rows` &rarr; Select `accordion_row`.
+#### Row 4: Christmas Event VIP-Code (`layout: expanded` &rarr; expanded button)
+1. In `accordion_buttons` &rarr; `rows` &rarr; click **Add block** &rarr; select `accordion_row`.
 2. `layout`: Select `1 Expanded Card`.
-3. `title`: `Weihnachts-Event: VIP-Code`.
-4. `icon`: `star`.
-5. `copy_value`: `ECHO-XMAS-2026`.
-6. `copy_label`: `Code kopieren`.
-7. Fill custom fields:
-   - `field_1_label`: `Event`, `field_1_value`: `Echo Christmas Celebration`, `field_1_is_code`: `false`
-   - `field_2_label`: `Datum`, `field_2_value`: `24. Dezember 2026`, `field_2_is_code`: `false`
-   - `field_3_label`: `Einlass`, `field_3_value`: `15:30 Uhr`, `field_3_is_code`: `false`
-   - `field_4_label`: `Ort`, `field_4_value`: `BSK-Saal, Gifhorn`, `field_4_is_code`: `false`
-   - `field_5_label`: `VIP-Code`, `field_5_value`: `ECHO-XMAS-2026`, `field_5_is_code`: `true`
+3. In `buttons` &rarr; click **Add block** &rarr; select `expanded_button`:
+   - `title`: `Weihnachts-Event: VIP-Code`
+   - `icon`: `star`
+   - `copy_value`: `ECHO-XMAS-2026`
+   - `copy_label`: `Code kopieren`
+   - Custom fields:
+     - `field_1_label`: `Event`, `field_1_value`: `Echo Christmas Celebration`, `field_1_is_code`: `false`
+     - `field_2_label`: `Datum`, `field_2_value`: `24. Dezember 2026`, `field_2_is_code`: `false`
+     - `field_3_label`: `Einlass`, `field_3_value`: `15:30 Uhr`, `field_3_is_code`: `false`
+     - `field_4_label`: `Ort`, `field_4_value`: `BSK-Saal, Gifhorn`, `field_4_is_code`: `false`
+     - `field_5_label`: `VIP-Code`, `field_5_value`: `ECHO-XMAS-2026`, `field_5_is_code`: `true`
 
 ---
 
@@ -791,14 +803,15 @@ Your Storyblok space and project setup is complete when all of the following are
 - [ ] Single Storyblok space created in EU region.
 - [ ] Public access token added to Netlify environment variables (`STORYBLOK_TOKEN`).
 - [ ] `Surfaces` datasource created with entries: `default`, `gifhorn`, `wolfsburg`, `helmstedt`, `instagram`, `tiktok`, `linkedin`, `youtube`.
-- [ ] All 14 components created with exact technical names:
+- [ ] All 15 components created with exact technical names:
   - [ ] `link_page` (Content Type)
   - [ ] `profile_header` (Nestable Block)
   - [ ] `link_button` (Nestable Block)
   - [ ] `dropdown_card` (Nestable Block — Service Times Dropdown Button & Drawer)
   - [ ] `dropdown_time_item` (Nestable Block — Schedule & Location Mini Card)
   - [ ] `accordion_buttons` (Nestable Block — Multi-Row Dropdown Accordion / Giving, IBAN & Event Drawer)
-  - [ ] `accordion_row` (Nestable Block — Accordion Row: Full Button, Half Buttons, or Expanded Card)
+  - [ ] `accordion_row` (Nestable Block — Accordion Row: Full, Half, or Expanded)
+  - [ ] `expanded_button` (Nestable Block — Expanded Card Model: Bank Details, Event Codes, Wi-Fi)
   - [ ] `image_card_horizontal` (Nestable Block)
   - [ ] `image_card_vertical` (Nestable Block)
   - [ ] `video_link_card` (Nestable Block)
