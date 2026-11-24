@@ -39,11 +39,11 @@
     const textToCopy = isIban ? rawValue.replace(/\s+/g, '').trim() : rawValue.trim();
     if (!textToCopy) return;
 
-    const labelSpan = btn.querySelector('.donation-card__copy-text');
+    const labelSpan = btn.querySelector('.donation-card__copy-text, .accordion-buttons__copy-text');
     const originalText = labelSpan ? labelSpan.textContent : '';
     const feedbackText = btn.getAttribute('data-copied-text') || 'Kopiert!';
 
-    const liveRegion = btn.closest('.donation-card')?.querySelector('.donation-card__live-region');
+    const liveRegion = (btn.closest('.donation-card') || btn.closest('.accordion-buttons'))?.querySelector('.donation-card__live-region, .accordion-buttons__live-region');
     const liveSuccessMessage = btn.getAttribute('data-copied-live') || (isIban ? 'IBAN in die Zwischenablage kopiert' : 'In die Zwischenablage kopiert');
 
     copyTextToClipboard(textToCopy, () => {
