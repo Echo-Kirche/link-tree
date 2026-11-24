@@ -43,7 +43,8 @@
     const originalText = labelSpan ? labelSpan.textContent : '';
     const feedbackText = btn.getAttribute('data-copied-text') || 'Kopiert!';
 
-    const liveRegion = (btn.closest('.donation-card') || btn.closest('.accordion-buttons'))?.querySelector('.donation-card__live-region, .accordion-buttons__live-region');
+    const copyWrapper = btn.closest('.donation-card__copy-wrapper, .accordion-buttons__copy-wrapper') || btn.parentElement;
+    const liveRegion = copyWrapper?.querySelector('.donation-card__live-region, .accordion-buttons__live-region');
     const liveSuccessMessage = btn.getAttribute('data-copied-live') || feedbackText;
 
     copyTextToClipboard(textToCopy, () => {
