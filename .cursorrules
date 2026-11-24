@@ -2,7 +2,7 @@
 
 All AI coding assistants (Cursor, ChatGPT, Windsurf, Claude, Copilot, Antigravity) must strictly follow these rules:
 
-> **SINGLE SOURCE OF TRUTH**: [`link-tree/AGENTS.md`](file:///Users/Shared/projeckt/goto/link-tree/AGENTS.md) is the authoritative rulebook. Always read `link-tree/AGENTS.md` before making architectural or code changes.
+> **SINGLE SOURCE OF TRUTH**: [`link-tree/AGENTS.md`](./AGENTS.md) is the authoritative rulebook. Always read `link-tree/AGENTS.md` before making architectural or code changes.
 
 ## 1. Coding Standards & Conventions
 - **Strict Patterns**: Adhere strictly to established architectural patterns, folder structures, and conventions in the codebase.
@@ -15,6 +15,7 @@ All AI coding assistants (Cursor, ChatGPT, Windsurf, Claude, Copilot, Antigravit
 - **Pure Static Output**: Pre-rendered HTML via Eleventy (11ty) v3.x and Dart Sass. Zero client-side framework hydration (no React, Vue, Svelte, Alpine).
 - **Strict Privacy (DSGVO)**: Zero initial third-party connections. Self-hosted fonts (`Clash Display`, `Inter`). No cookies on initial visit. 2-click consent YouTube facade via `youtube-nocookie.com`.
 - **Brand Color Constancy**: Colors (`#08415C` Dark Teal Blue, `#846B8A` Muted Lavender, `#FEFADC` Light Pastel Yellow) never change across routes.
+- **Strict Iconography & No Custom Icons**: Never create or draw custom icons anytime. Use Font Awesome icons exclusively via self-hosted `FaIcon.njk`. The ONLY custom icons are the official brand logos (`logo.svg`, `logo-circle.svg`, `favicon.webp`).
 - **Logo Clear Space**: Clear buffer equal to lowercase `"e"` on all four sides. Never distort or rotate.
 - **External Legal Links**: Impressum and Datenschutz point to canonical external URLs (`https://kirche-echo.de/...`). Local routes must never be served.
 - **Interactivity**: Pure CSS `<details>` / `<summary>` for collapsible cards (`DropdownCard`).

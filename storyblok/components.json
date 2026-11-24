@@ -682,7 +682,7 @@
         "organization_name": {
           "type": "text",
           "pos": 0,
-          "default_value": "Echo Kirche"
+          "default_value": "Echo Kirche KdöR"
         },
         "street": {
           "type": "text",

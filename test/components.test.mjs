@@ -481,6 +481,10 @@ describe('Component Markup & Accessibility Contracts', () => {
   test('FooterLegal renders address, external legal links, and social buttons', () => {
     assert.match(indexHtml, /class="footer-legal"/, 'FooterLegal container must exist');
     assert.match(indexHtml, /class="footer-legal__address"/, 'Footer address must exist');
+    assert.match(indexHtml, /Echo Kirche KdöR/, 'Footer must contain church name Echo Kirche KdöR');
+    assert.match(indexHtml, /Schützenplatz 1/, 'Footer must contain Schützenplatz 1');
+    assert.match(indexHtml, /38518 Gifhorn/, 'Footer must contain 38518 Gifhorn');
+    assert.match(indexHtml, /&copy;\s*2026\s*Echo Kirche KdöR\./, 'Footer must contain copyright 2026 Echo Kirche KdöR.');
     assert.match(indexHtml, /href="https:\/\/kirche-echo\.de\/impressum\/"[^>]*target="_blank"/, 'Impressum link must point externally with target="_blank"');
     assert.match(indexHtml, /href="https:\/\/kirche-echo\.de\/datenschutz\/"[^>]*target="_blank"/, 'Datenschutz link must point externally with target="_blank"');
     assert.match(indexHtml, /class="[^"]*\bsocial-button\b/, 'Social icon buttons must exist');

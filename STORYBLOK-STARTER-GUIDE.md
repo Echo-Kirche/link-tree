@@ -562,7 +562,7 @@ The bottom footer section containing organization address, mandatory German lega
 
 | Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
 |---|---|---|---|---|---|---|
-| `organization_name` | Organization Name | Official registered name of the church/association. | `Text` | `Echo Kirche` | No | e.g. `Echo Kirche`. |
+| `organization_name` | Organization Name | Official registered name of the church/association. | `Text` | `Echo Kirche KdöR` | No | e.g. `Echo Kirche KdöR`. |
 | `street` | Street Address | Registered street address. | `Text` | `Schützenplatz 1` | No | e.g. `Schützenplatz 1`. |
 | `city` | Postal Code & City | City and postal code. | `Text` | `38518 Gifhorn` | No | e.g. `38518 Gifhorn`. |
 | `email` | Contact E-Mail | Official contact email. | `Text` | `info@kirche-echo.de` | No | e.g. `info@kirche-echo.de`. |

@@ -22,6 +22,7 @@ You are assisting on the **Echo Kirche** static website and link-in-bio platform
 - **Zero JS Runtime**: No React/Vue/Svelte hydration. Interactivity uses pure HTML5/CSS (e.g. `<details>` / `<summary>` for dropdowns).
 - **Privacy First (DSGVO)**: No external fonts, no cookies on initial visit, 2-click consent facade for YouTube embeds (`youtube-nocookie.com`).
 - **Brand Color Constancy**: Colors (`#08415C` Dark Teal Blue, `#846B8A` Muted Lavender, `#FEFADC` Light Pastel Yellow) never change across routes.
+- **Strict Iconography & No Custom Icons**: Never create or draw custom icons anytime. Use Font Awesome icons exclusively via self-hosted `FaIcon.njk`. The ONLY custom icons are official brand logos (`logo.svg`, `logo-circle.svg`, `favicon.webp`).
 - **Logo Clear Space**: Clear space equal to lowercase `"e"` on all four sides. Never distort or rotate.
 - **External Legal Links**: Impressum and Datenschutz point to canonical external URLs (`https://kirche-echo.de/...`). Local routes must never be served.
 - **Accessibility (a11y) Suite**: Skip link, floating trigger, HTML5 dialog for font scaling & 21:1 high contrast modes, mobile fixed positioning, and scroll locking.

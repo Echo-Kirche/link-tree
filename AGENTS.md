@@ -19,7 +19,7 @@ Every contribution MUST honor these five foundational invariants:
 ### 1.2 Schema & Content-Model Lock
 - **Schema Conformity**: All components, local data files (`src/_data/site.json`), and CMS stories must conform strictly to [`docs/CONTENT-MODEL.md`](./docs/CONTENT-MODEL.md), [`content.schema.json`](./content.schema.json), and [`storyblok/components.json`](./storyblok/components.json).
 - **Graceful Nullability & Fallbacks**: Components MUST gracefully handle optional, empty, or undefined CMS fields (such as `bio`, `icon`, `image`, `description`, `details`, `kidsLabel`, `actionLabel`) without breaking markup, throwing Nunjucks template errors, or rendering `[object Object]`.
-- **Button Icon & Font Awesome Invariant**: All button components (`link_button`, `dropdown_card`, `donation_card`, `accordion_buttons`) MUST support arbitrary Font Awesome icons (`fa-*`, `fa-solid`, `fa-brands`, `fas`, `far`, `fab`, or short names like `cross`, `star`, `ticket`, `coffee`, `bible`, `church`, `calendar`), raw inline SVG markup, and `<i>` icon tags via the self-hosted [`src/_includes/components/FaIcon.njk`](./src/_includes/components/FaIcon.njk) component without loading external CDNs (preserving DSGVO zero third-party origin compliance).
+- **Button Icon, Font Awesome & Zero Custom Icons Invariant**: NEVER create or draw custom icons anytime. All button and UI components (`link_button`, `dropdown_card`, `donation_card`, `accordion_buttons`) MUST use Font Awesome icons exclusively (`fa-*`, `fa-solid`, `fa-brands`, `fas`, `far`, `fab`, or standard short names like `cross`, `star`, `ticket`, `coffee`, `bible`, `church`, `calendar`) via the self-hosted [`src/_includes/components/FaIcon.njk`](./src/_includes/components/FaIcon.njk) component without loading external CDNs (preserving DSGVO zero third-party origin compliance). The ONLY custom icons or vector brand marks permitted in this repository are the official Echo Kirche logos (`logo.svg`, `logo-circle.svg`, `favicon.webp`, `avatar.svg`).
 - **Image Box & Media Links Invariant**: Media cards (`image_card_horizontal`, `image_card_vertical`) MUST support dual image input representations: structured image asset objects (`{ filename }` or `{ src, alt, width, height }`) AND direct URL/path strings (`localAsset` or `safeUrl`). The `label` field is optional; omitting it renders a full-card clickable image banner without an empty title container.
 - **Offline Fallback Guarantee**: The build pipeline must succeed completely from local offline data (`src/_data/site.json`, `src/_data/operator.json`) whenever `STORYBLOK_TOKEN` is unset or the Storyblok API is unreachable.
 - **Dual-Tier Curation**:
@@ -103,10 +103,12 @@ Every contribution MUST honor these five foundational invariants:
 - **DO** preserve high contrast and font scaling token contracts and ensure test mode controls function across mobile, DOM, and desktop.
 - **DO** compress and convert all uploaded images to `.webp` format (max 400 KB, 1900px max width for heroes, 1400px for cards).
 - **DO** keep operator legal identity in `src/_data/operator.json` and maintain canonical external legal links to `https://kirche-echo.de/impressum/` and `https://kirche-echo.de/datenschutz/`.
+- **DO** use Font Awesome (FA) icons exclusively for all UI elements, cards, and buttons via self-hosted `FaIcon.njk` (the only custom icons are official brand logos).
 - **DO** use repository-relative markdown links (e.g. `[./docs/STYLEGUIDE.md](./docs/STYLEGUIDE.md)`) for all documentation and asset references.
 - **DO** run `npm run build && npm test` and ensure all test assertions pass.
 
 ### DO NOT:
+- **DO NOT** create, draw, or commit custom icons anytime; use Font Awesome icons instead (the only custom icons are official brand logos).
 - **DO NOT** serve `/impressum` or `/datenschutz` as local routes on this domain; they must be external links pointing to `https://kirche-echo.de/...`.
 - **DO NOT** commit absolute machine-specific file URIs (`file:///Users/...`) or local environment paths into markdown documentation.
 - **DO NOT** delete, rename, or archive documentation files without explicit user review.

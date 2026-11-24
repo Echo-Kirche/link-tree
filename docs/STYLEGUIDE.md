@@ -97,7 +97,7 @@ All official visual assets, brand marks, and photography are self-hosted in [`sr
 
 ### 4.3 Web Image Rules & Budget
 
-* **Format**: `.webp` format only for photography and raster assets (SVG for scalable vector icons).
+* **Format**: `.webp` format only for photography and raster assets (SVG exclusively for official brand logos).
 * **File size budget**: **max 400 KB** per image.
 * **Max dimensions**:
   * **1900px** max width for hero images.
@@ -107,6 +107,22 @@ All official visual assets, brand marks, and photography are self-hosted in [`sr
   * `3:2` (landscape campus photography).
   * `4:3` (standard cards/flyers).
   * `3:4` (vertical portrait cards).
+
+### 4.4 Iconography Policy: Zero Custom Icons & Strict Font Awesome Rule
+
+> **CRITICAL INVARIANT**: **NEVER create or draw custom icons anytime.** Use Font Awesome (FA) icons exclusively for all UI components, buttons, and cards. The **ONLY** custom icons permitted in the project are the official brand logos.
+
+- **Zero Custom Icons**: AI agents and developers must never generate, draw, trace, or commit custom vector icon SVGs or arbitrary glyph assets.
+- **Font Awesome Standard**: Use Font Awesome icons exclusively across all interactive buttons, cards, action drawers, and metadata badges:
+  - All icons are rendered via the self-hosted component [`FaIcon.njk`](../src/_includes/components/FaIcon.njk) using standard Font Awesome icon identifiers (e.g. `church`, `calendar`, `video`, `heart`, `users`, `location`, `music`, `newsletter`, `podcast`, `envelope`, `globe`, `cross`, `star`, `phone`, `book`, `ticket`, `info`, `bell`, `clock`, `coffee`, `share`, `comments`, `hand-holding-heart`, `house`, `compass`, `microphone`, `headphones`, `gift`, `check`, `download`, `search`, `youtube`, `spotify`, `whatsapp`, `facebook`, `tiktok`, `linkedin`, `arrow-right`, `external-link`, or any standard `fa-*` class name).
+  - All icons are pre-compiled and inlined locally in pure static SVG markup with zero external font/CDN requests (preserving DSGVO zero third-party origin compliance).
+- **The Only Exception (Official Brand Logos Only)**: The **only** standalone custom icons or vector brand marks permitted in this repository are the verified official Echo Kirche logos cataloged in [Section 4.1](#41-approved-brand-logos--media-inventory):
+  - Primary Logo: [`/assets/images/logo.svg`](../src/assets/images/logo.svg)
+  - Social Share Circle Logo: [`/assets/images/logo-circle.png`](../src/assets/images/logo-circle.png)
+  - Social Share Vector Mark: [`/assets/images/logo-circle.svg`](../src/assets/images/logo-circle.svg)
+  - Site Favicon: [`/assets/images/favicon.webp`](../src/assets/images/favicon.webp)
+  - Avatar Silhouette Fallback: [`/assets/images/avatar.svg`](../src/assets/images/avatar.svg)
+- **Token Color Binding**: All UI icons inherit fill/stroke colors directly from their paired text token (`fill: currentColor`) to guarantee compliance with WCAG contrast standards.
 
 ---
 
@@ -324,3 +340,4 @@ Enforce token usage during development via CSS linters:
 - [ ] Are dynamic background variants paired with their respective `--color-on-*` semantic tokens?
 - [ ] Have all newly added theme color variables passed the automated math-based contrast test suite?
 - [ ] Is icon fill/stroke explicitly set to match the paired text color (`fill: currentColor`)?
+- [ ] Are all UI icons sourced exclusively from Font Awesome via `FaIcon.njk` with zero newly created custom icons? (Only official logos are permitted as custom icons).

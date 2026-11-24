@@ -343,9 +343,9 @@ The legal notice, organization address, and social media icons at the bottom of 
 
 - **How to create**: Add inside the `footer` field of `link_page`.
 - **Fields to fill**:
-  - `organization_name` (Text): Name of legal entity (e.g., `Echo Gifhorn`, `Echo Wolfsburg`, `Echo Helmstedt`).
-  - `street` (Text): Street address (e.g., `Schützenplatz 1`, or leave blank for Helmstedt).
-  - `city` (Text): Zip code and city (e.g., `38518 Gifhorn`, `38440 Wolfsburg`, `Helmstedt`).
+  - `organization_name` (Text): Name of legal entity (`Echo Kirche KdöR`).
+  - `street` (Text): Street address (default: `Schützenplatz 1`).
+  - `city` (Text): Zip code and city (default: `38518 Gifhorn`).
   - `email` (Text): Contact email address.
   - `mailto` (Text, Optional): Custom mailto URI with subject (e.g., `mailto:david.loewens@kib-gifhorn.de?subject=Kontakt%20EchoHelmstedt`).
   - `impressum_url` (Text): Link to Impressum (e.g., `https://kirche-echo.de/impressum/`).
@@ -598,9 +598,9 @@ Der Bereich ganz unten auf der Seite mit Impressum, Datenschutz und Social-Media
 
 - **Wo einfügen**: In das Feld `footer` der `link_page`.
 - **Felder zum Ausfüllen**:
-  - `organization_name` (Text): Offizieller Name (z. B. `Echo Gifhorn`, `Echo Wolfsburg`, `Echo Helmstedt`).
-  - `street` (Text): Straße und Hausnummer (z. B. `Schützenplatz 1` oder für Helmstedt leer lassen).
-  - `city` (Text): Postleitzahl und Ort (z. B. `38518 Gifhorn`, `38440 Wolfsburg`, `Helmstedt`).
+  - `organization_name` (Text): Offizieller Name (`Echo Kirche KdöR`).
+  - `street` (Text): Straße und Hausnummer (Standard: `Schützenplatz 1`).
+  - `city` (Text): Postleitzahl und Ort (Standard: `38518 Gifhorn`).
   - `email` (Text): Kontakt-E-Mail (z. B. `info@kirche-echo.de`, `david.loewens@kib-gifhorn.de`).
   - `mailto` (Text, Optional): E-Mail-Link mit Betreff (z. B. `mailto:david.loewens@kib-gifhorn.de?subject=Kontakt%20EchoHelmstedt`).
   - `impressum_url` (Text): Link zum Impressum (z. B. `https://kirche-echo.de/impressum/`).

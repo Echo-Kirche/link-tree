@@ -43,6 +43,7 @@ Before modifying any files:
 - **Design Tokens**: Consume CSS variables from `src/styles/tokens/_semantic.scss`.
 - **Pure CSS Interactivity**: Collapsible UI must use HTML5 `<details>` and `<summary>`.
 - **Zero Client Frameworks**: Never introduce React, Vue, Svelte, Alpine, or hydration scripts.
+- **Strict Iconography**: Never create custom icons; use Font Awesome icons via `FaIcon.njk` (the only custom icons are official logos).
 - **Graceful Nullability**: Ensure all components render cleanly if optional CMS fields are missing.
 
 ### Step 4: Verification Commands
