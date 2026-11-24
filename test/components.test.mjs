@@ -70,16 +70,41 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(indexHtml, /Helmstedt/, 'DropdownCard default must include Helmstedt');
   });
 
-  test('DonationCard component renders accessible drawer with PayPal and IBAN copy', () => {
-    assert.match(indexHtml, /<details class="donation-card"/, 'DonationCard must use semantic <details>');
-    assert.match(indexHtml, /class="donation-card__summary link-button/, 'DonationCard summary must be styled as link-button');
-    assert.match(indexHtml, /class="donation-card__chevron"/, 'DonationCard must have chevron indicator');
-    assert.match(indexHtml, /class="donation-card__btn donation-card__btn--paypal"/, 'DonationCard must render PayPal action button');
-    assert.match(indexHtml, /class="donation-card__btn donation-card__btn--iban"/, 'DonationCard must render Pay with IBAN button');
-    assert.match(indexHtml, /class="donation-card__bank-details"/, 'DonationCard must render bank details definition list');
-    assert.match(indexHtml, /class="donation-card__iban-code"/, 'DonationCard must render formatted IBAN code');
-    assert.match(indexHtml, /data-copy-iban="DE12 3456 7890 1234 5678 90"/, 'DonationCard must render copy button with data-copy-iban attribute');
-    assert.match(indexHtml, /class="donation-card__live-region sr-only"/, 'DonationCard must render live region for screen readers');
+  test('DonationCard component renders accessible drawer with PayPal and IBAN copy', async () => {
+    const nunjucks = (await import('nunjucks')).default;
+    const env = nunjucks.configure(path.resolve('src/_includes'), { autoescape: true });
+    env.addFilter('resolveUrl', (val) => typeof val === 'string' ? val : (val?.url || ''));
+    env.addFilter('storyblokEditable', () => '');
+
+    const donationItem = {
+      id: 'donate-dropdown',
+      type: 'donation-card',
+      label: 'Spenden & Geben (PayPal & IBAN)',
+      icon: 'heart',
+      description: 'Deine Spende unterstützt die gemeinnützige Arbeit und Vision von Echo Kirche in Gifhorn, Wolfsburg und Helmstedt.',
+      paypalLabel: 'Mit PayPal spenden',
+      paypalUrl: 'https://paypal.me/echokirche',
+      ibanLinkLabel: 'Online-Banking öffnen',
+      ibanLinkUrl: 'https://kirche-echo.de/spenden',
+      ibanTitle: 'Per Banküberweisung (IBAN)',
+      accountName: 'Echo Kirche e.V.',
+      iban: 'DE12 3456 7890 1234 5678 90',
+      bic: 'PBNKDEFF',
+      bankName: 'Postbank',
+      reference: 'Spende Echo Kirche',
+      copyLabel: 'IBAN kopieren'
+    };
+
+    const rendered = env.render('components/DonationCard.njk', { item: donationItem });
+    assert.match(rendered, /<details class="donation-card"/, 'DonationCard must use semantic <details>');
+    assert.match(rendered, /class="donation-card__summary link-button/, 'DonationCard summary must be styled as link-button');
+    assert.match(rendered, /class="donation-card__chevron"/, 'DonationCard must have chevron indicator');
+    assert.match(rendered, /class="donation-card__btn donation-card__btn--paypal"/, 'DonationCard must render PayPal action button');
+    assert.match(rendered, /class="donation-card__btn donation-card__btn--iban"/, 'DonationCard must render Pay with IBAN button');
+    assert.match(rendered, /class="donation-card__bank-details"/, 'DonationCard must render bank details definition list');
+    assert.match(rendered, /class="donation-card__iban-code"/, 'DonationCard must render formatted IBAN code');
+    assert.match(rendered, /data-copy-iban="DE12 3456 7890 1234 5678 90"/, 'DonationCard must render copy button with data-copy-iban attribute');
+    assert.match(rendered, /class="donation-card__live-region sr-only"/, 'DonationCard must render live region for screen readers');
   });
 
   test('DonationCard Nunjucks template supports graceful nullability, custom labels, and safe URLs', async () => {
@@ -238,12 +263,16 @@ describe('Component Markup & Accessibility Contracts', () => {
 
   test('AccordionButtons component renders accessible drawer with multi-row layout and expanded fields', async () => {
     // 1. Verify indexHtml rendered default demo
+    assert.match(indexHtml, /data-uid="dropdown-accordion"/, 'Dropdown accordion demo must be rendered in indexHtml');
     assert.match(indexHtml, /<details class="accordion-buttons"/, 'AccordionButtons must use semantic <details>');
     assert.match(indexHtml, /class="accordion-buttons__summary link-button/, 'AccordionButtons summary must be styled as link-button');
     assert.match(indexHtml, /class="accordion-buttons__chevron"/, 'AccordionButtons must have chevron indicator');
     assert.match(indexHtml, /class="accordion-buttons__row accordion-buttons__row--full"/, 'AccordionButtons must render full button row');
     assert.match(indexHtml, /class="accordion-buttons__row accordion-buttons__row--half"/, 'AccordionButtons must render half button row');
     assert.match(indexHtml, /class="accordion-buttons__row accordion-buttons__row--expanded"/, 'AccordionButtons must render expanded row');
+    assert.match(indexHtml, /class="donation-card__copy-btn accordion-buttons__copy-btn"/, 'AccordionButtons must use donation-card copy button style');
+    assert.match(indexHtml, /class="donation-card__copy-icon donation-card__copy-icon--copy"/, 'AccordionButtons must render copy icon');
+    assert.match(indexHtml, /class="donation-card__copy-icon donation-card__copy-icon--check"/, 'AccordionButtons must render check icon');
     assert.match(indexHtml, /data-copy-iban="DE12 3456 7890 1234 5678 90"/, 'AccordionButtons must render copy IBAN button');
     assert.match(indexHtml, /data-copy-text="ECHO-XMAS-2026"/, 'AccordionButtons must render copy event code button');
 
