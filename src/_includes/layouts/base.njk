@@ -10,7 +10,7 @@
 {% elif currentSurface == 'instagram' %}{% set campusSuffix = ' Instagram' %}
 {% endif %}
 {% set defaultSocialTitle = (site.profile.name or 'Echo Kirche') + campusSuffix + ' – Quick-Links' %}
-{% set pageTitle = title or (storyblok.content.title if (storyblok and storyblok.content and storyblok.content.title) else defaultSocialTitle) %}
+{% set pageTitle = title or (storyblok.content.title if (storyblok and storyblok.content and storyblok.content.title and storyblok.content.title != (site.profile.name or 'Echo Kirche')) else defaultSocialTitle) %}
 {% set defaultDesc = 'Alle wichtigen Links, Gottesdienste, Termine und Angebote der Echo Kirche auf einen Blick.' %}
 {% if currentSurface == 'gifhorn' %}{% set defaultDesc = 'Alle wichtigen Links, Gottesdienste und Angebote der Echo Kirche Gifhorn auf einen Blick.' %}
 {% elif currentSurface == 'wolfsburg' %}{% set defaultDesc = 'Alle wichtigen Links, Gottesdienste und Angebote der Echo Kirche Wolfsburg auf einen Blick.' %}
