@@ -117,7 +117,7 @@ export default function (eleventyConfig) {
     const path = this.page?.outputPath || '';
     if (path.endsWith('.html')) {
       return content
-        .replace(/<!--(?!\s*#(?:storyblok|\[if))[\s\S]*?-->/g, '')
+        .replace(/<!--(?!\s*#(?:storyblok|\[if)|[\s]*Created with)[\s\S]*?-->/g, '')
         .replace(/>\s+<(?!\/pre|\/code|\/textarea)/g, '><')
         .replace(/[ \t]{2,}/g, ' ')
         .trim();

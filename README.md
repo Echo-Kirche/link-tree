@@ -242,3 +242,7 @@ This project is licensed under the **MIT License** — see the [`LICENSE`](./LIC
 ### Free for Churches, Mission Organizations & Non-Profits
 This platform is completely free and open-source for churches, Christian ministries, mission organizations, charities, and non-profits worldwide to fork, customize, and deploy.
 
+---
+
+Created with ❤️ : The Missional Company ([missional.eu](https://missional.eu))
+
