@@ -177,9 +177,11 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    font-family: var(--font-icon);
 
     svg {
       fill: currentColor;
+      font-family: var(--font-icon);
     }
   }
 
@@ -219,9 +221,11 @@
     align-items: center;
     justify-content: center;
     color: var(--color-action-bg);
+    font-family: var(--font-icon);
 
     svg {
       fill: currentColor;
+      font-family: var(--font-icon);
     }
   }
 
@@ -365,9 +369,11 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    font-family: var(--font-icon);
 
     svg {
       fill: currentColor;
+      font-family: var(--font-icon);
     }
   }
 

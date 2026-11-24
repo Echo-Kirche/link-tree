@@ -40,12 +40,14 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  font-family: var(--font-icon);
 
   svg,
   .fa-svg {
     inline-size: 1.15rem;
     block-size: 1.15rem;
     fill: currentColor;
+    font-family: var(--font-icon);
   }
 
   i {
@@ -57,6 +59,7 @@
     font-size: 1.15rem;
     line-height: 1;
     color: currentColor;
+    font-family: var(--font-icon);
   }
 }
 

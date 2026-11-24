@@ -57,12 +57,14 @@
   block-size: 1.15em;
   flex-shrink: 0;
   color: currentColor;
+  font-family: var(--font-icon);
 
   svg,
   .fa-svg {
     inline-size: 100%;
     block-size: 100%;
     fill: currentColor;
+    font-family: var(--font-icon);
   }
 }
 

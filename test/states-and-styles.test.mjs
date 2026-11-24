@@ -314,5 +314,20 @@ describe('Component State Changes & CSS Verification', () => {
     assert.match(css, /\.profile-header__name-logo\s+(?:svg|\.fa-svg)\{[^}]*fill:\s*currentColor/, 'Profile header logo must use fill: currentColor');
     assert.match(css, /\.a11y-button__icon\s+(?:svg|\.fa-svg)\{[^}]*fill:\s*currentColor/, 'A11yButton icon must use fill: currentColor');
   });
+
+  test('Icon Typography Invariant: Only icons use Roboto to prevent distortion from display fonts', () => {
+    // 1. Primitive and semantic tokens declare Roboto for icons
+    assert.match(css, /--primitive-font-icon:\s*["']?Roboto["']?/, 'Primitive font token for icons must specify Roboto');
+    assert.match(css, /--font-icon:\s*var\(--primitive-font-icon\)/, 'Semantic --font-icon must resolve to --primitive-font-icon');
+
+    // 2. Icon selectors bind to --font-icon / Roboto
+    assert.match(css, /\.fa-svg[^}]*font-family:\s*var\(--font-icon/, 'Icon selectors must bind to var(--font-icon)');
+    assert.match(css, /\.link-button__icon\{[^}]*font-family:\s*var\(--font-icon\)/, '.link-button__icon must bind to var(--font-icon)');
+
+    // 3. Normal text, headings, and button labels do NOT use Roboto and preserve Clash Display / Inter
+    assert.match(css, /\.link-button\{[^}]*font-family:\s*var\(--font-heading\)/, 'LinkButton text must use var(--font-heading)');
+    assert.match(css, /h1,[^}]*font-family:\s*var\(--font-heading\)/, 'Headings must use var(--font-heading)');
+    assert.match(css, /body\{[^}]*font-family:\s*var\(--font-body/, 'Body text must use var(--font-body)');
+  });
 });
 

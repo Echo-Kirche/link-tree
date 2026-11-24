@@ -42,6 +42,10 @@ Brand colors must **never** change based on URL parameters, surfaces, campus rou
 * **Body & UI Text**: `Inter` (Weight: `400` / Regular)
   * CSS Token: `var(--font-body)`
   * System fallback stack: `"Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`.
+* **Icons Only (Distortion Prevention Invariant)**: `Roboto` (Weight: `400` / Regular)
+  * CSS Token: `var(--font-icon)`
+  * Primitive Token: `var(--primitive-font-icon)` (`"Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`)
+  * **Strict Scope**: `Roboto` is strictly reserved **exclusively** for icons, icon glyphs, and icon wrappers (`.fa-svg`, `.link-button__icon`, `i[class*="fa-"]`, etc.) to prevent glyph distortion, clipping, or stretching caused by the stylized display letterforms of the default fonts (`Clash Display` / `Inter`). Non-icon text, headings, button labels, and descriptions must **never** be rendered in `Roboto`.
 
 ---
 
@@ -123,6 +127,10 @@ All official visual assets, brand marks, and photography are self-hosted in [`sr
   - Site Favicon: [`/assets/images/favicon.webp`](../src/assets/images/favicon.webp)
   - Avatar Silhouette Fallback: [`/assets/images/avatar.svg`](../src/assets/images/avatar.svg)
 - **Token Color Binding**: All UI icons inherit fill/stroke colors directly from their paired text token (`fill: currentColor`) to guarantee compliance with WCAG contrast standards.
+- **Roboto Font for Icons Only (Distortion Prevention Invariant)**:
+  - All icons, icon glyphs, and icon containers MUST explicitly declare `font-family: var(--font-icon, "Roboto", sans-serif)`.
+  - The default fonts (`Clash Display` for headings/buttons and `Inter` for body copy) feature stylistic alternates, tight display kerning, and letterforms that distort icon glyphs and unicode symbols if inherited.
+  - **CRITICAL INVARIANT**: **ONLY icons are displayed in Roboto.** Normal text, headings, button labels, descriptions, and metadata must NEVER be set in Roboto, preserving the brand's visual identity.
 
 ---
 
@@ -135,6 +143,7 @@ Raw palette and font family values:
 - `--echo-cream`: `#FEFADC`
 - `--primitive-font-heading`: `"Clash Display", ...`
 - `--primitive-font-body`: `"Inter", ...`
+- `--primitive-font-icon`: `"Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`
 
 ### Semantic tokens (`src/styles/tokens/_semantic.scss`)
 Application roles and paired surfaces:

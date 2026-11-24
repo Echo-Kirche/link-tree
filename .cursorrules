@@ -16,6 +16,7 @@ All AI coding assistants (Cursor, ChatGPT, Windsurf, Claude, Copilot, Antigravit
 - **Strict Privacy (DSGVO)**: Zero initial third-party connections. Self-hosted fonts (`Clash Display`, `Inter`). No cookies on initial visit. 2-click consent YouTube facade via `youtube-nocookie.com`.
 - **Brand Color Constancy**: Colors (`#08415C` Dark Teal Blue, `#846B8A` Muted Lavender, `#FEFADC` Light Pastel Yellow) never change across routes.
 - **Strict Iconography & No Custom Icons**: Never create or draw custom icons anytime. Use Font Awesome icons exclusively via self-hosted `FaIcon.njk`. The ONLY custom icons are the official brand logos (`logo.svg`, `logo-circle.svg`, `favicon.webp`).
+- **Roboto Icon Typography Invariant**: ONLY icons are displayed in `Roboto` (`font-family: var(--font-icon, "Roboto", sans-serif)`) and never in default fonts (`Clash Display`, `Inter`) to prevent glyph distortion. Normal text, headings, and labels must NEVER use Roboto.
 - **Logo Clear Space**: Clear buffer equal to lowercase `"e"` on all four sides. Never distort or rotate.
 - **External Legal Links**: Impressum and Datenschutz point to canonical external URLs (`https://kirche-echo.de/...`). Local routes must never be served.
 - **Interactivity**: Pure CSS `<details>` / `<summary>` for collapsible cards (`DropdownCard`).

@@ -124,3 +124,28 @@ html[data-font-size="xlarge"] {
   font-size: 130%;
 }
 
+// Icon Typography Invariant: ONLY icons are displayed in Roboto to prevent glyph distortion
+// from stylized display fonts (Clash Display / Inter). Non-icon text must never use Roboto.
+.fa-svg,
+.link-button__icon,
+.accordion-buttons__btn-icon,
+.accordion-buttons__card-icon,
+.accordion-buttons__copy-icon,
+.donation-card__btn-icon,
+.donation-card__bank-icon,
+.donation-card__copy-icon,
+.a11y-button__icon,
+.a11y-button__title-icon,
+.social-button__icon,
+.dropdown-card__icon,
+.video-link-card__play-badge,
+i[class*="fa-"],
+.fa,
+.fas,
+.far,
+.fab,
+[class^="fa-"],
+[class*=" fa-"] {
+  font-family: var(--font-icon, "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+}
+

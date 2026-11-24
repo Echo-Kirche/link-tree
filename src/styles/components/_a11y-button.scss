@@ -139,12 +139,14 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  font-family: var(--font-icon);
 
   svg,
   .fa-svg {
     inline-size: 1rem;
     block-size: 1rem;
     fill: currentColor;
+    font-family: var(--font-icon);
   }
 }
 
@@ -221,9 +223,11 @@
     display: inline-flex;
     align-items: center;
     color: var(--color-primary);
+    font-family: var(--font-icon);
 
     svg {
       fill: currentColor;
+      font-family: var(--font-icon);
     }
   }
 
