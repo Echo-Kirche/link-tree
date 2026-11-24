@@ -190,6 +190,9 @@ A single location column card or time slot entry inside a `dropdown_card`. Every
 ---
 
 ### Component: `donation_card` (Interactive Expandable Action Card / Donation Drawer)
+> [!NOTE]
+> **Superseded by `accordion_buttons`**: In production, use `accordion_buttons` (Dropdown Accordion). It provides a single unified component capable of handling PayPal, Online-Banking, expanded IBAN details, and event VIP-codes simultaneously across multiple flexible rows. `donation_card` remains supported for backward compatibility.
+
 A pure-CSS collapsible interactive drawer with a dual-row interactive layout. While optimized out-of-the-box for church donations and bank transfers, it is **100% generalized to display any custom interactive card, event registration, Wi-Fi credentials, voucher code, or action flow** with the exact same visual styling and behavior:
 - **Trigger Dropdown Button**: Styled identically to `.link-button` with custom icon, label, and animated rotating chevron.
 - **Row 1 (Actions)**: Renders either a **single whole full-width button** or **two responsive side-by-side buttons** with custom labels, icons, URLs, and color variants (`primary`, `secondary`, `paypal`, `iban`).
@@ -467,6 +470,9 @@ Eine einzelne Minikarte für einen Standort oder Gottesdienst in der `dropdown_c
 ---
 
 ### Komponente: `donation_card` (Spenden- & IBAN-Dropdown-Button / Aufklappbare Spendenkarte)
+> [!NOTE]
+> **Abgelöst durch `accordion_buttons`**: In der Produktion wird `accordion_buttons` (Dropdown Accordion) empfohlen. Es bietet eine einheitliche Komponente für PayPal, Online-Banking, erweiterte IBAN-Details und Event-Codes in flexiblen Zeilen. `donation_card` bleibt aus Gründen der Abwärtskompatibilität erhalten.
+
 Eine aufklappbare Spenden- und Beitrags-Schublade. Wird über einen **Dropdown-Button** aktiviert und öffnet sich für schnelle Online-Spenden (PayPal, Online-Banking) sowie eine übersichtliche Bankverbindungskarte mit praktischem 1-Klick-Kopierbutton für die IBAN.
 
 #### Details zum Dropdown-Button & Aufbau

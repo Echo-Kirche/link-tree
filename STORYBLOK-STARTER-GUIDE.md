@@ -207,7 +207,7 @@ The root document for a link tree page.
 | `theme` | Color Theme | Selects the brand theme preset. | `Single Option` | `light` | No | Options: `light`, `pale`, `soft`, `dark`, `teal`, `lavender`. |
 | `surface` | Target Surface | Default surface for this page story. | `Single Option` | `default` | No | Source: `surfaces` datasource. |
 | `profile` | Profile Header | Holds the avatar, name, and bio header block. | `Blocks` | None | No | Restrict to: `profile_header`. Max: 1 block. |
-| `body` | Main Content | The main ordered list of links, cards, and groups. | `Blocks` | None | No | Restrict to: `group_block`, `link_button`, `dropdown_card`, `donation_card`, `accordion_buttons`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `section_heading`. Drag to reorder! |
+| `body` | Main Content | The main ordered list of links, cards, and groups. | `Blocks` | None | No | Restrict to: `group_block`, `link_button`, `dropdown_card`, `accordion_buttons`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `section_heading`. Drag to reorder! |
 | `footer` | Legal Footer | Legal info, address, impressum, and social icons. | `Blocks` | None | No | Restrict to: `footer_legal`. Max: 1 block. |
 | `seo_title` | SEO Title | Overrides the browser title tag for search engines. | `Text` | Empty | No | Optional. |
 | `seo_description` | Meta Description | Summary text displayed in search results and embeds. | `Textarea` | Empty | No | Keep under 160 characters. |
@@ -328,106 +328,65 @@ An individual campus or service mini card nested inside the `dropdown_card`'s `t
 
 ---
 
-## 6. Nestable Block: `donation_card` (Interactive Expandable Action Card / Donation Drawer)
+## 6. Nestable Block: `accordion_buttons` (Dropdown Accordion / Multi-Row Action & Giving Drawer)
 
-An interactive, pure-CSS collapsible drawer with a dual-row interactive layout. While initially designed for church donations, tithes, and IBAN transfers, **this component is 100% generalized and can be used for ANY interactive action or credential drawer** (e.g. event registration & tickets, Wi-Fi credentials, discount codes, downloads, or custom 2-row interactive cards).
+The **single, unified component** for all collapsible action drawers, giving options, and credential cards (authoritative technical name in Storyblok: `accordion_buttons`, display name: `Dropdown Accordion / Accordion Buttons`, aliased in code as `dropdown-accordion` / `dropdown_accordion`).
+
+> **Consolidation Note**: Earlier draft specifications split this functionality across `donation_card` (a rigid, fixed-layout card) and `accordion_buttons` (a multi-row drawer). In production, **`accordion_buttons` is the single right component**. It replaces `donation_card` completely and easily handles PayPal, Online-Banking, expanded IBAN details, and event VIP-codes (e.g. Christmas Celebration) inside one clean, accessible dropdown!
 
 ### Dropdown Button Details & Interactive Anatomy
-- **Button Styling (`<summary class="donation-card__summary link-button">`)**:
-  - Built as a full-width `.link-button` matching all other action buttons across the link tree.
-  - Styled with `--color-action-bg`, high-contrast text, smooth hover states, and keyboard focus indicators.
+- **Button Styling (`<summary class="accordion-buttons__summary link-button">`)**:
+  - Full-width clickable button styled identically to `.link-button` (pill shape, brand background `--color-action-bg`, contrasting text `--color-action-text`, focus ring, and active hover elevation).
 - **Leading Icon (`.link-button__icon`)**:
-  - Displays a heart icon (`heart`) by default.
-  - Supports any Font Awesome icon (e.g. `heart`, `ticket`, `wifi`, `key`, `hand-holding-heart`, `gift`, `church`, `calendar`), raw SVG, or `<i>` tags.
+  - Displays a visual icon on the left (default: `layer-group`; or `heart`, `gift`, `ticket`, `church`).
+  - Supports arbitrary Font Awesome icon names, raw inline `<svg>` markup, or `<i>` class tags rendered via `FaIcon.njk`.
 - **Centered Label (`.link-button__label`)**:
-  - Default: `Spenden & Unterstützen`. Fully customizable in Storyblok for any purpose (e.g., `WLAN & Zugangsdaten`, `Tickets & Anmeldung`, `Voucher einlösen`).
-- **Animated Chevron Indicator (`.donation-card__chevron`)**:
-  - Right-aligned chevron down icon (`fa-chevron-down`) that rotates 180° when expanded.
-- **Zero-JavaScript Pure CSS Disclosure**:
-  - Built with native HTML5 `<details class="donation-card">` and `<summary>`.
-  - Accessible via keyboard (`Tab`, `Space`, `Enter`).
-- **Expanded Drawer Content**:
-  - **Introductory Text**: Mission statement, giving guidance, or instructions for the user.
-  - **Row 1 — Flexible Quick Action Buttons**:
-    - **Single Whole Button**: If only one button is configured (`button_1_*` or `paypal_*`), it automatically expands to a prominent **full-width button**.
-    - **Dual Buttons**: If two buttons are configured (`button_1_*` & `button_2_*`, or PayPal & Banking), they automatically format into a **responsive 2-button row**.
-    - Supports custom labels, URLs, icons, and color variants (`primary`, `secondary`, `paypal`, `iban`).
-  - **Row 2 — Information & One-Click Copy Card**:
-    - **Custom Data / Credentials**: Can display arbitrary details (`details` array of key-value items) or structured bank details (`account_name`, `iban`, `bic`, `bank_name`, `reference`). Values marked as `isCode` render in monospace code font (`<code>`).
-    - **Custom Card Title & Icon**: Configured via `card_title` (or `iban_title`) and optional `card_icon`.
-    - **Accessible Copy Button**: Built-in accessible button (`copy_label` / `copy_text`) wired to `clipboard-copy.js` that copies arbitrary text (`copy_value` or raw `iban`) to the user's clipboard and provides visual confirmation (`Kopiert! ✓`).
-
-- **Technical Name**: `donation_card`
-- **Display Name**: `Donation & Interactive Action Card`
-- **Component Type**: **Nestable Block**
-
-### Fields
-
-| Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
-|---|---|---|---|---|---|---|
-| `label` | Card Header Label | Text on the expandable dropdown button. | `Text` | `Spenden & Unterstützen` | **Yes** | Centered in the summary button bar (e.g. `Spenden & Unterstützen` or `Anmeldung & Tickets`). |
-| `icon` | Icon | Visual icon on the left side of the button. | `Text` | `heart` | No | Default: `heart`. Supports any Font Awesome icon (e.g. `heart`, `ticket`, `wifi`, `key`), raw SVG, or `<i>` tag. |
-| `description` | Introductory Text | Explanatory text beneath button when opened. | `Text` | `Deine Spende unterstützt die Vision und gemeinnützige Arbeit von Echo Kirche.` | No | Informs users about giving or instructions. |
-| `button_1_label` | Button 1 Label | Text for the primary button in Row 1. | `Text` | Empty | No | e.g. `Tickets buchen` or `Mit PayPal spenden`. If only Button 1 is present, it renders full width! |
-| `button_1_url` | Button 1 URL | Target address for Button 1. | `Text` or `Link` | Empty | No | Destination link for Button 1. |
-| `button_1_icon` | Button 1 Icon | Icon for Button 1. | `Text` | Empty | No | Any Font Awesome icon (e.g. `ticket`, `paypal`, `star`, `arrow-right`). |
-| `button_1_variant` | Button 1 Variant | Visual style of Button 1. | `Single Option` | `primary` | No | Options: `primary`, `secondary`, `paypal`, `iban`. |
-| `button_2_label` | Button 2 Label | Text for secondary button in Row 1. | `Text` | Empty | No | e.g. `Infos ansehen` or `Online-Banking öffnen`. When present, Row 1 splits into 2 buttons. |
-| `button_2_url` | Button 2 URL | Target address for Button 2. | `Text` or `Link` | Empty | No | Destination link for Button 2. |
-| `button_2_icon` | Button 2 Icon | Icon for Button 2. | `Text` | Empty | No | Any Font Awesome icon (e.g. `info`, `building-columns`, `calendar`). |
-| `button_2_variant` | Button 2 Variant | Visual style of Button 2. | `Single Option` | `secondary` | No | Options: `secondary`, `primary`, `paypal`, `iban`. |
-| `card_title` | Card Title | Title of the details card in Row 2. | `Text` | Empty | No | e.g. `Zugangsdaten & Passwort`, `Bankverbindung (IBAN)`. Overrides `iban_title`. |
-| `card_icon` | Card Icon | Icon next to card title in Row 2. | `Text` | Empty | No | Font Awesome icon name (e.g. `wifi`, `key`, `building-columns`). |
-| `copy_value` | Copy Value | The exact text copied to clipboard when clicking copy. | `Text` | Empty | No | Custom string (e.g. Wi-Fi password, promo code, or account number). Overrides IBAN string. |
-| `copy_label` | Copy Button Label | Text on the copy-to-clipboard button. | `Text` | `IBAN kopieren` | No | e.g. `Passwort kopieren`, `Code kopieren`, or `IBAN kopieren`. |
-| `paypal_label` | PayPal Button Label | Preset text on the PayPal button. | `Text` | `Mit PayPal spenden` | No | Used if `button_1_*` is not configured. |
-| `paypal_url` | PayPal URL | Preset target address for PayPal giving. | `Text` or `Link` | `https://paypal.me/echokirche` | No | Direct PayPal link. |
-| `iban_link_label` | Banking Button Label | Preset text on secondary banking button. | `Text` | `Online-Banking öffnen` | No | Used if `button_2_*` is not configured. |
-| `iban_link_url` | Banking Link URL | Preset web banking or giving page link. | `Text` or `Link` | `https://kirche-echo.de/spenden` | No | Target giving web page URL. |
-| `iban_title` | Bank Card Header | Preset title of bank transfer card. | `Text` | `Per Banküberweisung (IBAN)` | No | Header above bank details. |
-| `account_name` | Account Holder | Preset bank account holder. | `Text` | `Echo Kirche e.V.` | No | Official legal entity name. |
-| `iban` | IBAN | Preset International Bank Account Number. | `Text` | `DE12 3456 7890 1234 5678 90` | No | Formatted with spaces. Also acts as fallback copy value. |
-| `bic` | BIC / SWIFT | Preset Bank Identifier Code. | `Text` | `PBNKDEFF` | No | SWIFT / BIC code. |
-| `bank_name` | Bank Name | Preset financial institution name. | `Text` | `Postbank` | No | Name of church's bank. |
-| `reference` | Payment Reference | Preset transfer reference. | `Text` | `Spende Echo Kirche` | No | Recommended Verwendungszweck. |
-| `display_in_default` | Display on Default | Tier 1 curation flag for landing page (`/`). | `Boolean` | `true` | No | Default `true`. |
-| `show_on` | Show On | Tier 2 surface allowlist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
-| `hide_on` | Hide On | Tier 2 surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
-
----
-
-## 7. Nestable Block: `accordion_buttons` / `dropdown_accordion` (Multi-Row Accordion Buttons & Expanded Drawer)
-
-A flexible, pure-CSS collapsible interactive accordion drawer (supported as `dropdown_accordion`, `dropdown-accordion`, and `accordion_buttons`). Solves the limitation of fixed-button cards by allowing you to add **any number of rows** inside the expandable drawer.
+  - Prominent headline centered on the button (e.g. `Spenden, Aktionen & Details` or `Spenden & Unterstützen`).
+- **Animated Chevron Indicator (`.accordion-buttons__chevron`)**:
+  - Right-aligned chevron down icon (`fa-chevron-down`) that smoothly rotates 180° when expanded via pure CSS (`[open] .accordion-buttons__chevron svg { transform: rotate(180deg); }`).
+- **Zero-JavaScript Pure CSS Interactivity**:
+  - Built with native HTML5 `<details class="accordion-buttons">` and `<summary>`.
+  - Fully accessible via keyboard (`Tab` focus, `Space`/`Enter` expansion) and WCAG AAA 21:1 high-contrast compatible.
 
 ### Row Configuration Types
-Inside the `rows` list, you can add and mix any number of rows of these three types:
-1. **1 Full Button (`full`)**: A prominent single button spanning 100% of the container width. Perfect for main call-to-actions (e.g. PayPal Giving, Ticket Booking, Livestream).
-2. **2 Half Buttons (`half`)**: Two side-by-side action buttons (50% width each), responsively adapting and stacking on narrow smartphone displays. Great for pairing related actions (e.g. "Online-Banking" and "Kontakt & Fragen").
-3. **1 Expanded Button / Panel (`expanded`)**: An interactive information card holding **up to 5 key-value fields** and an accessible copy-to-clipboard button using the high-contrast `donation-card__copy-btn` styling:
-   - **Bank Details**: `Kontoinhaber`, `IBAN` (monospace code), `BIC`, `Bank`, and `Verwendungszweck` with one-click IBAN copy.
-   - **Event & Check-in Codes**: e.g., Christmas Event (`Event`, `Datum`, `Einlass`, `Ort`, `VIP-Code`) with one-click code copying.
+Inside the `rows` list, editors can add **any number of rows** and freely mix:
+1. **1 Full Button (`full`)**: Prominent single button spanning 100% width. Perfect for primary call-to-actions (e.g. `Mit PayPal spenden`).
+2. **2 Half Buttons (`half`)**: Two side-by-side buttons (50% width each), responsively adapting and stacking on mobile displays (e.g. `Online-Banking öffnen` and `Kontakt & Fragen`).
+3. **1 Expanded Card (`expanded`)**: An interactive information card holding **up to 5 key-value fields** and an accessible one-click copy-to-clipboard button:
+   - **Bank Details (IBAN)**: `Kontoinhaber`, `IBAN` (monospace code), `BIC` (monospace code), `Bank`, and `Verwendungszweck` with one-click IBAN copy button.
+   - **Event & Check-in Codes**: e.g., Christmas Celebration (`Event`, `Datum`, `Einlass`, `Ort`, `VIP-Code`) with one-click code copying.
    - **Wi-Fi & Credentials**: `Netzwerk`, `Passwort`, `Verschlüsselung`, `Hinweise` with one-click password copying.
 
+### Production Example from Code (`src/_data/site.json`)
+The live link tree uses this exact single component (`dropdown-accordion`):
+- **Closed Button**: `Spenden, Aktionen & Details` (icon: `layer-group`)
+- **Description**: `Entdecke unsere Spendenmöglichkeiten, interaktiven Aktionen und Ticket-Codes mit flexiblen Button-Reihen.`
+- **Row 1 (`full`)**: PayPal button (`Mit PayPal spenden` &rarr; `https://paypal.me/echokirche`, variant `paypal`)
+- **Row 2 (`half`)**: Dual buttons (`Online-Banking öffnen` &rarr; `https://kirche-echo.de/spenden` and `Kontakt & Fragen` &rarr; `https://kirche-echo.de/kontakt`)
+- **Row 3 (`expanded`)**: Card `Per Banküberweisung (IBAN)` with 5 bank fields and copy button (`IBAN kopieren`)
+- **Row 4 (`expanded`)**: Card `Weihnachts-Event: VIP-Code` with 5 event fields and copy button (`Code kopieren`)
+
 - **Technical Name**: `accordion_buttons` (or `dropdown_accordion`)
-- **Display Name**: `Accordion Buttons / Dropdown Accordion`
+- **Display Name**: `Dropdown Accordion / Accordion Buttons`
 - **Component Type**: **Nestable Block**
 
 ### Fields
 
 | Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
 |---|---|---|---|---|---|---|
-| `label` | Card Header Label | Text on the expandable dropdown button. | `Text` | `Spenden, Aktionen & Details` | **Yes** | Prominent headline on the closed button. |
-| `icon` | Icon | Visual icon on the left of the button. | `Text` | `layer-group` | No | Any Font Awesome icon (e.g. `layer-group`, `star`, `heart`, `ticket`, `calendar`). |
-| `description` | Introductory Text | Explanatory message revealed when opened. | `Text` | Empty | No | Gives context for the buttons below. |
-| `rows` | Button Rows | The ordered list of button rows. | `Blocks` | None | **Yes** | Add rows of type `full`, `half`, or `expanded`. Any number of rows allowed! |
-| `display_in_default` | Display on Default | Tier 1 curation flag for landing page (`/`). | `Boolean` | `true` | No | Default `true`. |
+| `label` | Card Header Label | Text on the expandable dropdown button. | `Text` | `Spenden, Aktionen & Details` | **Yes** | Prominent headline on the closed button bar. |
+| `icon` | Icon | Visual icon on the left of the button. | `Text` | `layer-group` | No | Any Font Awesome icon (e.g. `layer-group`, `heart`, `ticket`, `gift`, `star`). |
+| `description` | Introductory Text | Explanatory message revealed when opened. | `Text` | Empty | No | Explains giving options, event codes, or instructions. |
+| `rows` | Button Rows | The ordered list of button and info rows. | `Blocks` | None | **Yes** | Add rows of type `full`, `half`, or `expanded`. Any number of rows allowed! |
+| `display_in_default` | Display on Default | Tier 1 curation flag for landing page (`/`). | `Boolean` | `true` | No | Default `true`. Set `false` for campus-specific actions. |
 | `show_on` | Show On | Tier 2 surface allowlist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 | `hide_on` | Hide On | Tier 2 surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 
+> **Backward Compatibility Fallback**: If `rows` is left empty, the component will automatically construct rows from legacy flat donation fields (`paypal_url`, `iban_link_url`, `account_name`, `iban`, `bic`, `bank_name`, `reference`), so legacy content never breaks.
+
 ---
 
-## 8. Nestable Block: `image_card_horizontal` (16:9 Featured Card)
+## 7. Nestable Block: `image_card_horizontal` (16:9 Featured Card)
 
 A landscape media card with a 16:9 image, headline, and interactive arrow button. Ideal for current sermon series, conferences, or campaigns.
 
@@ -525,7 +484,7 @@ A styled container box that groups related buttons, dropdown cards, or media car
 | `title` | Group Title | Optional header above the grouped items. | `Text` | Empty | No | e.g. `Unsere Standorte`. |
 | `description` | Group Description | Optional short explanation text. | `Textarea` | Empty | No | e.g. `Finde die Echo Kirche in deiner Nähe.` |
 | `variant` | Visual Style | Container background and border treatment. | `Single Option` | `card` | No | Options: `card` (white card with soft shadow), `soft` (tinted background), `outline` (dashed border), `transparent` (borderless list). |
-| `items` | Nested Items | The list of buttons and cards inside the box. | `Blocks` | None | No | Restrict to: `link_button`, `dropdown_card`, `donation_card`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `section_heading`. |
+| `items` | Nested Items | The list of buttons and cards inside the box. | `Blocks` | None | No | Restrict to: `link_button`, `dropdown_card`, `accordion_buttons`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `section_heading`. |
 | `display_in_default` | Display on Default | Controls visibility on the main landing page (`/`). | `Boolean` | `true` | No | Default `true`. |
 | `show_on` | Show On | Surface allowlist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 | `hide_on` | Hide On | Surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
@@ -735,7 +694,7 @@ Your Storyblok space and project setup is complete when all of the following are
   - [ ] `link_button` (Nestable Block)
   - [ ] `dropdown_card` (Nestable Block — Service Times Dropdown Button & Drawer)
   - [ ] `dropdown_time_item` (Nestable Block — Schedule & Location Mini Card)
-  - [ ] `donation_card` (Nestable Block — Giving & IBAN Dropdown Button & Drawer)
+  - [ ] `accordion_buttons` (Nestable Block — Multi-Row Dropdown Accordion / Giving, IBAN & Event Drawer)
   - [ ] `image_card_horizontal` (Nestable Block)
   - [ ] `image_card_vertical` (Nestable Block)
   - [ ] `video_link_card` (Nestable Block)
@@ -745,7 +704,7 @@ Your Storyblok space and project setup is complete when all of the following are
   - [ ] `footer_legal` (Nestable Block)
 - [ ] `Home` story created with slug `home`.
 - [ ] Service times configured in `dropdown_card` (Gifhorn 10:00 & 12:00 in BSK-Saal with Echo Kids, Wolfsburg 11:00, Helmstedt 12:00).
-- [ ] Giving options configured in `donation_card` (PayPal URL, Online Banking link, account name, IBAN with clipboard copy).
+- [ ] Giving, IBAN, and event options configured in `accordion_buttons` (PayPal full button, Online Banking & Kontakt half buttons, expanded IBAN card, and Xmas VIP-Code card).
 - [ ] Dropdown buttons tested for accessibility (keyboard `Tab` focus, `Space`/`Enter` expansion, 180° rotating chevron indicator).
 - [ ] Campus-specific items have `display_in_default = false` and appropriate `show_on` values.
 - [ ] Netlify build hook connected to Storyblok publish webhook.
