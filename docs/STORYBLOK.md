@@ -63,6 +63,7 @@ Component schemas are declared in [`storyblok/components.json`](../storyblok/com
 | `link_button` | Nestable Blok | Label, URL, optional icon selection (supports any Font Awesome icon like `fa-cross`, `fa-star`, `ticket`, `church`, or raw SVG), and surface filtering rules (`show_on`, `hide_on`). |
 | `dropdown_card` | Nestable Blok | Collapsible service times and locations card with responsive 3-column auto-fit grid and pure CSS details/summary state. |
 | `dropdown_time_item` | Nestable Blok | Individual service column/card with title, time badge, location, details, Echo Kids badge, and link. |
+| `donation_card` | Nestable Blok | Collapsible donation drawer and dropdown button with PayPal, online banking buttons, bank transfer details (IBAN/BIC), and one-click copy button. |
 | `image_card_horizontal` | Nestable Blok | 16:9 featured horizontal media card with title, URL, image asset, and bottom-right arrow indicator badge (`->`). |
 | `image_card_vertical` | Nestable Blok | 3:4 portrait orientation media card with title, URL, image asset, and bottom-right arrow indicator badge (`->`). |
 | `video_link_card` | Nestable Blok | Privacy-first video card. YouTube uses a `youtube_video_id` plus optional `youtube_content_type` (`video` or `live`); non-YouTube providers may use `url`. The YouTube player loads only after an explicit click using YouTube Privacy-Enhanced Mode. |
@@ -134,17 +135,34 @@ A prominent full-width button that links to an external page or action.
 
 ---
 
-### Component: `dropdown_card` (Collapsible Service Times & Locations Card)
-A clean, interactive card showing church service times and locations. On click, it smoothly expands to reveal a **3-column responsive grid by default** (Gifhorn, Wolfsburg, Helmstedt) or a vertical list. Functions with 100% pure CSS `<details>` / `<summary>` (zero JavaScript, 100% privacy-friendly). Every title, time, text, and link is completely customizable and overwritable.
+### Component: `dropdown_card` (Collapsible Service Times Dropdown Button & Card)
+An interactive disclosure card showing church service times and locations. It is triggered by a prominent, full-width **Dropdown Button** that smoothly expands on click or keyboard press to reveal a **responsive 3-column auto-fit card grid by default** (Gifhorn, Wolfsburg, Helmstedt) or a single-column vertical list.
+
+#### Dropdown Button Trigger Anatomy
+- **Button Styling (`<summary class="dropdown-card__summary link-button">`)**:
+  - Functions as a clickable button styled identically to a standard `.link-button` (pill shape, brand background `--color-action-bg`, contrasting text `--color-action-text`, focus ring, and active hover elevation).
+- **Leading Icon (`.link-button__icon`)**:
+  - Displays a visual icon on the left (default is `church`).
+  - Supports any Font Awesome icon name (e.g. `church`, `calendar`, `clock`, `map-pin`, `users`, or any `fa-*` icon), raw inline `<svg>` markup, or `<i>` class tag rendered via the self-hosted `FaIcon.njk` component.
+- **Centered Label (`.link-button__label`)**:
+  - Displays the prominent headline text centered on the button (e.g. `Gottesdienste & Zeiten`).
+- **Animated Chevron Indicator (`.dropdown-card__chevron`)**:
+  - A right-aligned chevron arrow (`fa-chevron-down`) that smoothly rotates 180 degrees via pure CSS when the card expands (`[open] .dropdown-card__chevron svg { transform: rotate(180deg); }`).
+- **Zero-JavaScript Pure CSS Disclosure**:
+  - Functions with 100% native HTML5 `<details class="dropdown-card">` and `<summary>` (zero client JavaScript, zero cookies, 100% DSGVO/GDPR compliant).
+- **Keyboard Navigation & Accessibility (a11y)**:
+  - Operable via keyboard: press `Tab` to navigate to the button, and `Enter` or `Space` to toggle open and closed.
+  - Native browser semantics handle announcement of expanded/collapsed states for screen readers.
+  - Fully compatible with high-contrast modes (WCAG AAA 21:1) and typography scale preferences (100%, 115%, 130%) from the accessibility drawer.
 
 - **How to create**: Add inside `body` or inside a `group_block`.
 - **Fields to fill**:
   - `label` (Text, Required): Header text of the button (e.g., `Gottesdienste & Zeiten`).
-  - `display_in_default` (Boolean, Default: `true`): **Display on Default Page Switch**. Set to `true` to show on default page.
+  - `display_in_default` (Boolean, Default: `true`): **Display on Default Page Switch**. Set to `true` to show on default page (`/`). Set to `false` for campus-specific schedule views.
   - `layout` (Dropdown, Default: `columns`): Choose `columns` (responsive 3-column card grid) or `list` (classic single-column list).
   - `locations` (Multi-select, Default: `["gifhorn", "wolfsburg", "helmstedt"]`): Select active locations/channels (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
-  - `icon` (Text, Optional): Icon name (default is `church`, or any `fa-*` icon, raw SVG, or `<i>` tag).
-  - `description` (Text, Optional): Introductory text (e.g., `Feiere mit uns vor Ort in Gifhorn, Wolfsburg und Helmstedt oder online im Livestream:`).
+  - `icon` (Text, Optional): Leading icon name (default: `church`, or any `fa-*` icon, raw SVG, or `<i>` tag).
+  - `description` (Text, Optional): Introductory text beneath the button when opened (e.g., `Feiere mit uns vor Ort in Gifhorn, Wolfsburg und Helmstedt oder online im Livestream:`).
   - `times` / `columns` (Bloks, Optional): Add one or more `dropdown_time_item` blocks for each column or time slot.
   - `url` (Text, Optional): Link for bottom action button (e.g., `https://kirche-echo.de`).
   - `action_label` (Text, Optional): Overwrite the footer action link label (Default: `Alle Standorte & Livestream ansehen →`).
@@ -162,11 +180,70 @@ A single location column card or time slot entry inside a `dropdown_card`. Every
   - `location` (Text, Optional): Venue or campus address (e.g., `BSK-Saal, Schützenplatz 3`, `Standort Wolfsburg`).
   - `details` (Textarea, Optional): Description or info (e.g., `Unsere Gottesdienste finden jeden Sonntag um 10:00 und 12:00 Uhr nebenan im BSK-Saal, Schützenplatz 3 statt.`).
   - `display_in_default` (Boolean, Default: `true`): **Display on Default Page Switch**. Set to `true` to show this card on the default page. Set to `false` to show it only on custom location pages.
-  - `has_kids` (Boolean, Optional, Default: `true`): Toggle to show a tiny kid icon badge indicating children's church is available.
-  - `kids_label` (Text, Optional, Default: `Echo Kids verfügbar`): Customizable label text next to the tiny kid icon.
+  - `has_kids` (Boolean, Optional, Default: `true`): Toggle to show an Echo Kids badge indicating children's church is available.
+  - `kids_label` (Text, Optional, Default: `Echo Kids verfügbar`): Customizable label text next to the kids badge (automatically adapts to service times like `Echo Kids Check-in: 9:30 Uhr` or custom).
   - `url` (Text, Optional): Specific location destination link (e.g., `https://kirche-echo.de/gifhorn`).
   - `action_label` (Text, Optional): Column link text (e.g., `Standort Gifhorn →`).
   - `show_on` / `hide_on` (Multi-select, Optional): Control which surfaces this location column appears on (e.g., `["default", "gifhorn"]`).
+
+---
+
+### Component: `donation_card` (Interactive Expandable Action Card / Donation Drawer)
+A pure-CSS collapsible interactive drawer with a dual-row interactive layout. While optimized out-of-the-box for church donations and bank transfers, it is **100% generalized to display any custom interactive card, event registration, Wi-Fi credentials, voucher code, or action flow** with the exact same visual styling and behavior:
+- **Trigger Dropdown Button**: Styled identically to `.link-button` with custom icon, label, and animated rotating chevron.
+- **Row 1 (Actions)**: Renders either a **single whole full-width button** or **two responsive side-by-side buttons** with custom labels, icons, URLs, and color variants (`primary`, `secondary`, `paypal`, `iban`).
+- **Row 2 (Information & Copy Card)**: Monospace code styling and custom key-value details with an accessible copy-to-clipboard button (`data-copy-text` / `data-copy-iban`) providing instant live feedback (`Kopiert! ✓`).
+
+#### Dropdown Button Trigger Anatomy
+- **Button Styling (`<summary class="donation-card__summary link-button">`)**:
+  - Styled identically to a `.link-button` with full width, rounded pill shape, and smooth hover and focus transitions.
+- **Leading Icon (`.link-button__icon`)**:
+  - Default: `heart`. Supports any Font Awesome icon name (e.g. `heart`, `ticket`, `wifi`, `key`, `gift`, `church`, or any `fa-*` icon), raw inline SVG, or `<i>` class tag.
+- **Centered Label (`.link-button__label`)**:
+  - Default: `Spenden & Unterstützen`. Fully editable for any use case (e.g. `Anmeldung & Tickets`, `WLAN-Zugang`).
+- **Animated Chevron Indicator (`.donation-card__chevron`)**:
+  - Right-aligned chevron down icon (`fa-chevron-down`) that rotates 180° when expanded.
+- **Zero-JavaScript Pure CSS Interactivity**:
+  - Built with native HTML5 `<details class="donation-card">` and `<summary>`. No client-side framework scripts required.
+- **Expanded Drawer Content**:
+  - `description`: Explanatory message, donation appeal, or instructions for the user.
+  - **Row 1 (Quick Action Buttons)**:
+    - **Single Full-Width Button**: When only `button_1_*` (or `paypal_*`) is set, stretches across the full width.
+    - **Dual Buttons**: When `button_1_*` and `button_2_*` (or PayPal and Banking) are set, forms a responsive 2-column button row.
+  - **Row 2 (Information & Copy Card)**:
+    - Structured fields for `card_title` (or `iban_title`), `card_icon`, arbitrary details list or bank transfer items.
+    - Values with `isCode: true` (or `iban`) are rendered in monospace `<code>` font.
+  - **Interactive Copy Button**: Built-in accessible button (`copy_label` / `copy_text`) wired to `clipboard-copy.js` that copies arbitrary text (`copy_value` or `iban`) to the clipboard with instant visual feedback (`Kopiert! ✓`).
+
+- **How to create**: Add inside `body` or inside a `group_block`.
+- **Fields to fill**:
+  - `label` (Text, Required): Header text on the dropdown button (default: `Spenden & Unterstützen`).
+  - `icon` (Text, Optional): Leading icon name (default: `heart`, or any Font Awesome icon).
+  - `description` (Text, Optional): Introductory text displayed inside the drawer.
+  - `display_in_default` (Boolean, Default: `true`): Show on default landing page (`/`).
+  - `button_1_label` (Text, Optional): Text on Button 1 (e.g., `Tickets buchen`).
+  - `button_1_url` (Text / Multilink, Optional): Target URL for Button 1.
+  - `button_1_icon` (Text, Optional): Font Awesome icon for Button 1 (e.g., `ticket`).
+  - `button_1_variant` (Dropdown, Optional): `primary` (default), `secondary`, `paypal`, or `iban`.
+  - `button_2_label` (Text, Optional): Text on secondary button (Row 1 splits into 2 buttons when set).
+  - `button_2_url` (Text / Multilink, Optional): Target URL for Button 2.
+  - `button_2_icon` (Text, Optional): Font Awesome icon for Button 2.
+  - `button_2_variant` (Dropdown, Optional): `secondary` (default), `primary`, `paypal`, or `iban`.
+  - `card_title` (Text, Optional): Title of Row 2 details card (e.g. `Zugangsdaten`, `Bankverbindung`). Overrides `iban_title`.
+  - `card_icon` (Text, Optional): Icon next to card title in Row 2 (e.g., `wifi`, `key`).
+  - `copy_value` (Text, Optional): The text string to copy to clipboard. Overrides `iban`.
+  - `copy_label` (Text, Optional): Text on the copy button (default: `IBAN kopieren` or `Kopieren`).
+  - `paypal_label` (Text, Optional): Preset text on PayPal button (default: `Mit PayPal spenden`).
+  - `paypal_url` (Text / Multilink, Optional): Direct PayPal link (default: `https://paypal.me/echokirche`).
+  - `iban_link_label` (Text, Optional): Preset text on banking button (default: `Online-Banking öffnen`).
+  - `iban_link_url` (Text / Multilink, Optional): Preset giving page link (default: `https://kirche-echo.de/spenden`).
+  - `iban_title` (Text, Optional): Preset title above bank transfer card (default: `Per Banküberweisung (IBAN)`).
+  - `account_name` (Text, Optional): Official account holder name (default: `Echo Kirche e.V.`).
+  - `iban` (Text, Optional): IBAN string (default: `DE12 3456 7890 1234 5678 90`).
+  - `bic` (Text, Optional): Bank BIC/SWIFT code (default: `PBNKDEFF`).
+  - `bank_name` (Text, Optional): Name of the bank (default: `Postbank`).
+  - `reference` (Text, Optional): Verwendungszweck / payment reference (default: `Spende Echo Kirche`).
+  - `show_on` / `hide_on` (Multi-select, Optional): Surface filtering rules.
 
 ---
 
@@ -315,19 +392,36 @@ Ein großer, klickbarer Button für Links zu Webseiten, Aktionen oder Formularen
 
 ---
 
-### Komponente: `dropdown_card` (Aufklappbare Gottesdienst- & Standort-Karte)
-Ein interaktiver Button, der sich beim Anklicken sanft nach unten aufklappt. **Standardmäßig erscheint ein 3-Spalten-Raster** mit den Standorten Gifhorn, Wolfsburg und Helmstedt (auf dem Smartphone bricht es responsiv um). Funktioniert komplett ohne JavaScript (reines HTML/CSS) und schützt die Privatsphäre. Jeder Text, jede Uhrzeit, jeder Titel und jeder Link ist 100% flexibel anpassbar und überschreibbar.
+### Komponente: `dropdown_card` (Aufklappbare Gottesdienst- & Standort-Karte / Dropdown-Button)
+Eine interaktive Karte mit aufklappbaren Gottesdienstzeiten und Standorten. Ausgelöst wird sie durch einen prominenten **Dropdown-Button**, der sich per Klick oder Tastatur sanft nach unten öffnet und **standardmäßig ein responsives 3-Spalten-Raster** (Gifhorn, Wolfsburg, Helmstedt) oder eine einspaltige Liste präsentiert.
+
+#### Details zum Dropdown-Button & Interaktiver Aufbau
+- **Button-Styling (`<summary class="dropdown-card__summary link-button">`)**:
+  - Sieht exakt so aus wie ein primärer `.link-button` (abgerundete Pillenform, Marken-Hintergrundfarbe `--color-action-bg`, kontrastreiche Schriftfarbe `--color-action-text`, Fokus-Ring und dezente Hover-Animation).
+- **Icon auf der linken Seite (`.link-button__icon`)**:
+  - Zeigt standardmäßig das Kirchen-Symbol (`church`).
+  - Unterstützt jedes beliebige Font Awesome Icon (z. B. `church`, `calendar`, `clock`, `map-pin`, `users` oder jedes `fa-*` Icon), reines Inline-`<svg>` oder ein `<i>`-Klassen-Tag via `FaIcon.njk`.
+- **Zentrierter Button-Text (`.link-button__label`)**:
+  - Zeigt den Titel mittig auf dem Button an (z. B. `Gottesdienste & Zeiten`).
+- **Animierter Chevron-Pfeil (`.dropdown-card__chevron`)**:
+  - Rechts ausgerichteter Pfeil (`fa-chevron-down`), der sich beim Aufklappen rein über CSS sanft um 180 Grad dreht (`[open] .dropdown-card__chevron svg { transform: rotate(180deg); }`).
+- **Zero-JavaScript Pure CSS Interaktivität**:
+  - Basiert zu 100% auf nativem HTML5 `<details class="dropdown-card">` und `<summary>` (kein Client-JS, keine Tracking-Cookies, 100% DSGVO-konform).
+- **Tastaturnavigation & Barrierefreiheit (a11y)**:
+  - Voll per Tastatur bedienbar: Mit `Tab` zum Button springen, mit `Enter` oder `Leertaste` auf- und zuklappen.
+  - Screenreader erkennen den Aufklapp-Zustand automatisch über native Browser-Attribute.
+  - Voll kompatibel mit 21:1 AAA-Kontrastmodi und Schriftgrößen-Skalierung (100%, 115%, 130%) aus dem Barrierefreiheits-Menü.
 
 - **Wo einfügen**: In `body` oder innerhalb eines `group_block`.
 - **Felder zum Ausfüllen**:
-  - `label` (Text, Pflicht): Beschriftung des Buttons (z. B. `Gottesdienste & Zeiten`).
-  - `display_in_default` (Schalter/Boolean, Standard: `true`): **Im Standard anzeigen**. Auf `true` setzen, um die Karte auf der Hauptseite (`/`) anzuzeigen.
+  - `label` (Text, Pflicht): Beschriftung des Dropdown-Buttons (z. B. `Gottesdienste & Zeiten`).
+  - `display_in_default` (Schalter/Boolean, Standard: `true`): **Im Standard anzeigen**. Auf `true` setzen, um die Karte auf der Hauptseite (`/`) anzuzeigen. Auf `false` setzen, wenn sie nur für bestimmte Standorte gedacht ist.
   - `layout` (Auswahl, Standard: `columns`): Wähle `columns` (responsives 3-Spalten-Raster) oder `list` (klassische einspaltige Liste).
   - `locations` (Mehrfachauswahl, Standard: `gifhorn`, `wolfsburg`, `helmstedt`): Wähle aus, welche Standorte/Kanäle angezeigt werden sollen (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
   - `icon` (Text, Optional): Icon-Name (Standard ist `church`, oder jedes beliebige `fa-*` Icon, raw SVG oder `<i>`-Tag).
-  - `description` (Text, Optional): Einleitender Text (z. B. `Feiere mit uns vor Ort in Gifhorn, Wolfsburg und Helmstedt oder online im Livestream:`).
+  - `description` (Text, Optional): Einleitender Text im geöffneten Bereich (z. B. `Feiere mit uns vor Ort in Gifhorn, Wolfsburg und Helmstedt oder online im Livestream:`).
   - `times` / `columns` (Blöcke, Optional): Füge hier für jeden Standort oder Gottesdienst einen `dropdown_time_item`-Eintrag ein.
-  - `url` (Text, Optional): Link für den Haupt-Aktionsbutton ganz unten (z. B. `https://kirche-echo.de`).
+  - `url` (Text, Optional): Link für den Haupt-Aktionsbutton ganz unten im geöffneten Bereich (z. B. `https://kirche-echo.de`).
   - `action_label` (Text, Optional): Beschriftung des Aktionsbuttons ganz unten (Standard: `Alle Standorte & Livestream ansehen →`).
   - `show_on` / `hide_on` (Mehrfachauswahl, Optional): Filter für Standorte und Kanäle.
 
@@ -343,11 +437,51 @@ Eine einzelne Minikarte für einen Standort oder Gottesdienst in der `dropdown_c
   - `location` (Text, Optional): Adresse, Raum oder Kids Church Info (z. B. `BSK-Saal, Schützenplatz 3`, `Standort Wolfsburg`).
   - `details` (Textarea, Optional): Zusätzlicher Infotext (z. B. `Unsere Gottesdienste finden jeden Sonntag um 10:00 und 12:00 Uhr nebenan im BSK-Saal, Schützenplatz 3 statt.`).
   - `display_in_default` (Schalter/Boolean, Standard: `true`): **Im Standard anzeigen**. Auf `true` setzen, um diesen Eintrag auf der Standard-Hauptseite anzuzeigen. Auf `false` setzen, wenn er nur standortspezifisch sichtbar sein soll.
-  - `has_kids` (Schalter/Boolean, Optional, Standard: `true`): Schalter, um das kleine Kinder-Icon ("Echo Kids verfügbar") anzuzeigen.
-  - `kids_label` (Text, Optional, Standard: `Echo Kids verfügbar`): Text neben dem kleinen Kinder-Icon.
+  - `has_kids` (Schalter/Boolean, Optional, Standard: `true`): Schalter, um das Echo Kids-Abzeichen anzuzeigen.
+  - `kids_label` (Text, Optional, Standard: `Echo Kids verfügbar`): Text neben dem Kinder-Icon (passt sich automatisch den Zeiten an, z. B. `Echo Kids Check-in: 9:30 Uhr` für 10:00 Uhr Gottesdienste, oder frei definierbar).
   - `url` (Text, Optional): Link direkt zur Standortseite (z. B. `https://kirche-echo.de/gifhorn`).
   - `action_label` (Text, Optional): Beschriftung des Standort-Links (z. B. `Standort Gifhorn →`).
   - `show_on` / `hide_on` (Mehrfachauswahl, Optional): Bestimme, auf welchen Seiten dieser Eintrag sichtbar ist (z. B. `default, gifhorn`).
+
+---
+
+### Komponente: `donation_card` (Spenden- & IBAN-Dropdown-Button / Aufklappbare Spendenkarte)
+Eine aufklappbare Spenden- und Beitrags-Schublade. Wird über einen **Dropdown-Button** aktiviert und öffnet sich für schnelle Online-Spenden (PayPal, Online-Banking) sowie eine übersichtliche Bankverbindungskarte mit praktischem 1-Klick-Kopierbutton für die IBAN.
+
+#### Details zum Dropdown-Button & Aufbau
+- **Button-Styling (`<summary class="donation-card__summary link-button">`)**:
+  - Identisch zu `.link-button` gestaltet, vollflächig klickbar mit konsistentem Markendesign und Fokus-Umrandung.
+- **Icon auf der linken Seite (`.link-button__icon`)**:
+  - Zeigt standardmäßig das Herz-Symbol (`heart`). Unterstützt jedes Font Awesome Icon (`heart`, `hand-holding-heart`, `gift`, `church`), raw SVG oder `<i>`-Tag.
+- **Zentrierter Button-Text (`.link-button__label`)**:
+  - Standard: `Spenden & Unterstützen`. Frei anpassbar.
+- **Animierter Chevron-Pfeil (`.donation-card__chevron`)**:
+  - Rechter Pfeil (`fa-chevron-down`), der sich beim Öffnen um 180 Grad dreht.
+- **Inhalt im geöffneten Bereich**:
+  - `description`: Einleitungstext zum Spendenauftrag und der gemeinnützigen Arbeit der Kirche.
+  - **PayPal-Button**: Direkter Spendenbutton (`paypal_label`, `paypal_url`) mit PayPal-Logo.
+  - **Online-Banking-Button**: Weiterleitungslink (`iban_link_label`, `iban_link_url`) zu Banking- oder Spendenseiten.
+  - **Bankdaten-Karte**: Strukturierte Anzeige von `account_name` (Kontoinhaber), `iban` (in Monospace-Schrift), `bic`, `bank_name` und `reference` (Verwendungszweck).
+  - **IBAN Kopier-Button**: Barrierefreier Button (`copy_label`, Standard: `IBAN kopieren`), der die IBAN in die Zwischenablage legt und sofortiges Feedback gibt (`Kopiert! ✓`).
+
+- **Wo einfügen**: In `body` oder innerhalb eines `group_block`.
+- **Felder zum Ausfüllen**:
+  - `label` (Text, Pflicht): Beschriftung des Dropdown-Buttons (Standard: `Spenden & Unterstützen`).
+  - `icon` (Text, Optional): Icon-Name (Standard: `heart`, oder jedes andere Icon).
+  - `description` (Text, Optional): Einleitungstext im geöffneten Bereich.
+  - `display_in_default` (Schalter/Boolean, Standard: `true`): Auf der Hauptseite (`/`) anzeigen.
+  - `paypal_label` (Text, Optional): Text auf dem PayPal-Button (Standard: `Mit PayPal spenden`).
+  - `paypal_url` (Text / Multilink, Optional): PayPal.me- oder Spenden-Link (Standard: `https://paypal.me/echokirche`).
+  - `iban_link_label` (Text, Optional): Text auf dem zweiten Banking-Button (Standard: `Online-Banking öffnen`).
+  - `iban_link_url` (Text / Multilink, Optional): Link zur Banking-/Spendenseite (Standard: `https://kirche-echo.de/spenden`).
+  - `iban_title` (Text, Optional): Titel der Bankkarte (Standard: `Per Banküberweisung (IBAN)`).
+  - `account_name` (Text, Optional): Kontoinhaber (Standard: `Echo Kirche e.V.`).
+  - `iban` (Text, Optional): IBAN-Nummer (Standard: `DE12 3456 7890 1234 5678 90`).
+  - `bic` (Text, Optional): BIC / SWIFT-Code (Standard: `PBNKDEFF`).
+  - `bank_name` (Text, Optional): Bankinstitut (Standard: `Postbank`).
+  - `reference` (Text, Optional): Verwendungszweck (Standard: `Spende Echo Kirche`).
+  - `copy_label` (Text, Optional): Text des Kopierbuttons (Standard: `IBAN kopieren`).
+  - `show_on` / `hide_on` (Mehrfachauswahl, Optional): Filter für Standorte und Kanäle.
 
 ---
 

@@ -17,61 +17,127 @@
     <p class="donation-card__description">{{ item.description }}</p>
     {% endif %}
 
-    {% set resolvedPaypalUrl = (item.paypalUrl or item.paypal_url) | resolveUrl %}
-    {% set resolvedIbanLinkUrl = (item.ibanLinkUrl or item.iban_link_url) | resolveUrl %}
+    {# Row 1: Action Buttons (1 whole button, 2 buttons, or custom actions array) #}
+    {% set buttonList = [] %}
+    {% if item.buttons and item.buttons.length > 0 %}
+      {% set buttonList = item.buttons %}
+    {% elif item.actions and item.actions.length > 0 %}
+      {% set buttonList = item.actions %}
+    {% else %}
+      {% set rawB1Url = item.button_1_url or item.btn1_url or item.button1_url or item.button1Url or item.paypalUrl or item.paypal_url %}
+      {% set resB1Url = rawB1Url | resolveUrl %}
+      {% if resB1Url and resB1Url != '#' %}
+        {% set b1 = {
+          url: resB1Url,
+          label: item.button_1_label or item.btn1_label or item.button1_label or item.button1Label or item.paypalLabel or item.paypal_label or "Mit PayPal spenden",
+          icon: item.button_1_icon or item.btn1_icon or item.button1_icon or item.button1Icon or (("paypal" if (item.paypalUrl or item.paypal_url) else "")),
+          variant: item.button_1_variant or item.btn1_variant or item.button1_variant or (("paypal" if (item.paypalUrl or item.paypal_url) else "primary")),
+          target: item.button_1_target or item.btn1_target or (("_blank" if (item.paypalUrl or item.paypal_url) else ""))
+        } %}
+        {% set buttonList = (buttonList.push(b1), buttonList) %}
+      {% endif %}
 
-    {% if (resolvedPaypalUrl and resolvedPaypalUrl != '#') or (resolvedIbanLinkUrl and resolvedIbanLinkUrl != '#') %}
+      {% set rawB2Url = item.button_2_url or item.btn2_url or item.button2_url or item.button2Url or item.ibanLinkUrl or item.iban_link_url %}
+      {% set resB2Url = rawB2Url | resolveUrl %}
+      {% if resB2Url and resB2Url != '#' %}
+        {% set b2 = {
+          url: resB2Url,
+          label: item.button_2_label or item.btn2_label or item.button2_label or item.button2Label or item.ibanLinkLabel or item.iban_link_label or "Online-Banking öffnen",
+          icon: item.button_2_icon or item.btn2_icon or item.button2_icon or item.button2Icon or (("building-columns" if (item.ibanLinkUrl or item.iban_link_url) else "")),
+          variant: item.button_2_variant or item.btn2_variant or item.button2_variant or (("iban" if (item.ibanLinkUrl or item.iban_link_url) else "secondary")),
+          target: item.button_2_target or item.btn2_target or ""
+        } %}
+        {% set buttonList = (buttonList.push(b2), buttonList) %}
+      {% endif %}
+    {% endif %}
+
+    {% if buttonList and buttonList.length > 0 %}
     <div class="donation-card__actions">
-      {% if resolvedPaypalUrl and resolvedPaypalUrl != '#' %}
-      <a class="donation-card__btn donation-card__btn--paypal" href="{{ resolvedPaypalUrl }}" target="_blank" rel="noopener noreferrer">
+      {% for btn in buttonList %}
+      {% set resolvedBtnUrl = btn.url | resolveUrl %}
+      {% if resolvedBtnUrl and resolvedBtnUrl != '#' %}
+      {% set btnVariant = btn.variant or "primary" %}
+      <a class="donation-card__btn donation-card__btn--{{ btnVariant }}" href="{{ resolvedBtnUrl }}"{% if btn.target %} target="{{ btn.target }}"{% endif %} rel="noopener noreferrer">
+        {% if btn.icon and btn.icon != '' %}
         <span class="donation-card__btn-icon" aria-hidden="true">
-          <svg class="fa-svg fa-paypal" viewBox="0 0 384 512" fill="currentColor" width="18" height="18"><path d="M111.4 295.9c-3.5 19.2-17.4 108.7-21.5 134-.3 1.8-1 2.5-3 2.5H12.3c-7.6 0-13.1-6.6-12.1-13.9L58.8 46.6c1.5-9.6 10.1-16.9 20-16.9 152.3 0 165.1-3.7 204 45.4 26.2 33 22.8 77.8 7.3 112.5-18.7 41.9-56 68.6-104.9 76.5-6.9 1.1-11.8 7-10.7 13.8l7.9 44.5c.9 5.8-3.4 11-9.3 11.2l-69.7 2.3z"/></svg>
+          {% if btn.icon == "paypal" %}
+            <svg class="fa-svg fa-paypal" viewBox="0 0 384 512" fill="currentColor" width="18" height="18"><path d="M111.4 295.9c-3.5 19.2-17.4 108.7-21.5 134-.3 1.8-1 2.5-3 2.5H12.3c-7.6 0-13.1-6.6-12.1-13.9L58.8 46.6c1.5-9.6 10.1-16.9 20-16.9 152.3 0 165.1-3.7 204 45.4 26.2 33 22.8 77.8 7.3 112.5-18.7 41.9-56 68.6-104.9 76.5-6.9 1.1-11.8 7-10.7 13.8l7.9 44.5c.9 5.8-3.4 11-9.3 11.2l-69.7 2.3z"/></svg>
+          {% elif btn.icon == "building-columns" or btn.icon == "bank" %}
+            <svg class="fa-svg fa-building-columns" viewBox="0 0 512 512" fill="currentColor" width="18" height="18"><path d="M240 32c17.7 0 32 14.3 32 32V96h176c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H208V64c0-17.7 14.3-32 32-32zM32 192H96v192H32V192zm160 0h64v192H192V192zm224 0h64v192H416V192zM0 448c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32z"/></svg>
+          {% else %}
+            {% set iconName = btn.icon %}
+            {% include "components/FaIcon.njk" %}
+          {% endif %}
         </span>
-        <span class="donation-card__btn-label">{{ item.paypalLabel or item.paypal_label or "Mit PayPal spenden" }}</span>
+        {% endif %}
+        <span class="donation-card__btn-label">{{ btn.label }}</span>
         <span class="donation-card__btn-arrow" aria-hidden="true">&rarr;</span>
       </a>
       {% endif %}
-
-      {% if resolvedIbanLinkUrl and resolvedIbanLinkUrl != '#' %}
-      <a class="donation-card__btn donation-card__btn--iban" href="{{ resolvedIbanLinkUrl }}" rel="noopener noreferrer">
-        <span class="donation-card__btn-icon" aria-hidden="true">
-          <svg class="fa-svg fa-building-columns" viewBox="0 0 512 512" fill="currentColor" width="18" height="18"><path d="M240 32c17.7 0 32 14.3 32 32V96h176c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H208V64c0-17.7 14.3-32 32-32zM32 192H96v192H32V192zm160 0h64v192H192V192zm224 0h64v192H416V192zM0 448c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32z"/></svg>
-        </span>
-        <span class="donation-card__btn-label">{{ item.ibanLinkLabel or item.iban_link_label or "Online-Banking öffnen" }}</span>
-        <span class="donation-card__btn-arrow" aria-hidden="true">&rarr;</span>
-      </a>
-      {% endif %}
+      {% endfor %}
     </div>
     {% endif %}
 
+    {# Row 2: Details Card & Copy Button (Bank transfer or generic info/copy card) #}
     {% set accountName = item.accountName or item.account_name %}
     {% set ibanNumber = item.iban %}
     {% set bicCode = item.bic %}
     {% set bankName = item.bankName or item.bank_name %}
-    {% set ibanTitle = item.ibanTitle or item.iban_title or "Per Banküberweisung (IBAN)" %}
-    {% set copyLabel = item.copyLabel or item.copy_label or "IBAN kopieren" %}
     {% set referenceText = item.reference %}
+    {% set customDetails = item.details or item.custom_fields or item.fields %}
+    {% set cardTitle = item.card_title or item.cardTitle or item.details_title or item.detailsTitle or (item.ibanTitle or item.iban_title if (ibanNumber or accountName) else "") %}
+    {% set cardIcon = item.card_icon or item.cardIcon or item.details_icon or "credit-card" %}
+    {% set copyValue = item.copy_value or item.copyValue or item.copy_text or item.copyText or ibanNumber %}
+    {% set copyLabel = item.copy_label or item.copyLabel or (item.copyLabel if item.copyLabel else ("IBAN kopieren" if ibanNumber else "Kopieren")) %}
 
-    {% if ibanNumber or accountName %}
+    {% set hasCardContent = cardTitle or accountName or ibanNumber or bicCode or bankName or referenceText or (customDetails and customDetails.length > 0) or copyValue %}
+
+    {% if hasCardContent %}
     <div class="donation-card__bank-card">
+      {% if cardTitle %}
       <div class="donation-card__bank-header">
         <span class="donation-card__bank-icon" aria-hidden="true">
-          <svg class="fa-svg fa-credit-card" viewBox="0 0 576 512" fill="currentColor" width="18" height="18"><path d="M0 112c0-26.5 21.5-48 48-48h480c26.5 0 48 21.5 48 48v48H0V112zm0 128h576v160c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V240zm64 96c-8.8 0-16 7.2-16 16s7.2 16 16 16h64c8.8 0 16-7.2 16-16s-7.2-16-16-16H64zm128 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h128c8.8 0 16-7.2 16-16s-7.2-16-16-16H192z"/></svg>
+          {% if cardIcon == "credit-card" %}
+            <svg class="fa-svg fa-credit-card" viewBox="0 0 576 512" fill="currentColor" width="18" height="18"><path d="M0 112c0-26.5 21.5-48 48-48h480c26.5 0 48 21.5 48 48v48H0V112zm0 128h576v160c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V240zm64 96c-8.8 0-16 7.2-16 16s7.2 16 16 16h64c8.8 0 16-7.2 16-16s-7.2-16-16-16H64zm128 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h128c8.8 0 16-7.2 16-16s-7.2-16-16-16H192z"/></svg>
+          {% else %}
+            {% set iconName = cardIcon %}
+            {% include "components/FaIcon.njk" %}
+          {% endif %}
         </span>
-        <strong class="donation-card__bank-title">{{ ibanTitle }}</strong>
+        <strong class="donation-card__bank-title">{{ cardTitle }}</strong>
       </div>
+      {% endif %}
 
+      {% set hasDetailsList = (customDetails and customDetails.length > 0) or accountName or ibanNumber or bicCode or bankName or referenceText %}
+      {% if hasDetailsList %}
       <dl class="donation-card__bank-details">
+        {# Generic detail rows #}
+        {% if customDetails and customDetails.length > 0 %}
+          {% for row in customDetails %}
+          <div class="donation-card__detail-row">
+            <dt class="donation-card__detail-label">{{ row.label }}</dt>
+            <dd class="donation-card__detail-value">
+              {% if row.isCode or row.is_code %}
+              <code class="donation-card__code-value">{{ row.value }}</code>
+              {% else %}
+              {{ row.value }}
+              {% endif %}
+            </dd>
+          </div>
+          {% endfor %}
+        {% endif %}
+
+        {# Standard bank details #}
         {% if accountName %}
         <div class="donation-card__detail-row">
-          <dt class="donation-card__detail-label">Kontoinhaber</dt>
+          <dt class="donation-card__detail-label">{{ item.account_name_label or "Kontoinhaber" }}</dt>
           <dd class="donation-card__detail-value">{{ accountName }}</dd>
         </div>
         {% endif %}
 
         {% if ibanNumber %}
         <div class="donation-card__detail-row donation-card__detail-row--iban">
-          <dt class="donation-card__detail-label">IBAN</dt>
+          <dt class="donation-card__detail-label">{{ item.iban_label or "IBAN" }}</dt>
           <dd class="donation-card__detail-value">
             <code class="donation-card__iban-code">{{ ibanNumber }}</code>
           </dd>
@@ -80,29 +146,30 @@
 
         {% if bicCode %}
         <div class="donation-card__detail-row">
-          <dt class="donation-card__detail-label">BIC / SWIFT</dt>
+          <dt class="donation-card__detail-label">{{ item.bic_label or "BIC / SWIFT" }}</dt>
           <dd class="donation-card__detail-value">{{ bicCode }}</dd>
         </div>
         {% endif %}
 
         {% if bankName %}
         <div class="donation-card__detail-row">
-          <dt class="donation-card__detail-label">Bankinstitut</dt>
+          <dt class="donation-card__detail-label">{{ item.bank_name_label or "Bankinstitut" }}</dt>
           <dd class="donation-card__detail-value">{{ bankName }}</dd>
         </div>
         {% endif %}
 
         {% if referenceText %}
         <div class="donation-card__detail-row">
-          <dt class="donation-card__detail-label">Verwendungszweck</dt>
+          <dt class="donation-card__detail-label">{{ item.reference_label or "Verwendungszweck" }}</dt>
           <dd class="donation-card__detail-value">{{ referenceText }}</dd>
         </div>
         {% endif %}
       </dl>
+      {% endif %}
 
-      {% if ibanNumber %}
+      {% if copyValue %}
       <div class="donation-card__copy-wrapper">
-        <button type="button" class="donation-card__copy-btn" data-copy-iban="{{ ibanNumber }}" data-copied-text="IBAN kopiert!" data-default-label="{{ copyLabel }}" aria-label="{{ copyLabel }}">
+        <button type="button" class="donation-card__copy-btn"{% if ibanNumber and copyValue == ibanNumber %} data-copy-iban="{{ ibanNumber }}"{% else %} data-copy-text="{{ copyValue }}"{% endif %} data-copied-text="{{ item.copied_text or 'Kopiert!' }}" data-default-label="{{ copyLabel }}" aria-label="{{ copyLabel }}">
           <span class="donation-card__copy-icon donation-card__copy-icon--copy" aria-hidden="true">
             <svg class="fa-svg fa-copy" viewBox="0 0 448 512" fill="currentColor" width="16" height="16"><path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L384 99.9V320c0 8.8-7.2 16-16 16zM192 0C156.7 0 128 28.7 128 64V320c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-17-6.7-33.3-18.7-45.3L381.3 18.7C369.3 6.7 353 0 336 0H192zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16h32V128H64z"/></svg>
           </span>

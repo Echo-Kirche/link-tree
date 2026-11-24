@@ -185,7 +185,7 @@ flowchart TD
 
 ---
 
-# PART E — Component Reference: All 12 Components
+# PART E — Component Reference: All 13 Components
 
 Below is the complete reference for every component in the system. When creating components manually in Storyblok (**Block Library → Components**), ensure all technical names and field types match exactly.
 
@@ -207,7 +207,7 @@ The root document for a link tree page.
 | `theme` | Color Theme | Selects the brand theme preset. | `Single Option` | `light` | No | Options: `light`, `pale`, `soft`, `dark`, `teal`, `lavender`. |
 | `surface` | Target Surface | Default surface for this page story. | `Single Option` | `default` | No | Source: `surfaces` datasource. |
 | `profile` | Profile Header | Holds the avatar, name, and bio header block. | `Blocks` | None | No | Restrict to: `profile_header`. Max: 1 block. |
-| `body` | Main Content | The main ordered list of links, cards, and groups. | `Blocks` | None | No | Restrict to: `group_block`, `link_button`, `dropdown_card`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `section_heading`. Drag to reorder! |
+| `body` | Main Content | The main ordered list of links, cards, and groups. | `Blocks` | None | No | Restrict to: `group_block`, `link_button`, `dropdown_card`, `donation_card`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `section_heading`. Drag to reorder! |
 | `footer` | Legal Footer | Legal info, address, impressum, and social icons. | `Blocks` | None | No | Restrict to: `footer_legal`. Max: 1 block. |
 | `seo_title` | SEO Title | Overrides the browser title tag for search engines. | `Text` | Empty | No | Optional. |
 | `seo_description` | Meta Description | Summary text displayed in search results and embeds. | `Textarea` | Empty | No | Keep under 160 characters. |
@@ -249,16 +249,36 @@ A full-width, prominent clickable button for links to websites, sign-ups, or don
 |---|---|---|---|---|---|---|
 | `label` | Button Text | The text displayed prominently on the button. | `Text` | None | **Yes** | e.g. `Website besuchen` or `Spenden & Unterstützen`. |
 | `url` | Destination URL | The target web address. | `Link` or `Text` | None | **Yes** | e.g. `https://kirche-echo.de/spenden`. |
-| `icon` | Icon | Accompanying visual symbol on the left. | `Single Option` | `""` (None) | No | Supported: `church`, `calendar`, `video`, `heart`, `users`, `location`, `music`, `newsletter`, `podcast`, `envelope`, `globe`, `logo`, `link`. |
+| `icon` | Icon | Accompanying visual symbol on the left. | `Text` | `""` (None) | No | Enter any Font Awesome icon name (e.g. `church`, `calendar`, `video`, `heart`, `users`, `location`, `music`, `newsletter`, `podcast`, `envelope`, `globe`, `logo`, `link`, `fa-cross`, `fa-star`, `fa-phone`, `ticket`, `coffee`, `mug-hot`, `bible`), raw inline SVG, or `<i>` class tag. Leave blank for no icon. |
 | `display_in_default` | Display on Default | Controls visibility on the main landing page (`/`). | `Boolean` | `true` | No | Set to `false` for campus-specific buttons (e.g. Gifhorn switch). |
 | `show_on` | Show On | Allowlist: only show on these specific surfaces. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 | `hide_on` | Hide On | Blocklist: hide on these specific surfaces. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 
 ---
 
-## 4. Nestable Block: `dropdown_card` (Collapsible Service Times Card)
+## 4. Nestable Block: `dropdown_card` (Collapsible Service Times Dropdown Button & Card)
 
-An interactive, pure-CSS collapsible card for service times and campus schedules. On click, it smoothly expands to reveal a responsive 3-column auto-fit grid. Centered button label and church icon.
+An interactive, pure-CSS collapsible disclosure for service times and campus schedules. On click, it smoothly expands to reveal a responsive 3-column auto-fit grid (or a single-column vertical list) containing campus schedule cards, followed by an optional full-width footer action button.
+
+### Dropdown Button Details & Interactive Anatomy
+- **Button Styling (`<summary class="dropdown-card__summary link-button">`)**:
+  - Functions as a full-width clickable button styled identically to a standard `.link-button` (pill shape, brand background `--color-action-bg`, contrasting text `--color-action-text`, focus ring, and active hover elevation).
+  - Maintains consistent visual weight alongside all other primary action buttons on the page.
+- **Leading Icon (`.link-button__icon`)**:
+  - Displays a visual symbol on the left side of the button.
+  - Supports arbitrary Font Awesome icon names (default: `church`; also supports `calendar`, `clock`, `location`, `map-pin`, `users`, or any `fa-*` icon), raw inline `<svg>` markup, or `<i>` class tags rendered via the self-hosted `FaIcon.njk` component.
+- **Centered Label (`.link-button__label`)**:
+  - Displays the prominent headline text centered on the button (default: `Gottesdienste & Zeiten`).
+- **Animated Chevron Indicator (`.dropdown-card__chevron`)**:
+  - A right-aligned chevron arrow (`fa-chevron-down`) indicating expandable interactivity.
+  - Smoothly rotates 180 degrees via pure CSS when the card is expanded (`[open] .dropdown-card__chevron svg { transform: rotate(180deg); }`).
+- **Zero-JavaScript Pure CSS Interactivity**:
+  - Implemented with native HTML5 `<details class="dropdown-card">` and `<summary>`.
+  - Zero client-side JavaScript execution, zero tracking cookies, and 100% DSGVO/GDPR compliant.
+- **Accessibility (a11y) & Keyboard Navigation**:
+  - Fully accessible via keyboard: press `Tab` to focus the button, and `Enter` or `Space` to toggle the drawer open and closed.
+  - Native browser semantics automatically inform screen readers of the expanded/collapsed state without custom ARIA hacks.
+  - Seamlessly respects high-contrast modes (WCAG AAA 21:1) and typography scale preferences (100%, 115%, 130%) configured in the accessibility modal.
 
 - **Technical Name**: `dropdown_card`
 - **Display Name**: `Dropdown Service Times Card`
@@ -268,23 +288,23 @@ An interactive, pure-CSS collapsible card for service times and campus schedules
 
 | Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
 |---|---|---|---|---|---|---|
-| `label` | Card Header Label | The text on the expandable button. | `Text` | `Gottesdienste & Zeiten` | **Yes** | Centered in the summary bar. |
-| `icon` | Icon | Visual icon displayed in the summary bar. | `Single Option` | `church` | No | Default: `church`. |
-| `description` | Introductory Text | Text shown right beneath the button when expanded. | `Text` | `Feiere mit uns vor Ort in Gifhorn, Wolfsburg und Helmstedt...` | No | Explains options or online stream. |
-| `display_in_default` | Display on Default | Controls visibility on the main landing page (`/`). | `Boolean` | `true` | No | Default `true` displays the card on `/`. |
-| `layout` | Layout Mode | Grid display format for child items. | `Single Option` | `columns` | No | Options: `columns` (responsive 3-column grid) or `list` (single vertical list). |
+| `label` | Card Header Label | The text displayed on the expandable dropdown button. | `Text` | `Gottesdienste & Zeiten` | **Yes** | Centered in the summary button bar. |
+| `icon` | Icon | Visual icon displayed on the left side of the button. | `Text` | `church` | No | Default: `church`. Enter any Font Awesome name (e.g. `church`, `calendar`, `clock`, `map-pin`), raw SVG, or `<i>` tag. |
+| `description` | Introductory Text | Text shown right beneath the button when expanded. | `Text` | `Feiere mit uns vor Ort in Gifhorn, Wolfsburg und Helmstedt oder online im Livestream:` | No | Explains service formats, options, or online stream availability. |
+| `display_in_default` | Display on Default | Tier 1 curation flag for the main landing page (`/`). | `Boolean` | `true` | No | Default `true` displays the card on `/`. Set `false` to reserve for specific surfaces. |
+| `layout` | Layout Mode | Display arrangement for nested service columns. | `Single Option` | `columns` | No | Options: `columns` (responsive 3-column auto-fit card grid) or `list` (classic vertical list). |
 | `locations` | Active Locations | Selection of locations included in this card. | `Multi-Option` | `["gifhorn", "wolfsburg", "helmstedt"]` | No | Options: `gifhorn`, `wolfsburg`, `helmstedt`, `instagram`. |
-| `times` | Location Columns | The individual mini cards for each service or campus. | `Blocks` | None | No | Restrict to: `dropdown_time_item`. |
-| `url` | Footer Action URL | Link destination for the bottom action button. | `Text` or `Link` | `https://kirche-echo.de` | No | Links to full church locations overview. |
-| `action_label` | Action Button Text | Label for the bottom action button. | `Text` | `Alle Standorte & Livestream ansehen →` | No | Text on the bottom full-width link. |
-| `show_on` | Show On | Surface allowlist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
-| `hide_on` | Hide On | Surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
+| `times` | Location Columns | The individual mini cards for each service or campus. | `Blocks` | None | No | Restrict to: `dropdown_time_item`. Supports reordering. |
+| `url` | Footer Action URL | Link destination for the bottom action button. | `Text` or `Link` | `https://kirche-echo.de` | No | Links to full church locations overview or Livestream page. |
+| `action_label` | Action Button Text | Label for the bottom action button. | `Text` | `Alle Standorte & Livestream ansehen →` | No | Text on the bottom full-width button inside the expanded drawer. |
+| `show_on` | Show On | Tier 2 surface allowlist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
+| `hide_on` | Hide On | Tier 2 surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 
 ---
 
 ## 5. Nestable Block: `dropdown_time_item` (Service Time Mini Card)
 
-An individual campus or service mini card inside the `dropdown_card`. Every single element is 100% editable and customizable.
+An individual campus or service mini card nested inside the `dropdown_card`'s `times` (or `columns`) list. Every single element is 100% editable and customizable.
 
 - **Technical Name**: `dropdown_time_item`
 - **Display Name**: `Dropdown Service Time / Location Column`
@@ -297,18 +317,86 @@ An individual campus or service mini card inside the `dropdown_card`. Every sing
 | `title` | Location / Service Title | The heading of this specific card. | `Text` | None | **Yes** | e.g. `Gifhorn (10:00)`, `Gifhorn (12:00)`, `Wolfsburg`, `Helmstedt`. |
 | `time` | Time Badge | Highlighted time badge at the top. | `Text` | None | **Yes** | e.g. `10:00 Uhr`, `11:00 Uhr`, `12:00 Uhr`. |
 | `location` | Venue / Room | Specific hall, campus, or address. | `Text` | Empty | No | e.g. `BSK-Saal, Schützenplatz 3`. |
-| `details` | Details / Description | Additional notes (e.g. room info, parking). | `Textarea` | Empty | No | e.g. `Unsere Gottesdienste finden jeden Sonntag um 10:00 und 12:00 Uhr nebenan im BSK-Saal statt.` |
-| `display_in_default` | Display on Default | Controls visibility on the main landing page (`/`). | `Boolean` | `true` | No | Set to `true` to include in default 3-column overview. |
-| `has_kids` | Echo Kids Available | Toggles the tiny kid icon badge. | `Boolean` | `true` | No | Check to display the child SVG icon indicating children's church. |
-| `kids_label` | Echo Kids Label | Text next to the tiny kid icon. | `Text` | `Echo Kids verfügbar` | No | Customize if needed (e.g. `Kids Church ab 3 Jahren`). |
+| `details` | Details / Description | Additional notes (e.g. room info, parking, coffee). | `Textarea` | Empty | No | e.g. `Unsere Gottesdienste finden jeden Sonntag um 10:00 und 12:00 Uhr nebenan im BSK-Saal statt.` |
+| `display_in_default` | Display on Default | Controls visibility on the main landing page (`/`). | `Boolean` | `true` | No | Set to `true` to include in default overview. |
+| `has_kids` | Echo Kids Available | Toggles the children's church indicator badge. | `Boolean` | `true` | No | Check to display the kids check-in / availability badge. |
+| `kids_label` | Echo Kids Label | Custom label text for the children's church badge. | `Text` | `Echo Kids verfügbar` | No | Automatically adapts to service times (e.g. `Echo Kids Check-in: 9:30 Uhr` for 10:00 services, `11:30 Uhr` for 12:00 services) or custom text. |
 | `url` | Campus Link URL | Link directly to this location's web page. | `Text` or `Link` | Empty | No | e.g. `https://kirche-echo.de/gifhorn`. |
 | `action_label` | Link Label | Text on the mini card's link button. | `Text` | `Standort & Infos →` | No | e.g. `Standort Gifhorn →`. |
-| `show_on` | Show On | Surface allowlist. | `Multi-Option` | `[]` | No | Set to `gifhorn` for Gifhorn services. |
-| `hide_on` | Hide On | Surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
+| `show_on` | Show On | Tier 2 surface allowlist. | `Multi-Option` | `[]` | No | Set to `gifhorn` for Gifhorn services. |
+| `hide_on` | Hide On | Tier 2 surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 
 ---
 
-## 6. Nestable Block: `image_card_horizontal` (16:9 Featured Card)
+## 6. Nestable Block: `donation_card` (Interactive Expandable Action Card / Donation Drawer)
+
+An interactive, pure-CSS collapsible drawer with a dual-row interactive layout. While initially designed for church donations, tithes, and IBAN transfers, **this component is 100% generalized and can be used for ANY interactive action or credential drawer** (e.g. event registration & tickets, Wi-Fi credentials, discount codes, downloads, or custom 2-row interactive cards).
+
+### Dropdown Button Details & Interactive Anatomy
+- **Button Styling (`<summary class="donation-card__summary link-button">`)**:
+  - Built as a full-width `.link-button` matching all other action buttons across the link tree.
+  - Styled with `--color-action-bg`, high-contrast text, smooth hover states, and keyboard focus indicators.
+- **Leading Icon (`.link-button__icon`)**:
+  - Displays a heart icon (`heart`) by default.
+  - Supports any Font Awesome icon (e.g. `heart`, `ticket`, `wifi`, `key`, `hand-holding-heart`, `gift`, `church`, `calendar`), raw SVG, or `<i>` tags.
+- **Centered Label (`.link-button__label`)**:
+  - Default: `Spenden & Unterstützen`. Fully customizable in Storyblok for any purpose (e.g., `WLAN & Zugangsdaten`, `Tickets & Anmeldung`, `Voucher einlösen`).
+- **Animated Chevron Indicator (`.donation-card__chevron`)**:
+  - Right-aligned chevron down icon (`fa-chevron-down`) that rotates 180° when expanded.
+- **Zero-JavaScript Pure CSS Disclosure**:
+  - Built with native HTML5 `<details class="donation-card">` and `<summary>`.
+  - Accessible via keyboard (`Tab`, `Space`, `Enter`).
+- **Expanded Drawer Content**:
+  - **Introductory Text**: Mission statement, giving guidance, or instructions for the user.
+  - **Row 1 — Flexible Quick Action Buttons**:
+    - **Single Whole Button**: If only one button is configured (`button_1_*` or `paypal_*`), it automatically expands to a prominent **full-width button**.
+    - **Dual Buttons**: If two buttons are configured (`button_1_*` & `button_2_*`, or PayPal & Banking), they automatically format into a **responsive 2-button row**.
+    - Supports custom labels, URLs, icons, and color variants (`primary`, `secondary`, `paypal`, `iban`).
+  - **Row 2 — Information & One-Click Copy Card**:
+    - **Custom Data / Credentials**: Can display arbitrary details (`details` array of key-value items) or structured bank details (`account_name`, `iban`, `bic`, `bank_name`, `reference`). Values marked as `isCode` render in monospace code font (`<code>`).
+    - **Custom Card Title & Icon**: Configured via `card_title` (or `iban_title`) and optional `card_icon`.
+    - **Accessible Copy Button**: Built-in accessible button (`copy_label` / `copy_text`) wired to `clipboard-copy.js` that copies arbitrary text (`copy_value` or raw `iban`) to the user's clipboard and provides visual confirmation (`Kopiert! ✓`).
+
+- **Technical Name**: `donation_card`
+- **Display Name**: `Donation & Interactive Action Card`
+- **Component Type**: **Nestable Block**
+
+### Fields
+
+| Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
+|---|---|---|---|---|---|---|
+| `label` | Card Header Label | Text on the expandable dropdown button. | `Text` | `Spenden & Unterstützen` | **Yes** | Centered in the summary button bar (e.g. `Spenden & Unterstützen` or `Anmeldung & Tickets`). |
+| `icon` | Icon | Visual icon on the left side of the button. | `Text` | `heart` | No | Default: `heart`. Supports any Font Awesome icon (e.g. `heart`, `ticket`, `wifi`, `key`), raw SVG, or `<i>` tag. |
+| `description` | Introductory Text | Explanatory text beneath button when opened. | `Text` | `Deine Spende unterstützt die Vision und gemeinnützige Arbeit von Echo Kirche.` | No | Informs users about giving or instructions. |
+| `button_1_label` | Button 1 Label | Text for the primary button in Row 1. | `Text` | Empty | No | e.g. `Tickets buchen` or `Mit PayPal spenden`. If only Button 1 is present, it renders full width! |
+| `button_1_url` | Button 1 URL | Target address for Button 1. | `Text` or `Link` | Empty | No | Destination link for Button 1. |
+| `button_1_icon` | Button 1 Icon | Icon for Button 1. | `Text` | Empty | No | Any Font Awesome icon (e.g. `ticket`, `paypal`, `star`, `arrow-right`). |
+| `button_1_variant` | Button 1 Variant | Visual style of Button 1. | `Single Option` | `primary` | No | Options: `primary`, `secondary`, `paypal`, `iban`. |
+| `button_2_label` | Button 2 Label | Text for secondary button in Row 1. | `Text` | Empty | No | e.g. `Infos ansehen` or `Online-Banking öffnen`. When present, Row 1 splits into 2 buttons. |
+| `button_2_url` | Button 2 URL | Target address for Button 2. | `Text` or `Link` | Empty | No | Destination link for Button 2. |
+| `button_2_icon` | Button 2 Icon | Icon for Button 2. | `Text` | Empty | No | Any Font Awesome icon (e.g. `info`, `building-columns`, `calendar`). |
+| `button_2_variant` | Button 2 Variant | Visual style of Button 2. | `Single Option` | `secondary` | No | Options: `secondary`, `primary`, `paypal`, `iban`. |
+| `card_title` | Card Title | Title of the details card in Row 2. | `Text` | Empty | No | e.g. `Zugangsdaten & Passwort`, `Bankverbindung (IBAN)`. Overrides `iban_title`. |
+| `card_icon` | Card Icon | Icon next to card title in Row 2. | `Text` | Empty | No | Font Awesome icon name (e.g. `wifi`, `key`, `building-columns`). |
+| `copy_value` | Copy Value | The exact text copied to clipboard when clicking copy. | `Text` | Empty | No | Custom string (e.g. Wi-Fi password, promo code, or account number). Overrides IBAN string. |
+| `copy_label` | Copy Button Label | Text on the copy-to-clipboard button. | `Text` | `IBAN kopieren` | No | e.g. `Passwort kopieren`, `Code kopieren`, or `IBAN kopieren`. |
+| `paypal_label` | PayPal Button Label | Preset text on the PayPal button. | `Text` | `Mit PayPal spenden` | No | Used if `button_1_*` is not configured. |
+| `paypal_url` | PayPal URL | Preset target address for PayPal giving. | `Text` or `Link` | `https://paypal.me/echokirche` | No | Direct PayPal link. |
+| `iban_link_label` | Banking Button Label | Preset text on secondary banking button. | `Text` | `Online-Banking öffnen` | No | Used if `button_2_*` is not configured. |
+| `iban_link_url` | Banking Link URL | Preset web banking or giving page link. | `Text` or `Link` | `https://kirche-echo.de/spenden` | No | Target giving web page URL. |
+| `iban_title` | Bank Card Header | Preset title of bank transfer card. | `Text` | `Per Banküberweisung (IBAN)` | No | Header above bank details. |
+| `account_name` | Account Holder | Preset bank account holder. | `Text` | `Echo Kirche e.V.` | No | Official legal entity name. |
+| `iban` | IBAN | Preset International Bank Account Number. | `Text` | `DE12 3456 7890 1234 5678 90` | No | Formatted with spaces. Also acts as fallback copy value. |
+| `bic` | BIC / SWIFT | Preset Bank Identifier Code. | `Text` | `PBNKDEFF` | No | SWIFT / BIC code. |
+| `bank_name` | Bank Name | Preset financial institution name. | `Text` | `Postbank` | No | Name of church's bank. |
+| `reference` | Payment Reference | Preset transfer reference. | `Text` | `Spende Echo Kirche` | No | Recommended Verwendungszweck. |
+| `display_in_default` | Display on Default | Tier 1 curation flag for landing page (`/`). | `Boolean` | `true` | No | Default `true`. |
+| `show_on` | Show On | Tier 2 surface allowlist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
+| `hide_on` | Hide On | Tier 2 surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
+
+---
+
+## 7. Nestable Block: `image_card_horizontal` (16:9 Featured Card)
 
 A landscape media card with a 16:9 image, headline, and interactive arrow button. Ideal for current sermon series, conferences, or campaigns.
 
@@ -329,7 +417,7 @@ A landscape media card with a 16:9 image, headline, and interactive arrow button
 
 ---
 
-## 7. Nestable Block: `image_card_vertical` (3:4 Portrait Flyer)
+## 8. Nestable Block: `image_card_vertical` (3:4 Portrait Flyer)
 
 A portrait media card in 3:4 aspect ratio. Perfect for event posters, flyers, or speaker announcements.
 
@@ -350,7 +438,7 @@ A portrait media card in 3:4 aspect ratio. Perfect for event posters, flyers, or
 
 ---
 
-## 8. Nestable Block: `video_link_card` (Privacy 2-Click Video Card)
+## 9. Nestable Block: `video_link_card` (Privacy 2-Click Video Card)
 
 A GDPR-compliant video card. Displays a preview image with a centered play button. No YouTube cookies or iframes load until the visitor explicitly clicks play.
 
@@ -374,7 +462,7 @@ A GDPR-compliant video card. Displays a preview image with a centered play butto
 
 ---
 
-## 9. Nestable Block: `section_heading` (Category Divider)
+## 10. Nestable Block: `section_heading` (Category Divider)
 
 A clean uppercase section heading used to visually divide content categories (e.g. *Gottesdienste*, *Medien & Musik*, *Gemeinde*).
 
@@ -391,7 +479,7 @@ A clean uppercase section heading used to visually divide content categories (e.
 
 ---
 
-## 10. Nestable Block: `group_block` (Container Box)
+## 11. Nestable Block: `group_block` (Container Box)
 
 A styled container box that groups related buttons, dropdown cards, or media cards into a cohesive visual card.
 
@@ -406,14 +494,14 @@ A styled container box that groups related buttons, dropdown cards, or media car
 | `title` | Group Title | Optional header above the grouped items. | `Text` | Empty | No | e.g. `Unsere Standorte`. |
 | `description` | Group Description | Optional short explanation text. | `Textarea` | Empty | No | e.g. `Finde die Echo Kirche in deiner Nähe.` |
 | `variant` | Visual Style | Container background and border treatment. | `Single Option` | `card` | No | Options: `card` (white card with soft shadow), `soft` (tinted background), `outline` (dashed border), `transparent` (borderless list). |
-| `items` | Nested Items | The list of buttons and cards inside the box. | `Blocks` | None | No | Restrict to: `link_button`, `dropdown_card`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `section_heading`. |
+| `items` | Nested Items | The list of buttons and cards inside the box. | `Blocks` | None | No | Restrict to: `link_button`, `dropdown_card`, `donation_card`, `image_card_horizontal`, `image_card_vertical`, `video_link_card`, `section_heading`. |
 | `display_in_default` | Display on Default | Controls visibility on the main landing page (`/`). | `Boolean` | `true` | No | Default `true`. |
 | `show_on` | Show On | Surface allowlist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 | `hide_on` | Hide On | Surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 
 ---
 
-## 11. Nestable Block: `social_item` (Social Media Button)
+## 12. Nestable Block: `social_item` (Social Media Button)
 
 A circular icon button for external social profiles (Instagram, WhatsApp, YouTube, Spotify, etc.) located in the footer.
 
@@ -431,7 +519,7 @@ A circular icon button for external social profiles (Instagram, WhatsApp, YouTub
 
 ---
 
-## 12. Nestable Block: `footer_legal` (Legal & Contact Information)
+## 13. Nestable Block: `footer_legal` (Legal & Contact Information)
 
 The bottom footer section containing organization address, mandatory German legal links (Impressum & Datenschutz), copyright year, and social buttons.
 
@@ -610,12 +698,13 @@ Your Storyblok space and project setup is complete when all of the following are
 - [ ] Single Storyblok space created in EU region.
 - [ ] Public access token added to Netlify environment variables (`STORYBLOK_TOKEN`).
 - [ ] `Surfaces` datasource created with entries: `default`, `gifhorn`, `wolfsburg`, `helmstedt`, `instagram`, `tiktok`, `linkedin`, `youtube`.
-- [ ] All 12 components created with exact technical names:
+- [ ] All 13 components created with exact technical names:
   - [ ] `link_page` (Content Type)
   - [ ] `profile_header` (Nestable Block)
   - [ ] `link_button` (Nestable Block)
-  - [ ] `dropdown_card` (Nestable Block)
-  - [ ] `dropdown_time_item` (Nestable Block)
+  - [ ] `dropdown_card` (Nestable Block — Service Times Dropdown Button & Drawer)
+  - [ ] `dropdown_time_item` (Nestable Block — Schedule & Location Mini Card)
+  - [ ] `donation_card` (Nestable Block — Giving & IBAN Dropdown Button & Drawer)
   - [ ] `image_card_horizontal` (Nestable Block)
   - [ ] `image_card_vertical` (Nestable Block)
   - [ ] `video_link_card` (Nestable Block)
@@ -625,6 +714,8 @@ Your Storyblok space and project setup is complete when all of the following are
   - [ ] `footer_legal` (Nestable Block)
 - [ ] `Home` story created with slug `home`.
 - [ ] Service times configured in `dropdown_card` (Gifhorn 10:00 & 12:00 in BSK-Saal with Echo Kids, Wolfsburg 11:00, Helmstedt 12:00).
+- [ ] Giving options configured in `donation_card` (PayPal URL, Online Banking link, account name, IBAN with clipboard copy).
+- [ ] Dropdown buttons tested for accessibility (keyboard `Tab` focus, `Space`/`Enter` expansion, 180° rotating chevron indicator).
 - [ ] Campus-specific items have `display_in_default = false` and appropriate `show_on` values.
 - [ ] Netlify build hook connected to Storyblok publish webhook.
 - [ ] Tested `/test` route with live surface switcher.

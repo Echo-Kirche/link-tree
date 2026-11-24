@@ -112,6 +112,7 @@
       outline-offset: 3px;
     }
 
+    &--primary,
     &--paypal {
       background-color: var(--color-action-bg);
       color: var(--color-action-text, #ffffff);
@@ -122,6 +123,7 @@
       }
     }
 
+    &--secondary,
     &--iban {
       background-color: var(--color-surface-subtle, var(--primitive-neutral-100, #fafafa));
       color: var(--color-text);
@@ -235,6 +237,7 @@
     word-break: break-all;
   }
 
+  &__code-value,
   &__iban-code {
     display: inline-block;
     font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;

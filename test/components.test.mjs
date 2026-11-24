@@ -142,6 +142,100 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(htmlIbanOnly, /Nummer kopieren/);
   });
 
+  test('DonationCard supports generic data: 1 whole button or 2 buttons, custom card details, and copy-to-clipboard button', async () => {
+    const nunjucks = (await import('nunjucks')).default;
+    const env = nunjucks.configure(path.resolve('src/_includes'), { autoescape: true });
+    env.addFilter('resolveUrl', (val) => typeof val === 'string' ? val : (val?.url || ''));
+    env.addFilter('storyblokEditable', () => '');
+
+    // 1. Single whole full-width button in Row 1
+    const htmlSingleBtn = env.render('components/DonationCard.njk', {
+      item: {
+        id: 'single-action-card',
+        type: 'donation-card',
+        label: 'Anmeldung & Tickets',
+        icon: 'ticket',
+        description: 'Sichere dir jetzt deinen Platz für die Konferenz.',
+        button_1_label: 'Jetzt online anmelden',
+        button_1_url: 'https://kirche-echo.de/anmeldung',
+        button_1_icon: 'ticket',
+        button_1_variant: 'primary'
+      }
+    });
+    assert.match(htmlSingleBtn, /class="donation-card__summary link-button/);
+    assert.match(htmlSingleBtn, /Anmeldung (&amp;|&) Tickets/);
+    assert.match(htmlSingleBtn, /class="donation-card__actions"/);
+    assert.match(htmlSingleBtn, /class="donation-card__btn donation-card__btn--primary"/);
+    assert.match(htmlSingleBtn, /Jetzt online anmelden/);
+    assert.match(htmlSingleBtn, /href="https:\/\/kirche-echo\.de\/anmeldung"/);
+    assert.doesNotMatch(htmlSingleBtn, /donation-card__btn--secondary/);
+    assert.doesNotMatch(htmlSingleBtn, /donation-card__btn--iban/);
+
+    // 2. Two buttons in Row 1 (e.g. Download & Stream)
+    const htmlTwoBtns = env.render('components/DonationCard.njk', {
+      item: {
+        id: 'two-actions-card',
+        type: 'donation-card',
+        label: 'Ressourcen & Predigtnotizen',
+        icon: 'book',
+        button_1_label: 'PDF Notizen herunterladen',
+        button_1_url: 'https://kirche-echo.de/notizen.pdf',
+        button_1_icon: 'file-arrow-down',
+        button_1_variant: 'primary',
+        button_2_label: 'Predigt ansehen',
+        button_2_url: 'https://kirche-echo.de/video',
+        button_2_icon: 'video',
+        button_2_variant: 'secondary'
+      }
+    });
+    assert.match(htmlTwoBtns, /class="donation-card__btn donation-card__btn--primary"/);
+    assert.match(htmlTwoBtns, /PDF Notizen herunterladen/);
+    assert.match(htmlTwoBtns, /class="donation-card__btn donation-card__btn--secondary"/);
+    assert.match(htmlTwoBtns, /Predigt ansehen/);
+
+    // 3. Row 2 with generic card title, custom detail rows, and generic copy button
+    const htmlGenericDetailsAndCopy = env.render('components/DonationCard.njk', {
+      item: {
+        id: 'wifi-card',
+        type: 'donation-card',
+        label: 'WLAN & Infos vor Ort',
+        icon: 'wifi',
+        card_title: 'Kostenloses Gäste-WLAN',
+        card_icon: 'wifi',
+        details: [
+          { label: 'Netzwerk (SSID)', value: 'Echo-Guest' },
+          { label: 'Verschlüsselung', value: 'WPA3 / WPA2' },
+          { label: 'WLAN-Passwort', value: 'EchoKirche2026', isCode: true }
+        ],
+        copy_value: 'EchoKirche2026',
+        copy_label: 'WLAN-Passwort kopieren'
+      }
+    });
+    assert.match(htmlGenericDetailsAndCopy, /class="donation-card__bank-card"/);
+    assert.match(htmlGenericDetailsAndCopy, /Kostenloses Gäste-WLAN/);
+    assert.match(htmlGenericDetailsAndCopy, /Netzwerk \(SSID\)/);
+    assert.match(htmlGenericDetailsAndCopy, /Echo-Guest/);
+    assert.match(htmlGenericDetailsAndCopy, /class="donation-card__code-value"/);
+    assert.match(htmlGenericDetailsAndCopy, /EchoKirche2026/);
+    assert.match(htmlGenericDetailsAndCopy, /data-copy-text="EchoKirche2026"/);
+    assert.match(htmlGenericDetailsAndCopy, /WLAN-Passwort kopieren/);
+
+    // 4. Standalone copy button in Row 2 (no key-value details)
+    const htmlStandaloneCopy = env.render('components/DonationCard.njk', {
+      item: {
+        id: 'promo-card',
+        type: 'donation-card',
+        label: 'Rabattcode für Konferenz',
+        card_title: 'Dein Aktionscode',
+        copy_value: 'ECHO-SUMMER-2026',
+        copy_label: 'Code kopieren'
+      }
+    });
+    assert.match(htmlStandaloneCopy, /Dein Aktionscode/);
+    assert.match(htmlStandaloneCopy, /data-copy-text="ECHO-SUMMER-2026"/);
+    assert.match(htmlStandaloneCopy, /Code kopieren/);
+  });
+
   test('ImageCardHorizontal & ImageCardVertical render media cards with aspect ratios and arrows', () => {
     assert.match(indexHtml, /class="image-card image-card--horizontal"/, 'ImageCardHorizontal must exist');
     assert.match(indexHtml, /class="image-card__media"/, 'Image media wrapper must exist');

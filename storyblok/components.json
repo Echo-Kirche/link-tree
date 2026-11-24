@@ -1221,22 +1221,51 @@
         "paypal_label": {
           "type": "text",
           "pos": 4,
-          "default_value": "Mit PayPal spenden"
+          "default_value": "Mit PayPal spenden",
+          "description": "Button 1 label (default for PayPal, or custom button 1)"
         },
         "paypal_url": {
           "type": "multilink",
           "pos": 5,
-          "default_value": "https://paypal.me/echokirche"
+          "default_value": "https://paypal.me/echokirche",
+          "description": "Button 1 destination URL"
+        },
+        "button_1_icon": {
+          "type": "text",
+          "pos": 6,
+          "description": "Button 1 icon name (default: paypal, or any Font Awesome icon)"
         },
         "iban_link_label": {
           "type": "text",
-          "pos": 6,
-          "default_value": "Online-Banking öffnen"
+          "pos": 7,
+          "default_value": "Online-Banking öffnen",
+          "description": "Button 2 label (default for banking, or custom button 2)"
         },
         "iban_link_url": {
           "type": "multilink",
-          "pos": 7,
-          "default_value": "https://kirche-echo.de/spenden"
+          "pos": 8,
+          "default_value": "https://kirche-echo.de/spenden",
+          "description": "Button 2 destination URL"
+        },
+        "button_2_icon": {
+          "type": "text",
+          "pos": 9,
+          "description": "Button 2 icon name (default: building-columns, or any Font Awesome icon)"
+        },
+        "card_title": {
+          "type": "text",
+          "pos": 10,
+          "description": "Custom card header for row 2 (overrides iban_title)"
+        },
+        "card_icon": {
+          "type": "text",
+          "pos": 11,
+          "description": "Custom icon for row 2 card (default: credit-card, or any Font Awesome icon)"
+        },
+        "copy_value": {
+          "type": "text",
+          "pos": 12,
+          "description": "Custom text/value to copy to clipboard in row 2 (e.g. coupon, Wi-Fi pass, promo code, or IBAN)"
         },
         "iban_title": {
           "type": "text",

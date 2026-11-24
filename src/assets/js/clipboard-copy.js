@@ -30,30 +30,31 @@
   }
 
   document.addEventListener('click', (event) => {
-    const btn = event.target.closest('[data-copy-iban]');
+    const btn = event.target.closest('[data-copy-text], [data-copy-iban], [data-copy]');
     if (!btn) return;
     event.preventDefault();
 
-    const rawValue = btn.getAttribute('data-copy-iban') || '';
-    // Copy clean IBAN without spaces
-    const ibanToCopy = rawValue.replace(/\s+/g, '').trim();
-    if (!ibanToCopy) return;
+    const isIban = btn.hasAttribute('data-copy-iban') && !btn.hasAttribute('data-copy-text');
+    const rawValue = btn.getAttribute('data-copy-text') || btn.getAttribute('data-copy-iban') || btn.getAttribute('data-copy') || '';
+    const textToCopy = isIban ? rawValue.replace(/\s+/g, '').trim() : rawValue.trim();
+    if (!textToCopy) return;
 
     const labelSpan = btn.querySelector('.donation-card__copy-text');
     const originalText = labelSpan ? labelSpan.textContent : '';
     const feedbackText = btn.getAttribute('data-copied-text') || 'Kopiert!';
 
     const liveRegion = btn.closest('.donation-card')?.querySelector('.donation-card__live-region');
+    const liveSuccessMessage = btn.getAttribute('data-copied-live') || (isIban ? 'IBAN in die Zwischenablage kopiert' : 'In die Zwischenablage kopiert');
 
-    copyTextToClipboard(ibanToCopy, () => {
+    copyTextToClipboard(textToCopy, () => {
       btn.classList.add('is-copied');
       btn.setAttribute('aria-label', feedbackText);
       if (labelSpan) labelSpan.textContent = feedbackText;
-      if (liveRegion) liveRegion.textContent = 'IBAN in die Zwischenablage kopiert';
+      if (liveRegion) liveRegion.textContent = liveSuccessMessage;
 
       setTimeout(() => {
         btn.classList.remove('is-copied');
-        const defaultLabel = btn.getAttribute('data-default-label') || originalText || 'IBAN kopieren';
+        const defaultLabel = btn.getAttribute('data-default-label') || originalText || (isIban ? 'IBAN kopieren' : 'Kopieren');
         btn.setAttribute('aria-label', defaultLabel);
         if (labelSpan) labelSpan.textContent = defaultLabel;
         if (liveRegion) liveRegion.textContent = '';

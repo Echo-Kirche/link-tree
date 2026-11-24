@@ -123,26 +123,39 @@ Individual service schedule card nested inside `dropdown_card`:
 
 ---
 
-### 2.6 Donation & IBAN Dropdown Card: `donation_card`
+### 2.6 Interactive Expandable Action Card: `donation_card`
 
-Collapsible donation and payment drawer powered by pure CSS `<details>` and `<summary>`, featuring dual action buttons (PayPal and Pay with IBAN / Online Banking) and a bank details card with accessible copy-to-clipboard functionality:
+Collapsible interactive drawer powered by pure CSS `<details>` and `<summary>`. Designed for donations and bank transfers, but fully generalized to display **any custom data, credentials, vouchers, or action flows** with the exact same visual styling and structure:
+- **Row 1 (Action Buttons)**: Can render either a **single whole (full-width) button** or **two side-by-side action buttons** with custom labels, URLs, Font Awesome icons, and styling variants (`primary`, `secondary`, `paypal`, `iban`).
+- **Row 2 (Information & Copy Card)**: Structured details card with a custom title, icon, arbitrary key-value details, and an accessible one-click copy button (`data-copy-text`) with instant visual feedback, or standard bank transfer details (`data-copy-iban`).
 
 | Field Name | Type | Required | Description & Validation |
 | :--- | :--- | :--- | :--- |
-| `label` | Text | Yes | Summary header text (e.g., `"Spenden & Unterstützen"`). |
-| `icon` | Text | No | Icon next to label: `heart` (default), or any Font Awesome icon (e.g., `church`, `calendar`, `video`, `users`, `location`, `link`, `fa-*`, raw SVG, or `<i>` class tag). |
+| `label` | Text | Yes | Summary header text for the expandable dropdown button (e.g., `"Spenden & Unterstützen"` or `"WLAN & Zugangsdaten"`). |
+| `icon` | Text | No | Icon next to label: `heart` (default), or any Font Awesome icon (e.g., `church`, `calendar`, `ticket`, `wifi`, `key`, `fa-*`, raw SVG, or `<i>` class tag). |
 | `description` | Text | No | Intro text revealed when expanded (max 300 chars). |
-| `paypal_label` | Text | No | Label for PayPal button (default: `"Mit PayPal spenden"`). |
-| `paypal_url` | Text / Multilink | No | PayPal destination URL. |
-| `iban_link_label` | Text | No | Label for IBAN / Online Banking button (default: `"Online-Banking öffnen"`). |
-| `iban_link_url` | Text / Multilink | No | Online banking or external donation URL. |
-| `iban_title` | Text | No | Header of the bank details card (default: `"Per Banküberweisung (IBAN)"`). |
-| `account_name` | Text | No | Account holder name (e.g., `"Echo Kirche e.V."`). |
-| `iban` | Text | No | IBAN string (e.g., `"DE12 3456 7890 1234 5678 90"`). |
-| `bic` | Text | No | BIC / SWIFT code (e.g., `"PBNKDEFF"`). |
-| `bank_name` | Text | No | Name of the banking institution (e.g., `"Postbank"`). |
+| `button_1_label` | Text | No | Label for the primary button in Row 1 (e.g., `"Tickets buchen"`, `"Mit PayPal spenden"`). If only Button 1 is provided, it renders as a single full-width button. |
+| `button_1_url` | Text / Multilink | No | Target URL for primary button. |
+| `button_1_icon` | Text | No | Font Awesome icon name (e.g. `ticket`, `paypal`, `star`), raw SVG, or `<i>` tag for primary button. |
+| `button_1_variant` | Single Option | No | Button style: `primary` (default), `secondary`, `paypal`, or `iban`. |
+| `button_2_label` | Text | No | Label for optional secondary button in Row 1. When present, Row 1 automatically renders as 2 side-by-side buttons. |
+| `button_2_url` | Text / Multilink | No | Target URL for secondary button. |
+| `button_2_icon` | Text | No | Font Awesome icon, raw SVG, or `<i>` tag for secondary button. |
+| `button_2_variant` | Single Option | No | Button style: `secondary` (default), `primary`, `paypal`, or `iban`. |
+| `paypal_label` | Text | No | Legacy/preset label for PayPal button (default: `"Mit PayPal spenden"`). |
+| `paypal_url` | Text / Multilink | No | Legacy/preset PayPal destination URL. |
+| `iban_link_label` | Text | No | Legacy/preset label for banking button (default: `"Online-Banking öffnen"`). |
+| `iban_link_url` | Text / Multilink | No | Legacy/preset online banking or external giving URL. |
+| `card_title` / `iban_title` | Text | No | Header of the information card in Row 2 (default: `"Per Banküberweisung (IBAN)"`). |
+| `card_icon` | Text | No | Optional leading icon for the Row 2 card header (e.g., `building-columns`, `wifi`, `key`, `info-circle`). |
+| `details` | Array of Objects | No | Array of arbitrary key-value details in Row 2: `[ { "label": "...", "value": "...", "isCode": true|false } ]`. |
+| `copy_value` | Text | No | Arbitrary text string copied to clipboard when the user clicks the copy button in Row 2 (wired to `clipboard-copy.js`). |
+| `copy_label` / `copy_text`| Text | No | Label for the copy button (default: `"IBAN kopieren"` or `"Kopieren"`). |
+| `account_name` | Text | No | Account holder name for bank transfer preset (e.g., `"Echo Kirche e.V."`). |
+| `iban` | Text | No | IBAN string for bank transfer preset (e.g., `"DE12 3456 7890 1234 5678 90"`). Automatically sets `copy_value` if not explicitly given. |
+| `bic` | Text | No | BIC / SWIFT code for bank transfer preset (e.g., `"PBNKDEFF"`). |
+| `bank_name` | Text | No | Banking institution name for bank transfer preset (e.g., `"Postbank"`). |
 | `reference` | Text | No | Recommended payment reference / Verwendungszweck. |
-| `copy_label` | Text | No | Label for the copy button (default: `"IBAN kopieren"`). |
 | `display_in_default` | Boolean | No | Tier 1 curation flag. Default: `true`. |
 | `show_on` / `hide_on` | Multi-select | No | Tier 2 surface filters. |
 

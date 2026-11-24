@@ -292,6 +292,46 @@
         "label": { "type": "string", "minLength": 1, "maxLength": 160 },
         "icon": { "type": "string", "maxLength": 2048 },
         "description": { "type": "string", "maxLength": 300 },
+        "button1Label": { "type": "string", "maxLength": 100 },
+        "button1Url": { "$ref": "#/$defs/safeUrl" },
+        "button1Icon": { "type": "string", "maxLength": 2048 },
+        "button1Variant": { "type": "string", "maxLength": 50 },
+        "button2Label": { "type": "string", "maxLength": 100 },
+        "button2Url": { "$ref": "#/$defs/safeUrl" },
+        "button2Icon": { "type": "string", "maxLength": 2048 },
+        "button2Variant": { "type": "string", "maxLength": 50 },
+        "buttons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "url"],
+            "additionalProperties": false,
+            "properties": {
+              "label": { "type": "string", "maxLength": 100 },
+              "url": { "$ref": "#/$defs/safeUrl" },
+              "icon": { "type": "string", "maxLength": 2048 },
+              "variant": { "type": "string", "maxLength": 50 },
+              "target": { "type": "string", "maxLength": 20 }
+            }
+          }
+        },
+        "cardTitle": { "type": "string", "maxLength": 100 },
+        "cardIcon": { "type": "string", "maxLength": 2048 },
+        "copyValue": { "type": "string", "maxLength": 500 },
+        "copyText": { "type": "string", "maxLength": 500 },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "value"],
+            "additionalProperties": false,
+            "properties": {
+              "label": { "type": "string", "maxLength": 100 },
+              "value": { "type": "string", "maxLength": 500 },
+              "isCode": { "type": "boolean" }
+            }
+          }
+        },
         "paypalLabel": { "type": "string", "maxLength": 100 },
         "paypalUrl": { "$ref": "#/$defs/safeUrl" },
         "ibanLinkLabel": { "type": "string", "maxLength": 100 },

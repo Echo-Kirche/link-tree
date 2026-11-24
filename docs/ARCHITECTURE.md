@@ -81,7 +81,7 @@ flowchart TD
 
 ## 4. Component Hierarchy & Primitives
 
-All 12 components are declared in [`storyblok/components.json`](../storyblok/components.json), documented in [`docs/CONTENT-MODEL.md`](./CONTENT-MODEL.md), and implemented in `src/_includes/components/`:
+All 13 components are declared in [`storyblok/components.json`](../storyblok/components.json), documented in [`docs/CONTENT-MODEL.md`](./CONTENT-MODEL.md), and implemented in `src/_includes/components/`:
 
 ```
 link_page (Root Page)
@@ -91,6 +91,7 @@ link_page (Root Page)
 │   ├── link_button (Full-width action button with optional icon)
 │   ├── dropdown_card (Collapsible details/summary service times & locations)
 │   │   └── dropdown_time_item (Mini cards: time badge, venue, Echo Kids badge, link)
+│   ├── donation_card (Collapsible details/summary donation & IBAN drawer)
 │   ├── image_card_horizontal (16:9 featured horizontal card with title & arrow)
 │   ├── image_card_vertical (3:4 portrait flyer card with title & arrow)
 │   ├── video_link_card (Privacy 2-click video card with YouTube ID support)
