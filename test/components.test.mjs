@@ -440,6 +440,27 @@ describe('Component Markup & Accessibility Contracts', () => {
     });
     assert.match(htmlCoffee, /class="fa-svg fa-mug-hot"/);
 
+    // 2b. PayPal, Bank, Building Columns, and Credit Card icons
+    const htmlPaypal = env.render('components/LinkButton.njk', {
+      item: { label: 'PayPal Link', url: 'https://paypal.me/test', icon: 'paypal' }
+    });
+    assert.match(htmlPaypal, /class="fa-svg fa-paypal"/);
+
+    const htmlBank = env.render('components/LinkButton.njk', {
+      item: { label: 'Bank Link', url: 'https://example.com/bank', icon: 'bank' }
+    });
+    assert.match(htmlBank, /class="fa-svg fa-building-columns"/);
+
+    const htmlColumns = env.render('components/LinkButton.njk', {
+      item: { label: 'Columns Link', url: 'https://example.com/columns', icon: 'building-columns' }
+    });
+    assert.match(htmlColumns, /class="fa-svg fa-building-columns"/);
+
+    const htmlCard = env.render('components/LinkButton.njk', {
+      item: { label: 'Card Link', url: 'https://example.com/card', icon: 'credit-card' }
+    });
+    assert.match(htmlCard, /class="fa-svg fa-credit-card"/);
+
     // 3. Raw SVG input
     const rawSvg = '<svg class="custom-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10"/></svg>';
     const htmlRawSvg = env.render('components/LinkButton.njk', {
@@ -473,6 +494,7 @@ describe('Component Markup & Accessibility Contracts', () => {
   test('VideoLinkCard renders 2-click consent facade without initial iframe', () => {
     assert.match(indexHtml, /class="video-link-card"/, 'VideoLinkCard container must exist');
     assert.match(indexHtml, /class="video-link-card__play-btn"/, 'Play facade button must exist');
+    assert.match(indexHtml, /class="fa-svg fa-play"/, 'Play badge must render Font Awesome fa-play icon');
     assert.match(indexHtml, /class="video-link-card__play-badge"/, 'Play badge must exist');
     assert.match(indexHtml, /data-video-embed="youtube"/, 'Data attribute for facade embed must exist');
     assert.doesNotMatch(indexHtml, /<iframe/i, 'No initial <iframe> allowed on page load');
