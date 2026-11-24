@@ -27,7 +27,7 @@ export default [
       },
       {
         platform: 'youtube',
-        url: 'https://www.youtube.com/@KircheimBrauhaus',
+        url: 'https://www.youtube.com/@ECHO-Kirche',
         label: 'YouTube (@KircheimBrauhaus)',
       },
       {
@@ -75,7 +75,7 @@ export default [
       },
       {
         platform: 'youtube',
-        url: 'https://www.youtube.com/@KircheimBrauhaus',
+        url: 'https://www.youtube.com/@ECHO-Kirche',
         label: 'YouTube (@KircheimBrauhaus)',
       },
       {
@@ -123,7 +123,7 @@ export default [
       },
       {
         platform: 'youtube',
-        url: 'https://www.youtube.com/@KircheimBrauhaus',
+        url: 'https://www.youtube.com/@ECHO-Kirche',
         label: 'YouTube (@KircheimBrauhaus)',
       },
       {
