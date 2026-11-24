@@ -49,14 +49,12 @@
     copyTextToClipboard(textToCopy, () => {
       btn.classList.add('is-copied');
       btn.setAttribute('aria-label', feedbackText);
-      if (labelSpan) labelSpan.textContent = feedbackText;
       if (liveRegion) liveRegion.textContent = liveSuccessMessage;
 
       setTimeout(() => {
         btn.classList.remove('is-copied');
         const defaultLabel = btn.getAttribute('data-default-label') || originalText || (isIban ? 'IBAN kopieren' : 'Kopieren');
         btn.setAttribute('aria-label', defaultLabel);
-        if (labelSpan) labelSpan.textContent = defaultLabel;
         if (liveRegion) liveRegion.textContent = '';
       }, 2000);
     });
