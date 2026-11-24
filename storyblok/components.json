@@ -1418,56 +1418,34 @@
           "pos": 3,
           "description": "Icon for Button 1 (e.g. paypal, ticket, star)"
         },
-        "button_1_variant": {
-          "type": "option",
-          "pos": 4,
-          "options": [
-            { "name": "Primary", "value": "primary" },
-            { "name": "Secondary", "value": "secondary" },
-            { "name": "PayPal", "value": "paypal" },
-            { "name": "IBAN", "value": "iban" }
-          ],
-          "default_value": "primary"
-        },
         "button_1_target": {
           "type": "text",
-          "pos": 5,
+          "pos": 4,
           "description": "Target (e.g. _blank for external)"
         },
         "button_2_label": {
           "type": "text",
-          "pos": 6,
+          "pos": 5,
           "description": "Label for Button 2 in Half layout"
         },
         "button_2_url": {
           "type": "multilink",
-          "pos": 7,
+          "pos": 6,
           "description": "Destination URL for Button 2"
         },
         "button_2_icon": {
           "type": "text",
-          "pos": 8,
+          "pos": 7,
           "description": "Icon for Button 2 (e.g. envelope, building-columns)"
-        },
-        "button_2_variant": {
-          "type": "option",
-          "pos": 9,
-          "options": [
-            { "name": "Secondary", "value": "secondary" },
-            { "name": "Primary", "value": "primary" },
-            { "name": "PayPal", "value": "paypal" },
-            { "name": "IBAN", "value": "iban" }
-          ],
-          "default_value": "secondary"
         },
         "button_2_target": {
           "type": "text",
-          "pos": 10,
+          "pos": 8,
           "description": "Target (e.g. _blank)"
         },
         "title": {
           "type": "text",
-          "pos": 11,
+          "pos": 9,
           "description": "Header title of the expanded card (e.g. Per Banküberweisung (IBAN) or Event VIP-Code)"
         },
         "icon": {

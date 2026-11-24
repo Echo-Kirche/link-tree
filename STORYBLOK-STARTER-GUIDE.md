@@ -361,7 +361,7 @@ Inside the `rows` list, editors can add **any number of rows** and freely mix:
 The live link tree uses this exact single component (`dropdown-accordion`):
 - **Closed Button**: `Spenden, Aktionen & Details` (icon: `layer-group`)
 - **Description**: `Entdecke unsere Spendenmöglichkeiten, interaktiven Aktionen und Ticket-Codes mit flexiblen Button-Reihen.`
-- **Row 1 (`full`)**: PayPal button (`Mit PayPal spenden` &rarr; `https://paypal.me/echokirche`, variant `paypal`)
+- **Row 1 (`full`)**: PayPal button (`Mit PayPal spenden` &rarr; `https://paypal.me/echokirche`, icon `paypal`)
 - **Row 2 (`half`)**: Dual buttons (`Online-Banking öffnen` &rarr; `https://kirche-echo.de/spenden` and `Kontakt & Fragen` &rarr; `https://kirche-echo.de/kontakt`)
 - **Row 3 (`expanded`)**: Card `Per Banküberweisung (IBAN)` with 5 bank fields and copy button (`IBAN kopieren`)
 - **Row 4 (`expanded`)**: Card `Weihnachts-Event: VIP-Code` with 5 event fields and copy button (`Code kopieren`)
@@ -391,9 +391,11 @@ The live link tree uses this exact single component (`dropdown-accordion`):
 An individual interactive row nested inside `accordion_buttons`'s `rows` list. Just like `dropdown_time_item` is the nestable block for `dropdown_card`, **`accordion_row` is the nestable block for `accordion_buttons`**.
 
 Each row block features a `layout` selector that unlocks three distinct interactive patterns:
-1. **`full` (1 Full Button)**: A prominent full-width action button.
-2. **`half` (2 Half Buttons)**: Two responsive side-by-side action buttons (50% width each).
-3. **`expanded` (1 Expanded Card)**: A rich information card holding **up to 5 key-value fields** and an accessible copy-to-clipboard button.
+1. **`full` (1 Full Button)**: A prominent full-width action button. Renders using the exact standard `link_button` model (`label`, `url`, `icon`, `target`).
+2. **`half` (2 Half Buttons)**: Two responsive side-by-side action buttons (50% width each). Both render using the exact same standard `link_button` model (`label`, `url`, `icon`, `target`).
+3. **`expanded` (1 Expanded Card)**: Its own rich information card model holding **up to 5 key-value fields** and an accessible copy-to-clipboard button.
+
+> **Unified Button Model**: Buttons in `full` and `half` layouts use the exact same styling and behavior as regular page-level `link_button`s (`.link-button` pill, standard brand action tokens, accessible focus ring). All custom button color variants and arrow indicators have been removed for maximum brand consistency and simplicity. Editors can add **any number of rows** to an accordion!
 
 - **Technical Name**: `accordion_row`
 - **Display Name**: `Accordion Row`
@@ -407,12 +409,10 @@ Each row block features a `layout` selector that unlocks three distinct interact
 | `button_1_label` | Button 1 Label | Label for Full button, or Button 1 in Half layout. | `Text` | `Aktion` | No | e.g. `Mit PayPal spenden` or `Online-Banking öffnen`. |
 | `button_1_url` | Button 1 URL | Destination URL for Button 1. | `Link` or `Text` | Empty | No | e.g. `https://paypal.me/echokirche` or `https://kirche-echo.de/spenden`. |
 | `button_1_icon` | Button 1 Icon | Leading icon for Button 1. | `Text` | Empty | No | Font Awesome icon name (e.g. `paypal`, `ticket`, `building-columns`). |
-| `button_1_variant` | Button 1 Variant | Visual color style of Button 1. | `Single Option` | `primary` | No | Options: `primary`, `secondary`, `paypal`, `iban`. |
 | `button_1_target` | Button 1 Target | Window target for Button 1 link. | `Text` | Empty | No | Set to `_blank` for external links (e.g. PayPal). |
 | `button_2_label` | Button 2 Label | Label for Button 2 (only used in `half` layout). | `Text` | Empty | No | e.g. `Kontakt & Fragen`. |
 | `button_2_url` | Button 2 URL | Destination URL for Button 2. | `Link` or `Text` | Empty | No | e.g. `https://kirche-echo.de/kontakt`. |
 | `button_2_icon` | Button 2 Icon | Leading icon for Button 2. | `Text` | Empty | No | Font Awesome icon name (e.g. `envelope`, `phone`). |
-| `button_2_variant` | Button 2 Variant | Visual color style of Button 2. | `Single Option` | `secondary` | No | Options: `secondary`, `primary`, `paypal`, `iban`. |
 | `button_2_target` | Button 2 Target | Window target for Button 2 link. | `Text` | Empty | No | e.g. `_blank` or leave empty. |
 | `title` | Card Title | Title of expanded card (only used in `expanded` layout). | `Text` | Empty | No | e.g. `Per Banküberweisung (IBAN)` or `Weihnachts-Event: VIP-Code`. |
 | `icon` | Card Icon | Icon next to card title. | `Text` | `building-columns` | No | Font Awesome icon name (e.g. `building-columns`, `star`, `wifi`, `key`). |
@@ -447,8 +447,7 @@ Each row block features a `layout` selector that unlocks three distinct interact
 3. `button_1_label`: `Mit PayPal spenden`.
 4. `button_1_url`: `https://paypal.me/echokirche`.
 5. `button_1_icon`: `paypal`.
-6. `button_1_variant`: Select `PayPal`.
-7. `button_1_target`: `_blank`.
+6. `button_1_target`: `_blank`.
 
 #### Row 2: Online-Banking & Kontakt (`layout: half`)
 1. Click **Add block** inside `rows` &rarr; Select `accordion_row`.
@@ -456,11 +455,9 @@ Each row block features a `layout` selector that unlocks three distinct interact
 3. `button_1_label`: `Online-Banking öffnen`.
 4. `button_1_url`: `https://kirche-echo.de/spenden`.
 5. `button_1_icon`: `building-columns`.
-6. `button_1_variant`: Select `Secondary`.
-7. `button_2_label`: `Kontakt & Fragen`.
-8. `button_2_url`: `https://kirche-echo.de/kontakt`.
-9. `button_2_icon`: `envelope`.
-10. `button_2_variant`: Select `Secondary`.
+6. `button_2_label`: `Kontakt & Fragen`.
+7. `button_2_url`: `https://kirche-echo.de/kontakt`.
+8. `button_2_icon`: `envelope`.
 
 #### Row 3: Banküberweisung IBAN (`layout: expanded`)
 1. Click **Add block** inside `rows` &rarr; Select `accordion_row`.

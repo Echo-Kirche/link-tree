@@ -113,62 +113,38 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-xs);
-    min-block-size: 48px;
-    padding: var(--space-sm) var(--space-md);
+    gap: var(--space-sm);
+    min-block-size: 3.25rem;
+    padding-block: var(--space-sm);
+    padding-inline: var(--space-lg);
+    background-color: var(--color-action-bg);
+    color: var(--color-action-text);
     border-radius: var(--radius-control);
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-align: center;
     text-decoration: none;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease, background-color 0.15s ease;
+    border: none;
+    transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    word-break: break-word;
 
     &:hover {
+      background-color: var(--color-action-bg-hover);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(8, 65, 92, 0.12);
+      box-shadow: var(--ek-shadow-sm, 0 4px 20px rgba(8, 65, 92, 0.08));
     }
 
     &:active {
-      transform: translateY(1px);
+      transform: translateY(0);
       box-shadow: none;
     }
 
     &:focus-visible {
       outline: 3px solid var(--color-focus-ring);
       outline-offset: 3px;
-    }
-
-    &--primary,
-    &--paypal {
-      background-color: var(--color-action-bg);
-      color: var(--color-action-text, #ffffff);
-      border: 1px solid transparent;
-
-      &:hover {
-        opacity: 0.92;
-      }
-    }
-
-    &--secondary,
-    &--iban {
-      background-color: var(--color-surface-subtle, var(--primitive-neutral-100, #fafafa));
-      color: var(--color-text);
-      border: 1px solid var(--color-border);
-
-      &:hover {
-        border-color: var(--color-action-bg);
-        background-color: var(--color-surface);
-      }
-    }
-
-    &--accent {
-      background-color: var(--ek-color-lavender, #846b8a);
-      color: #ffffff;
-      border: 1px solid transparent;
-
-      &:hover {
-        opacity: 0.92;
-      }
     }
   }
 
@@ -180,21 +156,16 @@
     font-family: var(--font-icon);
 
     svg {
+      inline-size: 1.15rem;
+      block-size: 1.15rem;
       fill: currentColor;
       font-family: var(--font-icon);
     }
   }
 
   &__btn-label {
-    flex-grow: 1;
-    text-align: center;
-  }
-
-  &__btn-arrow {
     display: inline-block;
-    font-size: 1.1rem;
-    transition: transform 0.15s ease;
-    margin-inline-start: 0.25rem;
+    text-align: center;
   }
 
   &__expanded-card {

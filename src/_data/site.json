@@ -215,7 +215,6 @@
             "label": "Mit PayPal spenden",
             "url": "https://paypal.me/echokirche",
             "icon": "paypal",
-            "variant": "paypal",
             "target": "_blank"
           }
         },
@@ -225,14 +224,12 @@
             {
               "label": "Online-Banking öffnen",
               "url": "https://kirche-echo.de/spenden",
-              "icon": "building-columns",
-              "variant": "secondary"
+              "icon": "building-columns"
             },
             {
               "label": "Kontakt & Fragen",
               "url": "https://kirche-echo.de/kontakt",
-              "icon": "envelope",
-              "variant": "secondary"
+              "icon": "envelope"
             }
           ]
         },

@@ -55,7 +55,6 @@
             url: rawB1Url | resolveUrl,
             label: item.button_1_label or item.btn1_label or item.button1_label or item.button1Label or item.paypalLabel or item.paypal_label or "Mit PayPal spenden",
             icon: item.button_1_icon or item.btn1_icon or item.button1_icon or item.button1Icon or (("paypal" if (item.paypalUrl or item.paypal_url) else "")),
-            variant: item.button_1_variant or item.btn1_variant or item.button1_variant or (("paypal" if (item.paypalUrl or item.paypal_url) else "primary")),
             target: item.button_1_target or item.btn1_target or (("_blank" if (item.paypalUrl or item.paypal_url) else ""))
           } %}
         {% endif %}
@@ -64,7 +63,6 @@
             url: rawB2Url | resolveUrl,
             label: item.button_2_label or item.btn2_label or item.button2_label or item.button2Label or item.ibanLinkLabel or item.iban_link_label or "Online-Banking öffnen",
             icon: item.button_2_icon or item.btn2_icon or item.button2_icon or item.button2Icon or (("building-columns" if (item.ibanLinkUrl or item.iban_link_url) else "")),
-            variant: item.button_2_variant or item.btn2_variant or item.button2_variant or (("iban" if (item.ibanLinkUrl or item.iban_link_url) else "secondary")),
             target: item.button_2_target or item.btn2_target or ""
           } %}
         {% endif %}
@@ -120,21 +118,19 @@
           label: row.button_1_label or row.btn1_label or row.label or "Aktion",
           url: row.button_1_url or row.btn1_url or row.url or "#",
           icon: row.button_1_icon or row.btn1_icon or row.icon,
-          variant: row.button_1_variant or row.btn1_variant or row.variant or "primary",
           target: row.button_1_target or row.btn1_target or row.target
         } %}
         {% set resolvedBtnUrl = btn.url | resolveUrl %}
         {% if resolvedBtnUrl and resolvedBtnUrl != '#' %}
         <div class="accordion-buttons__row accordion-buttons__row--full">
-          <a class="accordion-buttons__btn accordion-buttons__btn--{{ btn.variant or 'primary' }}" href="{{ resolvedBtnUrl }}"{% if btn.target %} target="{{ btn.target }}"{% endif %} rel="noopener noreferrer">
+          <a class="accordion-buttons__btn link-button{% if btn.icon and btn.icon != '' %} link-button--with-icon{% endif %}" href="{{ resolvedBtnUrl }}"{% if btn.target %} target="{{ btn.target }}"{% endif %} rel="noopener noreferrer">
             {% if btn.icon and btn.icon != '' %}
-            <span class="accordion-buttons__btn-icon" aria-hidden="true">
+            <span class="link-button__icon accordion-buttons__btn-icon" aria-hidden="true">
               {% set iconName = btn.icon %}
               {% include "components/FaIcon.njk" %}
             </span>
             {% endif %}
-            <span class="accordion-buttons__btn-label">{{ btn.label }}</span>
-            <span class="accordion-buttons__btn-arrow" aria-hidden="true">&rarr;</span>
+            <span class="link-button__label accordion-buttons__btn-label">{{ btn.label }}</span>
           </a>
         </div>
         {% endif %}
@@ -150,7 +146,6 @@
               label: row.button_1_label or "Aktion 1",
               url: row.button_1_url or "#",
               icon: row.button_1_icon,
-              variant: row.button_1_variant or "primary",
               target: row.button_1_target
             }), halfButtons) %}
           {% endif %}
@@ -159,7 +154,6 @@
               label: row.button_2_label or "Aktion 2",
               url: row.button_2_url or "#",
               icon: row.button_2_icon,
-              variant: row.button_2_variant or "secondary",
               target: row.button_2_target
             }), halfButtons) %}
           {% endif %}
@@ -170,15 +164,14 @@
           {% for btn in halfButtons %}
           {% set resolvedBtnUrl = btn.url | resolveUrl %}
           {% if resolvedBtnUrl and resolvedBtnUrl != '#' %}
-          <a class="accordion-buttons__btn accordion-buttons__btn--{{ btn.variant or 'primary' }}" href="{{ resolvedBtnUrl }}"{% if btn.target %} target="{{ btn.target }}"{% endif %} rel="noopener noreferrer">
+          <a class="accordion-buttons__btn link-button{% if btn.icon and btn.icon != '' %} link-button--with-icon{% endif %}" href="{{ resolvedBtnUrl }}"{% if btn.target %} target="{{ btn.target }}"{% endif %} rel="noopener noreferrer">
             {% if btn.icon and btn.icon != '' %}
-            <span class="accordion-buttons__btn-icon" aria-hidden="true">
+            <span class="link-button__icon accordion-buttons__btn-icon" aria-hidden="true">
               {% set iconName = btn.icon %}
               {% include "components/FaIcon.njk" %}
             </span>
             {% endif %}
-            <span class="accordion-buttons__btn-label">{{ btn.label }}</span>
-            <span class="accordion-buttons__btn-arrow" aria-hidden="true">&rarr;</span>
+            <span class="link-button__label accordion-buttons__btn-label">{{ btn.label }}</span>
           </a>
           {% endif %}
           {% endfor %}
