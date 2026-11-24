@@ -20,12 +20,12 @@
 {% endif %}
 {% set pageDescription = description or (storyblok.content.description if (storyblok and storyblok.content and storyblok.content.description) else (site.profile.bio if (site.profile and site.profile.bio) else defaultDesc)) %}
 {% set canonicalUrl = siteUrl + (page.url or '/') %}
-{% set logoPath = (site.profile.avatar.filename if (site.profile and site.profile.avatar and site.profile.avatar.filename) else (site.profile.avatar if (site.profile and site.profile.avatar) else '/assets/images/logo.svg')) %}
-{% set rawSocialImage = ogImage or (storyblok.content.og_image.filename if (storyblok and storyblok.content and storyblok.content.og_image and storyblok.content.og_image.filename) else logoPath) %}
+{% set defaultSocialImage = '/assets/images/logo-circle.png' %}
+{% set rawSocialImage = ogImage or (storyblok.content.og_image.filename if (storyblok and storyblok.content and storyblok.content.og_image and storyblok.content.og_image.filename) else defaultSocialImage) %}
 {% set socialImage = rawSocialImage if (rawSocialImage and rawSocialImage.indexOf('http') == 0) else (siteUrl + rawSocialImage) %}
-{% set socialImageType = 'image/svg+xml' %}
+{% set socialImageType = 'image/png' %}
 {% if '.webp' in socialImage %}{% set socialImageType = 'image/webp' %}
-{% elif '.png' in socialImage %}{% set socialImageType = 'image/png' %}
+{% elif '.svg' in socialImage %}{% set socialImageType = 'image/svg+xml' %}
 {% elif '.jpg' in socialImage or '.jpeg' in socialImage %}{% set socialImageType = 'image/jpeg' %}
 {% endif %}
 <!DOCTYPE html>
@@ -46,8 +46,11 @@
   <meta property="og:title" content="{{ pageTitle }}">
   <meta property="og:description" content="{{ pageDescription }}">
   <meta property="og:image" content="{{ socialImage }}">
+  <meta property="og:image:secure_url" content="{{ socialImage }}">
   <meta property="og:image:alt" content="{{ site.profile.name or 'Echo Kirche' }} Logo">
   <meta property="og:image:type" content="{{ socialImageType }}">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary">

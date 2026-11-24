@@ -74,6 +74,8 @@ All official visual assets, brand marks, and photography are self-hosted in [`sr
 | Asset / File | Production Path | Format | Role / Usage | Dimensions / Ratio |
 | :--- | :--- | :--- | :--- | :--- |
 | **Primary Logo** | [`/assets/images/logo.svg`](../src/assets/images/logo.svg) | SVG | Primary geometric symbol / mark of Echo Kirche. Default header avatar and official branding. | Scalable vector (`100x100` viewBox) |
+| **Social Share Circle Logo** | [`/assets/images/logo-circle.png`](../src/assets/images/logo-circle.png) | PNG | Official Open Graph / social media share image with white logo in teal circle (`#08415C`) for WhatsApp, iMessage, Facebook, and Twitter link previews. | `512x512` (`1:1`) |
+| **Social Share Vector Mark** | [`/assets/images/logo-circle.svg`](../src/assets/images/logo-circle.svg) | SVG | Scalable vector circular mark of the Echo logo. | Scalable vector (`512x512`) |
 | **Site Favicon** | [`/assets/images/favicon.webp`](../src/assets/images/favicon.webp) | WebP | Browser tab icon and PWA touch icon. | `150x150` square |
 | **Avatar Fallback** | [`/assets/images/avatar.svg`](../src/assets/images/avatar.svg) | SVG | Generic profile silhouette avatar placeholder. | `160x160` circle |
 | **Gifhorn Hero** | [`/assets/images/echo-home-gifhorn-1024x682.webp`](../src/assets/images/echo-home-gifhorn-1024x682.webp) | WebP | Campus hero photography for Gifhorn (`/gf`, `/gifhorn`). | `1024x682` (`3:2`) |
