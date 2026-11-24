@@ -546,6 +546,43 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.doesNotMatch(indexHtml, /class="lazy-loader"/, 'Regular pages must not contain lazy-loader markup');
   });
 
+  test('Social share Open Graph, Twitter Cards, and canonical meta tags render with German fallbacks and Echo logo', () => {
+    // 1. Root / index.html
+    assert.match(indexHtml, /<meta\s+property="og:type"\s+content="website">/, 'Must have og:type website');
+    assert.match(indexHtml, /<meta\s+property="og:locale"\s+content="de_DE">/, 'Must specify German locale de_DE');
+    assert.match(indexHtml, /<meta\s+property="og:site_name"\s+content="Echo Kirche">/, 'Must have og:site_name');
+    assert.match(indexHtml, /<meta\s+property="og:title"\s+content="Echo Kirche – Quick-Links">/, 'Must have og:title with Quick-Links');
+    assert.match(indexHtml, /<meta\s+property="og:url"\s+content="https:\/\/kirche-echo\.de\/">/, 'Must have canonical og:url');
+    assert.match(indexHtml, /<meta\s+property="og:image"\s+content="https:\/\/kirche-echo\.de\/assets\/images\/logo\.svg">/, 'Must preserve Echo logo for og:image');
+    assert.match(indexHtml, /<meta\s+property="og:image:alt"\s+content="Echo Kirche Logo">/, 'Must have og:image:alt');
+    assert.match(indexHtml, /<meta\s+property="og:image:type"\s+content="image\/svg\+xml">/, 'Must have og:image:type');
+    assert.match(indexHtml, /<meta\s+name="twitter:card"\s+content="summary">/, 'Must have twitter:card summary');
+    assert.match(indexHtml, /<meta\s+name="twitter:title"\s+content="Echo Kirche – Quick-Links">/, 'Must have twitter:title');
+    assert.match(indexHtml, /<meta\s+name="twitter:image"\s+content="https:\/\/kirche-echo\.de\/assets\/images\/logo\.svg">/, 'Must have twitter:image');
+    assert.match(indexHtml, /<link\s+rel="canonical"\s+href="https:\/\/kirche-echo\.de\/">/, 'Must have canonical link');
+    assert.match(indexHtml, /<meta\s+name="description"\s+content="[^"]*Echo Kirche[^"]*"/, 'Must have German meta description');
+
+    // 2. Campus routes (e.g. Gifhorn, Wolfsburg, Helmstedt)
+    const gfHtml = fs.readFileSync(path.join(siteDir, 'gifhorn', 'index.html'), 'utf8');
+    assert.match(gfHtml, /<meta\s+property="og:title"\s+content="Echo Kirche Gifhorn – Quick-Links">/);
+    assert.match(gfHtml, /<meta\s+property="og:url"\s+content="https:\/\/kirche-echo\.de\/gifhorn\/">/);
+    assert.match(gfHtml, /<meta\s+property="og:image"\s+content="https:\/\/kirche-echo\.de\/assets\/images\/logo\.svg">/);
+
+    const wobHtml = fs.readFileSync(path.join(siteDir, 'wolfsburg', 'index.html'), 'utf8');
+    assert.match(wobHtml, /<meta\s+property="og:title"\s+content="Echo Kirche Wolfsburg – Quick-Links">/);
+    assert.match(wobHtml, /<meta\s+property="og:url"\s+content="https:\/\/kirche-echo\.de\/wolfsburg\/">/);
+
+    const heHtml = fs.readFileSync(path.join(siteDir, 'helmstedt', 'index.html'), 'utf8');
+    assert.match(heHtml, /<meta\s+property="og:title"\s+content="Echo Kirche Helmstedt – Quick-Links">/);
+    assert.match(heHtml, /<meta\s+property="og:url"\s+content="https:\/\/kirche-echo\.de\/helmstedt\/">/);
+
+    // 3. 404 page
+    const notFoundHtml = fs.readFileSync(path.join(siteDir, '404.html'), 'utf8');
+    assert.match(notFoundHtml, /<meta\s+property="og:title"\s+content="Seite nicht gefunden – Echo Kirche">/);
+    assert.match(notFoundHtml, /<meta\s+property="og:url"\s+content="https:\/\/kirche-echo\.de\/404\.html">/);
+    assert.match(notFoundHtml, /<meta\s+property="og:image"\s+content="https:\/\/kirche-echo\.de\/assets\/images\/logo\.svg">/);
+  });
+
   test('Storyblok token is never embedded in HTML meta tags or attributes', () => {
     assert.doesNotMatch(indexHtml, /name=["']storyblok-token["']/i, 'HTML must never contain storyblok-token meta tag');
     assert.doesNotMatch(testHtml, /name=["']storyblok-token["']/i, 'Test HTML must never contain storyblok-token meta tag');
