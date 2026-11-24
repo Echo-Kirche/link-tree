@@ -51,7 +51,7 @@ Every contribution MUST honor these five foundational invariants:
 - **Reduced Motion**: All animations must respect `@media (prefers-reduced-motion: reduce)`.
 - **Accessibility (a11y) Component Suite & Preferences Modal**:
   - *Skip-to-Content*: All base templates MUST render `<a href="#content" class="a11y-button a11y-button--skip">` at the start of `<body>`. It remains hidden offscreen until keyboard-focused.
-  - *Floating Access Trigger*: A persistent floating pill button (`.a11y-button--floating`) at bottom-right opens the preferences popup via `aria-controls="a11y-modal"`.
+  - *Floating Access Trigger*: A persistent floating circular button (`.a11y-button--floating`) at bottom-right opens the preferences popup via `aria-controls="a11y-modal"`.
   - *HTML5 `<dialog class="a11y-modal">`*: Fully accessible modal for user display preferences. Must use fixed viewport centering (`position: fixed; inset: 0; z-index: 99999; inline-size: 100vw; block-size: 100vh;`) to prevent mobile fallback rendering at document bottom. Must lock background scrolling (`document.body.style.overflow = 'hidden'`) while open.
   - *Font Scaling*: Supports 3 discrete levels via `html[data-font-size="normal|large|xlarge"]` (100%, 115%, 130%).
   - *High Contrast Modes*: Supports `[data-contrast="black-on-white"]` and `[data-contrast="white-on-black"]` (providing 21:1 WCAG AAA contrast ratio) with automatic avatar logo inversion. Reversion to `normal` restores the active brand theme.

@@ -172,7 +172,7 @@ The `.a11y-button` component provides an accessible, keyboard-first interactive 
 | `.a11y-button--skip` | Modifier | Skip link pattern. Positioned off-screen (`top: -9999px`) until focused via keyboard (`:focus`, `:focus-visible`), then smoothly transitions into top center view. |
 | `.a11y-button--secondary` | Modifier | Secondary action variant paired with `--color-secondary` and `--color-on-secondary`. |
 | `.a11y-button--surface` | Modifier | Surface outline variant paired with `--color-surface` and `--color-on-surface`. |
-| `.a11y-button--floating` | Modifier | Floating pill button variant positioned fixed at the bottom-right of the viewport for persistent visual accessibility access. |
+| `.a11y-button--floating` | Modifier | Floating circular button variant positioned fixed at the bottom-right of the viewport for persistent visual accessibility access without obstructing mobile content. |
 
 #### Token Pairing & Contrast Guarantee
 

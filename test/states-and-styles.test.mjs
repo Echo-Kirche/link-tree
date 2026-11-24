@@ -71,6 +71,8 @@ describe('Component State Changes & CSS Verification', () => {
     assert.match(css, /\.a11y-button:active/, 'A11yButton must define :active state');
     assert.match(css, /\.a11y-button:focus-visible/, 'A11yButton must define :focus-visible state');
     assert.match(css, /\.a11y-button--skip:(?:focus|focus-visible)/, 'A11yButton skip modifier must define focus state');
+    assert.match(css, /\.a11y-button--floating\{[^}]*border-radius:\s*50%/, 'A11yButton floating must be a circular button with border-radius: 50%');
+    assert.match(css, /\.a11y-button--floating\{[^}]*aspect-ratio:\s*1\s*\/\s*1/, 'A11yButton floating must maintain 1:1 aspect ratio');
     assert.match(css, /\.a11y-modal__btn:hover/, 'A11yModal buttons must define :hover');
     assert.match(css, /\.a11y-modal__btn\.is-active|\.a11y-modal__btn\[aria-pressed="true"\]/, 'A11yModal buttons must define active state');
     assert.match(css, /\.a11y-modal__close:focus-visible/, 'A11yModal close button must define :focus-visible');
