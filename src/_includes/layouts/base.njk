@@ -2,13 +2,59 @@
 {% set rawSurface = surface or (storyblok.content.surface.value if (storyblok and storyblok.content and storyblok.content.surface and storyblok.content.surface.value) else (storyblok.content.surface if (storyblok and storyblok.content) else 'default')) or 'default' %}
 {% set currentTheme = rawTheme | sanitizeTheme %}
 {% set currentSurface = rawSurface | sanitizeSurface %}
+{% set siteUrl = 'https://kirche-echo.de' %}
+{% set campusSuffix = '' %}
+{% if currentSurface == 'gifhorn' %}{% set campusSuffix = ' Gifhorn' %}
+{% elif currentSurface == 'wolfsburg' %}{% set campusSuffix = ' Wolfsburg' %}
+{% elif currentSurface == 'helmstedt' %}{% set campusSuffix = ' Helmstedt' %}
+{% elif currentSurface == 'instagram' %}{% set campusSuffix = ' Instagram' %}
+{% endif %}
+{% set defaultSocialTitle = (site.profile.name or 'Echo Kirche') + campusSuffix + ' – Quick-Links' %}
+{% set pageTitle = title or (storyblok.content.title if (storyblok and storyblok.content and storyblok.content.title) else defaultSocialTitle) %}
+{% set defaultDesc = 'Alle wichtigen Links, Gottesdienste, Termine und Angebote der Echo Kirche auf einen Blick.' %}
+{% if currentSurface == 'gifhorn' %}{% set defaultDesc = 'Alle wichtigen Links, Gottesdienste und Angebote der Echo Kirche Gifhorn auf einen Blick.' %}
+{% elif currentSurface == 'wolfsburg' %}{% set defaultDesc = 'Alle wichtigen Links, Gottesdienste und Angebote der Echo Kirche Wolfsburg auf einen Blick.' %}
+{% elif currentSurface == 'helmstedt' %}{% set defaultDesc = 'Alle wichtigen Links, Gottesdienste und Angebote der Echo Kirche Helmstedt auf einen Blick.' %}
+{% elif currentSurface == 'instagram' %}{% set defaultDesc = 'Alle wichtigen Links, Aktionen und Infos der Echo Kirche auf Instagram.' %}
+{% elif is404 %}{% set defaultDesc = 'Diese Seite konnte leider nicht gefunden werden.' %}
+{% endif %}
+{% set pageDescription = description or (storyblok.content.description if (storyblok and storyblok.content and storyblok.content.description) else (site.profile.bio if (site.profile and site.profile.bio) else defaultDesc)) %}
+{% set canonicalUrl = siteUrl + (page.url or '/') %}
+{% set logoPath = (site.profile.avatar.filename if (site.profile and site.profile.avatar and site.profile.avatar.filename) else (site.profile.avatar if (site.profile and site.profile.avatar) else '/assets/images/logo.svg')) %}
+{% set rawSocialImage = ogImage or (storyblok.content.og_image.filename if (storyblok and storyblok.content and storyblok.content.og_image and storyblok.content.og_image.filename) else logoPath) %}
+{% set socialImage = rawSocialImage if (rawSocialImage and rawSocialImage.indexOf('http') == 0) else (siteUrl + rawSocialImage) %}
+{% set socialImageType = 'image/svg+xml' %}
+{% if '.webp' in socialImage %}{% set socialImageType = 'image/webp' %}
+{% elif '.png' in socialImage %}{% set socialImageType = 'image/png' %}
+{% elif '.jpg' in socialImage or '.jpeg' in socialImage %}{% set socialImageType = 'image/jpeg' %}
+{% endif %}
 <!DOCTYPE html>
 <html lang="de" data-surface="{{ currentSurface }}" data-theme="{{ currentTheme }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title or (storyblok.content.title if (storyblok and storyblok.content) else site.profile.name) }}</title>
-  <meta name="description" content="{{ description or site.profile.bio }}">
+  <title>{{ pageTitle }}</title>
+  <meta name="description" content="{{ pageDescription }}">
+  <link rel="canonical" href="{{ canonicalUrl }}">
+
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:site_name" content="{{ site.profile.name or 'Echo Kirche' }}">
+  <meta property="og:url" content="{{ canonicalUrl }}">
+  <meta property="og:title" content="{{ pageTitle }}">
+  <meta property="og:description" content="{{ pageDescription }}">
+  <meta property="og:image" content="{{ socialImage }}">
+  <meta property="og:image:alt" content="{{ site.profile.name or 'Echo Kirche' }} Logo">
+  <meta property="og:image:type" content="{{ socialImageType }}">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{ pageTitle }}">
+  <meta name="twitter:description" content="{{ pageDescription }}">
+  <meta name="twitter:image" content="{{ socialImage }}">
+  <meta name="twitter:image:alt" content="{{ site.profile.name or 'Echo Kirche' }} Logo">
+
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="{{ '#000000' if currentTheme == 'dark' else ('#08415C' if currentTheme == 'teal' else ('#846B8A' if currentTheme == 'lavender' else ('#FEFADC' if (currentTheme == 'pale' or currentTheme == 'warm') else '#FFFFFF'))) }}">
   {% if is404 %}
