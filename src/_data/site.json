@@ -199,28 +199,6 @@
       "icon": "heart"
     },
     {
-      "id": "donate-dropdown",
-      "type": "donation-card",
-      "label": "Spenden & Geben (PayPal & IBAN)",
-      "icon": "heart",
-      "displayInDefault": true,
-      "showOn": [
-        "default"
-      ],
-      "description": "Deine Spende unterstützt die gemeinnützige Arbeit und Vision von Echo Kirche in Gifhorn, Wolfsburg und Helmstedt.",
-      "paypalLabel": "Mit PayPal spenden",
-      "paypalUrl": "https://paypal.me/echokirche",
-      "ibanLinkLabel": "Online-Banking öffnen",
-      "ibanLinkUrl": "https://kirche-echo.de/spenden",
-      "ibanTitle": "Per Banküberweisung (IBAN)",
-      "accountName": "Echo Kirche e.V.",
-      "iban": "DE12 3456 7890 1234 5678 90",
-      "bic": "PBNKDEFF",
-      "bankName": "Postbank",
-      "reference": "Spende Echo Kirche",
-      "copyLabel": "IBAN kopieren"
-    },
-    {
       "id": "dropdown-accordion",
       "type": "dropdown-accordion",
       "label": "Spenden, Aktionen & Details",

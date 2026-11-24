@@ -161,16 +161,16 @@ Collapsible interactive drawer powered by pure CSS `<details>` and `<summary>`. 
 
 ---
 
-### 2.7 Multi-Row Expandable Drawer: `accordion_buttons`
+### 2.7 Multi-Row Expandable Drawer: `dropdown_accordion` / `accordion_buttons`
 
-A flexible, pure-CSS collapsible interactive accordion drawer powered by native `<details>` and `<summary>`. Supports **any number of rows** inside the drawer, where each row can be:
+A flexible, pure-CSS collapsible interactive accordion drawer powered by native `<details>` and `<summary>`. Supports **any number of rows** inside the drawer (aliased as `dropdown-accordion`, `dropdown_accordion`, and `accordion_buttons`), where each row can be:
 - **1 Full Button** (`layout: "full"`): Stretches across 100% width.
 - **2 Half Buttons** (`layout: "half"`): Two side-by-side action buttons (50% width each), responsively adapting on narrow mobile viewports.
-- **1 Expanded Button / Panel** (`layout: "expanded"`): Rich details card displaying header title and icon, **up to 5 key-value fields** (with optional monospace code font for credentials or IDs), and an accessible one-click copy-to-clipboard button (`data-copy-text` / `data-copy-iban`). Ideal for bank transfer details, event check-in codes, Wi-Fi logins, and promo vouchers.
+- **1 Expanded Button / Panel** (`layout: "expanded"`): Rich details card displaying header title and icon, **up to 5 key-value fields** (with optional monospace code font for credentials or IDs), and an accessible one-click copy-to-clipboard button using the high-contrast `donation-card__copy-btn` style (`data-copy-text` / `data-copy-iban`). Ideal for bank transfer details, event check-in codes, Wi-Fi logins, and promo vouchers.
 
 | Field Name | Type | Required | Description & Validation |
 | :--- | :--- | :--- | :--- |
-| `label` | Text | Yes | Summary header text for the expandable dropdown button (e.g., `"Aktionen & Specials"`). |
+| `label` | Text | Yes | Summary header text for the expandable dropdown button (e.g., `"Spenden, Aktionen & Details"`). |
 | `icon` | Text | No | Visual icon on trigger button (e.g., `layer-group`, `star`, `heart`, `ticket`, or any Font Awesome icon/SVG). |
 | `description` | Text | No | Optional introductory guidance text revealed when drawer is opened. |
 | `rows` | Blocks / Array | Yes | Array of row items, each configured as `full`, `half`, or `expanded`. |

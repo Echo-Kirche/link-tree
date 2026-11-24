@@ -396,28 +396,28 @@ An interactive, pure-CSS collapsible drawer with a dual-row interactive layout. 
 
 ---
 
-## 7. Nestable Block: `accordion_buttons` (Multi-Row Accordion Buttons & Expanded Drawer)
+## 7. Nestable Block: `accordion_buttons` / `dropdown_accordion` (Multi-Row Accordion Buttons & Expanded Drawer)
 
-A flexible, pure-CSS collapsible interactive accordion drawer. Solves the limitation of fixed-button cards by allowing you to add **any number of rows** inside the expandable drawer.
+A flexible, pure-CSS collapsible interactive accordion drawer (supported as `dropdown_accordion`, `dropdown-accordion`, and `accordion_buttons`). Solves the limitation of fixed-button cards by allowing you to add **any number of rows** inside the expandable drawer.
 
 ### Row Configuration Types
 Inside the `rows` list, you can add and mix any number of rows of these three types:
 1. **1 Full Button (`full`)**: A prominent single button spanning 100% of the container width. Perfect for main call-to-actions (e.g. PayPal Giving, Ticket Booking, Livestream).
 2. **2 Half Buttons (`half`)**: Two side-by-side action buttons (50% width each), responsively adapting and stacking on narrow smartphone displays. Great for pairing related actions (e.g. "Online-Banking" and "Kontakt & Fragen").
-3. **1 Expanded Button / Panel (`expanded`)**: An interactive information card holding **up to 5 key-value fields** and an accessible copy-to-clipboard button:
+3. **1 Expanded Button / Panel (`expanded`)**: An interactive information card holding **up to 5 key-value fields** and an accessible copy-to-clipboard button using the high-contrast `donation-card__copy-btn` styling:
    - **Bank Details**: `Kontoinhaber`, `IBAN` (monospace code), `BIC`, `Bank`, and `Verwendungszweck` with one-click IBAN copy.
    - **Event & Check-in Codes**: e.g., Christmas Event (`Event`, `Datum`, `Einlass`, `Ort`, `VIP-Code`) with one-click code copying.
    - **Wi-Fi & Credentials**: `Netzwerk`, `Passwort`, `Verschlüsselung`, `Hinweise` with one-click password copying.
 
-- **Technical Name**: `accordion_buttons`
-- **Display Name**: `Accordion Buttons`
+- **Technical Name**: `accordion_buttons` (or `dropdown_accordion`)
+- **Display Name**: `Accordion Buttons / Dropdown Accordion`
 - **Component Type**: **Nestable Block**
 
 ### Fields
 
 | Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
 |---|---|---|---|---|---|---|
-| `label` | Card Header Label | Text on the expandable dropdown button. | `Text` | `Aktionen & Specials` | **Yes** | Prominent headline on the closed button. |
+| `label` | Card Header Label | Text on the expandable dropdown button. | `Text` | `Spenden, Aktionen & Details` | **Yes** | Prominent headline on the closed button. |
 | `icon` | Icon | Visual icon on the left of the button. | `Text` | `layer-group` | No | Any Font Awesome icon (e.g. `layer-group`, `star`, `heart`, `ticket`, `calendar`). |
 | `description` | Introductory Text | Explanatory message revealed when opened. | `Text` | Empty | No | Gives context for the buttons below. |
 | `rows` | Button Rows | The ordered list of button rows. | `Blocks` | None | **Yes** | Add rows of type `full`, `half`, or `expanded`. Any number of rows allowed! |

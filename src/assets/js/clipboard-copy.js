@@ -44,7 +44,7 @@
     const feedbackText = btn.getAttribute('data-copied-text') || 'Kopiert!';
 
     const liveRegion = (btn.closest('.donation-card') || btn.closest('.accordion-buttons'))?.querySelector('.donation-card__live-region, .accordion-buttons__live-region');
-    const liveSuccessMessage = btn.getAttribute('data-copied-live') || (isIban ? 'IBAN in die Zwischenablage kopiert' : 'In die Zwischenablage kopiert');
+    const liveSuccessMessage = btn.getAttribute('data-copied-live') || feedbackText;
 
     copyTextToClipboard(textToCopy, () => {
       btn.classList.add('is-copied');
