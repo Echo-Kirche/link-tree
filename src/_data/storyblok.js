@@ -253,7 +253,7 @@ export default async function () {
         hide_on: item.hideOn || item.hide_on || [],
       };
     }
-    if (item.type === 'accordion-buttons' || item.type === 'accordion-card' || item.type === 'accordion-dropdown' || item.type === 'accordion_buttons') {
+    if (item.type === 'accordion-buttons' || item.type === 'accordion-card' || item.type === 'accordion-dropdown' || item.type === 'accordion_buttons' || item.type === 'dropdown-accordion' || item.type === 'dropdown_accordion') {
       return {
         _uid: item.id,
         component: 'accordion_buttons',

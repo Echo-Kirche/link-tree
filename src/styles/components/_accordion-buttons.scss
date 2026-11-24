@@ -287,32 +287,46 @@
     border-radius: var(--radius-sm);
   }
 
+  &__copy-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-block-start: var(--space-xs);
+
+    @media (max-width: 480px) {
+      justify-content: stretch;
+    }
+  }
+
   &__copy-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-xs);
-    width: 100%;
+    gap: 0.4rem;
     min-block-size: 44px;
-    padding: var(--space-xs) var(--space-md);
-    margin-block-start: var(--space-xs);
+    padding: 0.45rem 1rem;
     border-radius: var(--radius-control);
     font-family: var(--font-heading);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    cursor: pointer;
     background-color: var(--color-action-bg);
     color: var(--color-action-text, #ffffff);
     border: 1px solid transparent;
-    transition: background-color 0.15s ease, opacity 0.15s ease, transform 0.15s ease;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+
+    @media (max-width: 480px) {
+      inline-size: 100%;
+    }
 
     &:hover {
-      opacity: 0.92;
       transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(8, 65, 92, 0.12);
     }
 
     &:active {
       transform: translateY(1px);
+      box-shadow: none;
     }
 
     &:focus-visible {
@@ -320,9 +334,29 @@
       outline-offset: 3px;
     }
 
+    .donation-card__copy-icon--check,
+    .accordion-buttons__copy-icon--check {
+      display: none;
+    }
+
+    .donation-card__copy-icon--copy,
+    .accordion-buttons__copy-icon--copy {
+      display: inline-flex;
+    }
+
     &.is-copied {
-      background-color: #2e7d32;
+      background-color: #0b6b36;
       color: #ffffff;
+
+      .donation-card__copy-icon--copy,
+      .accordion-buttons__copy-icon--copy {
+        display: none;
+      }
+
+      .donation-card__copy-icon--check,
+      .accordion-buttons__copy-icon--check {
+        display: inline-flex;
+      }
     }
   }
 
@@ -330,9 +364,20 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 
     svg {
       fill: currentColor;
     }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-buttons,
+  .accordion-buttons__btn,
+  .accordion-buttons__copy-btn,
+  .accordion-buttons__chevron svg {
+    transition: none !important;
+    transform: none !important;
   }
 }

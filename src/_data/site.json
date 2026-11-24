@@ -221,15 +221,15 @@
       "copyLabel": "IBAN kopieren"
     },
     {
-      "id": "accordion-demo",
-      "type": "accordion-buttons",
-      "label": "Aktionen & Specials (Accordion)",
-      "icon": "star",
+      "id": "dropdown-accordion",
+      "type": "dropdown-accordion",
+      "label": "Spenden, Aktionen & Details",
+      "icon": "layer-group",
       "displayInDefault": true,
       "showOn": [
         "default"
       ],
-      "description": "Entdecke unsere interaktiven Aktionen, Ticket-Codes und Bankverbindung mit flexiblen Button-Reihen.",
+      "description": "Entdecke unsere Spendenmöglichkeiten, interaktiven Aktionen und Ticket-Codes mit flexiblen Button-Reihen.",
       "rows": [
         {
           "layout": "full",

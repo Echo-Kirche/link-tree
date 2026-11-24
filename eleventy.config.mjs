@@ -101,6 +101,9 @@ export default function (eleventyConfig) {
       accordion_buttons: 'AccordionButtons.njk',
       accordion_card: 'AccordionButtons.njk',
       accordion_dropdown: 'AccordionButtons.njk',
+      dropdown_accordion: 'AccordionButtons.njk',
+      'dropdown-accordion': 'AccordionButtons.njk',
+      'accordion-buttons': 'AccordionButtons.njk',
     };
     return mapping[componentName] || `${componentName}.njk`;
   });

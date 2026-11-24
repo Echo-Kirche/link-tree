@@ -38,7 +38,7 @@ eleventyComputed:
           {% include "components/DropdownCard.njk" %}
         {% elif item.component == "donation_card" or item.component == "donation_dropdown" or item.type == "donation-card" or item.type == "donation-dropdown" %}
           {% include "components/DonationCard.njk" %}
-        {% elif item.component == "accordion_buttons" or item.component == "accordion_card" or item.component == "accordion_dropdown" or item.type == "accordion-buttons" or item.type == "accordion-card" or item.type == "accordion_buttons" %}
+        {% elif item.component == "accordion_buttons" or item.component == "accordion_card" or item.component == "accordion_dropdown" or item.component == "dropdown_accordion" or item.component == "dropdown-accordion" or item.type == "accordion-buttons" or item.type == "accordion-card" or item.type == "accordion_buttons" or item.type == "dropdown-accordion" or item.type == "dropdown_accordion" %}
           {% include "components/AccordionButtons.njk" %}
         {% endif %}
       </li>

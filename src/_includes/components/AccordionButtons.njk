@@ -264,22 +264,29 @@
             {% endif %}
 
             {% if cardCopyValue %}
-            <button
-              type="button"
-              class="accordion-buttons__copy-btn"
-              {% if row.iban or (cardCopyValue and "DE" in cardCopyValue and cardCopyValue|length >= 20) %}
-              data-copy-iban="{{ cardCopyValue }}"
-              {% else %}
-              data-copy-text="{{ cardCopyValue }}"
-              {% endif %}
-              data-copied-label="Kopiert! ✓"
-              aria-label="{{ cardCopyLabel }} in die Zwischenablage kopieren"
-            >
-              <span class="accordion-buttons__copy-icon" aria-hidden="true">
-                <svg class="fa-svg fa-copy" viewBox="0 0 448 512" fill="currentColor" width="14" height="14"><path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16h140.1L384 99.9V320c0 8.8-7.2 16-16 16zM192 0C156.7 0 128 28.7 128 64v256c0 35.3 28.7 64 64 64h192c35.3 0 64-28.7 64-64V96c0-17-6.7-33.3-18.7-45.3L389.3 18.7C377.3 6.7 361 0 344 0H192zm-96 128H64c-35.3 0-64 28.7-64 64v256c0 35.3 28.7 64 64 64h192c35.3 0 64-28.7 64-64v-32h-48v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16h32v-48z"/></svg>
-              </span>
-              <span class="accordion-buttons__copy-text">{{ cardCopyLabel }}</span>
-            </button>
+            <div class="donation-card__copy-wrapper accordion-buttons__copy-wrapper">
+              <button
+                type="button"
+                class="donation-card__copy-btn accordion-buttons__copy-btn"
+                {% if row.iban or (cardCopyValue and "DE" in cardCopyValue and cardCopyValue|length >= 20) %}
+                data-copy-iban="{{ cardCopyValue }}"
+                {% else %}
+                data-copy-text="{{ cardCopyValue }}"
+                {% endif %}
+                data-copied-text="{{ row.copied_text or 'Kopiert!' }}"
+                data-default-label="{{ cardCopyLabel }}"
+                aria-label="{{ cardCopyLabel }} in die Zwischenablage kopieren"
+              >
+                <span class="donation-card__copy-icon donation-card__copy-icon--copy" aria-hidden="true">
+                  <svg class="fa-svg fa-copy" viewBox="0 0 448 512" fill="currentColor" width="16" height="16"><path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L384 99.9V320c0 8.8-7.2 16-16 16zM192 0C156.7 0 128 28.7 128 64V320c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-17-6.7-33.3-18.7-45.3L381.3 18.7C369.3 6.7 353 0 336 0H192zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16h32V128H64z"/></svg>
+                </span>
+                <span class="donation-card__copy-icon donation-card__copy-icon--check" aria-hidden="true">
+                  <svg class="fa-svg fa-check" viewBox="0 0 448 512" fill="currentColor" width="16" height="16"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+                </span>
+                <span class="donation-card__copy-text accordion-buttons__copy-text">{{ cardCopyLabel }}</span>
+              </button>
+              <span class="donation-card__live-region accordion-buttons__live-region sr-only" aria-live="polite"></span>
+            </div>
             {% endif %}
           </div>
         </div>
