@@ -112,7 +112,7 @@
     {% if rowList and rowList.length > 0 %}
     <div class="accordion-buttons__rows">
       {% for row in rowList %}
-      {% set layout = row.layout or "full" %}
+      {% set layout = row.layout or (row.component | replace("accordion_row_", "") if (row.component and row.component != "accordion_row")) or "full" %}
 
       {# 1. Full Button Row #}
       {% if layout == "full" or layout == "single" %}

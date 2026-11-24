@@ -185,7 +185,7 @@ flowchart TD
 
 ---
 
-# PART E — Component Reference: All 13 Components
+# PART E — Component Reference: All 14 Components (1 Page Root + 13 Nestable Blocks)
 
 Below is the complete reference for every component in the system. When creating components manually in Storyblok (**Block Library → Components**), ensure all technical names and field types match exactly.
 
@@ -377,7 +377,7 @@ The live link tree uses this exact single component (`dropdown-accordion`):
 | `label` | Card Header Label | Text on the expandable dropdown button. | `Text` | `Spenden, Aktionen & Details` | **Yes** | Prominent headline on the closed button bar. |
 | `icon` | Icon | Visual icon on the left of the button. | `Text` | `layer-group` | No | Any Font Awesome icon (e.g. `layer-group`, `heart`, `ticket`, `gift`, `star`). |
 | `description` | Introductory Text | Explanatory message revealed when opened. | `Text` | Empty | No | Explains giving options, event codes, or instructions. |
-| `rows` | Button Rows | The ordered list of button and info rows. | `Blocks` | None | **Yes** | Add rows of type `full`, `half`, or `expanded`. Any number of rows allowed! |
+| `rows` | Button Rows | The ordered list of button and info rows. | `Blocks` | None | **Yes** | Restrict to: `accordion_row`. Add any number of rows of type `full`, `half`, or `expanded`! |
 | `display_in_default` | Display on Default | Tier 1 curation flag for landing page (`/`). | `Boolean` | `true` | No | Default `true`. Set `false` for campus-specific actions. |
 | `show_on` | Show On | Tier 2 surface allowlist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 | `hide_on` | Hide On | Tier 2 surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
@@ -386,7 +386,113 @@ The live link tree uses this exact single component (`dropdown-accordion`):
 
 ---
 
-## 7. Nestable Block: `image_card_horizontal` (16:9 Featured Card)
+## 7. Nestable Block: `accordion_row` (Accordion Row: Full Button, Half Buttons, or Expanded Card)
+
+An individual interactive row nested inside `accordion_buttons`'s `rows` list. Just like `dropdown_time_item` is the nestable block for `dropdown_card`, **`accordion_row` is the nestable block for `accordion_buttons`**.
+
+Each row block features a `layout` selector that unlocks three distinct interactive patterns:
+1. **`full` (1 Full Button)**: A prominent full-width action button.
+2. **`half` (2 Half Buttons)**: Two responsive side-by-side action buttons (50% width each).
+3. **`expanded` (1 Expanded Card)**: A rich information card holding **up to 5 key-value fields** and an accessible copy-to-clipboard button.
+
+- **Technical Name**: `accordion_row`
+- **Display Name**: `Accordion Row`
+- **Component Type**: **Nestable Block**
+
+### Fields
+
+| Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
+|---|---|---|---|---|---|---|
+| `layout` | Layout Mode | Determines whether this row renders 1 full button, 2 half buttons, or an expanded card. | `Single Option` | `full` | **Yes** | Options: `full` (1 Full Button), `half` (2 Half Buttons), `expanded` (1 Expanded Card). |
+| `button_1_label` | Button 1 Label | Label for Full button, or Button 1 in Half layout. | `Text` | `Aktion` | No | e.g. `Mit PayPal spenden` or `Online-Banking öffnen`. |
+| `button_1_url` | Button 1 URL | Destination URL for Button 1. | `Link` or `Text` | Empty | No | e.g. `https://paypal.me/echokirche` or `https://kirche-echo.de/spenden`. |
+| `button_1_icon` | Button 1 Icon | Leading icon for Button 1. | `Text` | Empty | No | Font Awesome icon name (e.g. `paypal`, `ticket`, `building-columns`). |
+| `button_1_variant` | Button 1 Variant | Visual color style of Button 1. | `Single Option` | `primary` | No | Options: `primary`, `secondary`, `paypal`, `iban`. |
+| `button_1_target` | Button 1 Target | Window target for Button 1 link. | `Text` | Empty | No | Set to `_blank` for external links (e.g. PayPal). |
+| `button_2_label` | Button 2 Label | Label for Button 2 (only used in `half` layout). | `Text` | Empty | No | e.g. `Kontakt & Fragen`. |
+| `button_2_url` | Button 2 URL | Destination URL for Button 2. | `Link` or `Text` | Empty | No | e.g. `https://kirche-echo.de/kontakt`. |
+| `button_2_icon` | Button 2 Icon | Leading icon for Button 2. | `Text` | Empty | No | Font Awesome icon name (e.g. `envelope`, `phone`). |
+| `button_2_variant` | Button 2 Variant | Visual color style of Button 2. | `Single Option` | `secondary` | No | Options: `secondary`, `primary`, `paypal`, `iban`. |
+| `button_2_target` | Button 2 Target | Window target for Button 2 link. | `Text` | Empty | No | e.g. `_blank` or leave empty. |
+| `title` | Card Title | Title of expanded card (only used in `expanded` layout). | `Text` | Empty | No | e.g. `Per Banküberweisung (IBAN)` or `Weihnachts-Event: VIP-Code`. |
+| `icon` | Card Icon | Icon next to card title. | `Text` | `building-columns` | No | Font Awesome icon name (e.g. `building-columns`, `star`, `wifi`, `key`). |
+| `copy_value` | Copy Value | The exact string copied to the user's clipboard. | `Text` | Empty | No | e.g. `DE12 3456 7890 1234 5678 90` or `ECHO-XMAS-2026`. |
+| `copy_label` | Copy Button Label | Label displayed on the clipboard copy button. | `Text` | `Kopieren` | No | e.g. `IBAN kopieren` or `Code kopieren`. |
+| `account_name` | Bank: Kontoinhaber | Preset bank account holder. | `Text` | Empty | No | e.g. `Echo Kirche e.V.` |
+| `iban` | Bank: IBAN | Preset International Bank Account Number. | `Text` | Empty | No | Formatted with spaces. Also acts as fallback copy value. |
+| `bic` | Bank: BIC / SWIFT | Preset Bank Identifier Code. | `Text` | Empty | No | e.g. `PBNKDEFF`. |
+| `bank_name` | Bank: Bank Name | Preset financial institution name. | `Text` | Empty | No | e.g. `Postbank`. |
+| `reference` | Bank: Verwendungszweck | Preset transfer reference note. | `Text` | Empty | No | e.g. `Spende Echo Kirche`. |
+| `field_1_label` | Field 1 Label | Custom label for line 1. | `Text` | Empty | No | e.g. `Event` or `Netzwerk`. |
+| `field_1_value` | Field 1 Value | Custom value for line 1. | `Text` | Empty | No | e.g. `Echo Christmas Celebration` or `Echo-Guest`. |
+| `field_1_is_code` | Field 1 Code Font | Render line 1 in monospace code font (`<code>`). | `Boolean` | `false` | No | Check for codes, passwords, and IDs. |
+| `field_2_label` | Field 2 Label | Custom label for line 2. | `Text` | Empty | No | e.g. `Datum` or `Passwort`. |
+| `field_2_value` | Field 2 Value | Custom value for line 2. | `Text` | Empty | No | e.g. `24. Dezember 2026`. |
+| `field_2_is_code` | Field 2 Code Font | Render line 2 in monospace code font. | `Boolean` | `false` | No | Check for codes/passwords. |
+| `field_3_label` | Field 3 Label | Custom label for line 3. | `Text` | Empty | No | e.g. `Einlass` or `Ort`. |
+| `field_3_value` | Field 3 Value | Custom value for line 3. | `Text` | Empty | No | e.g. `15:30 Uhr`. |
+| `field_3_is_code` | Field 3 Code Font | Render line 3 in monospace code font. | `Boolean` | `false` | No | Optional. |
+| `field_4_label` | Field 4 Label | Custom label for line 4. | `Text` | Empty | No | e.g. `Ort`. |
+| `field_4_value` | Field 4 Value | Custom value for line 4. | `Text` | Empty | No | e.g. `BSK-Saal, Gifhorn`. |
+| `field_4_is_code` | Field 4 Code Font | Render line 4 in monospace code font. | `Boolean` | `false` | No | Optional. |
+| `field_5_label` | Field 5 Label | Custom label for line 5. | `Text` | Empty | No | e.g. `VIP-Code`. |
+| `field_5_value` | Field 5 Value | Custom value for line 5. | `Text` | Empty | No | e.g. `ECHO-XMAS-2026`. |
+| `field_5_is_code` | Field 5 Code Font | Render line 5 in monospace code font. | `Boolean` | `false` | No | Check for codes. |
+
+### How to Configure the 4 Production Rows in Storyblok
+
+#### Row 1: PayPal Giving (`layout: full`)
+1. Click **Add block** inside `rows` &rarr; Select `accordion_row`.
+2. `layout`: Select `1 Full Button (100% width)`.
+3. `button_1_label`: `Mit PayPal spenden`.
+4. `button_1_url`: `https://paypal.me/echokirche`.
+5. `button_1_icon`: `paypal`.
+6. `button_1_variant`: Select `PayPal`.
+7. `button_1_target`: `_blank`.
+
+#### Row 2: Online-Banking & Kontakt (`layout: half`)
+1. Click **Add block** inside `rows` &rarr; Select `accordion_row`.
+2. `layout`: Select `2 Half Buttons (50% each)`.
+3. `button_1_label`: `Online-Banking öffnen`.
+4. `button_1_url`: `https://kirche-echo.de/spenden`.
+5. `button_1_icon`: `building-columns`.
+6. `button_1_variant`: Select `Secondary`.
+7. `button_2_label`: `Kontakt & Fragen`.
+8. `button_2_url`: `https://kirche-echo.de/kontakt`.
+9. `button_2_icon`: `envelope`.
+10. `button_2_variant`: Select `Secondary`.
+
+#### Row 3: Banküberweisung IBAN (`layout: expanded`)
+1. Click **Add block** inside `rows` &rarr; Select `accordion_row`.
+2. `layout`: Select `1 Expanded Card`.
+3. `title`: `Per Banküberweisung (IBAN)`.
+4. `icon`: `building-columns`.
+5. `copy_value`: `DE12 3456 7890 1234 5678 90`.
+6. `copy_label`: `IBAN kopieren`.
+7. Fill bank details:
+   - `account_name`: `Echo Kirche e.V.`
+   - `iban`: `DE12 3456 7890 1234 5678 90`
+   - `bic`: `PBNKDEFF`
+   - `bank_name`: `Postbank`
+   - `reference`: `Spende Echo Kirche`
+
+#### Row 4: Christmas Event VIP-Code (`layout: expanded`)
+1. Click **Add block** inside `rows` &rarr; Select `accordion_row`.
+2. `layout`: Select `1 Expanded Card`.
+3. `title`: `Weihnachts-Event: VIP-Code`.
+4. `icon`: `star`.
+5. `copy_value`: `ECHO-XMAS-2026`.
+6. `copy_label`: `Code kopieren`.
+7. Fill custom fields:
+   - `field_1_label`: `Event`, `field_1_value`: `Echo Christmas Celebration`, `field_1_is_code`: `false`
+   - `field_2_label`: `Datum`, `field_2_value`: `24. Dezember 2026`, `field_2_is_code`: `false`
+   - `field_3_label`: `Einlass`, `field_3_value`: `15:30 Uhr`, `field_3_is_code`: `false`
+   - `field_4_label`: `Ort`, `field_4_value`: `BSK-Saal, Gifhorn`, `field_4_is_code`: `false`
+   - `field_5_label`: `VIP-Code`, `field_5_value`: `ECHO-XMAS-2026`, `field_5_is_code`: `true`
+
+---
+
+## 8. Nestable Block: `image_card_horizontal` (16:9 Featured Card)
 
 A landscape media card with a 16:9 image, headline, and interactive arrow button. Ideal for current sermon series, conferences, or campaigns.
 
@@ -407,7 +513,7 @@ A landscape media card with a 16:9 image, headline, and interactive arrow button
 
 ---
 
-## 8. Nestable Block: `image_card_vertical` (3:4 Portrait Flyer)
+## 9. Nestable Block: `image_card_vertical` (3:4 Portrait Flyer)
 
 A portrait media card in 3:4 aspect ratio. Perfect for event posters, flyers, or speaker announcements.
 
@@ -428,7 +534,7 @@ A portrait media card in 3:4 aspect ratio. Perfect for event posters, flyers, or
 
 ---
 
-## 9. Nestable Block: `video_link_card` (Privacy 2-Click Video Card)
+## 10. Nestable Block: `video_link_card` (Privacy 2-Click Video Card)
 
 A GDPR-compliant video card. Displays a preview image with a centered play button. No YouTube cookies or iframes load until the visitor explicitly clicks play.
 
@@ -452,7 +558,7 @@ A GDPR-compliant video card. Displays a preview image with a centered play butto
 
 ---
 
-## 10. Nestable Block: `section_heading` (Category Divider)
+## 11. Nestable Block: `section_heading` (Category Divider)
 
 A clean uppercase section heading used to visually divide content categories (e.g. *Gottesdienste*, *Medien & Musik*, *Gemeinde*).
 
@@ -469,7 +575,7 @@ A clean uppercase section heading used to visually divide content categories (e.
 
 ---
 
-## 11. Nestable Block: `group_block` (Container Box)
+## 12. Nestable Block: `group_block` (Container Box)
 
 A styled container box that groups related buttons, dropdown cards, or media cards into a cohesive visual card.
 
@@ -491,7 +597,7 @@ A styled container box that groups related buttons, dropdown cards, or media car
 
 ---
 
-## 12. Nestable Block: `social_item` (Social Media Button)
+## 13. Nestable Block: `social_item` (Social Media Button)
 
 A circular icon button for external social profiles (Instagram, WhatsApp, YouTube, Spotify, etc.) located in the footer.
 
@@ -509,7 +615,7 @@ A circular icon button for external social profiles (Instagram, WhatsApp, YouTub
 
 ---
 
-## 13. Nestable Block: `footer_legal` (Legal & Contact Information)
+## 14. Nestable Block: `footer_legal` (Legal & Contact Information)
 
 The bottom footer section containing organization address, mandatory German legal links (Impressum & Datenschutz), copyright year, and social buttons.
 
@@ -688,13 +794,14 @@ Your Storyblok space and project setup is complete when all of the following are
 - [ ] Single Storyblok space created in EU region.
 - [ ] Public access token added to Netlify environment variables (`STORYBLOK_TOKEN`).
 - [ ] `Surfaces` datasource created with entries: `default`, `gifhorn`, `wolfsburg`, `helmstedt`, `instagram`, `tiktok`, `linkedin`, `youtube`.
-- [ ] All 13 components created with exact technical names:
+- [ ] All 14 components created with exact technical names:
   - [ ] `link_page` (Content Type)
   - [ ] `profile_header` (Nestable Block)
   - [ ] `link_button` (Nestable Block)
   - [ ] `dropdown_card` (Nestable Block — Service Times Dropdown Button & Drawer)
   - [ ] `dropdown_time_item` (Nestable Block — Schedule & Location Mini Card)
   - [ ] `accordion_buttons` (Nestable Block — Multi-Row Dropdown Accordion / Giving, IBAN & Event Drawer)
+  - [ ] `accordion_row` (Nestable Block — Accordion Row: Full Button, Half Buttons, or Expanded Card)
   - [ ] `image_card_horizontal` (Nestable Block)
   - [ ] `image_card_vertical` (Nestable Block)
   - [ ] `video_link_card` (Nestable Block)
