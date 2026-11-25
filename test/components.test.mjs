@@ -826,6 +826,7 @@ describe('Component Markup & Accessibility Contracts', () => {
 
   test('Pages render favicon.webp in head and do not render lazy-loader overlay', () => {
     assert.match(indexHtml, /<link\s+rel="icon"\s+type="image\/webp"\s+href="\/assets\/images\/favicon\.webp">/, 'HTML must render favicon.webp in head');
+    assert.match(indexHtml, /<!--\s*Version:\s*[^\s]+\s*\|\s*Commit:\s*[^\s]+\s*\(#\d+\)\s*-->/, 'HTML must render version, commit, and commit number comment');
     assert.doesNotMatch(indexHtml, /id="page-loader"/, 'Regular pages must not render page loader overlay');
     assert.doesNotMatch(indexHtml, /class="lazy-loader"/, 'Regular pages must not contain lazy-loader markup');
   });
