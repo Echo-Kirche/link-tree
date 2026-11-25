@@ -76,6 +76,8 @@ This document provides step-by-step procedural playbooks for common engineering 
 2. **Tier 2 (`show_on` / `hide_on`)**:
    - `show_on`: Array of specific target surfaces (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
    - `hide_on`: Array of surfaces where the item is excluded.
+   - **Datasource Rule**: Both fields link to the `surfaces` datasource (`"source": "internal", "datasource_slug": "surfaces"`).
+   - **Value Standard**: The technical value MUST be `gifhorn` (NOT `gf`), with display name `Gifhorn (gf)`. Aliases (`gf`, `wob`, `he`, `ig`) are automatically normalized by `filterBySurface`.
 3. Test with both local data (`src/_data/site.json`) and Storyblok preview payloads to ensure surface filtering functions correctly.
 
 ---

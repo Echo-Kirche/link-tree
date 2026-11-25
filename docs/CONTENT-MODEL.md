@@ -328,3 +328,20 @@ Surface filtering is executed by the `filterBySurface` filter in `eleventy.confi
       - If hideOn contains <campus> -> HIDE.
    c. Otherwise -> SHOW.
 ```
+
+### 4.1 Storyblok Datasource Integration (`surfaces`)
+
+All `show_on` and `hide_on` multi-select fields in `storyblok/components.json` are bound directly to the centralized Storyblok datasource:
+```json
+{
+  "type": "options",
+  "source": "internal",
+  "datasource_slug": "surfaces"
+}
+```
+
+#### Datasource Value Standard: `gifhorn` vs. `gf`
+- **Technical Value**: MUST be **`gifhorn`** (lowercase full city/platform name, NOT `gf`).
+- **Editor Display Name**: `Gifhorn (gf)` &mdash; displays the friendly name with short slug in parentheses.
+- **Why?**: The data pipeline (`_data/surfaces.js`, `surface-switcher.js`, `content.schema.json`) utilizes canonical city names (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`). Short abbreviations (`gf`, `wob`, `he`, `ig`) are URL routing shortcuts.
+- **Alias Tolerance**: `filterBySurface` in `eleventy.config.mjs` includes an alias map (`SURFACE_ALIASES: { gf: 'gifhorn', wob: 'wolfsburg', he: 'helmstedt', ig: 'instagram' }`) ensuring zero breaking failures if an abbreviation is ever passed in payload data.

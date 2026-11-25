@@ -430,6 +430,29 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(htmlWolfsburg, /Wolfsburg VIP-Karte/);
     assert.match(htmlWolfsburg, /data-show-on="wolfsburg"/);
     assert.match(htmlWolfsburg, /data-display-in-default="false"/);
+
+    // 5. Unit test: Surface alias tolerance (gf <-> gifhorn, wob <-> wolfsburg)
+    const testItems = [
+      { id: '1', label: 'Canonical Gifhorn', showOn: ['gifhorn'] },
+      { id: '2', label: 'Short gf Alias', showOn: ['gf'] },
+      { id: '3', label: 'Wolfsburg Only', showOn: ['wolfsburg'] }
+    ];
+    // When filtering by canonical 'gifhorn', both 'gifhorn' and 'gf' match
+    const filteredByGifhorn = filterBySurface(testItems, 'gifhorn');
+    assert.strictEqual(filteredByGifhorn.length, 2);
+    assert.ok(filteredByGifhorn.some(i => i.label === 'Canonical Gifhorn'));
+    assert.ok(filteredByGifhorn.some(i => i.label === 'Short gf Alias'));
+
+    // When filtering by route alias 'gf', both 'gifhorn' and 'gf' match
+    const filteredByGf = filterBySurface(testItems, 'gf');
+    assert.strictEqual(filteredByGf.length, 2);
+    assert.ok(filteredByGf.some(i => i.label === 'Canonical Gifhorn'));
+    assert.ok(filteredByGf.some(i => i.label === 'Short gf Alias'));
+
+    // When filtering by 'wolfsburg', only 'Wolfsburg Only' matches
+    const filteredByWob = filterBySurface(testItems, 'wob');
+    assert.strictEqual(filteredByWob.length, 1);
+    assert.strictEqual(filteredByWob[0].label, 'Wolfsburg Only');
   });
 
   test('ImageCardHorizontal & ImageCardVertical render media cards with aspect ratios and arrows', () => {

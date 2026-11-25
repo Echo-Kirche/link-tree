@@ -26,6 +26,15 @@ Every contribution MUST honor these five foundational invariants:
 - **Dual-Tier Curation**:
   - *Tier 1 (`display_in_default` / `displayInDefault`)*: Curates the default landing page (`/`). When `false`, the item is omitted from `/`.
   - *Tier 2 (`show_on` / `hide_on`)*: Targets specific campus or channel routes (`gifhorn`, `wolfsburg`, `helmstedt`, `instagram`).
+- **Storyblok Datasource Invariant for `show_on` and `hide_on`**:
+  - In Storyblok schemas (`storyblok/components.json`), all `show_on` and `hide_on` multi-option fields, as well as the root `surface` option in `link_page`, MUST reference the centralized Storyblok datasource: `"type": "options"`, `"source": "internal"`, `"datasource_slug": "surfaces"`. NEVER hardcode manual option arrays across individual components.
+  - **Datasource Value Specification**: The technical entry value in the `surfaces` datasource MUST be the canonical full city/platform name:
+    - **`gifhorn`** (NOT `gf`)
+    - **`wolfsburg`** (NOT `wob`)
+    - **`helmstedt`** (NOT `he`)
+    - **`instagram`** (NOT `ig`)
+    - **`default`**, **`tiktok`**, **`linkedin`**, **`youtube`**
+    - The short codes (`gf`, `wob`, `he`, `ig`) are URL route aliases and editor display labels (`Gifhorn (gf)`), while the codebase's `filterBySurface` filter transparently normalizes aliases to their canonical surface name.
 
 ### 1.3 German Privacy / DSGVO Guardrail
 - **Zero Initial Third-Party Connections**: On initial page visit, the browser MUST NOT contact any third-party origin. No Google Fonts, no external CDNs, no remote tracking pixels, and no analytics scripts.

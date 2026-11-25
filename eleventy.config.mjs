@@ -1,11 +1,15 @@
 import { resolveStoryblokUrl } from './src/utils/storyblok-url.js';
 
+// Surface route aliases mapping (e.g. gf -> gifhorn, wob -> wolfsburg)
+export const SURFACE_ALIASES = { gf: 'gifhorn', wob: 'wolfsburg', he: 'helmstedt', ig: 'instagram' };
+export const normalizeSurface = (s) => (s ? (SURFACE_ALIASES[s.toLowerCase().trim()] || s.toLowerCase().trim()) : 'default');
+
 // Filter items by active surface (supporting both local camelCase and Storyblok snake_case)
 export function filterBySurface(items, activeSurface) {
   if (!Array.isArray(items)) return [];
   if (activeSurface === 'all') return items;
-  const surface = activeSurface || 'default';
-  const toList = (v) => (Array.isArray(v) ? v : (typeof v === 'string' && v.trim() ? v.split(',').map((s) => s.trim()) : []));
+  const surface = normalizeSurface(activeSurface);
+  const toList = (v) => (Array.isArray(v) ? v : (typeof v === 'string' && v.trim() ? v.split(',').map((s) => s.trim()) : [])).map(normalizeSurface);
 
   return items.filter(item => {
     const child = (item.buttons && item.buttons.length > 0) ? item.buttons[0] : null;

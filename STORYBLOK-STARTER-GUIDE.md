@@ -115,6 +115,17 @@ Click **Add Entry** and populate each row with the exact values below:
 | `LinkedIn` | `linkedin` | `?surface=linkedin` | Professional/team content. |
 | `YouTube` | `youtube` | `?surface=youtube` | Livestream/broadcast viewers. |
 
+> [!IMPORTANT]
+> ### Crucial Question: Must the Datasource Value be `gifhorn` or `gf`?
+> The technical **Value** in Storyblok MUST be **`gifhorn`** (NOT `gf`):
+> - **`Name` (Editor Display)**: `Gifhorn (gf)` &mdash; this is the human-friendly label editors see in the dropdown.
+> - **`Value` (Technical Key)**: **`gifhorn`** &mdash; this is the canonical slug stored in content JSON.
+> 
+> **Why `gifhorn` and not `gf`?**
+> 1. The repository's routing and filtering engine (`_data/surfaces.js`, `surface-switcher.js`, and `eleventy.config.mjs`) uses the full canonical name `gifhorn` for all data contracts.
+> 2. `gf` is an alias route shortcut (e.g. `echo.de/gf` loads the `gifhorn` surface).
+> 3. *Graceful Fallback*: The code is also programmed with automatic alias tolerance, so if an editor ever enters `gf` instead of `gifhorn`, the `filterBySurface` engine transparently normalizes `gf` &rarr; `gifhorn` without breaking. But the authoritative standard in Storyblok is `gifhorn`.
+
 ## Step 8 — How to Manage Surfaces Over Time
 
 ### Adding a New Surface
