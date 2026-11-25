@@ -248,20 +248,6 @@
             { "label": "Bank", "value": "Postbank" },
             { "label": "Verwendungszweck", "value": "Spende Echo Kirche" }
           ]
-        },
-        {
-          "layout": "expanded",
-          "title": "Weihnachts-Event: VIP-Code",
-          "icon": "star",
-          "copyValue": "ECHO-XMAS-2026",
-          "copyLabel": "Code kopieren",
-          "fields": [
-            { "label": "Event", "value": "Echo Christmas Celebration" },
-            { "label": "Datum", "value": "24. Dezember 2026" },
-            { "label": "Einlass", "value": "15:30 Uhr" },
-            { "label": "Ort", "value": "BSK-Saal, Gifhorn" },
-            { "label": "VIP-Code", "value": "ECHO-XMAS-2026", "isCode": true }
-          ]
         }
       ]
     },

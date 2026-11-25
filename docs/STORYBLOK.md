@@ -255,10 +255,7 @@ A pure-CSS collapsible interactive drawer with a dual-row interactive layout. Wh
 A pure-CSS collapsible interactive accordion drawer designed for versatile button layouts (aliased as `dropdown_accordion`, `dropdown-accordion`, and `accordion_buttons`). Allows editors to create **any number of rows**, where each row can independently be configured as:
 1. **1 Full Button (`full`)**: 100% wide prominent action button rendered with standard `link_button` styling (icon, label, accessible focus).
 2. **2 Half Buttons (`half`)**: Two side-by-side action buttons (50% each) that adapt responsively, both rendered with standard `link_button` styling.
-3. **1 Expanded Button / Card (`expanded`)**: An expandable details card with **up to 5 key-value fields** and a copy-to-clipboard button using the `donation-card__copy-btn` style. Perfect for:
-   - Church bank transfer details (Kontoinhaber, IBAN, BIC, Bank, Verwendungszweck).
-   - Event check-in or VIP codes (Event, Datum, Einlass, Ort, VIP-Code).
-   - Wi-Fi credentials or promo discounts.
+3. **1 Expanded Button / Card (`expanded`)**: An expandable details card with bank transfer information (Kontoinhaber, IBAN, BIC, Bank, Verwendungszweck) and a copy-to-clipboard button using the `donation-card__copy-btn` style.
 
 - **How to create**: Add inside `body` or inside a `group_block`.
 - **Fields to fill**:
@@ -516,7 +513,7 @@ Eine aufklappbare Spenden- und Beitrags-Schublade. Wird über einen **Dropdown-B
 Eine reine CSS-Aufklappkarte für flexible, mehrzeilige Button-Layouts (auch unter `dropdown_accordion` und `dropdown-accordion` verfügbar). Löst die Beschränkung auf feste Buttons und ermöglicht **beliebig viele Zeilen** mit unterschiedlichen Button-Typen:
 1. **1 Ganzer Button (`full`)**: Volle Breite (100 %) für Haupt-Aktionen (z. B. PayPal, Ticketbuchung) im standardisierten `link_button`-Stil.
 2. **2 Halbe Buttons (`half`)**: Zwei nebeneinanderliegende Buttons (je 50 %) im selben standardisierten `link_button`-Stil, die sich auf Smartphones responsiv anpassen.
-3. **1 Erweiterte Karte (`expanded`)**: Eine Informationskarte mit **bis zu 5 Datenfeldern** und Zwischenablage-Kopierbutton im `donation-card__copy-btn`-Stil. Perfekt für Bankverbindungen, Event-VIP-Codes (z. B. Weihnachts-Event: Datum, Ort, Einlass, Code) oder WLAN-Zugangsdaten.
+3. **1 Erweiterte Karte (`expanded`)**: Eine Informationskarte für Bankverbindungen (Kontoinhaber, IBAN, BIC, Bank, Verwendungszweck) und Zwischenablage-Kopierbutton im `donation-card__copy-btn`-Stil.
 
 - **Wo einfügen**: In `body` oder innerhalb eines `group_block`.
 - **Felder zum Ausfüllen**:

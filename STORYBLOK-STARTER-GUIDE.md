@@ -352,10 +352,7 @@ The **single, unified component** for all collapsible action drawers, giving opt
 Inside the `rows` list, editors can add **any number of rows** and freely mix:
 1. **1 Full Button (`full`)**: Prominent single button spanning 100% width. Perfect for primary call-to-actions (e.g. `Mit PayPal spenden`).
 2. **2 Half Buttons (`half`)**: Two side-by-side buttons (50% width each), responsively adapting and stacking on mobile displays (e.g. `Online-Banking öffnen` and `Kontakt & Fragen`).
-3. **1 Expanded Card (`expanded`)**: An interactive information card holding **up to 5 key-value fields** and an accessible one-click copy-to-clipboard button:
-   - **Bank Details (IBAN)**: `Kontoinhaber`, `IBAN` (monospace code), `BIC` (monospace code), `Bank`, and `Verwendungszweck` with one-click IBAN copy button.
-   - **Event & Check-in Codes**: e.g., Christmas Celebration (`Event`, `Datum`, `Einlass`, `Ort`, `VIP-Code`) with one-click code copying.
-   - **Wi-Fi & Credentials**: `Netzwerk`, `Passwort`, `Verschlüsselung`, `Hinweise` with one-click password copying.
+3. **1 Expanded Card (`expanded`)**: An interactive bank details card holding the 5 bank transfer fields (`Kontoinhaber`, `IBAN`, `BIC`, `Bank`, and `Verwendungszweck`) with one-click IBAN copy button.
 
 ### Production Example from Code (`src/_data/site.json`)
 The live link tree uses this exact single component (`dropdown-accordion`):
@@ -364,7 +361,6 @@ The live link tree uses this exact single component (`dropdown-accordion`):
 - **Row 1 (`full`)**: PayPal button (`Mit PayPal spenden` &rarr; `https://paypal.me/echokirche`, icon `paypal`)
 - **Row 2 (`half`)**: Dual buttons (`Online-Banking öffnen` &rarr; `https://kirche-echo.de/spenden` and `Kontakt & Fragen` &rarr; `https://kirche-echo.de/kontakt`)
 - **Row 3 (`expanded`)**: Card `Per Banküberweisung (IBAN)` with 5 bank fields and copy button (`IBAN kopieren`)
-- **Row 4 (`expanded`)**: Card `Weihnachts-Event: VIP-Code` with 5 event fields and copy button (`Code kopieren`)
 
 - **Technical Name**: `accordion_buttons` (or `dropdown_accordion`)
 - **Display Name**: `Dropdown Accordion / Accordion Buttons`
@@ -410,44 +406,29 @@ Each row contains a `layout` mode and a `buttons` block list. You simply add the
 
 ---
 
-## 7b. Nestable Block: `expanded_button` (Expanded Card Model: Bank Details, Event Codes, Wi-Fi)
+## 7b. Nestable Block: `expanded_button` (Expanded Card Model: Banküberweisung IBAN)
 
-A rich information card nested inside an `expanded` row's `buttons` list. Holds a title, icon, one-click copy-to-clipboard button, and **up to 5 key-value fields** (e.g. bank details or event credentials).
+A rich bank details card nested inside an `expanded` row's `buttons` list. Holds the bank title, icon, one-click copy-to-clipboard button, and standard bank transfer fields (`account_name`, `iban`, `bic`, `bank_name`, `reference`).
 
 - **Technical Name**: `expanded_button`
-- **Display Name**: `Expanded Button Card`
+- **Display Name**: `Expanded Bank Card`
 - **Component Type**: **Nestable Block**
 
 ### Fields
 
 | Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
 |---|---|---|---|---|---|---|
-| `title` | Card Title | Title of expanded card. | `Text` | Empty | No | e.g. `Per Banküberweisung (IBAN)` or `Weihnachts-Event: VIP-Code`. |
-| `icon` | Card Icon | Leading icon next to card title. | `Text` | `building-columns` | No | Font Awesome icon name (e.g. `building-columns`, `star`, `wifi`, `key`). |
-| `copy_value` | Copy Value | The exact string copied to the user's clipboard. | `Text` | Empty | No | e.g. `DE12 3456 7890 1234 5678 90` or `ECHO-XMAS-2026`. |
-| `copy_label` | Copy Button Label | Label displayed on the clipboard copy button. | `Text` | `Kopieren` | No | e.g. `IBAN kopieren` or `Code kopieren`. |
-| `account_name` | Bank: Kontoinhaber | Preset bank account holder. | `Text` | Empty | No | e.g. `Echo Kirche e.V.` |
-| `iban` | Bank: IBAN | Preset International Bank Account Number. | `Text` | Empty | No | Formatted with spaces. Also acts as fallback copy value. |
-| `bic` | Bank: BIC / SWIFT | Preset Bank Identifier Code. | `Text` | Empty | No | e.g. `PBNKDEFF`. |
-| `bank_name` | Bank: Bank Name | Preset financial institution name. | `Text` | Empty | No | e.g. `Postbank`. |
-| `reference` | Bank: Verwendungszweck | Preset transfer reference note. | `Text` | Empty | No | e.g. `Spende Echo Kirche`. |
-| `field_1_label` | Field 1 Label | Custom label for line 1. | `Text` | Empty | No | e.g. `Event` or `Netzwerk`. |
-| `field_1_value` | Field 1 Value | Custom value for line 1. | `Text` | Empty | No | e.g. `Echo Christmas Celebration` or `Echo-Guest`. |
-| `field_1_is_code` | Field 1 Code Font | Render line 1 in monospace code font (`<code>`). | `Boolean` | `false` | No | Check for codes, passwords, and IDs. |
-| `field_2_label` | Field 2 Label | Custom label for line 2. | `Text` | Empty | No | e.g. `Datum` or `Passwort`. |
-| `field_2_value` | Field 2 Value | Custom value for line 2. | `Text` | Empty | No | e.g. `24. Dezember 2026`. |
-| `field_2_is_code` | Field 2 Code Font | Render line 2 in monospace code font. | `Boolean` | `false` | No | Check for codes/passwords. |
-| `field_3_label` | Field 3 Label | Custom label for line 3. | `Text` | Empty | No | e.g. `Einlass` or `Ort`. |
-| `field_3_value` | Field 3 Value | Custom value for line 3. | `Text` | Empty | No | e.g. `15:30 Uhr`. |
-| `field_3_is_code` | Field 3 Code Font | Render line 3 in monospace code font. | `Boolean` | `false` | No | Optional. |
-| `field_4_label` | Field 4 Label | Custom label for line 4. | `Text` | Empty | No | e.g. `Ort`. |
-| `field_4_value` | Field 4 Value | Custom value for line 4. | `Text` | Empty | No | e.g. `BSK-Saal, Gifhorn`. |
-| `field_4_is_code` | Field 4 Code Font | Render line 4 in monospace code font. | `Boolean` | `false` | No | Optional. |
-| `field_5_label` | Field 5 Label | Custom label for line 5. | `Text` | Empty | No | e.g. `VIP-Code`. |
-| `field_5_value` | Field 5 Value | Custom value for line 5. | `Text` | Empty | No | e.g. `ECHO-XMAS-2026`. |
-| `field_5_is_code` | Field 5 Code Font | Render line 5 in monospace code font. | `Boolean` | `false` | No | Check for codes. |
+| `title` | Card Title | Title of expanded bank card. | `Text` | `Per Banküberweisung (IBAN)` | No | e.g. `Per Banküberweisung (IBAN)`. |
+| `icon` | Card Icon | Leading icon next to card title. | `Text` | `building-columns` | No | Font Awesome icon name (default: `building-columns`). |
+| `copy_value` | Copy Value | The exact IBAN copied to the user's clipboard. | `Text` | Empty | No | e.g. `DE12 3456 7890 1234 5678 90`. Also falls back to `iban`. |
+| `copy_label` | Copy Button Label | Label displayed on the clipboard copy button. | `Text` | `IBAN kopieren` | No | e.g. `IBAN kopieren`. |
+| `account_name` | Bank: Kontoinhaber | Bank account holder name. | `Text` | Empty | No | e.g. `Echo Kirche e.V.` |
+| `iban` | Bank: IBAN | International Bank Account Number. | `Text` | Empty | No | Formatted with spaces. |
+| `bic` | Bank: BIC / SWIFT | Bank Identifier Code. | `Text` | Empty | No | e.g. `PBNKDEFF`. |
+| `bank_name` | Bank: Bank Name | Financial institution name. | `Text` | Empty | No | e.g. `Postbank`. |
+| `reference` | Bank: Verwendungszweck | Transfer reference note. | `Text` | Empty | No | e.g. `Spende Echo Kirche`. |
 
-### How to Configure the 4 Production Rows in Storyblok
+### How to Configure the 3 Production Rows in Storyblok
 
 #### Row 1: PayPal Giving (`layout: full` &rarr; 1 button)
 1. In `accordion_buttons` &rarr; `rows` &rarr; click **Add block** &rarr; select `accordion_row`.
@@ -483,21 +464,6 @@ A rich information card nested inside an `expanded` row's `buttons` list. Holds 
    - `bic`: `PBNKDEFF`
    - `bank_name`: `Postbank`
    - `reference`: `Spende Echo Kirche`
-
-#### Row 4: Christmas Event VIP-Code (`layout: expanded` &rarr; expanded button)
-1. In `accordion_buttons` &rarr; `rows` &rarr; click **Add block** &rarr; select `accordion_row`.
-2. `layout`: Select `1 Expanded Card`.
-3. In `buttons` &rarr; click **Add block** &rarr; select `expanded_button`:
-   - `title`: `Weihnachts-Event: VIP-Code`
-   - `icon`: `star`
-   - `copy_value`: `ECHO-XMAS-2026`
-   - `copy_label`: `Code kopieren`
-   - Custom fields:
-     - `field_1_label`: `Event`, `field_1_value`: `Echo Christmas Celebration`, `field_1_is_code`: `false`
-     - `field_2_label`: `Datum`, `field_2_value`: `24. Dezember 2026`, `field_2_is_code`: `false`
-     - `field_3_label`: `Einlass`, `field_3_value`: `15:30 Uhr`, `field_3_is_code`: `false`
-     - `field_4_label`: `Ort`, `field_4_value`: `BSK-Saal, Gifhorn`, `field_4_is_code`: `false`
-     - `field_5_label`: `VIP-Code`, `field_5_value`: `ECHO-XMAS-2026`, `field_5_is_code`: `true`
 
 ---
 
@@ -821,7 +787,7 @@ Your Storyblok space and project setup is complete when all of the following are
   - [ ] `footer_legal` (Nestable Block)
 - [ ] `Home` story created with slug `home`.
 - [ ] Service times configured in `dropdown_card` (Gifhorn 10:00 & 12:00 in BSK-Saal with Echo Kids, Wolfsburg 11:00, Helmstedt 12:00).
-- [ ] Giving, IBAN, and event options configured in `accordion_buttons` (PayPal full button, Online Banking & Kontakt half buttons, expanded IBAN card, and Xmas VIP-Code card).
+- [ ] Giving and IBAN options configured in `accordion_buttons` (PayPal full button, Online Banking & Kontakt half buttons, and expanded IBAN card).
 - [ ] Dropdown buttons tested for accessibility (keyboard `Tab` focus, `Space`/`Enter` expansion, 180° rotating chevron indicator).
 - [ ] Campus-specific items have `display_in_default = false` and appropriate `show_on` values.
 - [ ] Netlify build hook connected to Storyblok publish webhook.

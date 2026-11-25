@@ -1415,93 +1415,78 @@
         },
         "title": {
           "type": "text",
-          "pos": 9,
-          "description": "Header title of the expanded card (e.g. Per Banküberweisung (IBAN) or Event VIP-Code)"
+          "pos": 2,
+          "description": "Header title of the expanded card (e.g. Per Banküberweisung (IBAN))"
         },
         "icon": {
           "type": "text",
-          "pos": 12,
-          "description": "Icon next to title (e.g. building-columns, star, wifi)"
+          "pos": 3,
+          "description": "Icon next to title (e.g. building-columns)"
         },
         "copy_value": {
           "type": "text",
-          "pos": 13,
-          "description": "Exact text copied to clipboard (e.g. IBAN string or promo code)"
+          "pos": 4,
+          "description": "Exact text copied to clipboard (e.g. IBAN string)"
         },
         "copy_label": {
           "type": "text",
-          "pos": 14,
-          "default_value": "Kopieren",
-          "description": "Label on copy button (e.g. IBAN kopieren, Code kopieren)"
+          "pos": 5,
+          "default_value": "IBAN kopieren",
+          "description": "Label on copy button (e.g. IBAN kopieren)"
         },
         "account_name": {
           "type": "text",
-          "pos": 15,
+          "pos": 6,
           "description": "Bank account holder (e.g. Echo Kirche e.V.)"
         },
         "iban": {
           "type": "text",
-          "pos": 16,
+          "pos": 7,
           "description": "Bank IBAN"
         },
         "bic": {
           "type": "text",
-          "pos": 17,
+          "pos": 8,
           "description": "Bank BIC / SWIFT code"
         },
         "bank_name": {
           "type": "text",
-          "pos": 18,
+          "pos": 9,
           "description": "Bank name (e.g. Postbank)"
         },
         "reference": {
           "type": "text",
-          "pos": 19,
+          "pos": 10,
           "description": "Bank transfer payment reference (Verwendungszweck)"
-        },
-        "field_1_label": { "type": "text", "pos": 20 },
-        "field_1_value": { "type": "text", "pos": 21 },
-        "field_1_is_code": { "type": "boolean", "pos": 22 },
-        "field_2_label": { "type": "text", "pos": 23 },
-        "field_2_value": { "type": "text", "pos": 24 },
-        "field_2_is_code": { "type": "boolean", "pos": 25 },
-        "field_3_label": { "type": "text", "pos": 26 },
-        "field_3_value": { "type": "text", "pos": 27 },
-        "field_3_is_code": { "type": "boolean", "pos": 28 },
-        "field_4_label": { "type": "text", "pos": 29 },
-        "field_4_value": { "type": "text", "pos": 30 },
-        "field_4_is_code": { "type": "boolean", "pos": 31 },
-        "field_5_label": { "type": "text", "pos": 32 },
-        "field_5_value": { "type": "text", "pos": 33 },
-        "field_5_is_code": { "type": "boolean", "pos": 34 }
+        }
       }
     },
     {
       "name": "expanded_button",
-      "display_name": "Expanded Button Card",
+      "display_name": "Expanded Bank Card",
       "is_root": false,
       "is_nestable": true,
       "schema": {
         "title": {
           "type": "text",
           "pos": 0,
-          "description": "Header title of the expanded card (e.g. Per Banküberweisung (IBAN) or Event VIP-Code)"
+          "description": "Header title of the expanded card (e.g. Per Banküberweisung (IBAN))"
         },
         "icon": {
           "type": "text",
           "pos": 1,
-          "description": "Icon next to title (e.g. building-columns, star, wifi)"
+          "description": "Icon next to title (e.g. building-columns)"
         },
         "copy_value": {
           "type": "text",
           "pos": 2,
-          "description": "Exact text copied to clipboard (e.g. IBAN string or promo code)"
+          "description": "Exact text copied to clipboard (e.g. IBAN string)"
         },
         "copy_label": {
           "type": "text",
           "pos": 3,
-          "default_value": "Kopieren",
-          "description": "Label on copy button (e.g. IBAN kopieren, Code kopieren)"
+          "default_value": "IBAN kopieren",
+          "description": "Label on copy button (e.g. IBAN kopieren)"
         },
         "account_name": {
           "type": "text",
@@ -1527,22 +1512,7 @@
           "type": "text",
           "pos": 8,
           "description": "Bank transfer payment reference (Verwendungszweck)"
-        },
-        "field_1_label": { "type": "text", "pos": 9 },
-        "field_1_value": { "type": "text", "pos": 10 },
-        "field_1_is_code": { "type": "boolean", "pos": 11 },
-        "field_2_label": { "type": "text", "pos": 12 },
-        "field_2_value": { "type": "text", "pos": 13 },
-        "field_2_is_code": { "type": "boolean", "pos": 14 },
-        "field_3_label": { "type": "text", "pos": 15 },
-        "field_3_value": { "type": "text", "pos": 16 },
-        "field_3_is_code": { "type": "boolean", "pos": 17 },
-        "field_4_label": { "type": "text", "pos": 18 },
-        "field_4_value": { "type": "text", "pos": 19 },
-        "field_4_is_code": { "type": "boolean", "pos": 20 },
-        "field_5_label": { "type": "text", "pos": 21 },
-        "field_5_value": { "type": "text", "pos": 22 },
-        "field_5_is_code": { "type": "boolean", "pos": 23 }
+        }
       }
     }
   ]

@@ -208,13 +208,6 @@
           {% if expData.bic %}{% set fieldList = (fieldList.push({ label: "BIC", value: expData.bic, isCode: true }), fieldList) %}{% endif %}
           {% if expData.bank_name or expData.bankName %}{% set fieldList = (fieldList.push({ label: "Bank", value: expData.bank_name or expData.bankName }), fieldList) %}{% endif %}
           {% if expData.reference %}{% set fieldList = (fieldList.push({ label: "Verwendungszweck", value: expData.reference }), fieldList) %}{% endif %}
-
-          {# Also check explicit field_1 to field_5 from Storyblok #}
-          {% if expData.field_1_label and expData.field_1_value %}{% set fieldList = (fieldList.push({ label: expData.field_1_label, value: expData.field_1_value, isCode: expData.field_1_is_code }), fieldList) %}{% endif %}
-          {% if expData.field_2_label and expData.field_2_value %}{% set fieldList = (fieldList.push({ label: expData.field_2_label, value: expData.field_2_value, isCode: expData.field_2_is_code }), fieldList) %}{% endif %}
-          {% if expData.field_3_label and expData.field_3_value %}{% set fieldList = (fieldList.push({ label: expData.field_3_label, value: expData.field_3_value, isCode: expData.field_3_is_code }), fieldList) %}{% endif %}
-          {% if expData.field_4_label and expData.field_4_value %}{% set fieldList = (fieldList.push({ label: expData.field_4_label, value: expData.field_4_value, isCode: expData.field_4_is_code }), fieldList) %}{% endif %}
-          {% if expData.field_5_label and expData.field_5_value %}{% set fieldList = (fieldList.push({ label: expData.field_5_label, value: expData.field_5_value, isCode: expData.field_5_is_code }), fieldList) %}{% endif %}
         {% endif %}
 
         <div class="accordion-buttons__row accordion-buttons__row--expanded">

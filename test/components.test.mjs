@@ -274,7 +274,6 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(indexHtml, /class="donation-card__copy-icon donation-card__copy-icon--copy"/, 'AccordionButtons must render copy icon');
     assert.match(indexHtml, /class="donation-card__copy-icon donation-card__copy-icon--check"/, 'AccordionButtons must render check icon');
     assert.match(indexHtml, /data-copy-iban="DE12 3456 7890 1234 5678 90"/, 'AccordionButtons must render copy IBAN button');
-    assert.match(indexHtml, /data-copy-text="ECHO-XMAS-2026"/, 'AccordionButtons must render copy event code button');
 
     // 2. Unit test: Multi-row with max 5 fields enforcement
     const nunjucks = (await import('nunjucks')).default;
