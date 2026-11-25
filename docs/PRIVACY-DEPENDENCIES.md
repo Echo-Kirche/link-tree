@@ -12,7 +12,7 @@ Expected third-party origins contacted on initial page visit: **NONE**.
 
 | Origin | Purpose | Data Sent | Consent Mechanism | Initial Load Status |
 | :--- | :--- | :--- | :--- | :--- |
-| `none` | — | — | — | **Zero connections** |
+| `https://kirche-echo.de`, `https://*.kirche-echo.de` | First-party Echo Kirche website media assets (`image_url` / Storyblok image cards) | Standard HTTP image request headers | First-party church infrastructure (no third-party trackers) | Permitted via CSP `img-src` (user-approved) |
 
 ---
 

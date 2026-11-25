@@ -224,6 +224,10 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
 
     // Catch-all query rewrites for /* must not be present
     assert.doesNotMatch(toml, /from\s*=\s*"\/\*"\s*\n\s*query\s*=/, 'Netlify toml must not have catch-all query rewrites for /*');
+
+    // CSP img-src must permit Storyblok CDN and first-party Echo Kirche domain (apex + subdomains)
+    assert.match(toml, /img-src[^;]*https:\/\/kirche-echo\.de\s+https:\/\/\*\.kirche-echo\.de/, 'Netlify toml CSP img-src must allow kirche-echo.de and *.kirche-echo.de');
+    assert.match(headers, /img-src[^;]*https:\/\/kirche-echo\.de\s+https:\/\/\*\.kirche-echo\.de/, '_headers CSP img-src must allow kirche-echo.de and *.kirche-echo.de');
   });
 
   test('404 page exists and contains automatic redirect to root, accessible link, and favicon', () => {

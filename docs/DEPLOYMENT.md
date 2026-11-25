@@ -61,7 +61,7 @@ Content editors do **not** need to redeploy code to update content. Automatic re
 ### 3.3 Security & Privacy Headers
 Configured in `netlify.toml` and mirrored in `_headers`:
 - **Content-Security-Policy (CSP)**:
-  `default-src 'self'; img-src 'self' data: https://a.storyblok.com https://*.storyblok.com; style-src 'self' 'unsafe-inline'; script-src 'self' https://app.storyblok.com https://*.storyblok.com; connect-src 'self' https://api.storyblok.com https://gapi.storyblok.com https://app.storyblok.com https://*.storyblok.com wss://*.storyblok.com; frame-src 'self' https://www.youtube-nocookie.com; frame-ancestors 'self' https://app.storyblok.com https://storyblok.com https://*.storyblok.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;`
+  `default-src 'self'; img-src 'self' data: https://a.storyblok.com https://*.storyblok.com https://kirche-echo.de https://*.kirche-echo.de; style-src 'self' 'unsafe-inline'; script-src 'self' https://app.storyblok.com https://*.storyblok.com; connect-src 'self' https://api.storyblok.com https://gapi.storyblok.com https://app.storyblok.com https://*.storyblok.com wss://*.storyblok.com; frame-src 'self' https://www.youtube-nocookie.com; frame-ancestors 'self' https://app.storyblok.com https://storyblok.com https://*.storyblok.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;`
 - **Permissions-Policy**: Strictly disables camera, microphone, geolocation, payment, and FLoC/browsing-topics tracking.
 - **HSTS**: `max-age=31536000; includeSubDomains; preload`.
 
