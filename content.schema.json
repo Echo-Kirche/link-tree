@@ -366,6 +366,17 @@
         "additionalProperties": false,
         "properties": {
           "layout": { "enum": ["full", "half", "expanded", "single", "dual", "card"] },
+          "displayInDefault": { "type": "boolean" },
+          "showOn": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "$ref": "#/$defs/surface" }
+          },
+          "hideOn": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "$ref": "#/$defs/surface" }
+          },
           "button": {
             "type": "object",
             "required": ["label", "url"],
@@ -375,7 +386,18 @@
               "url": { "$ref": "#/$defs/safeUrl" },
               "icon": { "type": "string", "maxLength": 2048 },
               "variant": { "type": "string", "maxLength": 50 },
-              "target": { "type": "string", "maxLength": 20 }
+              "target": { "type": "string", "maxLength": 20 },
+              "displayInDefault": { "type": "boolean" },
+              "showOn": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": { "$ref": "#/$defs/surface" }
+              },
+              "hideOn": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": { "$ref": "#/$defs/surface" }
+              }
             }
           },
           "buttons": {
@@ -389,7 +411,18 @@
                 "url": { "$ref": "#/$defs/safeUrl" },
                 "icon": { "type": "string", "maxLength": 2048 },
                 "variant": { "type": "string", "maxLength": 50 },
-                "target": { "type": "string", "maxLength": 20 }
+                "target": { "type": "string", "maxLength": 20 },
+                "displayInDefault": { "type": "boolean" },
+                "showOn": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": { "$ref": "#/$defs/surface" }
+                },
+                "hideOn": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": { "$ref": "#/$defs/surface" }
+                }
               }
             }
           },

@@ -1,43 +1,59 @@
 import { resolveStoryblokUrl } from './src/utils/storyblok-url.js';
 
+// Filter items by active surface (supporting both local camelCase and Storyblok snake_case)
+export function filterBySurface(items, activeSurface) {
+  if (!Array.isArray(items)) return [];
+  if (activeSurface === 'all') return items;
+  const surface = activeSurface || 'default';
+  const toList = (v) => (Array.isArray(v) ? v : (typeof v === 'string' && v.trim() ? v.split(',').map((s) => s.trim()) : []));
+
+  return items.filter(item => {
+    const child = (item.buttons && item.buttons.length > 0) ? item.buttons[0] : null;
+
+    let inDefault = item.displayInDefault ?? item.display_in_default;
+    if (inDefault === undefined && child) {
+      inDefault = child.displayInDefault ?? child.display_in_default;
+    }
+
+    let rawShowOn = item.showOn || item.show_on;
+    if ((!rawShowOn || (Array.isArray(rawShowOn) && rawShowOn.length === 0)) && child) {
+      rawShowOn = child.showOn || child.show_on;
+    }
+    const showOn = toList(rawShowOn);
+
+    let rawHideOn = item.hideOn || item.hide_on;
+    if ((!rawHideOn || (Array.isArray(rawHideOn) && rawHideOn.length === 0)) && child) {
+      rawHideOn = child.hideOn || child.hide_on;
+    }
+    const hideOn = toList(rawHideOn);
+
+    if (surface === 'default') {
+      if (inDefault !== undefined) {
+        if (inDefault !== true) return false;
+      } else {
+        if (showOn.length > 0 && !showOn.includes('default')) {
+          return false;
+        }
+      }
+    } else {
+      if (showOn.length > 0 && !showOn.includes(surface)) {
+        return false;
+      }
+    }
+    if (hideOn.length > 0 && hideOn.includes(surface)) {
+      return false;
+    }
+    return true;
+  });
+}
+
 export default function (eleventyConfig) {
   // Passthrough copy static assets
   eleventyConfig.addPassthroughCopy({ 'src/assets': 'assets' });
   eleventyConfig.addPassthroughCopy({ '_headers': '_headers' });
 
   // Filter items by active surface (supporting both local camelCase and Storyblok snake_case)
-  eleventyConfig.addFilter('filterBySurface', (items, activeSurface) => {
-    if (!Array.isArray(items)) return [];
-    if (activeSurface === 'all') return items;
-    const surface = activeSurface || 'default';
-    return items.filter(item => {
-      if (surface === 'default') {
-        const inDefault = item.displayInDefault ?? item.display_in_default;
-        if (inDefault !== undefined) {
-          if (inDefault !== true) return false;
-        } else {
-          const showOn = item.showOn || item.show_on;
-          if (showOn && Array.isArray(showOn) && showOn.length > 0 && !showOn.includes('default')) {
-            return false;
-          }
-        }
-      } else {
-        const showOn = item.showOn || item.show_on;
-        if (showOn && Array.isArray(showOn) && showOn.length > 0) {
-          if (!showOn.includes(surface)) {
-            return false;
-          }
-        }
-      }
-      const hideOn = item.hideOn || item.hide_on;
-      if (hideOn && Array.isArray(hideOn) && hideOn.length > 0) {
-        if (hideOn.includes(surface)) {
-          return false;
-        }
-      }
-      return true;
-    });
-  });
+  eleventyConfig.addFilter('filterBySurface', filterBySurface);
 
   // Resolve Storyblok URLs (handles both plain strings and Storyblok multilink/link objects)
   eleventyConfig.addFilter('resolveUrl', resolveStoryblokUrl);

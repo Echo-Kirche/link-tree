@@ -403,6 +403,9 @@ Each row contains a `layout` mode and a `buttons` block list. You simply add the
 |---|---|---|---|---|---|---|
 | `layout` | Layout Mode | Determines how this row displays its child buttons or details card. | `Single Option` | `full` | **Yes** | Options: `full` (1 Full Button), `half` (2 Half Buttons), `expanded` (1 Expanded Card). |
 | `buttons` | Buttons in Row | The button component(s) belonging to this row. | `Blocks` | None | **Yes** | Allowed components: `link_button` (for `full` and `half` layouts) and `expanded_button` (for `expanded` layout). |
+| `display_in_default` | Display on Default | Tier 1 curation flag for landing page (`/`). | `Boolean` | `true` | No | Set to `true` to include in default overview. |
+| `show_on` | Show On | Tier 2 surface allowlist. | `Multi-Option` | `[]` | No | e.g. `gifhorn`, `wolfsburg`, `helmstedt`, `instagram`. |
+| `hide_on` | Hide On | Tier 2 surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 
 ---
 
@@ -422,6 +425,9 @@ A rich bank details card nested inside an `expanded` row's `buttons` list. Holds
 | `icon` | Card Icon | Leading icon next to card title. | `Text` | Empty | No | Optional Font Awesome icon name (e.g. `building-columns`). Leave empty for no icon. |
 | `copy_value` | Copy Value | The exact IBAN copied to the user's clipboard. | `Text` | Empty | No | e.g. `DE12 3456 7890 1234 5678 90`. Also falls back to `iban`. |
 | `copy_label` | Copy Button Label | Label displayed on the clipboard copy button. | `Text` | `IBAN kopieren` | No | e.g. `IBAN kopieren`. |
+| `display_in_default` | Display on Default | Tier 1 curation flag for landing page (`/`). | `Boolean` | `true` | No | Set to `true` to include in default overview. |
+| `show_on` | Show On | Tier 2 surface allowlist. | `Multi-Option` | `[]` | No | e.g. `gifhorn`, `wolfsburg`, `helmstedt`, `instagram`. |
+| `hide_on` | Hide On | Tier 2 surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 | `account_name` | Bank: Kontoinhaber | Bank account holder name. | `Text` | Empty | No | e.g. `Echo Kirche e.V.` |
 | `iban` | Bank: IBAN | International Bank Account Number. | `Text` | Empty | No | Formatted with spaces. |
 | `bic` | Bank: BIC / SWIFT | Bank Identifier Code. | `Text` | Empty | No | e.g. `PBNKDEFF`. |

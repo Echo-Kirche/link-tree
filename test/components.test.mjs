@@ -277,8 +277,10 @@ describe('Component Markup & Accessibility Contracts', () => {
 
     // 2. Unit test: Multi-row with max 5 fields enforcement
     const nunjucks = (await import('nunjucks')).default;
+    const { filterBySurface } = await import('../eleventy.config.mjs');
     const env = nunjucks.configure(path.resolve('src/_includes'), { autoescape: true });
     env.addFilter('resolveUrl', (val) => typeof val === 'string' ? val : (val?.url || ''));
+    env.addFilter('filterBySurface', filterBySurface);
 
     const htmlMultiRow = env.render('components/AccordionButtons.njk', {
       item: {
@@ -347,6 +349,87 @@ describe('Component Markup & Accessibility Contracts', () => {
     });
     assert.doesNotMatch(htmlNoIcon, /accordion-buttons__card-icon/, 'Expanded card without icon must not render card-icon wrapper');
     assert.doesNotMatch(htmlNoIcon, /fa-building-columns/, 'Expanded card without icon must not fall back to fa-building-columns');
+
+    // 4. Unit test: accordion_row and expanded_button support show_on, hide_on, display_in_default
+    const htmlSurfaceFiltered = env.render('components/AccordionButtons.njk', {
+      surface: 'default',
+      item: {
+        id: 'test-surface-accordion',
+        label: 'Aktionen mit Campus-Filter',
+        rows: [
+          {
+            layout: 'full',
+            show_on: ['gifhorn'],
+            button: { label: 'Nur Gifhorn Row', url: 'https://example.com/gf' }
+          },
+          {
+            layout: 'half',
+            display_in_default: true,
+            show_on: ['default', 'wolfsburg'],
+            hide_on: ['helmstedt'],
+            buttons: [
+              { label: 'Default Button 1', url: 'https://example.com/d1' },
+              { label: 'Default Button 2', url: 'https://example.com/d2' }
+            ]
+          },
+          {
+            layout: 'expanded',
+            buttons: [
+              {
+                component: 'expanded_button',
+                title: 'Wolfsburg VIP-Karte',
+                show_on: ['wolfsburg'],
+                display_in_default: false,
+                copy_value: 'WOB-VIP',
+                fields: [{ label: 'Stadt', value: 'Wolfsburg' }]
+              }
+            ]
+          }
+        ]
+      }
+    });
+
+    // In default surface: 'Nur Gifhorn Row' and 'Wolfsburg VIP-Karte' must be filtered out
+    assert.doesNotMatch(htmlSurfaceFiltered, /Nur Gifhorn Row/);
+    assert.doesNotMatch(htmlSurfaceFiltered, /Wolfsburg VIP-Karte/);
+    // 'Default Button 1' must be rendered with data attributes
+    assert.match(htmlSurfaceFiltered, /Default Button 1/);
+    assert.match(htmlSurfaceFiltered, /data-show-on="default,wolfsburg"/);
+    assert.match(htmlSurfaceFiltered, /data-hide-on="helmstedt"/);
+    assert.match(htmlSurfaceFiltered, /data-display-in-default="true"/);
+
+    // Render for Wolfsburg campus
+    const htmlWolfsburg = env.render('components/AccordionButtons.njk', {
+      surface: 'wolfsburg',
+      item: {
+        id: 'test-surface-accordion',
+        label: 'Aktionen Wolfsburg',
+        rows: [
+          {
+            layout: 'full',
+            show_on: ['gifhorn'],
+            button: { label: 'Nur Gifhorn Row', url: 'https://example.com/gf' }
+          },
+          {
+            layout: 'expanded',
+            buttons: [
+              {
+                component: 'expanded_button',
+                title: 'Wolfsburg VIP-Karte',
+                show_on: ['wolfsburg'],
+                display_in_default: false,
+                copy_value: 'WOB-VIP',
+                fields: [{ label: 'Stadt', value: 'Wolfsburg' }]
+              }
+            ]
+          }
+        ]
+      }
+    });
+    assert.doesNotMatch(htmlWolfsburg, /Nur Gifhorn Row/);
+    assert.match(htmlWolfsburg, /Wolfsburg VIP-Karte/);
+    assert.match(htmlWolfsburg, /data-show-on="wolfsburg"/);
+    assert.match(htmlWolfsburg, /data-display-in-default="false"/);
   });
 
   test('ImageCardHorizontal & ImageCardVertical render media cards with aspect ratios and arrows', () => {

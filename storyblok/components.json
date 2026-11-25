@@ -1413,50 +1413,84 @@
           ],
           "description": "Buttons in this row: 1 link_button for Full, 2 link_buttons for Half, or 1 expanded_button for Expanded"
         },
+        "display_in_default": {
+          "type": "boolean",
+          "pos": 2,
+          "default_value": true,
+          "display_name": "Display on Default Page"
+        },
+        "show_on": {
+          "type": "options",
+          "pos": 3,
+          "options": [
+            { "name": "Default", "value": "default" },
+            { "name": "Gifhorn (gf)", "value": "gifhorn" },
+            { "name": "Wolfsburg (wob)", "value": "wolfsburg" },
+            { "name": "Helmstedt (he)", "value": "helmstedt" },
+            { "name": "Instagram (ig)", "value": "instagram" },
+            { "name": "TikTok", "value": "tiktok" },
+            { "name": "LinkedIn", "value": "linkedin" },
+            { "name": "YouTube", "value": "youtube" }
+          ]
+        },
+        "hide_on": {
+          "type": "options",
+          "pos": 4,
+          "options": [
+            { "name": "Default", "value": "default" },
+            { "name": "Gifhorn (gf)", "value": "gifhorn" },
+            { "name": "Wolfsburg (wob)", "value": "wolfsburg" },
+            { "name": "Helmstedt (he)", "value": "helmstedt" },
+            { "name": "Instagram (ig)", "value": "instagram" },
+            { "name": "TikTok", "value": "tiktok" },
+            { "name": "LinkedIn", "value": "linkedin" },
+            { "name": "YouTube", "value": "youtube" }
+          ]
+        },
         "title": {
           "type": "text",
-          "pos": 2,
+          "pos": 5,
           "description": "Header title of the expanded card (e.g. Per Banküberweisung (IBAN))"
         },
         "icon": {
           "type": "text",
-          "pos": 3,
+          "pos": 6,
           "description": "Icon next to title (e.g. building-columns)"
         },
         "copy_value": {
           "type": "text",
-          "pos": 4,
+          "pos": 7,
           "description": "Exact text copied to clipboard (e.g. IBAN string)"
         },
         "copy_label": {
           "type": "text",
-          "pos": 5,
+          "pos": 8,
           "default_value": "IBAN kopieren",
           "description": "Label on copy button (e.g. IBAN kopieren)"
         },
         "account_name": {
           "type": "text",
-          "pos": 6,
+          "pos": 9,
           "description": "Bank account holder (e.g. Echo Kirche e.V.)"
         },
         "iban": {
           "type": "text",
-          "pos": 7,
+          "pos": 10,
           "description": "Bank IBAN"
         },
         "bic": {
           "type": "text",
-          "pos": 8,
+          "pos": 11,
           "description": "Bank BIC / SWIFT code"
         },
         "bank_name": {
           "type": "text",
-          "pos": 9,
+          "pos": 12,
           "description": "Bank name (e.g. Postbank)"
         },
         "reference": {
           "type": "text",
-          "pos": 10,
+          "pos": 13,
           "description": "Bank transfer payment reference (Verwendungszweck)"
         }
       }
@@ -1488,29 +1522,63 @@
           "default_value": "IBAN kopieren",
           "description": "Label on copy button (e.g. IBAN kopieren)"
         },
+        "display_in_default": {
+          "type": "boolean",
+          "pos": 4,
+          "default_value": true,
+          "display_name": "Display on Default Page"
+        },
+        "show_on": {
+          "type": "options",
+          "pos": 5,
+          "options": [
+            { "name": "Default", "value": "default" },
+            { "name": "Gifhorn (gf)", "value": "gifhorn" },
+            { "name": "Wolfsburg (wob)", "value": "wolfsburg" },
+            { "name": "Helmstedt (he)", "value": "helmstedt" },
+            { "name": "Instagram (ig)", "value": "instagram" },
+            { "name": "TikTok", "value": "tiktok" },
+            { "name": "LinkedIn", "value": "linkedin" },
+            { "name": "YouTube", "value": "youtube" }
+          ]
+        },
+        "hide_on": {
+          "type": "options",
+          "pos": 6,
+          "options": [
+            { "name": "Default", "value": "default" },
+            { "name": "Gifhorn (gf)", "value": "gifhorn" },
+            { "name": "Wolfsburg (wob)", "value": "wolfsburg" },
+            { "name": "Helmstedt (he)", "value": "helmstedt" },
+            { "name": "Instagram (ig)", "value": "instagram" },
+            { "name": "TikTok", "value": "tiktok" },
+            { "name": "LinkedIn", "value": "linkedin" },
+            { "name": "YouTube", "value": "youtube" }
+          ]
+        },
         "account_name": {
           "type": "text",
-          "pos": 4,
+          "pos": 7,
           "description": "Bank account holder (e.g. Echo Kirche e.V.)"
         },
         "iban": {
           "type": "text",
-          "pos": 5,
+          "pos": 8,
           "description": "Bank IBAN"
         },
         "bic": {
           "type": "text",
-          "pos": 6,
+          "pos": 9,
           "description": "Bank BIC / SWIFT code"
         },
         "bank_name": {
           "type": "text",
-          "pos": 7,
+          "pos": 10,
           "description": "Bank name (e.g. Postbank)"
         },
         "reference": {
           "type": "text",
-          "pos": 8,
+          "pos": 11,
           "description": "Bank transfer payment reference (Verwendungszweck)"
         }
       }

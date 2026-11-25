@@ -108,8 +108,17 @@
     {% endif %}
 
     {% if rowList and rowList.length > 0 %}
+    {% set activeRowSurface = currentRoute.surface if (currentRoute and currentRoute.surface) else surface %}
+    {% set visibleRows = rowList | filterBySurface(activeRowSurface) if activeRowSurface else rowList %}
+    {% if visibleRows and visibleRows.length > 0 %}
     <div class="accordion-buttons__rows">
-      {% for row in rowList %}
+      {% for row in visibleRows %}
+      {% set expChild = row.buttons[0] if (row.buttons and row.buttons.length > 0) else null %}
+      {% set rowShowOn = row.showOn or row.show_on or (expChild.showOn or expChild.show_on if expChild) %}
+      {% set rowHideOn = row.hideOn or row.hide_on or (expChild.hideOn or expChild.hide_on if expChild) %}
+      {% set rowDispDef = row.displayInDefault if (row.displayInDefault !== undefined) else (row.display_in_default if (row.display_in_default !== undefined) else (expChild.displayInDefault if (expChild and expChild.displayInDefault !== undefined) else (expChild.display_in_default if (expChild and expChild.display_in_default !== undefined) else undefined))) %}
+      {% set rowShowOnStr = (rowShowOn | join(',')) if (rowShowOn and rowShowOn.join) else rowShowOn %}
+      {% set rowHideOnStr = (rowHideOn | join(',')) if (rowHideOn and rowHideOn.join) else rowHideOn %}
       {% set layout = row.layout or (row.component | replace("accordion_row_", "") if (row.component and row.component != "accordion_row")) or "full" %}
 
       {# 1. Full Button Row #}
@@ -131,7 +140,12 @@
         {% for btn in fullButtons %}
         {% set resolvedBtnUrl = btn.url | resolveUrl %}
         {% if resolvedBtnUrl and resolvedBtnUrl != '#' %}
-        <div class="accordion-buttons__row accordion-buttons__row--full">
+        {% set btnShowOn = btn.showOn or btn.show_on or rowShowOn %}
+        {% set btnHideOn = btn.hideOn or btn.hide_on or rowHideOn %}
+        {% set btnDispDef = btn.displayInDefault if (btn.displayInDefault !== undefined) else (btn.display_in_default if (btn.display_in_default !== undefined) else rowDispDef) %}
+        {% set btnShowOnStr = (btnShowOn | join(',')) if (btnShowOn and btnShowOn.join) else btnShowOn %}
+        {% set btnHideOnStr = (btnHideOn | join(',')) if (btnHideOn and btnHideOn.join) else btnHideOn %}
+        <div class="accordion-buttons__row accordion-buttons__row--full"{% if btnShowOnStr %} data-show-on="{{ btnShowOnStr }}"{% endif %}{% if btnHideOnStr %} data-hide-on="{{ btnHideOnStr }}"{% endif %}{% if btnDispDef !== undefined %} data-display-in-default="{{ btnDispDef }}"{% endif %}>
           <a class="accordion-buttons__btn link-button{% if btn.icon and btn.icon != '' %} link-button--with-icon{% endif %}" href="{{ resolvedBtnUrl }}"{% if btn.target %} target="{{ btn.target }}"{% endif %} rel="noopener noreferrer">
             {% if btn.icon and btn.icon != '' %}
             <span class="link-button__icon accordion-buttons__btn-icon" aria-hidden="true">
@@ -170,7 +184,7 @@
         {% endif %}
 
         {% if halfButtons and halfButtons.length > 0 %}
-        <div class="accordion-buttons__row accordion-buttons__row--half">
+        <div class="accordion-buttons__row accordion-buttons__row--half"{% if rowShowOnStr %} data-show-on="{{ rowShowOnStr }}"{% endif %}{% if rowHideOnStr %} data-hide-on="{{ rowHideOnStr }}"{% endif %}{% if rowDispDef !== undefined %} data-display-in-default="{{ rowDispDef }}"{% endif %}>
           {% for btn in halfButtons %}
           {% set resolvedBtnUrl = btn.url | resolveUrl %}
           {% if resolvedBtnUrl and resolvedBtnUrl != '#' %}
@@ -210,7 +224,7 @@
           {% if expData.reference %}{% set fieldList = (fieldList.push({ label: "Verwendungszweck", value: expData.reference }), fieldList) %}{% endif %}
         {% endif %}
 
-        <div class="accordion-buttons__row accordion-buttons__row--expanded">
+        <div class="accordion-buttons__row accordion-buttons__row--expanded"{% if rowShowOnStr %} data-show-on="{{ rowShowOnStr }}"{% endif %}{% if rowHideOnStr %} data-hide-on="{{ rowHideOnStr }}"{% endif %}{% if rowDispDef !== undefined %} data-display-in-default="{{ rowDispDef }}"{% endif %}>
           <div class="accordion-buttons__expanded-card">
             {% if cardTitle %}
             <div class="accordion-buttons__card-header">
@@ -275,6 +289,7 @@
 
       {% endfor %}
     </div>
+    {% endif %}
     {% endif %}
   </div>
 </details>
