@@ -36,6 +36,11 @@ export default [
         label: 'Spotify',
       },
       {
+        platform: 'facebook',
+        url: 'https://www.facebook.com/kircheimbrauhaus',
+        label: 'Facebook (@kircheimbrauhaus)',
+      },
+      {
         platform: 'email',
         url: 'mailto:info@kirche-echo.de',
         label: 'E-Mail',
@@ -84,6 +89,11 @@ export default [
         label: 'Spotify',
       },
       {
+        platform: 'facebook',
+        url: 'https://www.facebook.com/kircheimbrauhaus',
+        label: 'Facebook (@kircheimbrauhaus)',
+      },
+      {
         platform: 'email',
         url: 'mailto:info@kirche-echo.de',
         label: 'E-Mail',
@@ -130,6 +140,11 @@ export default [
         platform: 'spotify',
         url: 'https://open.spotify.com/show/5Wcf0t0f2tEZE16o0404I6?si=a614559835794cd0',
         label: 'Spotify',
+      },
+      {
+        platform: 'facebook',
+        url: 'https://www.facebook.com/kircheimbrauhaus',
+        label: 'Facebook (@kircheimbrauhaus)',
       },
       {
         platform: 'email',
