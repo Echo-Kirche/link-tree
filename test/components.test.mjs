@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { runInNewContext } from 'node:vm';
-import { resolveStoryblokUrl, normalizeStoryblokLinks } from '../src/utils/storyblok-url.js';
+import { resolveStoryblokUrl, normalizeStoryblokLinks, resolveStoryblokImage } from '../src/utils/storyblok-url.js';
 
 const siteDir = path.resolve('_site');
 
@@ -521,6 +521,78 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(htmlObject, /<img src="\/assets\/images\/echo-home-gifhorn-1024x682\.webp"/);
     assert.match(htmlObject, /alt="Custom Alt Text"/);
     assert.match(htmlObject, /Classic Item/);
+
+    // 5. Dual image fields: Storyblok asset vs image_url fallback & Storyblok precedence
+    const envReal = nunjucks.configure(path.resolve('src/_includes'), { autoescape: true });
+    envReal.addFilter('resolveUrl', resolveStoryblokUrl);
+
+    // 5a. Storyblok asset takes precedence over image_url (both horizontal and vertical)
+    const htmlPrecedenceH = envReal.render('components/ImageCardHorizontal.njk', {
+      item: {
+        url: 'https://example.com/he',
+        label: 'Helmstedt Horizontal',
+        image: {
+          id: 99,
+          filename: 'https://a.storyblok.com/f/12345/1200x675/abc/storyblok-hero.webp',
+          alt: 'Storyblok Hero',
+          fieldtype: 'asset'
+        },
+        image_url: 'https://example.com/fallback-url.webp'
+      }
+    });
+    assert.match(htmlPrecedenceH, /<img src="https:\/\/a\.storyblok\.com\/f\/12345\/1200x675\/abc\/storyblok-hero\.webp"/);
+    assert.doesNotMatch(htmlPrecedenceH, /fallback-url\.webp/);
+    assert.match(htmlPrecedenceH, /alt="Storyblok Hero"/);
+
+    const htmlPrecedenceV = envReal.render('components/ImageCardVertical.njk', {
+      item: {
+        url: 'https://example.com/he-v',
+        label: 'Helmstedt Vertical',
+        image: {
+          id: 100,
+          filename: 'https://a.storyblok.com/f/12345/900x1200/xyz/storyblok-flyer.webp',
+          alt: 'Storyblok Flyer',
+          fieldtype: 'asset'
+        },
+        image_url: 'https://example.com/fallback-flyer.webp'
+      }
+    });
+    assert.match(htmlPrecedenceV, /<img src="https:\/\/a\.storyblok\.com\/f\/12345\/900x1200\/xyz\/storyblok-flyer\.webp"/);
+    assert.doesNotMatch(htmlPrecedenceV, /fallback-flyer\.webp/);
+
+    // 5b. Empty Storyblok asset object falls back cleanly to image_url (never [object Object] or #)
+    const htmlFallbackH = envReal.render('components/ImageCardHorizontal.njk', {
+      item: {
+        url: 'https://example.com/he',
+        label: 'Fallback URL Horizontal',
+        image: { id: null, filename: '', alt: '', fieldtype: 'asset' },
+        image_url: 'https://example.com/custom-horizontal.webp'
+      }
+    });
+    assert.match(htmlFallbackH, /<img src="https:\/\/example\.com\/custom-horizontal\.webp"/);
+    assert.doesNotMatch(htmlFallbackH, /\[object Object\]/);
+
+    const htmlFallbackV = envReal.render('components/ImageCardVertical.njk', {
+      item: {
+        url: 'https://example.com/he-v',
+        label: 'Fallback URL Vertical',
+        image: { id: null, filename: '', alt: '', fieldtype: 'asset' },
+        imageUrl: '/assets/images/echo-home-helmstedt-803x1024.webp'
+      }
+    });
+    assert.match(htmlFallbackV, /<img src="\/assets\/images\/echo-home-helmstedt-803x1024\.webp"/);
+    assert.doesNotMatch(htmlFallbackV, /\[object Object\]/);
+
+    // 5c. Unsafe image_url protocol is blocked and never renders <img src="#">
+    const htmlUnsafe = envReal.render('components/ImageCardHorizontal.njk', {
+      item: {
+        url: 'https://example.com/safe',
+        label: 'Unsafe Image',
+        image_url: 'javascript:alert(1)'
+      }
+    });
+    assert.doesNotMatch(htmlUnsafe, /<img/);
+    assert.doesNotMatch(htmlUnsafe, /src="#"/);
   });
 
   test('LinkButton and FaIcon support any Font Awesome icons (fa-*, raw SVG, standard names, and fallback)', async () => {
@@ -696,12 +768,43 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.equal(resolveStoryblokUrl('https://example.com'), 'https://example.com', 'Should preserve plain string URL');
 
     // Recursive tree normalization
+    const storyblokAsset = {
+      id: 456,
+      alt: 'Helmstedt Banner',
+      name: '',
+      focus: '',
+      title: '',
+      filename: 'https://a.storyblok.com/f/12345/900x1200/he.webp',
+      fieldtype: 'asset',
+      meta_data: {}
+    };
+    const emptyAsset = {
+      id: null,
+      alt: '',
+      filename: '',
+      fieldtype: 'asset',
+      meta_data: {}
+    };
     const mockBlokTree = {
       body: [
         {
           component: 'link_button',
           label: 'Apple',
           url: externalLink,
+        },
+        {
+          component: 'image_card_vertical',
+          label: 'Helmstedt',
+          url: storyLink,
+          image: storyblokAsset,
+          image_url: 'https://example.com/fallback.webp',
+        },
+        {
+          component: 'image_card_horizontal',
+          label: 'Fallback Only',
+          url: externalLink,
+          image: emptyAsset,
+          image_url: 'https://example.com/horizontal.webp',
         },
       ],
       footer: [
@@ -714,6 +817,10 @@ describe('Component Markup & Accessibility Contracts', () => {
 
     const normalized = normalizeStoryblokLinks(mockBlokTree);
     assert.equal(normalized.body[0].url, 'https://apple.com', 'normalizeStoryblokLinks must resolve nested link_button url');
+    assert.equal(normalized.body[1].url, '/gifhorn/', 'normalizeStoryblokLinks must resolve nested image_card url');
+    assert.equal(normalized.body[1].image.filename, 'https://a.storyblok.com/f/12345/900x1200/he.webp', 'normalizeStoryblokLinks must preserve Storyblok asset objects instead of turning them into #');
+    assert.equal(resolveStoryblokImage(normalized.body[1]), 'https://a.storyblok.com/f/12345/900x1200/he.webp', 'Storyblok image asset must take precedence over image_url');
+    assert.equal(resolveStoryblokImage(normalized.body[2]), 'https://example.com/horizontal.webp', 'Empty Storyblok asset must fall back to image_url');
     assert.equal(normalized.footer[0].impressum_url, 'https://kirche-echo.de/impressum/', 'normalizeStoryblokLinks must resolve nested footer impressum_url');
   });
 
@@ -894,6 +1001,61 @@ describe('Component Markup & Accessibility Contracts', () => {
     });
     assert.equal(list.children.length, 1, 'Removed item must be pruned from DOM');
     assert.equal(list.children[0].dataset.uid, 'uid-initial-1', 'Only remaining item must be uid-initial-1');
+
+    // 4. Image card live reconciliation: Storyblok image precedence over image_url and fallback
+    sandbox.storyblokApplyContent({
+      body: [
+        {
+          _uid: 'uid-img-h',
+          component: 'image_card_horizontal',
+          label: 'SB Precedence',
+          url: 'https://example.com/h',
+          image: { filename: 'https://a.storyblok.com/f/1/h.webp', fieldtype: 'asset' },
+          image_url: 'https://example.com/fallback-h.webp'
+        },
+        {
+          _uid: 'uid-img-v',
+          component: 'image_card_vertical',
+          label: 'URL Fallback',
+          url: 'https://example.com/v',
+          image: { filename: '', fieldtype: 'asset' },
+          image_url: 'https://example.com/fallback-v.webp'
+        }
+      ]
+    });
+    assert.equal(list.children.length, 2);
+    assert.match(list.children[0].innerHTML, /class="image-card image-card--horizontal"/);
+    assert.match(list.children[0].innerHTML, /src="https:\/\/a\.storyblok\.com\/f\/1\/h\.webp"/);
+    assert.doesNotMatch(list.children[0].innerHTML, /fallback-h\.webp/);
+    assert.match(list.children[1].innerHTML, /class="image-card image-card--vertical"/);
+    assert.match(list.children[1].innerHTML, /src="https:\/\/example\.com\/fallback-v\.webp"/);
+  });
+
+  test('content.schema.json supports imageUrl/image_url fallback for vertical and horizontal image cards', async () => {
+    const Ajv2020 = (await import('ajv/dist/2020.js')).default;
+    const addFormats = (await import('ajv-formats')).default;
+    const schema = JSON.parse(fs.readFileSync(path.resolve('content.schema.json'), 'utf8'));
+    const ajv = new Ajv2020({ allErrors: true });
+    addFormats(ajv);
+    const validate = ajv.compile(schema);
+
+    assert.equal(validate({
+      schemaVersion: 1,
+      profile: { name: 'Echo' },
+      links: [
+        { id: 'img-h', type: 'image-horizontal', url: 'https://example.com/h', imageUrl: 'https://example.com/h.webp' },
+        { id: 'img-v', type: 'image-vertical', url: 'https://example.com/v', image_url: '/assets/images/v.webp' },
+        { id: 'img-both', type: 'image-vertical', url: 'https://example.com/b', image: '/assets/images/a.webp', imageUrl: 'https://example.com/b.webp' }
+      ]
+    }), true);
+
+    assert.equal(validate({
+      schemaVersion: 1,
+      profile: { name: 'Echo' },
+      links: [
+        { id: 'img-missing', type: 'image-horizontal', url: 'https://example.com/h' }
+      ]
+    }), false);
   });
 
   test('Mobile Android Chrome theme support, viewport meta tags, and touch optimizations', () => {

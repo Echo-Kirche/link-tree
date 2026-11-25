@@ -496,9 +496,10 @@ A landscape media card with a 16:9 image, headline, and interactive arrow button
 
 | Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
 |---|---|---|---|---|---|---|
-| `label` | Headline | Title text displayed below the image. | `Text` | None | **Yes** | e.g. `Aktuelle Predigtreihe: Hoffnung`. |
+| `label` | Headline | Title text displayed below the image. | `Text` | None | No | Optional, e.g. `Aktuelle Predigtreihe: Hoffnung`. |
 | `url` | Destination URL | Target web address. | `Link` or `Text` | None | **Yes** | e.g. `https://kirche-echo.de/predigten`. |
-| `image` | 16:9 Image Asset | Landscape image. | `Asset` (Images) | None | **Yes** | Recommended: 1200×675 px or 1280×720 px. |
+| `image` | Storyblok Image | Landscape Storyblok image asset (takes precedence over `image_url`). | `Asset` (Images) | None | No | Recommended: 1200×675 px or 1280×720 px. |
+| `image_url` | Image URL | Fallback image URL or path when no Storyblok image is uploaded. | `Text` | None | No | e.g. `https://...` or `/assets/images/...`. |
 | `display_in_default` | Display on Default | Controls visibility on the main landing page (`/`). | `Boolean` | `true` | No | Set to `false` if image is for a specific city only. |
 | `show_on` | Show On | Surface allowlist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 | `hide_on` | Hide On | Surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
@@ -517,9 +518,10 @@ A portrait media card in 3:4 aspect ratio. Perfect for event posters, flyers, or
 
 | Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
 |---|---|---|---|---|---|---|
-| `label` | Title | Text label beneath the flyer. | `Text` | None | **Yes** | e.g. `Echo Jugend Konferenz 2026`. |
+| `label` | Title | Text label beneath the flyer. | `Text` | None | No | Optional, e.g. `Echo Jugend Konferenz 2026`. |
 | `url` | Destination URL | Target address. | `Link` or `Text` | None | **Yes** | e.g. `https://kirche-echo.de/events`. |
-| `image` | 3:4 Image Asset | Portrait flyer image. | `Asset` (Images) | None | **Yes** | Recommended: 900×1200 px. |
+| `image` | Storyblok Image | Portrait Storyblok flyer asset (takes precedence over `image_url`). | `Asset` (Images) | None | No | Recommended: 900×1200 px. |
+| `image_url` | Image URL | Fallback image URL or path when no Storyblok image is uploaded. | `Text` | None | No | e.g. `https://...` or `/assets/images/...`. |
 | `display_in_default` | Display on Default | Controls visibility on the main landing page (`/`). | `Boolean` | `true` | No | Default `true`. |
 | `show_on` | Show On | Surface allowlist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |
 | `hide_on` | Hide On | Surface blocklist. | `Multi-Option` | `[]` | No | Source: `surfaces` datasource. |

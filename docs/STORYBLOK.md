@@ -275,7 +275,8 @@ A landscape media card with a 16:9 preview image, title, and interactive arrow b
 - **Fields to fill**:
   - `label` (Text, Optional): Headline under the image (e.g., `Neue Predigtreihe: Hoffnung`). Leave empty for a pure image link banner.
   - `url` (Text, Required): Target link.
-  - `image` (Asset / Link, Required): Upload a 16:9 image (recommended size: `1200x675` or `1280x720` px) or provide a direct image link URL string.
+  - `image` (Asset, Optional): Storyblok image (16:9, recommended size: `1200x675` or `1280x720` px). **Takes precedence** over `image_url` if both are filled.
+  - `image_url` (Text, Optional): Fallback direct image link URL or local path (e.g., `https://...` or `/assets/images/...`). Used when no Storyblok `image` is set.
   - `display_in_default` (Boolean, Default: `true`): Set to `true` to display on the default page (`/`). Set to `false` to hide on default and use only on custom surfaces.
   - `show_on` / `hide_on` (Multi-select, Optional): Surface filtering.
 
@@ -288,7 +289,8 @@ A portrait media card with a 3:4 image ratio. Great for event flyers and speaker
 - **Fields to fill**:
   - `label` (Text, Optional): Title text under the image. Leave empty for a pure image link banner.
   - `url` (Text, Required): Destination web address.
-  - `image` (Asset / Link, Required): Upload a 3:4 portrait image (recommended: `900x1200` px) or provide a direct image link URL string.
+  - `image` (Asset, Optional): Storyblok portrait image (3:4, recommended: `900x1200` px). **Takes precedence** over `image_url` if both are filled.
+  - `image_url` (Text, Optional): Fallback direct image link URL or local path (e.g., `https://...` or `/assets/images/...`). Used when no Storyblok `image` is set.
   - `display_in_default` (Boolean, Default: `true`): Set to `true` to display on the default page (`/`). Set to `false` to hide on default and use only on custom surfaces.
   - `show_on` / `hide_on` (Multi-select, Optional): Surface filtering.
 
@@ -533,7 +535,8 @@ Eine Bildkarte im 16:9 Querformat mit Bild, Titel und einem runden Pfeil-Button.
 - **Felder zum Ausfüllen**:
   - `label` (Text, Optional): Titel unter dem Bild (z. B. `Aktuelle Predigtreihe`). Kann für reine Bild-Banner weggelassen werden.
   - `url` (Text, Pflicht): Ziel-Link.
-  - `image` (Datei / Link, Pflicht): Bild im 16:9-Format hochladen (Empfohlene Größe: `1200x675` oder `1280x720` Pixel) oder direkten Bild-Link/URL angeben.
+  - `image` (Datei / Asset, Optional): Storyblok-Bild im 16:9-Format hochladen (Empfohlene Größe: `1200x675` oder `1280x720` Pixel). **Hat Vorrang** vor `image_url`, falls beide ausgefüllt sind.
+  - `image_url` (Text, Optional): Alternativer direkter Bild-Link/URL oder lokaler Pfad (z. B. `https://...` oder `/assets/images/...`), falls kein Storyblok-Bild gesetzt ist.
   - `display_in_default` (Schalter/Boolean, Standard: `true`): Auf `true` setzen für Hauptseite (`/`), auf `false` nur für Unterseiten.
   - `show_on` / `hide_on` (Mehrfachauswahl, Optional): Standort-Filter.
 
@@ -546,7 +549,8 @@ Eine Bildkarte im 3:4 Hochformat. Ideal für Flyer, Plakate oder Personen-Vorste
 - **Felder zum Ausfüllen**:
   - `label` (Text, Optional): Titel unter dem Bild. Kann für reine Bild-Banner weggelassen werden.
   - `url` (Text, Pflicht): Ziel-Link.
-  - `image` (Datei / Link, Pflicht): Hochformat-Bild hochladen (Empfohlene Größe: `900x1200` Pixel) oder direkten Bild-Link/URL angeben.
+  - `image` (Datei / Asset, Optional): Storyblok-Hochformat-Bild hochladen (Empfohlene Größe: `900x1200` Pixel). **Hat Vorrang** vor `image_url`, falls beide ausgefüllt sind.
+  - `image_url` (Text, Optional): Alternativer direkter Bild-Link/URL oder lokaler Pfad (z. B. `https://...` oder `/assets/images/...`), falls kein Storyblok-Bild gesetzt ist.
   - `display_in_default` (Schalter/Boolean, Standard: `true`): Auf `true` setzen für Hauptseite (`/`), auf `false` nur für Unterseiten.
   - `show_on` / `hide_on` (Mehrfachauswahl, Optional): Standort-Filter.
 

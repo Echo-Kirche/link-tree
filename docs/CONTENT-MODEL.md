@@ -195,7 +195,8 @@ A flexible, pure-CSS collapsible interactive accordion drawer powered by native 
 | :--- | :--- | :--- | :--- |
 | `label` | Text | No | Optional card title (max 160 chars). When omitted, renders as an image-only link banner. |
 | `url` | Text / Multilink | Yes | Safe destination URL. |
-| `image` | Asset / String Link | Yes | Image asset (WebP, 16:9 ratio, max 1900px, max 400 KB) or direct link/path string (e.g., `/assets/images/...` or `https://...`). |
+| `image` | Asset / String Link | No* | Storyblok image asset (WebP, 16:9 ratio, max 1900px, max 400 KB) or local/structured asset. **Takes precedence** over `image_url` / `imageUrl` if both are set. |
+| `image_url` / `imageUrl` | Text (URL / Path) | No* | Fallback direct image URL or local asset path (e.g., `https://...` or `/assets/images/...`). Used when `image` is empty. At least one of `image` or `image_url` (`imageUrl`) should be set. |
 | `display_in_default` | Boolean | No | Tier 1 curation flag. Default: `true`. |
 | `show_on` / `hide_on` | Multi-select | No | Tier 2 surface filters. |
 
@@ -209,7 +210,8 @@ A flexible, pure-CSS collapsible interactive accordion drawer powered by native 
 | :--- | :--- | :--- | :--- |
 | `label` | Text | No | Optional card title (max 160 chars). When omitted, renders as an image-only link banner. |
 | `url` | Text / Multilink | Yes | Safe destination URL. |
-| `image` | Asset / String Link | Yes | Image asset (WebP, 3:4 ratio, max 1400px, max 400 KB) or direct link/path string (e.g., `/assets/images/...` or `https://...`). |
+| `image` | Asset / String Link | No* | Storyblok image asset (WebP, 3:4 ratio, max 1400px, max 400 KB) or local/structured asset. **Takes precedence** over `image_url` / `imageUrl` if both are set. |
+| `image_url` / `imageUrl` | Text (URL / Path) | No* | Fallback direct image URL or local asset path (e.g., `https://...` or `/assets/images/...`). Used when `image` is empty. At least one of `image` or `image_url` (`imageUrl`) should be set. |
 | `display_in_default` | Boolean | No | Tier 1 curation flag. Default: `true`. |
 | `show_on` / `hide_on` | Multi-select | No | Tier 2 surface filters. |
 
@@ -299,7 +301,7 @@ Components MUST NOT crash when optional CMS fields are omitted. The following fa
 4. **Missing `image`**: Media cards fallback to a styled neutral placeholder or title-only card.
 5. **Storyblok Multilink vs Plain URL**: The `resolveUrl` filter handles both plain string URLs (`"https://kirche-echo.de"`) and Storyblok multilink objects (`{ linktype: "url", url: "https://..." }`), returning a safe string.
 6. **Dangerous Protocols**: `resolveUrl` blocks `javascript:` and `data:` protocols, returning empty string `""` to prevent XSS attacks.
-7. **Direct Image Links & Optional Labels in Media Cards**: Image cards (`image_card_horizontal`, `image_card_vertical`) accept both structured image objects (`{ src, alt, width, height }` or `{ filename }`) and direct string URLs/paths (a link as image). If `label` is omitted, the card renders as a pure image link banner without an empty bottom title bar.
+7. **Dual Image Fields (Storyblok Asset + Fallback URL) & Optional Labels in Media Cards**: Image cards (`image_card_horizontal`, `image_card_vertical`) support both `image` (Storyblok asset / structured object / string) and `image_url` / `imageUrl` (direct URL or local path). When both are provided, `image` (the Storyblok image) takes precedence. If `label` is omitted, the card renders as a pure image link banner without an empty bottom title bar.
 
 ---
 

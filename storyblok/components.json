@@ -171,28 +171,37 @@
         "image": {
           "type": "asset",
           "pos": 2,
-          "required": true,
+          "required": false,
+          "display_name": "Storyblok Image",
+          "description": "Upload or select an image in Storyblok. Takes precedence over Image URL if both are set.",
           "filetypes": [
             "images"
           ]
         },
+        "image_url": {
+          "type": "text",
+          "pos": 3,
+          "required": false,
+          "display_name": "Image URL",
+          "description": "Direct image URL or local path (e.g. https://... or /assets/images/...). Used when no Storyblok Image is set."
+        },
+        "display_in_default": {
+          "type": "boolean",
+          "pos": 4,
+          "default_value": true,
+          "display_name": "Display on Default Page"
+        },
         "show_on": {
           "type": "options",
-          "pos": 3,
+          "pos": 5,
           "source": "internal",
           "datasource_slug": "surfaces"
         },
         "hide_on": {
           "type": "options",
-          "pos": 4,
+          "pos": 6,
           "source": "internal",
           "datasource_slug": "surfaces"
-        },
-        "display_in_default": {
-          "type": "boolean",
-          "pos": 3,
-          "default_value": true,
-          "display_name": "Display on Default Page"
         }
       }
     },
@@ -215,28 +224,37 @@
         "image": {
           "type": "asset",
           "pos": 2,
-          "required": true,
+          "required": false,
+          "display_name": "Storyblok Image",
+          "description": "Upload or select an image in Storyblok. Takes precedence over Image URL if both are set.",
           "filetypes": [
             "images"
           ]
         },
+        "image_url": {
+          "type": "text",
+          "pos": 3,
+          "required": false,
+          "display_name": "Image URL",
+          "description": "Direct image URL or local path (e.g. https://... or /assets/images/...). Used when no Storyblok Image is set."
+        },
+        "display_in_default": {
+          "type": "boolean",
+          "pos": 4,
+          "default_value": true,
+          "display_name": "Display on Default Page"
+        },
         "show_on": {
           "type": "options",
-          "pos": 3,
+          "pos": 5,
           "source": "internal",
           "datasource_slug": "surfaces"
         },
         "hide_on": {
           "type": "options",
-          "pos": 4,
+          "pos": 6,
           "source": "internal",
           "datasource_slug": "surfaces"
-        },
-        "display_in_default": {
-          "type": "boolean",
-          "pos": 3,
-          "default_value": true,
-          "display_name": "Display on Default Page"
         }
       }
     },

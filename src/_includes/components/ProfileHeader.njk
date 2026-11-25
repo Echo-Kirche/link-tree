@@ -1,5 +1,5 @@
 <header class="profile-header"{% if profile._editable %} {{ profile | storyblokEditable | safe }}{% endif %}>
-  {% set avatarSrc = profile.avatar.filename if (profile.avatar and profile.avatar.filename) else profile.avatar %}
+  {% set avatarSrc = profile.avatar.filename if (profile.avatar and profile.avatar.filename) else (profile.avatar.src if (profile.avatar and profile.avatar.src) else (profile.avatar if (profile.avatar and profile.avatar is string) else '')) %}
   {% if avatarSrc %}
   <div class="profile-header__avatar-wrapper">
     <img class="profile-header__avatar" src="{{ avatarSrc }}" alt="" width="96" height="96" loading="eager" fetchpriority="high" decoding="async" />

@@ -40,6 +40,24 @@ export function resolveStoryblokUrl(val) {
   return url;
 }
 
+export function resolveStoryblokImage(item) {
+  if (!item || typeof item !== 'object') return '';
+
+  const pickSafe = (raw) => {
+    if (!raw) return '';
+    let candidate = '';
+    if (typeof raw === 'string') {
+      candidate = raw.trim();
+    } else if (typeof raw === 'object') {
+      candidate = String(raw.filename || raw.src || raw.url || raw.cached_url || '').trim();
+    }
+    if (!candidate || !isSafeUrl(candidate)) return '';
+    return candidate;
+  };
+
+  return pickSafe(item.image) || pickSafe(item.image_url ?? item.imageUrl);
+}
+
 export function normalizeStoryblokLinks(obj) {
   if (!obj || typeof obj !== 'object') return obj;
   if (Array.isArray(obj)) return obj.map(normalizeStoryblokLinks);
@@ -47,7 +65,12 @@ export function normalizeStoryblokLinks(obj) {
   const res = { ...obj };
   for (const [key, value] of Object.entries(res)) {
     if (value && typeof value === 'object' && !Array.isArray(value)) {
-      if ('linktype' in value || 'cached_url' in value || 'fieldtype' in value) {
+      if (value.fieldtype === 'asset') {
+        res[key] = {
+          ...value,
+          filename: typeof value.filename === 'string' && isSafeUrl(value.filename) ? value.filename.trim() : '',
+        };
+      } else if ('linktype' in value || 'cached_url' in value || value.fieldtype === 'multilink') {
         res[key] = resolveStoryblokUrl(value);
       } else {
         res[key] = normalizeStoryblokLinks(value);

@@ -3,6 +3,33 @@ import path from 'node:path';
 import footers from './footers.js';
 import { normalizeStoryblokLinks } from '../utils/storyblok-url.js';
 
+function mapImageCardItem(item, component, defaultWidth, defaultHeight, displayInDef) {
+  const isStrImage = typeof item.image === 'string';
+  return {
+    _uid: item.id,
+    component,
+    label: item.label || '',
+    url: item.url,
+    display_in_default: displayInDef,
+    image: isStrImage
+      ? {
+          filename: item.image,
+          alt: item.label || '',
+          width: defaultWidth,
+          height: defaultHeight,
+        }
+      : {
+          filename: item.image?.src || item.image?.filename || '',
+          alt: item.image?.alt || item.label || '',
+          width: item.image?.width || defaultWidth,
+          height: item.image?.height || defaultHeight,
+        },
+    image_url: item.imageUrl || item.image_url || '',
+    show_on: item.showOn || [],
+    hide_on: item.hideOn || [],
+  };
+}
+
 function youtubeVideoId(value = '') {
   if (!value) return '';
   const raw = String(value).trim();
@@ -104,54 +131,10 @@ export default async function () {
       };
     }
     if (item.type === 'image-horizontal') {
-      const isStrImage = typeof item.image === 'string';
-      return {
-        _uid: item.id,
-        component: 'image_card_horizontal',
-        label: item.label || '',
-        url: item.url,
-        display_in_default: displayInDef,
-        image: isStrImage
-          ? {
-              filename: item.image,
-              alt: item.label || '',
-              width: 1200,
-              height: 630,
-            }
-          : {
-              filename: item.image?.src || item.image?.filename || '',
-              alt: item.image?.alt || item.label || '',
-              width: item.image?.width || 1200,
-              height: item.image?.height || 630,
-            },
-        show_on: item.showOn || [],
-        hide_on: item.hideOn || [],
-      };
+      return mapImageCardItem(item, 'image_card_horizontal', 1200, 630, displayInDef);
     }
     if (item.type === 'image-vertical') {
-      const isStrImage = typeof item.image === 'string';
-      return {
-        _uid: item.id,
-        component: 'image_card_vertical',
-        label: item.label || '',
-        url: item.url,
-        display_in_default: displayInDef,
-        image: isStrImage
-          ? {
-              filename: item.image,
-              alt: item.label || '',
-              width: 900,
-              height: 1200,
-            }
-          : {
-              filename: item.image?.src || item.image?.filename || '',
-              alt: item.image?.alt || item.label || '',
-              width: item.image?.width || 900,
-              height: item.image?.height || 1200,
-            },
-        show_on: item.showOn || [],
-        hide_on: item.hideOn || [],
-      };
+      return mapImageCardItem(item, 'image_card_vertical', 900, 1200, displayInDef);
     }
     if (item.type === 'video-link') {
       const isStrImage = typeof item.image === 'string';
