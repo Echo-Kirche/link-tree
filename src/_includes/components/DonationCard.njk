@@ -46,7 +46,7 @@
         {% set b2 = {
           url: resB2Url,
           label: item.button_2_label or item.btn2_label or item.button2_label or item.button2Label or item.ibanLinkLabel or item.iban_link_label or "Online-Banking öffnen",
-          icon: item.button_2_icon or item.btn2_icon or item.button2_icon or item.button2Icon or (("building-columns" if (item.ibanLinkUrl or item.iban_link_url) else "")),
+          icon: item.button_2_icon or item.btn2_icon or item.button2_icon or item.button2Icon or "",
           variant: item.button_2_variant or item.btn2_variant or item.button2_variant or (("iban" if (item.ibanLinkUrl or item.iban_link_url) else "secondary")),
           target: item.button_2_target or item.btn2_target or ""
         } %}
@@ -83,7 +83,7 @@
     {% set referenceText = item.reference %}
     {% set customDetails = item.details or item.custom_fields or item.fields %}
     {% set cardTitle = item.card_title or item.cardTitle or item.details_title or item.detailsTitle or (item.ibanTitle or item.iban_title if (ibanNumber or accountName) else "") %}
-    {% set cardIcon = item.card_icon or item.cardIcon or item.details_icon or "credit-card" %}
+    {% set cardIcon = item.card_icon or item.cardIcon or item.details_icon or "" %}
     {% set copyValue = item.copy_value or item.copyValue or item.copy_text or item.copyText or ibanNumber %}
     {% set copyLabel = item.copy_label or item.copyLabel or (item.copyLabel if item.copyLabel else ("IBAN kopieren" if ibanNumber else "Kopieren")) %}
 
@@ -93,10 +93,12 @@
     <div class="donation-card__bank-card">
       {% if cardTitle %}
       <div class="donation-card__bank-header">
+        {% if cardIcon and cardIcon != "" %}
         <span class="donation-card__bank-icon" aria-hidden="true">
           {% set iconName = cardIcon %}
           {% include "components/FaIcon.njk" %}
         </span>
+        {% endif %}
         <strong class="donation-card__bank-title">{{ cardTitle }}</strong>
       </div>
       {% endif %}

@@ -62,7 +62,7 @@
           {% set b2 = {
             url: rawB2Url | resolveUrl,
             label: item.button_2_label or item.btn2_label or item.button2_label or item.button2Label or item.ibanLinkLabel or item.iban_link_label or "Online-Banking öffnen",
-            icon: item.button_2_icon or item.btn2_icon or item.button2_icon or item.button2Icon or (("building-columns" if (item.ibanLinkUrl or item.iban_link_url) else "")),
+            icon: item.button_2_icon or item.btn2_icon or item.button2_icon or item.button2Icon or "",
             target: item.button_2_target or item.btn2_target or ""
           } %}
         {% endif %}
@@ -77,7 +77,7 @@
 
         {# Check for expanded card content #}
         {% set expTitle = item.card_title or item.cardTitle or item.ibanTitle or item.iban_title %}
-        {% set expIcon = item.card_icon or item.cardIcon or "building-columns" %}
+        {% set expIcon = item.card_icon or item.cardIcon or "" %}
         {% set expIban = item.iban %}
         {% set expAccount = item.accountName or item.account_name %}
         {% set expBic = item.bic %}
@@ -192,7 +192,7 @@
       {% elif layout == "expanded" or layout == "details" or layout == "card" %}
         {% set expData = (row.buttons[0] if (row.buttons and row.buttons.length > 0 and (row.buttons[0].title or row.buttons[0].copy_value or row.buttons[0].copyValue or row.buttons[0].fields or row.buttons[0].iban or row.buttons[0].component == 'expanded_button')) else row) %}
         {% set cardTitle = expData.title or expData.card_title or expData.cardTitle or "Details & Infos" %}
-        {% set cardIcon = expData.icon or expData.card_icon or expData.cardIcon or "building-columns" %}
+        {% set cardIcon = expData.icon or expData.card_icon or expData.cardIcon or "" %}
         {% set cardCopyValue = expData.copy_value or expData.copyValue or expData.copyText or expData.iban %}
         {% set cardCopyLabel = expData.copy_label or expData.copyLabel or (("IBAN kopieren" if expData.iban else "Kopieren")) %}
 
@@ -214,10 +214,12 @@
           <div class="accordion-buttons__expanded-card">
             {% if cardTitle %}
             <div class="accordion-buttons__card-header">
+              {% if cardIcon and cardIcon != "" %}
               <span class="accordion-buttons__card-icon" aria-hidden="true">
                 {% set iconName = cardIcon %}
                 {% include "components/FaIcon.njk" %}
               </span>
+              {% endif %}
               <span class="accordion-buttons__card-title">{{ cardTitle }}</span>
             </div>
             {% endif %}

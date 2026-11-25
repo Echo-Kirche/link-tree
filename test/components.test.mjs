@@ -330,6 +330,23 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.doesNotMatch(htmlMultiRow, /Feld 7/);
     assert.match(htmlMultiRow, /data-copy-text="VIP-GIFT-2026"/);
     assert.match(htmlMultiRow, /Gutschein kopieren/);
+
+    // 3. Unit test: Expanded card with no icon specified should leave icon completely empty
+    const htmlNoIcon = env.render('components/AccordionButtons.njk', {
+      item: {
+        id: 'test-no-icon',
+        label: 'Spenden ohne Icon',
+        rows: [
+          {
+            layout: 'expanded',
+            title: 'Banküberweisung',
+            iban: 'DE00 0000 0000 0000 0000 00'
+          }
+        ]
+      }
+    });
+    assert.doesNotMatch(htmlNoIcon, /accordion-buttons__card-icon/, 'Expanded card without icon must not render card-icon wrapper');
+    assert.doesNotMatch(htmlNoIcon, /fa-building-columns/, 'Expanded card without icon must not fall back to fa-building-columns');
   });
 
   test('ImageCardHorizontal & ImageCardVertical render media cards with aspect ratios and arrows', () => {

@@ -419,7 +419,7 @@ A rich bank details card nested inside an `expanded` row's `buttons` list. Holds
 | Field Name | Display Name | Reason / Purpose | Type | Default Value | Required | Editor Guidance |
 |---|---|---|---|---|---|---|
 | `title` | Card Title | Title of expanded bank card. | `Text` | `Per Banküberweisung (IBAN)` | No | e.g. `Per Banküberweisung (IBAN)`. |
-| `icon` | Card Icon | Leading icon next to card title. | `Text` | `building-columns` | No | Font Awesome icon name (default: `building-columns`). |
+| `icon` | Card Icon | Leading icon next to card title. | `Text` | Empty | No | Optional Font Awesome icon name (e.g. `building-columns`). Leave empty for no icon. |
 | `copy_value` | Copy Value | The exact IBAN copied to the user's clipboard. | `Text` | Empty | No | e.g. `DE12 3456 7890 1234 5678 90`. Also falls back to `iban`. |
 | `copy_label` | Copy Button Label | Label displayed on the clipboard copy button. | `Text` | `IBAN kopieren` | No | e.g. `IBAN kopieren`. |
 | `account_name` | Bank: Kontoinhaber | Bank account holder name. | `Text` | Empty | No | e.g. `Echo Kirche e.V.` |
