@@ -64,6 +64,7 @@ Configured in `netlify.toml` and mirrored in `_headers`:
   `default-src 'self'; img-src 'self' data: https://a.storyblok.com https://*.storyblok.com https://kirche-echo.de https://*.kirche-echo.de; style-src 'self' 'unsafe-inline'; script-src 'self' https://app.storyblok.com https://*.storyblok.com; connect-src 'self' https://api.storyblok.com https://gapi.storyblok.com https://app.storyblok.com https://*.storyblok.com wss://*.storyblok.com; frame-src 'self' https://www.youtube-nocookie.com; frame-ancestors 'self' https://app.storyblok.com https://storyblok.com https://*.storyblok.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;`
 - **Permissions-Policy**: Strictly disables camera, microphone, geolocation, payment, and FLoC/browsing-topics tracking.
 - **HSTS**: `max-age=31536000; includeSubDomains; preload`.
+- **Search Engine Indexing**: `X-Robots-Tag: noindex, nofollow` (paired with `<meta name="robots" content="noindex, nofollow">` in HTML) keeps `linkto` routes unindexed while `canonical` and `og:url` point to `https://kirche-echo.de/...`.
 
 ### 3.4 Caching Policy
 - **HTML Pages**: `public, max-age=0, must-revalidate` (ensures visitors receive fresh content immediately upon publish).

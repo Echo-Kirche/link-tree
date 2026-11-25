@@ -228,6 +228,10 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     // CSP img-src must permit Storyblok CDN and first-party Echo Kirche domain (apex + subdomains)
     assert.match(toml, /img-src[^;]*https:\/\/kirche-echo\.de\s+https:\/\/\*\.kirche-echo\.de/, 'Netlify toml CSP img-src must allow kirche-echo.de and *.kirche-echo.de');
     assert.match(headers, /img-src[^;]*https:\/\/kirche-echo\.de\s+https:\/\/\*\.kirche-echo\.de/, '_headers CSP img-src must allow kirche-echo.de and *.kirche-echo.de');
+
+    // X-Robots-Tag must keep link-tree unindexed
+    assert.match(toml, /X-Robots-Tag\s*=\s*"noindex,\s*nofollow"/, 'Netlify toml must set X-Robots-Tag = "noindex, nofollow"');
+    assert.match(headers, /X-Robots-Tag:\s*noindex,\s*nofollow/, '_headers must set X-Robots-Tag: noindex, nofollow');
   });
 
   test('404 page exists and contains automatic redirect to root, accessible link, and favicon', () => {

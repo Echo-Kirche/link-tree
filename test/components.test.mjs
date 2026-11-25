@@ -847,6 +847,7 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(indexHtml, /<meta\s+name="twitter:title"\s+content="Echo Kirche – Quick-Links">/, 'Must have twitter:title');
     assert.match(indexHtml, /<meta\s+name="twitter:image"\s+content="https:\/\/kirche-echo\.de\/assets\/images\/logo-circle\.png">/, 'Must have twitter:image');
     assert.match(indexHtml, /<link\s+rel="canonical"\s+href="https:\/\/kirche-echo\.de\/">/, 'Must have canonical link');
+    assert.match(indexHtml, /<meta\s+name="robots"\s+content="noindex, nofollow">/, 'Must include noindex, nofollow robots meta tag');
     assert.match(indexHtml, /<meta\s+name="description"\s+content="[^"]*Echo Kirche[^"]*"/, 'Must have German meta description');
 
     // 2. Campus routes (e.g. Gifhorn, Wolfsburg, Helmstedt)
@@ -854,14 +855,17 @@ describe('Component Markup & Accessibility Contracts', () => {
     assert.match(gfHtml, /<meta\s+property="og:title"\s+content="Echo Kirche Gifhorn – Quick-Links">/);
     assert.match(gfHtml, /<meta\s+property="og:url"\s+content="https:\/\/kirche-echo\.de\/gifhorn\/">/);
     assert.match(gfHtml, /<meta\s+property="og:image"\s+content="https:\/\/kirche-echo\.de\/assets\/images\/logo-circle\.png">/);
+    assert.match(gfHtml, /<meta\s+name="robots"\s+content="noindex, nofollow">/);
 
     const wobHtml = fs.readFileSync(path.join(siteDir, 'wolfsburg', 'index.html'), 'utf8');
     assert.match(wobHtml, /<meta\s+property="og:title"\s+content="Echo Kirche Wolfsburg – Quick-Links">/);
     assert.match(wobHtml, /<meta\s+property="og:url"\s+content="https:\/\/kirche-echo\.de\/wolfsburg\/">/);
+    assert.match(wobHtml, /<meta\s+name="robots"\s+content="noindex, nofollow">/);
 
     const heHtml = fs.readFileSync(path.join(siteDir, 'helmstedt', 'index.html'), 'utf8');
     assert.match(heHtml, /<meta\s+property="og:title"\s+content="Echo Kirche Helmstedt – Quick-Links">/);
     assert.match(heHtml, /<meta\s+property="og:url"\s+content="https:\/\/kirche-echo\.de\/helmstedt\/">/);
+    assert.match(heHtml, /<meta\s+name="robots"\s+content="noindex, nofollow">/);
 
     // 3. 404 page
     const notFoundHtml = fs.readFileSync(path.join(siteDir, '404.html'), 'utf8');

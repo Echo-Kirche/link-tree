@@ -79,6 +79,9 @@
     
     # Cross-origin protection
     X-Permitted-Cross-Domain-Policies = "none"
+
+    # Keep link-tree hidden from search engines; kirche-echo.de remains canonical
+    X-Robots-Tag = "noindex, nofollow"
     
     # Default HTML caching: revalidate immediately on new deploys
     Cache-Control = "public, max-age=0, must-revalidate"
