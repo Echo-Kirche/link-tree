@@ -349,7 +349,7 @@ The legal notice, organization address, and social media icons at the bottom of 
   - `street` (Text): Street address (default: `Schützenplatz 1`).
   - `city` (Text): Zip code and city (default: `38518 Gifhorn`).
   - `email` (Text): Contact email address.
-  - `mailto` (Text, Optional): Custom mailto URI with subject (e.g., `mailto:david.loewens@kib-gifhorn.de?subject=Kontakt%20EchoHelmstedt`).
+  - `mailto` (Text, Optional): Custom mailto URI with subject (e.g., `mailto:david.loewens@kirche-echo.de?subject=Kontakt%20EchoHelmstedt`).
   - `impressum_url` (Text): Link to Impressum (e.g., `https://kirche-echo.de/impressum/`).
   - `datenschutz_url` (Text): Link to Privacy Policy (e.g., `https://kirche-echo.de/datenschutz/`).
   - `copyright_year` (Text): Year (e.g., `2026`).
@@ -608,8 +608,8 @@ Der Bereich ganz unten auf der Seite mit Impressum, Datenschutz und Social-Media
   - `organization_name` (Text): Offizieller Name (`Echo Kirche KdöR`).
   - `street` (Text): Straße und Hausnummer (Standard: `Schützenplatz 1`).
   - `city` (Text): Postleitzahl und Ort (Standard: `38518 Gifhorn`).
-  - `email` (Text): Kontakt-E-Mail (z. B. `info@kirche-echo.de`, `david.loewens@kib-gifhorn.de`).
-  - `mailto` (Text, Optional): E-Mail-Link mit Betreff (z. B. `mailto:david.loewens@kib-gifhorn.de?subject=Kontakt%20EchoHelmstedt`).
+  - `email` (Text): Kontakt-E-Mail (z. B. `info@kirche-echo.de`, `david.loewens@kirche-echo.de`).
+  - `mailto` (Text, Optional): E-Mail-Link mit Betreff (z. B. `mailto:david.loewens@kirche-echo.de?subject=Kontakt%20EchoHelmstedt`).
   - `impressum_url` (Text): Link zum Impressum (z. B. `https://kirche-echo.de/impressum/`).
   - `datenschutz_url` (Text): Link zur Datenschutzerklärung (z. B. `https://kirche-echo.de/datenschutz/`).
   - `copyright_year` (Text): Jahr (z. B. `2026`).
