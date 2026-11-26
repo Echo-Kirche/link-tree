@@ -41,11 +41,6 @@ export default [
         label: 'Facebook (@kircheimbrauhaus)',
       },
       {
-        platform: 'email',
-        url: 'mailto:info@kirche-echo.de',
-        label: 'E-Mail',
-      },
-      {
         platform: 'website',
         url: 'https://kirche-echo.de',
         label: 'Website',
@@ -94,11 +89,6 @@ export default [
         label: 'Facebook (@kircheimbrauhaus)',
       },
       {
-        platform: 'email',
-        url: 'mailto:info@kirche-echo.de',
-        label: 'E-Mail',
-      },
-      {
         platform: 'website',
         url: 'https://kirche-echo.de/wolfsburg',
         label: 'Website',
@@ -145,11 +135,6 @@ export default [
         platform: 'facebook',
         url: 'https://www.facebook.com/kircheimbrauhaus',
         label: 'Facebook (@kircheimbrauhaus)',
-      },
-      {
-        platform: 'email',
-        url: 'mailto:david.loewens@kib-gifhorn.de?subject=Kontakt%20EchoHelmstedt',
-        label: 'E-Mail (david.loewens@kib-gifhorn.de)',
       },
       {
         platform: 'website',
