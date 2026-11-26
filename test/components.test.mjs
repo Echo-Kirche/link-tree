@@ -14,7 +14,10 @@ describe('Component Markup & Accessibility Contracts', () => {
   test('ProfileHeader component renders avatar and name', async () => {
     assert.match(indexHtml, /class="profile-header"/, 'ProfileHeader container must exist');
     assert.match(indexHtml, /class="profile-header__name"/, 'ProfileHeader name must exist');
-    assert.match(indexHtml, /Echo Kirche/, 'ProfileHeader must contain name text');
+    assert.match(indexHtml, /class="profile-header__name-logo"/, 'ProfileHeader name logo must exist');
+    assert.match(indexHtml, /class="fa-svg fa-echo-mark"/, 'ProfileHeader must render fa-echo-mark SVG');
+    assert.match(indexHtml, /viewBox="0 0 145 26"/, 'ProfileHeader must use echo-mark viewBox 0 0 145 26');
+    assert.doesNotMatch(indexHtml, /class="profile-header__name-text"/, 'ProfileHeader name text must be removed');
     assert.doesNotMatch(indexHtml, /class="profile-header__avatar"/, 'ProfileHeader avatar must not exist in default mode');
     assert.doesNotMatch(indexHtml, /class="profile-header__avatar-wrapper"/, 'ProfileHeader avatar wrapper must not exist in default mode');
 
