@@ -113,8 +113,8 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.match(heFooter, /Schützenplatz 1/, 'Helmstedt footer must contain Schützenplatz 1');
     assert.match(heFooter, /38518 Gifhorn/, 'Helmstedt footer must contain 38518 Gifhorn');
     assert.match(heFooter, /&copy;\s*2026\s*Echo Kirche KdöR\./, 'Helmstedt footer must contain © 2026 Echo Kirche KdöR.');
-    assert.match(heFooter, /href="mailto:david\.loewens@kib-gifhorn\.de\?subject=Kontakt%20EchoHelmstedt"/, 'Helmstedt footer must have mailto with subject');
-    assert.match(heFooter, />david\.loewens@kib-gifhorn\.de</, 'Helmstedt footer must display David Loewens email');
+    assert.match(heFooter, /href="mailto:david\.loewens@kirche-echo\.de\?subject=Kontakt%20EchoHelmstedt"/, 'Helmstedt footer must have mailto with subject');
+    assert.match(heFooter, />david\.loewens@kirche-echo\.de</, 'Helmstedt footer must display David Loewens email');
     assert.match(heFooter, /href="https:\/\/www\.instagram\.com\/echo\.helmstedt\/"/, 'Helmstedt footer must link to Helmstedt Instagram');
     assert.match(heFooter, /href="https:\/\/whatsapp\.com\/channel\/0029VbDmLfb2P59tKORzGs21"/, 'Helmstedt footer must link to Helmstedt WhatsApp');
     assert.match(heFooter, /href="https:\/\/www\.facebook\.com\/kircheimbrauhaus"/, 'Helmstedt footer must link to Facebook');

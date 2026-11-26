@@ -11,11 +11,36 @@ describe('Component Markup & Accessibility Contracts', () => {
   const indexHtml = fs.readFileSync(path.join(siteDir, 'index.html'), 'utf8');
   const testHtml = fs.readFileSync(path.join(siteDir, 'test', 'index.html'), 'utf8');
 
-  test('ProfileHeader component renders avatar and name', () => {
+  test('ProfileHeader component renders avatar and name', async () => {
     assert.match(indexHtml, /class="profile-header"/, 'ProfileHeader container must exist');
     assert.match(indexHtml, /class="profile-header__name"/, 'ProfileHeader name must exist');
     assert.match(indexHtml, /Echo Kirche/, 'ProfileHeader must contain name text');
-    assert.match(indexHtml, /class="profile-header__avatar"/, 'ProfileHeader avatar must exist');
+    assert.doesNotMatch(indexHtml, /class="profile-header__avatar"/, 'ProfileHeader avatar must not exist in default mode');
+    assert.doesNotMatch(indexHtml, /class="profile-header__avatar-wrapper"/, 'ProfileHeader avatar wrapper must not exist in default mode');
+
+    // Unit test: ProfileHeader renders avatar when explicitly provided
+    const nunjucks = (await import('nunjucks')).default;
+    const env = nunjucks.configure(path.resolve('src/_includes'), { autoescape: true });
+    env.addFilter('storyblokEditable', () => '');
+
+    const htmlWithAvatar = env.render('components/ProfileHeader.njk', {
+      profile: {
+        name: 'Echo Kirche',
+        avatar: '/assets/images/logo.svg'
+      }
+    });
+    assert.match(htmlWithAvatar, /class="profile-header__avatar"/, 'ProfileHeader must render avatar when avatar is provided');
+    assert.match(htmlWithAvatar, /class="profile-header__avatar-wrapper"/, 'ProfileHeader must render avatar wrapper when avatar is provided');
+
+    // Unit test: ProfileHeader leaves avatar empty when avatar is empty or omitted
+    const htmlEmptyAvatar = env.render('components/ProfileHeader.njk', {
+      profile: {
+        name: 'Echo Kirche',
+        avatar: ''
+      }
+    });
+    assert.doesNotMatch(htmlEmptyAvatar, /class="profile-header__avatar"/, 'ProfileHeader must not render avatar when avatar is empty');
+    assert.doesNotMatch(htmlEmptyAvatar, /class="profile-header__avatar-wrapper"/, 'ProfileHeader must not render avatar wrapper when avatar is empty');
   });
 
   test('LinkButton component renders accessible link with states and icon', () => {
