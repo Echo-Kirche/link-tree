@@ -93,7 +93,7 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.match(gfHtml, /href="mailto:info@kirche-echo\.de"/, 'Gifhorn footer must link to info@kirche-echo.de');
     assert.match(gfHtml, /href="https:\/\/www\.instagram\.com\/kircheimbrauhaus\/"/, 'Gifhorn footer must link to Gifhorn Instagram');
     assert.match(gfHtml, /href="https:\/\/whatsapp\.com\/channel\/0029Vb6fOzl11ulLp4jHlI0V"/, 'Gifhorn footer must link to Gifhorn WhatsApp');
-    assert.match(gfHtml, /href="https:\/\/www\.facebook\.com\/kircheimbrauhaus"/, 'Gifhorn footer must link to Facebook');
+    assert.match(gfHtml, /href="https:\/\/www\.facebook\.com\/echokirche"/, 'Gifhorn footer must link to Facebook');
 
     // Wolfsburg
     const wobHtml = fs.readFileSync(path.join(siteDir, 'wolfsburg', 'index.html'), 'utf8');
@@ -104,7 +104,7 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.match(wobHtml, /href="mailto:info@kirche-echo\.de"/, 'Wolfsburg footer must link to info@kirche-echo.de');
     assert.match(wobHtml, /href="https:\/\/www\.instagram\.com\/echo\.wolfsburg\/"/, 'Wolfsburg footer must link to Wolfsburg Instagram');
     assert.match(wobHtml, /href="https:\/\/whatsapp\.com\/channel\/0029VaAagKEI7BeE8yhtQW0f"/, 'Wolfsburg footer must link to Wolfsburg WhatsApp');
-    assert.match(wobHtml, /href="https:\/\/www\.facebook\.com\/kircheimbrauhaus"/, 'Wolfsburg footer must link to Facebook');
+    assert.match(wobHtml, /href="https:\/\/www\.facebook\.com\/echokirche"/, 'Wolfsburg footer must link to Facebook');
 
     // Helmstedt
     const heHtml = fs.readFileSync(path.join(siteDir, 'helmstedt', 'index.html'), 'utf8');
@@ -117,7 +117,7 @@ describe('Surface Routing, Shortcuts & Filter Verification', () => {
     assert.match(heFooter, />david\.loewens@kirche-echo\.de</, 'Helmstedt footer must display David Loewens email');
     assert.match(heFooter, /href="https:\/\/www\.instagram\.com\/echo\.helmstedt\/"/, 'Helmstedt footer must link to Helmstedt Instagram');
     assert.match(heFooter, /href="https:\/\/whatsapp\.com\/channel\/0029VbDmLfb2P59tKORzGs21"/, 'Helmstedt footer must link to Helmstedt WhatsApp');
-    assert.match(heFooter, /href="https:\/\/www\.facebook\.com\/kircheimbrauhaus"/, 'Helmstedt footer must link to Facebook');
+    assert.match(heFooter, /href="https:\/\/www\.facebook\.com\/echokirche"/, 'Helmstedt footer must link to Facebook');
 
     // Test page contains all 3 footer variations with data-show-on
     const testHtml = fs.readFileSync(path.join(siteDir, 'test', 'index.html'), 'utf8');

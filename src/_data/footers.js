@@ -37,8 +37,8 @@ export default [
       },
       {
         platform: 'facebook',
-        url: 'https://www.facebook.com/kircheimbrauhaus',
-        label: 'Facebook (@kircheimbrauhaus)',
+        url: 'https://www.facebook.com/echokirche',
+        label: 'Facebook (@echokirche)',
       },
       {
         platform: 'website',
@@ -85,8 +85,8 @@ export default [
       },
       {
         platform: 'facebook',
-        url: 'https://www.facebook.com/kircheimbrauhaus',
-        label: 'Facebook (@kircheimbrauhaus)',
+        url: 'https://www.facebook.com/echokirche',
+        label: 'Facebook (@echokirche)',
       },
       {
         platform: 'website',
@@ -133,8 +133,8 @@ export default [
       },
       {
         platform: 'facebook',
-        url: 'https://www.facebook.com/kircheimbrauhaus',
-        label: 'Facebook (@kircheimbrauhaus)',
+        url: 'https://www.facebook.com/echokirche',
+        label: 'Facebook (@echokirche)',
       },
       {
         platform: 'website',
